@@ -364,7 +364,8 @@ fn probe_dump_plate() {
     use std::fmt::Write as _;
     let Ok(out) = std::env::var("PROBE_OUT") else { return };
     let mut s = plate();
-    s.execute("mesh.hex.generate", &json!({"size": 2.0})).unwrap();
+    let reply = s.execute("mesh.hex.generate", &json!({"size": 2.0})).unwrap();
+    std::fs::write(format!("{out}/reply.json"), serde_json::to_string_pretty(&reply).unwrap()).unwrap();
     let dump = |s: &Session| {
         let mut t = String::new();
         for (n, p) in s.model.nodes() {
