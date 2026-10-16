@@ -357,3 +357,25 @@ fn strong_mode_parameters_are_checked() {
     let r = s.execute("mesh.node.relax", &json!({"mode": "strong", "below": 0.01})).unwrap();
     assert_eq!(r["moved"], 0, "{r}");
 }
+
+/// Temporary probe (#438): dump the generated and perturbed plate mesh bit-for-bit.
+#[test]
+fn probe_dump_plate() {
+    use std::fmt::Write as _;
+    let Ok(out) = std::env::var("PROBE_OUT") else { return };
+    let mut s = plate();
+    s.execute("mesh.hex.generate", &json!({"size": 2.0})).unwrap();
+    let dump = |s: &Session| {
+        let mut t = String::new();
+        for (n, p) in s.model.nodes() {
+            writeln!(t, "n {n} {:016x} {:016x} {:016x}", p.xyz[0].to_bits(), p.xyz[1].to_bits(), p.xyz[2].to_bits()).unwrap();
+        }
+        for (e, el) in s.model.elements() {
+            writeln!(t, "e {e} {:?}", el.nodes).unwrap();
+        }
+        t
+    };
+    std::fs::write(format!("{out}/generated.txt"), dump(&s)).unwrap();
+    perturb(&mut s, ON_HOLE, 6.0, 0.35);
+    std::fs::write(format!("{out}/perturbed.txt"), dump(&s)).unwrap();
+}
