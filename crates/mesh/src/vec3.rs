@@ -21,7 +21,7 @@ pub(crate) fn det(a: P, b: P, c: P) -> f64 {
 
 /// The angle between two vectors in degrees (0 when either is zero).
 pub(crate) fn angle_deg(a: P, b: P) -> f64 {
-    norm(cross(a, b)).atan2(dot(a, b)).to_degrees()
+    libm::atan2(norm(cross(a, b)), dot(a, b)).to_degrees()
 }
 pub(crate) fn add(a: P, b: P) -> P {
     [a[0] + b[0], a[1] + b[1], a[2] + b[2]]

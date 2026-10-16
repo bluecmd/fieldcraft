@@ -10,6 +10,10 @@ workspace = true
 
 [dependencies]
 fieldcraft-model = { workspace = true }
+# Pure-Rust maths (a port of musl's libm): the same bits on every platform, where the system
+# library's sin, atan2, log … are not correctly rounded and differ (a mesh that differed between
+# macOS and Linux, #438).
+libm = "0.2"
 thiserror = { workspace = true }
 
 [dev-dependencies]
