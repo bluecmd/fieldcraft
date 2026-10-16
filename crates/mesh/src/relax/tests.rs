@@ -360,7 +360,7 @@ fn strong_relaxation_of_a_distorted_block_keeps_faces_and_edges() {
     let (original, m) = distorted_annulus(6, 0.06);
     let geo = Geo { model: original.clone() };
     let nodes: BTreeSet<u32> = m.nodes().keys().copied().collect();
-    let options = MorphOptions { below: 0.9, reach: None, rounds: 40 };
+    let options = MorphOptions { below: 0.9, reach: None, rounds: 40, ..MorphOptions::default() };
     let r = morph(&m, &nodes, options, &geo).unwrap();
     assert!(r.after.min_quality > r.before.min_quality + 0.2, "{:?} → {:?}: {:?}", r.before.min_quality, r.after.min_quality, r.rounds);
     assert!(r.mean_after > r.mean_before, "mean {} → {}", r.mean_before, r.mean_after);
@@ -389,7 +389,7 @@ fn strong_relaxation_moves_only_nodes_within_the_reach() {
     let geo = Geo { model: original };
     let nodes: BTreeSet<u32> = m.nodes().keys().copied().collect();
     let reach = 0.4;
-    let r = morph(&m, &nodes, MorphOptions { below: 0.8, reach: Some(reach), rounds: 20 }, &geo).unwrap();
+    let r = morph(&m, &nodes, MorphOptions { below: 0.8, reach: Some(reach), rounds: 20, ..MorphOptions::default() }, &geo).unwrap();
     assert!(r.after.min_quality > r.before.min_quality, "{:?}", r.rounds);
     for n in r.positions.keys() {
         assert!(dist(m.node(*n).unwrap().xyz, CENTRE) < 0.2 + 2.0 * reach, "node {n} far from the bad spot moved");
