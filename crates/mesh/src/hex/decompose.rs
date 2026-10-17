@@ -314,11 +314,14 @@ fn cast(loops: &[Poly], from: Option<(usize, usize)>, o: Q, d: Q, snap: f64, min
 }
 
 /// The nearest curve end of loop `l` to `x` within `radius` (an alternative end for a cut).
-fn nearby_end(loops: &[Poly], l: usize, x: Q, radius: f64) -> Option<End> {
+fn nearby_end(loops: &[Poly], l: usize, x: Q, radius: f64, tol: f64) -> Option<End> {
     let poly = loops.get(l)?;
     (0..poly.len())
         .filter(|&i| poly.is_end(i) && len(sub(poly.at(i), x)) <= radius)
-        .min_by(|&i, &j| len(sub(poly.at(i), x)).total_cmp(&len(sub(poly.at(j), x))))
+        // The nearest, two within the merge tolerance of each other being equally near (the
+        // first then): which of two ends either side of a symmetric cut's end is taken must not
+        // hang on the last bits of the points (#556).
+        .min_by_key(|&i| (len(sub(poly.at(i), x)) / tol).round() as i64)
         .map(|i| End::Point(l, i))
 }
 
@@ -398,7 +401,10 @@ fn admissible(loops: &[Poly], a: End, b: End, h: f64) -> bool {
     for (li, poly) in loops.iter().enumerate() {
         for k in 0..poly.len() {
             let (c, e) = (poly.at(k), poly.at(k + 1));
-            if segments_meet(pa, pb, c, e) {
+            // The edge a cut ends inside is not crossed: the computed end lies on it only to the
+            // last bits, either side, and a line meets a line once (#556).
+            let ends_inside = [a, b].iter().any(|&x| matches!(x, End::Edge(l2, k2, _) if l2 == li && k2 == k));
+            if !ends_inside && segments_meet(pa, pb, c, e) {
                 return false;
             }
             let is_end = |x: End| match x {
@@ -661,6 +667,23 @@ impl Value {
     }
 }
 
+/// The point of a curve where it has turned half its total, given the turns at its inner points
+/// in order: the position (1 for the first inner point) of the first point whose accumulated
+/// turning reaches half. A symmetric curve with an even number of inner points reaches exactly
+/// half at its middle one, which its last bits would otherwise put either side of the line
+/// (#556): within [`region::ANGLE_TOLERANCE`] of half counts as reaching it.
+fn half_turn(turns: &[f64]) -> usize {
+    let total: f64 = turns.iter().sum();
+    let mut acc = 0.0;
+    for (k, t) in turns.iter().enumerate() {
+        acc += t;
+        if acc.abs() >= 0.5 * total.abs() - region::ANGLE_TOLERANCE {
+            return k + 1;
+        }
+    }
+    1
+}
+
 /// The candidate cuts of a piece without holes (see the module docs).
 fn candidates(loops: &[Poly], s: &Settings) -> Vec<(End, End)> {
     let mut out: Vec<(End, End, f64)> = Vec::new();
@@ -697,15 +720,7 @@ fn candidates(loops: &[Poly], s: &Settings) -> Vec<(End, End)> {
         if total.abs() < ROUNDED {
             continue;
         }
-        let mut acc = 0.0;
-        let mut half = 1;
-        for (k, t) in turns.iter().enumerate() {
-            acc += t;
-            if acc.abs() >= 0.5 * total.abs() {
-                half = k + 1;
-                break;
-            }
-        }
+        let half = half_turn(&turns);
         for k in [0, half, m - 1] {
             let i = (st + k) % n;
             let (a, o, b) = (poly.at(i + n - 1), poly.at(i), poly.at(i + 1));
@@ -735,11 +750,15 @@ fn candidates(loops: &[Poly], s: &Settings) -> Vec<(End, End)> {
             }
         };
         push(end);
-        if let Some(alt) = nearby_end(loops, end.loop_index(), x, (0.75 * h).min(0.3 * t)) {
+        if let Some(alt) = nearby_end(loops, end.loop_index(), x, (0.75 * h).min(0.3 * t), s.tol) {
             push(alt);
         }
     }
-    out.sort_by(|x, y| x.2.total_cmp(&y.2));
+    // Shortest first; lengths within the merge tolerance are equal and keep the rays' order
+    // (the stable sort), so mirror cuts, equal but for the last bits of their points, are tried
+    // and kept in the same order whichever way those bits round (#556).
+    let key = |t: f64| (t / s.tol).round() as i64;
+    out.sort_by_key(|x| key(x.2));
     out.truncate(MAX_CANDIDATES);
     out.into_iter().map(|(a, b, _)| (a, b)).collect()
 }
@@ -954,7 +973,11 @@ fn o_grid(loops: &[Poly], s: &Settings, budget: &mut usize) -> Vec<Vec<Q>> {
     for dirs in [[[1.0, 0.0], [0.0, 1.0], [-1.0, 0.0], [0.0, -1.0]], [[s2, s2], [-s2, s2], [-s2, -s2], [s2, -s2]]] {
         let mut cuts = Vec::new();
         for d in dirs {
-            let Some((_, start)) = cast(std::slice::from_ref(hole), None, c, d, 0.0, 0.0) else { continue };
+            // A ray through a hole point (a slot's arc on its axis) starts there: within the
+            // merge tolerance is on it, so the last bits of the arc and of the centroid do not
+            // turn the start into a point beside it on an edge, which no cut may pass that
+            // close to (#556).
+            let Some((_, start)) = cast(std::slice::from_ref(hole), None, c, d, s.tol, 0.0) else { continue };
             let start = match start {
                 End::Point(_, i) => End::Point(1, i),
                 End::Edge(_, k, x) => End::Edge(1, k, x),
@@ -1105,6 +1128,7 @@ pub(crate) fn cuts(arr: &Arrangement, used: &[bool], locked: &[bool], s: &Settin
         // Do no harm: blocks of poor quality that are worse than the free mesh of the whole
         // region are not taken.
         let blocks = leaves.iter().filter_map(|l| score(l, s)).fold(f64::INFINITY, f64::min);
+        eprintln!("BLOCKS [{}] region {r} cuts {} leaves {} blocks {blocks:.6} free {:.6}", std::thread::current().name().unwrap_or("?"), cuts.len(), leaves.len(), free_score(&loops, s));
         if blocks.is_finite() && blocks < FAIR && blocks < free_score(&loops, s) - HARM_MARGIN {
             continue;
         }
@@ -1207,7 +1231,16 @@ mod tests {
         let counts = ia.solve().unwrap();
         let place = |c: usize, n: usize| -> Result<Vec<Q>> { Ok(divide(&pts(c), n)) };
         let section = section::mesh(&arr, &used, schemes, &counts, &place, &field, &opts).unwrap();
-        Meshed { section, used, cuts: cuts_added }
+        let m = Meshed { section, used, cuts: cuts_added };
+        let mut worst = f64::INFINITY;
+        for q in m.section.quads.iter().flatten() {
+            let c = q.map(|v| m.section.nodes[v as usize]);
+            for i in 0..4 {
+                worst = worst.min(planar_corner(&c, i).1.unwrap());
+            }
+        }
+        eprintln!("PROFILE [{}] regions {} quads {} worst {:.6}", std::thread::current().name().unwrap_or("?"), m.section.schemes.len(), m.section.quads.iter().map(Vec::len).sum::<usize>(), worst);
+        m
     }
 
     /// Every filled region structured, the quadrilaterals valid with corner scaled Jacobians of at
@@ -1297,22 +1330,79 @@ mod tests {
         assert!(check(&m, &profile, 0.99) > 0.99);
     }
 
-    #[test]
-    fn a_plate_with_a_slot_gets_an_o_grid() {
+    /// A plate with an obround slot: two R6 ends at x = 30 and 50 (clockwise).
+    fn slot_plate() -> Profile {
         let mut profile = vec![polygon(&[[0.0, 0.0], [80.0, 0.0], [80.0, 40.0], [0.0, 40.0]])];
-        // An obround slot: two R6 ends at x = 30 and 50 (clockwise).
         profile.push(vec![
             arc([30.0, 20.0], 6.0, 270.0, 90.0),
             line([30.0, 26.0], [50.0, 26.0]),
             arc([50.0, 20.0], 6.0, 90.0, -90.0),
             line([50.0, 14.0], [30.0, 14.0]),
         ]);
+        profile
+    }
+
+    #[test]
+    fn a_plate_with_a_slot_gets_an_o_grid() {
+        let profile = slot_plate();
         let m = mesh_profile(&profile, &[], 2.5);
         check(&m, &profile, 0.5);
         // The intended O-grid on every platform (#556): Windows' last-bit-different arcs used to
         // give 10 regions and 2063 quads with a 0.375 corner.
         assert_eq!(m.section.schemes.len(), 9, "{:?}", m.section.schemes);
         assert_eq!(m.section.quads.iter().map(Vec::len).sum::<usize>(), 848);
+    }
+
+    /// What a blocking comes to: its region and quadrilateral counts, its nodes rounded to 1e-6
+    /// (sorted) and its smallest corner scaled Jacobian.
+    fn blocking(m: &Meshed) -> (usize, usize, Vec<(i64, i64)>, f64) {
+        let s = &m.section;
+        let mut nodes: Vec<(i64, i64)> = s.nodes.iter().map(|p| ((p[0] * 1e6).round() as i64, (p[1] * 1e6).round() as i64)).collect();
+        nodes.sort_unstable();
+        let mut worst = f64::INFINITY;
+        for q in s.quads.iter().flatten() {
+            let c = q.map(|v| s.nodes[v as usize]);
+            for i in 0..4 {
+                worst = worst.min(planar_corner(&c, i).1.unwrap());
+            }
+        }
+        (s.schemes.len(), s.quads.iter().map(Vec::len).sum(), nodes, worst)
+    }
+
+    /// The slot's blocking does not hang on the last bits of its arcs (#556): every point inside
+    /// the two arcs moved by 1 to 4 ulps each way, in x and in y, gives the same regions, quads
+    /// and nodes as the exact profile, for 64 deterministic perturbations.
+    #[test]
+    fn the_slot_blocking_does_not_depend_on_the_last_bits_of_its_arcs() {
+        let base = slot_plate();
+        let reference = blocking(&mesh_profile(&base, &[], 2.5));
+        // A coordinate moved by 1 to 4 ulps up or down, from a xorshift64 stream.
+        let nudge = |v: f64, state: &mut u64| -> f64 {
+            *state ^= *state << 13;
+            *state ^= *state >> 7;
+            *state ^= *state << 17;
+            let steps = 1 + (*state % 4);
+            let up = (*state >> 2) & 1 == 1;
+            (0..steps).fold(v, |x, _| if up { x.next_up() } else { x.next_down() })
+        };
+        let mut failed = Vec::new();
+        for seed in 0..64u64 {
+            let mut state = 0x9e37_79b9_7f4a_7c15 ^ (seed + 1).wrapping_mul(0xbf58_476d_1ce4_e5b9);
+            let mut profile = base.clone();
+            for c in [0, 2] {
+                let curve = &mut profile[1][c];
+                let n = curve.len();
+                for p in &mut curve[1..n - 1] {
+                    *p = [nudge(p[0], &mut state), nudge(p[1], &mut state)];
+                }
+            }
+            let got = blocking(&mesh_profile(&profile, &[], 2.5));
+            let same = got.0 == reference.0 && got.1 == reference.1 && got.2 == reference.2 && (got.3 - reference.3).abs() <= 1e-9;
+            if !same {
+                failed.push((seed, got.0, got.1, got.3));
+            }
+        }
+        assert!(failed.is_empty(), "{} of 64 perturbations change the blocking from {} regions and {} quads: {failed:?}", failed.len(), reference.0, reference.1);
     }
 
     #[test]
@@ -1475,6 +1565,21 @@ mod tests {
         assert!(square > 0.99, "{square}");
         assert!(strip <= 4.0 * 0.3 / 2.5 + 1e-9, "{strip}");
         assert!(small <= 4.0 * 0.3 / 2.5 + 1e-9, "{small}");
+    }
+
+    /// The middle of a symmetric curve with an even number of inner points (eight 5° turns, a
+    /// 45° arc) is its fourth point however its turns round (#556).
+    #[test]
+    fn the_half_turn_of_a_symmetric_curve_does_not_depend_on_its_last_bits() {
+        let turn = 5.0_f64.to_radians();
+        let nudge = |v: f64, ulps: i32| (0..ulps.abs()).fold(v, |x, _| if ulps > 0 { x.next_up() } else { x.next_down() });
+        for ulps in [-4, -1, 0, 1, 4] {
+            // The first half nudged one way, the second the other.
+            let turns: Vec<f64> = (0..8).map(|i| nudge(turn, if i < 4 { ulps } else { -ulps })).collect();
+            assert_eq!(half_turn(&turns), 4, "{turns:?}");
+            let neg: Vec<f64> = turns.iter().map(|t| -t).collect();
+            assert_eq!(half_turn(&neg), 4, "{neg:?}");
+        }
     }
 
     /// A disk is meshed as its O-grid: a coarse tessellation whose curve ends turn like corners
