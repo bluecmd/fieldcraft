@@ -146,7 +146,8 @@ A solved fluid step with temperature in every saved frame offers `temperature` i
 Results field list and through `results.contour`, `results.slice`, `results.surface` and
 `results.streamlines` (`{"field":"temperature"}`). Slices and obstacle surfaces sample
 fluid-cell temperature; streamline colours sample temperature along the velocity traces.
-The legend and existing `solve.probe` use the model's temperature scale, without conversion.
+The legend and `solve.probe` name the temperature unit that goes with the model's unit system
+(°C for the metric systems, °F for in-lbf-s-psi); values are shown as entered, never converted.
 An isothermal step hides the field and rejects an explicit request with an explanation.
 The frame slider and `results.frame` select the field's time, including the initial frame.
 

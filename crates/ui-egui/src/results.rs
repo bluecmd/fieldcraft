@@ -494,7 +494,7 @@ pub(crate) mod tests {
         s.execute("results.slice", &json!({"field": "temperature"})).unwrap();
         let p = plot_at(&s, &base, None).unwrap();
         assert_eq!(p.contour.as_ref().unwrap().field, Field::Temperature);
-        assert!(Field::Temperature.title(&p.result, p.units).contains("°C or K"));
+        assert!(Field::Temperature.title(&p.result, p.units).ends_with("[°C]"));
         assert!(Field::available(&p.result).any(|f| f == Field::Temperature));
         assert!(p.contour.as_ref().unwrap().max.1 > 20.0);
         let last = p.frame().unwrap().2 - 1;

@@ -332,8 +332,9 @@ pub enum Quantity {
 
 impl Quantity {
     /// Its unit in `system` (`mm`, `MPa`, `N·mm`, `mW`…), or `None` (no unit, or the system is
-    /// unspecified). The model never converts, so this only names the system's own unit; a
-    /// temperature is in whatever scale its values were entered in.
+    /// unspecified). The model never converts, so this only names the system's own unit. A
+    /// temperature is named in the scale that goes with the system: °C for the metric systems,
+    /// °F for inch–pound-force–second.
     pub fn unit(self, system: UnitSystem) -> Option<String> {
         let dim = match self {
             Quantity::None => return None,
@@ -359,7 +360,8 @@ impl Quantity {
                         Quantity::Energy => energy,
                         Quantity::HeatFlow => power,
                         Quantity::HeatFlux => flux,
-                        _ => "°C or K",
+                        _ if system == UnitSystem::InLbfS => "°F",
+                        _ => "°C",
                     }
                     .into(),
                 );
@@ -874,6 +876,9 @@ mod tests {
         assert_eq!(unit(Quantity::Moment, mm).as_deref(), Some("N·mm"));
         assert_eq!(unit(Quantity::Energy, UnitSystem::MKgS).as_deref(), Some("J"));
         assert_eq!(unit(Quantity::Temperature, UnitSystem::Unspecified), None);
+        assert_eq!(unit(Quantity::Temperature, mm).as_deref(), Some("°C"));
+        assert_eq!(unit(Quantity::Temperature, UnitSystem::MKgS).as_deref(), Some("°C"));
+        assert_eq!(unit(Quantity::Temperature, UnitSystem::InLbfS).as_deref(), Some("°F"));
         assert_eq!(unit(Quantity::None, mm), None);
     }
 
