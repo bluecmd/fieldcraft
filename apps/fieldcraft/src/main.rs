@@ -57,8 +57,8 @@ const WORK_AREA_RESERVE: f32 = 80.0;
 /// in its work area (#601): as large as the monitor leaves after the reserve (never below the
 /// minimum), centred across the monitor and at its top, so the system's cascade cannot push its
 /// bottom under the taskbar. `None` when the default fits or the monitor's size is unknown. The
-/// position is the monitor's own (winit gives no monitor origin): the primary monitor's, where a
-/// first window opens.
+/// position is from the monitor's own top-left (winit gives no monitor origin), so it is used only
+/// on the monitor at the desktop's origin ([`at_origin_monitor`]).
 fn fitted_window(monitor: egui::Vec2) -> Option<egui::Rect> {
     if !(monitor.is_finite() && monitor.min_elem() > 0.0) {
         return None;
@@ -69,12 +69,28 @@ fn fitted_window(monitor: egui::Vec2) -> Option<egui::Rect> {
     (size != WINDOW_SIZE).then(|| egui::Rect::from_min_size(at, size))
 }
 
+/// Whether the window whose outer rectangle is `outer` opened on the monitor at the desktop's
+/// origin (its top-left lies within `[0, monitor)`): only there are positions from the monitor's
+/// top-left also desktop positions.
+fn at_origin_monitor(outer: egui::Rect, monitor: egui::Vec2) -> bool {
+    let at = outer.min;
+    at.x >= 0.0 && at.y >= 0.0 && at.x < monitor.x && at.y < monitor.y
+}
+
 /// On a monitor too small for the default size, the first window starts maximized (the system
-/// knows the work area exactly), restoring to a size and place that fit.
+/// knows the work area exactly), restoring to a size that fits; on the monitor at the desktop's
+/// origin also to a place that fits, elsewhere the system places it.
 fn fit_first_window(ctx: &egui::Context) {
-    let Some(fit) = ctx.input(|i| i.viewport().monitor_size).and_then(fitted_window) else { return };
+    let (monitor, outer) = ctx.input(|i| (i.viewport().monitor_size, i.viewport().outer_rect));
+    let Some(monitor) = monitor else { return };
+    // Where the window is, when positions from its monitor's top-left are desktop positions (an
+    // unknown position, e.g. on Wayland, counts as elsewhere).
+    let placed = outer.filter(|r| at_origin_monitor(*r, monitor));
+    let Some(fit) = fitted_window(monitor) else { return };
     log::info!("window: {} × {} points do not fit the monitor; maximized, restoring to {fit:?}", WINDOW_SIZE.x, WINDOW_SIZE.y);
-    ctx.send_viewport_cmd(egui::ViewportCommand::OuterPosition(fit.min));
+    if placed.is_some() {
+        ctx.send_viewport_cmd(egui::ViewportCommand::OuterPosition(fit.min));
+    }
     ctx.send_viewport_cmd(egui::ViewportCommand::InnerSize(fit.size()));
     ctx.send_viewport_cmd(egui::ViewportCommand::Maximized(true));
 }
@@ -395,6 +411,13 @@ mod tests {
         assert_eq!(fit(1440.0, 1100.0), Some((40.0, 0.0, 1360.0, 900.0)));
         // Never below the minimum size.
         assert_eq!(fit(800.0, 600.0), Some((0.0, 0.0, 960.0, 600.0)));
+        // The position is used only on the monitor at the desktop's origin: the #601 window
+        // cascaded to (202, 202) there, not one opened on a second monitor.
+        let monitor = egui::vec2(2293.0, 960.0);
+        let outer = |x, y| egui::Rect::from_min_size(egui::pos2(x, y), egui::vec2(1400.0, 900.0));
+        assert!(at_origin_monitor(outer(202.0, 202.0), monitor));
+        assert!(!at_origin_monitor(outer(2400.0, 100.0), monitor));
+        assert!(!at_origin_monitor(outer(-1500.0, 100.0), monitor));
     }
 
     fn parse(a: &[&str], env: Option<&str>) -> Result<Option<Args>, String> {
