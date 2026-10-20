@@ -1,0 +1,1622 @@
+[New LWP 8398]
+[New LWP 8397]
+[New LWP 8396]
+[New LWP 8395]
+[New LWP 8394]
+[New LWP 8393]
+[New LWP 8392]
+[New LWP 8391]
+[New LWP 8390]
+[New LWP 8389]
+[New LWP 8388]
+[New LWP 8387]
+[New LWP 8386]
+[New LWP 8385]
+[New LWP 8384]
+[New LWP 8383]
+[New LWP 8382]
+[New LWP 8381]
+[New LWP 8380]
+[New LWP 8379]
+[New LWP 8378]
+[New LWP 8377]
+[New LWP 8376]
+[New LWP 8375]
+[New LWP 8374]
+[New LWP 8373]
+[New LWP 8368]
+[New LWP 8367]
+[New LWP 8366]
+[New LWP 8365]
+[New LWP 8360]
+[New LWP 8359]
+[New LWP 8358]
+[New LWP 8357]
+[New LWP 8356]
+[New LWP 8355]
+[New LWP 8354]
+[New LWP 8353]
+[New LWP 8352]
+[New LWP 8351]
+[New LWP 8350]
+[New LWP 8349]
+[New LWP 8348]
+[New LWP 8347]
+[New LWP 8346]
+[New LWP 8345]
+[New LWP 8340]
+[New LWP 8339]
+[New LWP 8338]
+[New LWP 8337]
+[New LWP 8336]
+[New LWP 8335]
+[New LWP 8334]
+[New LWP 8333]
+[New LWP 8328]
+[New LWP 8327]
+[New LWP 8326]
+[New LWP 8325]
+[New LWP 8324]
+[New LWP 8323]
+[New LWP 8322]
+[New LWP 8321]
+[New LWP 8320]
+[New LWP 8318]
+[New LWP 8317]
+[New LWP 8316]
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/aarch64-linux-gnu/libthread_db.so.1".
+0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+warning: Missing auto-load script at offset 0 in section .debug_gdb_scripts
+of file /work/fc-target-meshgpu/release/deps/verification-47d8c8bb09211a90.
+Use `info auto-load python-scripts [REGEXP]' to list them.
+  Id   Target Id                                          Frame 
+* 1    Thread 0xffffb3833020 (LWP 8313) "verification-47" 0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+  2    Thread 0xffff367cf080 (LWP 8398) "odd_even_and_ch" 0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  3    Thread 0xffff36fdf080 (LWP 8397) "[vkps] Update"   0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  4    Thread 0xffff37fff080 (LWP 8396) "[vkrt] Analysis" 0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  5    Thread 0xffff377ef080 (LWP 8395) "[vkcf] Analysis" 0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  6    Thread 0xfffe31fbf080 (LWP 8394) "fieldcraft-work" 0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+  7    Thread 0xfffe327cf080 (LWP 8393) "fieldcraft-work" 0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+  8    Thread 0xfffe32fdf080 (LWP 8392) "fieldcraft-work" 0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+  9    Thread 0xfffe337ef080 (LWP 8391) "fieldcraft-work" 0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+  10   Thread 0xfffe33fff080 (LWP 8390) "fieldcraft-work" 0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+  11   Thread 0xfffe50dcf080 (LWP 8389) "fieldcraft-work" 0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+  12   Thread 0xfffe515df080 (LWP 8388) "fieldcraft-work" 0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+  13   Thread 0xfffe51def080 (LWP 8387) "fieldcraft-work" 0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+  14   Thread 0xfffe52fdf080 (LWP 8386) "fieldcraft-work" 0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+  15   Thread 0xfffe537ef080 (LWP 8385) "fieldcraft-work" 0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+  16   Thread 0xfffe53fff080 (LWP 8384) "fieldcraft-work" 0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+  17   Thread 0xfffe58faf080 (LWP 8383) "fieldcraft-work" 0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+  18   Thread 0xfffe597bf080 (LWP 8382) "fieldcraft-work" 0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+  19   Thread 0xfffe59fcf080 (LWP 8381) "fieldcraft-work" 0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+  20   Thread 0xfffe5a7df080 (LWP 8380) "fieldcraft-work" 0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+  21   Thread 0xfffe525ff080 (LWP 8379) "fieldcraft-work" 0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+  22   Thread 0xfffe5afef080 (LWP 8378) "fieldcraft-work" 0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+  23   Thread 0xfffe5b7ff080 (LWP 8377) "fieldcraft-work" 0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+  24   Thread 0xffff75204080 (LWP 8376) "a_heated_channe" 0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  25   Thread 0xffff760f4080 (LWP 8375) "[vkps] Update"   0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  26   Thread 0xffff77394080 (LWP 8374) "[vkrt] Analysis" 0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  27   Thread 0xffff76904080 (LWP 8373) "[vkcf] Analysis" 0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  28   Thread 0xfffeb77ef080 (LWP 8368) "odd_even_and_ch" 0x0000ffffb35e203c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  29   Thread 0xfffeb7fff080 (LWP 8367) "[vkps] Update"   0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  30   Thread 0xfffed0e0f080 (LWP 8366) "[vkrt] Analysis" 0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  31   Thread 0xfffed179f080 (LWP 8365) "[vkcf] Analysis" 0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  32   Thread 0xfffef891f080 (LWP 8360) "plane_poiseuill" 0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  33   Thread 0xfffef92af080 (LWP 8359) "[vkps] Update"   0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  34   Thread 0xfffef9abf080 (LWP 8358) "[vkrt] Analysis" 0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  35   Thread 0xfffefa7cf080 (LWP 8357) "[vkcf] Analysis" 0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  36   Thread 0xfffefafdf080 (LWP 8356) "couette_wall_fo" 0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  37   Thread 0xfffefb7ef080 (LWP 8355) "[vkps] Update"   0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  38   Thread 0xfffefbfff080 (LWP 8354) "[vkrt] Analysis" 0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  39   Thread 0xffff14e2f080 (LWP 8353) "[vkcf] Analysis" 0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  40   Thread 0xffff1583f080 (LWP 8352) "flow_past_a_sph" 0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  41   Thread 0xffff162af080 (LWP 8351) "[vkps] Update"   0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  42   Thread 0xffff16abf080 (LWP 8350) "[vkrt] Analysis" 0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  43   Thread 0xffff1744f080 (LWP 8349) "[vkcf] Analysis" 0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  44   Thread 0xffff17e7f080 (LWP 8348) "zou_he_channel_" 0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  45   Thread 0xffff3493f080 (LWP 8347) "[vkps] Update"   0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  46   Thread 0xffff3514f080 (LWP 8346) "[vkrt] Analysis" 0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  47   Thread 0xffff35ebf080 (LWP 8345) "[vkcf] Analysis" 0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  48   Thread 0xffff5504f080 (LWP 8340) "runs_to_steady_" 0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  49   Thread 0xffff55abf080 (LWP 8339) "[vkps] Update"   0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  50   Thread 0xffff562cf080 (LWP 8338) "[vkrt] Analysis" 0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  51   Thread 0xffff56bdf080 (LWP 8337) "[vkcf] Analysis" 0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  52   Thread 0xffff577ef080 (LWP 8336) "conduction_betw" 0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  53   Thread 0xffff57fff080 (LWP 8335) "[vkps] Update"   0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  54   Thread 0xffff5cd67080 (LWP 8334) "[vkrt] Analysis" 0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  55   Thread 0xffff5d6f7080 (LWP 8333) "[vkcf] Analysis" 0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  56   Thread 0xffff77ba4080 (LWP 8328) "a_heated_channe" 0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  57   Thread 0xffffb1dff080 (LWP 8327) "zou_he_channel_" 0x0000ffffb35e1df0 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  58   Thread 0xffffb200f080 (LWP 8326) "taylor_green_de" 0x0000ffffb35e203c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  59   Thread 0xffffb221f080 (LWP 8325) "runs_to_steady_" 0x0000ffffb35e1df0 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  60   Thread 0xffffb24da080 (LWP 8324) "plane_poiseuill" 0x0000ffffb35e1df0 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  61   Thread 0xffffb26ef080 (LWP 8323) "odd_even_and_ch" 0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  62   Thread 0xffffb28ff080 (LWP 8322) "odd_even_and_ch" 0x0000ffffb35e1df0 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  63   Thread 0xffffb2b0f080 (LWP 8321) "natural_convect" 0x0000ffffb35e1df0 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  64   Thread 0xffffb2d1f080 (LWP 8320) "flow_past_a_sph" 0x0000ffffb35e1df0 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  65   Thread 0xffffb313f080 (LWP 8318) "couette_wall_fo" 0x0000ffffb35e1df0 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  66   Thread 0xffffb334f080 (LWP 8317) "conduction_betw" 0x0000ffffb35e1df0 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+  67   Thread 0xffffb355f080 (LWP 8316) "a_heated_channe" 0x0000ffffb35e1df0 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 67 (Thread 0xffffb355f080 (LWP 8316) "a_heated_channe"):
+#0  0x0000ffffb35e1df0 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e86a8 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffffb1a10aa4 in ?? () from /usr/local/lib/libnvidia-glsi.so.595.91.07
+#3  0x0000ffffb1a1b5f0 in _nv004glsi () from /usr/local/lib/libnvidia-glsi.so.595.91.07
+#4  0x0000ffff81576f58 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffff818bb3c4 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#6  0x0000ffff818bebc0 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#7  0x0000ffff818bef78 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#8  0x0000ffff818bd534 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#9  0x0000ffff818c0430 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#10 0x0000ffff818a4270 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#11 0x0000ffff818a4420 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#12 0x0000ffff81793da4 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#13 0x0000aaaab7730c50 in create_compute_pipelines () at /work/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ash-0.38.0+1.3.281/src/device.rs:2185
+#14 create_compute_pipeline () at src/vulkan/device.rs:2257
+#15 0x0000aaaab76128dc in create_compute_pipeline<wgpu_hal::vulkan::Device> () at /work/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wgpu-hal-30.0.1/src/dynamic/device.rs:452
+#16 0x0000aaaab760047c in create_compute_pipeline_inner () at src/device/resource.rs:4124
+#17 0x0000aaaab75fe2ac in create_compute_pipeline () at src/device/resource.rs:4017
+#18 0x0000aaaab7652c58 in device_create_compute_pipeline () at src/device/global.rs:1664
+#19 0x0000aaaab75a70a4 in create_compute_pipeline () at src/backend/wgpu_core.rs:1555
+#20 0x0000aaaab738b5c4 in create_compute_pipeline () at /work/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wgpu-30.0.1/src/api/device.rs:271
+#21 with_options () at crates/lbm-gpu/src/native.rs:506
+#22 0x0000aaaab7582990 in gpu () at crates/lbm-gpu/tests/verification.rs:29
+#23 0x0000aaaab7582cdc in both () at crates/lbm-gpu/tests/verification.rs:46
+#24 0x0000aaaab75856cc in a_heated_channel_matches_the_cpu () at crates/lbm-gpu/tests/verification.rs:333
+#25 {closure#0} () at crates/lbm-gpu/tests/verification.rs:316
+#26 call_once<verification::a_heated_channel_matches_the_cpu::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250
+#27 0x0000aaaab754a174 in core::ops::function::FnOnce::call_once<fn() -> core::result::Result<(), alloc::string::String>, ()> () at library/core/src/ops/function.rs:250
+#28 test::__rust_begin_short_backtrace<core::result::Result<(), alloc::string::String>, fn() -> core::result::Result<(), alloc::string::String>> () at library/test/src/lib.rs:733
+#29 0x0000aaaab75555f0 in test::types::RunnableTest::run () at library/test/src/types.rs:145
+#30 test::run_test_in_process::{closure#0} () at library/test/src/lib.rs:756
+#31 core::panic::unwind_safe::{impl#25}::call_once<core::result::Result<(), alloc::string::String>, test::run_test_in_process::{closure_env#0}> () at library/core/src/panic/unwind_safe.rs:275
+#32 std::panicking::catch_unwind::do_call<core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>, core::result::Result<(), alloc::string::String>> () at library/std/src/panicking.rs:576
+#33 std::panicking::catch_unwind<core::result::Result<(), alloc::string::String>, core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>> () at library/std/src/panicking.rs:544
+#34 std::panic::catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>, core::result::Result<(), alloc::string::String>> () at library/std/src/panic.rs:359
+#35 test::run_test_in_process () at library/test/src/lib.rs:756
+#36 test::run_test::{closure#0} () at library/test/src/lib.rs:677
+#37 0x0000aaaab754ff40 in test::run_test::{closure#1} () at library/test/src/lib.rs:707
+#38 std::sys::backtrace::__rust_begin_short_backtrace<test::run_test::{closure_env#1}, ()> () at library/std/src/sys/backtrace.rs:166
+#39 0x0000aaaab7558910 in std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure#0}<test::run_test::{closure_env#1}, ()> () at library/std/src/thread/lifecycle.rs:70
+#40 core::panic::unwind_safe::{impl#25}::call_once<(), std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>> () at library/core/src/panic/unwind_safe.rs:275
+#41 std::panicking::catch_unwind::do_call<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>, ()> () at library/std/src/panicking.rs:576
+#42 std::panicking::catch_unwind<(), core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>> () at library/std/src/panicking.rs:544
+#43 std::panic::catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>, ()> () at library/std/src/panic.rs:359
+#44 std::thread::lifecycle::spawn_unchecked::{closure#1}<test::run_test::{closure_env#1}, ()> () at library/std/src/thread/lifecycle.rs:68
+#45 core::ops::function::FnOnce::call_once<std::thread::lifecycle::spawn_unchecked::{closure_env#1}<test::run_test::{closure_env#1}, ()>, ()> () at library/core/src/ops/function.rs:250
+#46 0x0000aaaab7542978 in alloc::boxed::{impl#31}::call_once<(), (dyn core::ops::function::FnOnce<(), Output=()> + core::marker::Send), alloc::alloc::Global> () at library/alloc/src/boxed.rs:2320
+#47 std::sys::thread::unix::{impl#2}::new::thread_start () at library/std/src/sys/thread/unix.rs:123
+#48 0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#49 0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 66 (Thread 0xffffb334f080 (LWP 8317) "conduction_betw"):
+#0  0x0000ffffb35e1df0 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e86a8 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffffb1a10aa4 in ?? () from /usr/local/lib/libnvidia-glsi.so.595.91.07
+#3  0x0000ffffb1a1b5f0 in _nv004glsi () from /usr/local/lib/libnvidia-glsi.so.595.91.07
+#4  0x0000ffff81576f58 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffff815e5a04 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#6  0x0000ffff81668630 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#7  0x0000ffff81668794 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#8  0x0000ffff8160c540 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#9  0x0000ffff818d27c4 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#10 0x0000ffff8179467c in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#11 0x0000aaaab77361cc in queue_submit () at /work/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ash-0.38.0+1.3.281/src/device.rs:2470
+#12 submit () at src/vulkan/mod.rs:1493
+#13 0x0000aaaab760e604 in submit<wgpu_hal::vulkan::Queue> () at /work/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wgpu-hal-30.0.1/src/dynamic/queue.rs:42
+#14 0x0000aaaab7695d30 in submit_pending_submission () at src/device/queue.rs:1713
+#15 submit () at src/device/queue.rs:624
+#16 0x0000aaaab7699148 in submit () at src/device/queue.rs:1531
+#17 0x0000aaaab765436c in queue_submit () at src/device/queue.rs:1978
+#18 0x0000aaaab75a764c in submit () at src/backend/wgpu_core.rs:2109
+#19 0x0000aaaab73958b4 in submit<[wgpu::api::command_buffer::CommandBuffer; 1]> () at /work/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wgpu-30.0.1/src/api/queue.rs:288
+#20 0x0000aaaab738cff4 in submit () at crates/lbm-gpu/src/native.rs:599
+#21 0x0000aaaab738edf8 in advance_chunk () at crates/lbm-gpu/src/native.rs:736
+#22 advance () at crates/lbm-gpu/src/native.rs:770
+#23 0x0000aaaab7582d5c in both () at crates/lbm-gpu/tests/verification.rs:48
+#24 0x0000aaaab758b3d0 in conduction_between_plates_matches_the_analytic_profile_and_the_cpu () at crates/lbm-gpu/tests/verification.rs:286
+#25 {closure#0} () at crates/lbm-gpu/tests/verification.rs:270
+#26 call_once<verification::conduction_between_plates_matches_the_analytic_profile_and_the_cpu::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250
+#27 0x0000aaaab754a174 in core::ops::function::FnOnce::call_once<fn() -> core::result::Result<(), alloc::string::String>, ()> () at library/core/src/ops/function.rs:250
+#28 test::__rust_begin_short_backtrace<core::result::Result<(), alloc::string::String>, fn() -> core::result::Result<(), alloc::string::String>> () at library/test/src/lib.rs:733
+#29 0x0000aaaab75555f0 in test::types::RunnableTest::run () at library/test/src/types.rs:145
+#30 test::run_test_in_process::{closure#0} () at library/test/src/lib.rs:756
+#31 core::panic::unwind_safe::{impl#25}::call_once<core::result::Result<(), alloc::string::String>, test::run_test_in_process::{closure_env#0}> () at library/core/src/panic/unwind_safe.rs:275
+#32 std::panicking::catch_unwind::do_call<core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>, core::result::Result<(), alloc::string::String>> () at library/std/src/panicking.rs:576
+#33 std::panicking::catch_unwind<core::result::Result<(), alloc::string::String>, core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>> () at library/std/src/panicking.rs:544
+#34 std::panic::catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>, core::result::Result<(), alloc::string::String>> () at library/std/src/panic.rs:359
+#35 test::run_test_in_process () at library/test/src/lib.rs:756
+#36 test::run_test::{closure#0} () at library/test/src/lib.rs:677
+#37 0x0000aaaab754ff40 in test::run_test::{closure#1} () at library/test/src/lib.rs:707
+#38 std::sys::backtrace::__rust_begin_short_backtrace<test::run_test::{closure_env#1}, ()> () at library/std/src/sys/backtrace.rs:166
+#39 0x0000aaaab7558910 in std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure#0}<test::run_test::{closure_env#1}, ()> () at library/std/src/thread/lifecycle.rs:70
+#40 core::panic::unwind_safe::{impl#25}::call_once<(), std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>> () at library/core/src/panic/unwind_safe.rs:275
+#41 std::panicking::catch_unwind::do_call<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>, ()> () at library/std/src/panicking.rs:576
+#42 std::panicking::catch_unwind<(), core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>> () at library/std/src/panicking.rs:544
+#43 std::panic::catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>, ()> () at library/std/src/panic.rs:359
+#44 std::thread::lifecycle::spawn_unchecked::{closure#1}<test::run_test::{closure_env#1}, ()> () at library/std/src/thread/lifecycle.rs:68
+#45 core::ops::function::FnOnce::call_once<std::thread::lifecycle::spawn_unchecked::{closure_env#1}<test::run_test::{closure_env#1}, ()>, ()> () at library/core/src/ops/function.rs:250
+#46 0x0000aaaab7542978 in alloc::boxed::{impl#31}::call_once<(), (dyn core::ops::function::FnOnce<(), Output=()> + core::marker::Send), alloc::alloc::Global> () at library/alloc/src/boxed.rs:2320
+#47 std::sys::thread::unix::{impl#2}::new::thread_start () at library/std/src/sys/thread/unix.rs:123
+#48 0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#49 0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 65 (Thread 0xffffb313f080 (LWP 8318) "couette_wall_fo"):
+#0  0x0000ffffb35e1df0 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e86a8 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffffb1a10aa4 in ?? () from /usr/local/lib/libnvidia-glsi.so.595.91.07
+#3  0x0000ffffb1a1b5f0 in _nv004glsi () from /usr/local/lib/libnvidia-glsi.so.595.91.07
+#4  0x0000ffff81576f58 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffff817317dc in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#6  0x0000ffff818d207c in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#7  0x0000ffff8179467c in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#8  0x0000aaaab77361cc in queue_submit () at /work/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ash-0.38.0+1.3.281/src/device.rs:2470
+#9  submit () at src/vulkan/mod.rs:1493
+#10 0x0000aaaab760e604 in submit<wgpu_hal::vulkan::Queue> () at /work/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wgpu-hal-30.0.1/src/dynamic/queue.rs:42
+#11 0x0000aaaab7695d30 in submit_pending_submission () at src/device/queue.rs:1713
+#12 submit () at src/device/queue.rs:624
+#13 0x0000aaaab7699148 in submit () at src/device/queue.rs:1531
+#14 0x0000aaaab765436c in queue_submit () at src/device/queue.rs:1978
+#15 0x0000aaaab75a764c in submit () at src/backend/wgpu_core.rs:2109
+#16 0x0000aaaab73958b4 in submit<[wgpu::api::command_buffer::CommandBuffer; 1]> () at /work/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wgpu-30.0.1/src/api/queue.rs:288
+#17 0x0000aaaab738cff4 in submit () at crates/lbm-gpu/src/native.rs:599
+#18 0x0000aaaab738edf8 in advance_chunk () at crates/lbm-gpu/src/native.rs:736
+#19 advance () at crates/lbm-gpu/src/native.rs:770
+#20 0x0000aaaab7582d5c in both () at crates/lbm-gpu/tests/verification.rs:48
+#21 0x0000aaaab7585bdc in couette_wall_forces_match_the_cpu () at crates/lbm-gpu/tests/verification.rs:111
+#22 {closure#0} () at crates/lbm-gpu/tests/verification.rs:98
+#23 call_once<verification::couette_wall_forces_match_the_cpu::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250
+#24 0x0000aaaab754a174 in core::ops::function::FnOnce::call_once<fn() -> core::result::Result<(), alloc::string::String>, ()> () at library/core/src/ops/function.rs:250
+#25 test::__rust_begin_short_backtrace<core::result::Result<(), alloc::string::String>, fn() -> core::result::Result<(), alloc::string::String>> () at library/test/src/lib.rs:733
+#26 0x0000aaaab75555f0 in test::types::RunnableTest::run () at library/test/src/types.rs:145
+#27 test::run_test_in_process::{closure#0} () at library/test/src/lib.rs:756
+#28 core::panic::unwind_safe::{impl#25}::call_once<core::result::Result<(), alloc::string::String>, test::run_test_in_process::{closure_env#0}> () at library/core/src/panic/unwind_safe.rs:275
+#29 std::panicking::catch_unwind::do_call<core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>, core::result::Result<(), alloc::string::String>> () at library/std/src/panicking.rs:576
+#30 std::panicking::catch_unwind<core::result::Result<(), alloc::string::String>, core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>> () at library/std/src/panicking.rs:544
+#31 std::panic::catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>, core::result::Result<(), alloc::string::String>> () at library/std/src/panic.rs:359
+#32 test::run_test_in_process () at library/test/src/lib.rs:756
+#33 test::run_test::{closure#0} () at library/test/src/lib.rs:677
+#34 0x0000aaaab754ff40 in test::run_test::{closure#1} () at library/test/src/lib.rs:707
+#35 std::sys::backtrace::__rust_begin_short_backtrace<test::run_test::{closure_env#1}, ()> () at library/std/src/sys/backtrace.rs:166
+#36 0x0000aaaab7558910 in std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure#0}<test::run_test::{closure_env#1}, ()> () at library/std/src/thread/lifecycle.rs:70
+#37 core::panic::unwind_safe::{impl#25}::call_once<(), std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>> () at library/core/src/panic/unwind_safe.rs:275
+#38 std::panicking::catch_unwind::do_call<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>, ()> () at library/std/src/panicking.rs:576
+#39 std::panicking::catch_unwind<(), core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>> () at library/std/src/panicking.rs:544
+#40 std::panic::catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>, ()> () at library/std/src/panic.rs:359
+#41 std::thread::lifecycle::spawn_unchecked::{closure#1}<test::run_test::{closure_env#1}, ()> () at library/std/src/thread/lifecycle.rs:68
+#42 core::ops::function::FnOnce::call_once<std::thread::lifecycle::spawn_unchecked::{closure_env#1}<test::run_test::{closure_env#1}, ()>, ()> () at library/core/src/ops/function.rs:250
+#43 0x0000aaaab7542978 in alloc::boxed::{impl#31}::call_once<(), (dyn core::ops::function::FnOnce<(), Output=()> + core::marker::Send), alloc::alloc::Global> () at library/alloc/src/boxed.rs:2320
+#44 std::sys::thread::unix::{impl#2}::new::thread_start () at library/std/src/sys/thread/unix.rs:123
+#45 0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#46 0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 64 (Thread 0xffffb2d1f080 (LWP 8320) "flow_past_a_sph"):
+#0  0x0000ffffb35e1df0 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e86a8 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffffb1a10aa4 in ?? () from /usr/local/lib/libnvidia-glsi.so.595.91.07
+#3  0x0000ffffb1a1b5f0 in _nv004glsi () from /usr/local/lib/libnvidia-glsi.so.595.91.07
+#4  0x0000ffff81576f58 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffff818d8e64 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#6  0x0000ffff818d67e0 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#7  0x0000ffff818d766c in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#8  0x0000ffff8182916c in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#9  0x0000ffff8182b96c in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#10 0x0000aaaab772a928 in begin_command_buffer () at /work/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ash-0.38.0+1.3.281/src/device.rs:2418
+#11 begin_encoding () at src/vulkan/command.rs:147
+#12 0x0000aaaab76807f8 in open_pass () at src/command/mod.rs:803
+#13 encode_compute_pass () at src/command/compute.rs:675
+#14 0x0000aaaab76d9ffc in encode_commands () at src/command/mod.rs:1187
+#15 finish () at src/command/mod.rs:1328
+#16 0x0000aaaab7654a4c in command_encoder_finish () at src/command/mod.rs:1807
+#17 0x0000aaaab75a3478 in finish () at src/backend/wgpu_core.rs:2675
+#18 0x0000aaaab738cfd4 in finish () at /work/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wgpu-30.0.1/src/api/command_encoder.rs:62
+#19 submit () at crates/lbm-gpu/src/native.rs:599
+#20 0x0000aaaab738edf8 in advance_chunk () at crates/lbm-gpu/src/native.rs:736
+#21 advance () at crates/lbm-gpu/src/native.rs:770
+#22 0x0000aaaab7582d5c in both () at crates/lbm-gpu/tests/verification.rs:48
+#23 0x0000aaaab7589678 in flow_past_a_sphere_matches_the_cpu_fields_and_forces () at crates/lbm-gpu/tests/verification.rs:198
+#24 {closure#0} () at crates/lbm-gpu/tests/verification.rs:179
+#25 call_once<verification::flow_past_a_sphere_matches_the_cpu_fields_and_forces::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250
+#26 0x0000aaaab754a174 in core::ops::function::FnOnce::call_once<fn() -> core::result::Result<(), alloc::string::String>, ()> () at library/core/src/ops/function.rs:250
+#27 test::__rust_begin_short_backtrace<core::result::Result<(), alloc::string::String>, fn() -> core::result::Result<(), alloc::string::String>> () at library/test/src/lib.rs:733
+#28 0x0000aaaab75555f0 in test::types::RunnableTest::run () at library/test/src/types.rs:145
+#29 test::run_test_in_process::{closure#0} () at library/test/src/lib.rs:756
+#30 core::panic::unwind_safe::{impl#25}::call_once<core::result::Result<(), alloc::string::String>, test::run_test_in_process::{closure_env#0}> () at library/core/src/panic/unwind_safe.rs:275
+#31 std::panicking::catch_unwind::do_call<core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>, core::result::Result<(), alloc::string::String>> () at library/std/src/panicking.rs:576
+#32 std::panicking::catch_unwind<core::result::Result<(), alloc::string::String>, core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>> () at library/std/src/panicking.rs:544
+#33 std::panic::catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>, core::result::Result<(), alloc::string::String>> () at library/std/src/panic.rs:359
+#34 test::run_test_in_process () at library/test/src/lib.rs:756
+#35 test::run_test::{closure#0} () at library/test/src/lib.rs:677
+#36 0x0000aaaab754ff40 in test::run_test::{closure#1} () at library/test/src/lib.rs:707
+#37 std::sys::backtrace::__rust_begin_short_backtrace<test::run_test::{closure_env#1}, ()> () at library/std/src/sys/backtrace.rs:166
+#38 0x0000aaaab7558910 in std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure#0}<test::run_test::{closure_env#1}, ()> () at library/std/src/thread/lifecycle.rs:70
+#39 core::panic::unwind_safe::{impl#25}::call_once<(), std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>> () at library/core/src/panic/unwind_safe.rs:275
+#40 std::panicking::catch_unwind::do_call<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>, ()> () at library/std/src/panicking.rs:576
+#41 std::panicking::catch_unwind<(), core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>> () at library/std/src/panicking.rs:544
+#42 std::panic::catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>, ()> () at library/std/src/panic.rs:359
+#43 std::thread::lifecycle::spawn_unchecked::{closure#1}<test::run_test::{closure_env#1}, ()> () at library/std/src/thread/lifecycle.rs:68
+#44 core::ops::function::FnOnce::call_once<std::thread::lifecycle::spawn_unchecked::{closure_env#1}<test::run_test::{closure_env#1}, ()>, ()> () at library/core/src/ops/function.rs:250
+#45 0x0000aaaab7542978 in alloc::boxed::{impl#31}::call_once<(), (dyn core::ops::function::FnOnce<(), Output=()> + core::marker::Send), alloc::alloc::Global> () at library/alloc/src/boxed.rs:2320
+#46 std::sys::thread::unix::{impl#2}::new::thread_start () at library/std/src/sys/thread/unix.rs:123
+#47 0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#48 0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 63 (Thread 0xffffb2b0f080 (LWP 8321) "natural_convect"):
+#0  0x0000ffffb35e1df0 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e86a8 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffffb1a10aa4 in ?? () from /usr/local/lib/libnvidia-glsi.so.595.91.07
+#3  0x0000ffffb1a1b5f0 in _nv004glsi () from /usr/local/lib/libnvidia-glsi.so.595.91.07
+#4  0x0000ffff81576f58 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffff8158a0b0 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#6  0x0000ffff82333ed0 in ?? () from /usr/local/lib/libEGL_nvidia.so.0
+#7  0x0000ffff82333fb8 in ?? () from /usr/local/lib/libEGL_nvidia.so.0
+#8  0x0000ffff82334878 in ?? () from /usr/local/lib/libEGL_nvidia.so.0
+#9  0x0000ffff8233ae80 in ?? () from /usr/local/lib/libEGL_nvidia.so.0
+#10 0x0000aaaab775be30 in eglDestroyContext<libloading::safe::Library> () at /work/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/khronos-egl-6.0.0/src/lib.rs:2321
+#11 destroy_context<khronos_egl::Dynamic<libloading::safe::Library, khronos_egl::EGL1_4>> () at /work/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/khronos-egl-6.0.0/src/lib.rs:838
+#12 drop () at src/gles/egl.rs:661
+#13 0x0000aaaab769f7e8 in drop_glue<wgpu_hal::gles::egl::Inner> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#14 drop_glue<core::cell::UnsafeCell<wgpu_hal::gles::egl::Inner>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#15 drop_glue<lock_api::mutex::Mutex<parking_lot::raw_mutex::RawMutex, wgpu_hal::gles::egl::Inner>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#16 drop_glue<wgpu_hal::gles::egl::Instance> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#17 0x0000aaaab75adaec in drop_glue<alloc::boxed::Box<dyn wgpu_hal::dynamic::instance::DynInstance, alloc::alloc::Global>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#18 drop_glue<(wgpu_types::backend::Backend, alloc::boxed::Box<dyn wgpu_hal::dynamic::instance::DynInstance, alloc::alloc::Global>)> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#19 drop_glue<[(wgpu_types::backend::Backend, alloc::boxed::Box<dyn wgpu_hal::dynamic::instance::DynInstance, alloc::alloc::Global>)]> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#20 drop_in_place<[(wgpu_types::backend::Backend, alloc::boxed::Box<dyn wgpu_hal::dynamic::instance::DynInstance, alloc::alloc::Global>)]> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:842
+#21 drop_in_place<[(wgpu_types::backend::Backend, alloc::boxed::Box<dyn wgpu_hal::dynamic::instance::DynInstance, alloc::alloc::Global>)]> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mut_ptr.rs:1384
+#22 drop<(wgpu_types::backend::Backend, alloc::boxed::Box<dyn wgpu_hal::dynamic::instance::DynInstance, alloc::alloc::Global>), alloc::alloc::Global> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/vec/mod.rs:4358
+#23 0x0000aaaab75d9b94 in drop_glue<alloc::vec::Vec<(wgpu_types::backend::Backend, alloc::boxed::Box<dyn wgpu_hal::dynamic::instance::DynInstance, alloc::alloc::Global>), alloc::alloc::Global>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#24 drop_glue<wgpu_core::instance::Instance> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#25 0x0000aaaab75da1ec in drop_glue<wgpu_core::global::Global> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#26 drop_in_place<wgpu_core::global::Global> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:842
+#27 drop_slow<wgpu_core::global::Global, alloc::alloc::Global> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2149
+#28 0x0000aaaab75da2e0 in drop<wgpu_core::global::Global, alloc::alloc::Global> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2911
+#29 drop_glue<alloc::sync::Arc<wgpu_core::global::Global, alloc::alloc::Global>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#30 drop_glue<wgpu::backend::wgpu_core::ContextWgpuCore> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#31 drop_glue<wgpu::backend::wgpu_core::CoreBuffer> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#32 drop_in_place<wgpu::backend::wgpu_core::CoreBuffer> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:842
+#33 drop_slow<wgpu::backend::wgpu_core::CoreBuffer, alloc::alloc::Global> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2149
+#34 0x0000aaaab757ea8c in drop<wgpu::backend::wgpu_core::CoreBuffer, alloc::alloc::Global> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2911
+#35 drop_glue<alloc::sync::Arc<wgpu::backend::wgpu_core::CoreBuffer, alloc::alloc::Global>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#36 drop_glue<wgpu::dispatch::DispatchBuffer> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#37 drop_glue<wgpu::api::buffer::Buffer> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#38 drop_glue<[wgpu::api::buffer::Buffer]> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#39 drop_glue<[wgpu::api::buffer::Buffer; 2]> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#40 drop_glue<core::option::Option<[wgpu::api::buffer::Buffer; 2]>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#41 0x0000aaaab75804e8 in drop_glue<fieldcraft_lbm_gpu::native::GpuFlow> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#42 0x0000aaaab7586818 in natural_convection_matches_the_cpu () at crates/lbm-gpu/tests/verification.rs:372
+#43 {closure#0} () at crates/lbm-gpu/tests/verification.rs:346
+#44 call_once<verification::natural_convection_matches_the_cpu::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250
+#45 0x0000aaaab754a174 in core::ops::function::FnOnce::call_once<fn() -> core::result::Result<(), alloc::string::String>, ()> () at library/core/src/ops/function.rs:250
+#46 test::__rust_begin_short_backtrace<core::result::Result<(), alloc::string::String>, fn() -> core::result::Result<(), alloc::string::String>> () at library/test/src/lib.rs:733
+#47 0x0000aaaab75555f0 in test::types::RunnableTest::run () at library/test/src/types.rs:145
+#48 test::run_test_in_process::{closure#0} () at library/test/src/lib.rs:756
+#49 core::panic::unwind_safe::{impl#25}::call_once<core::result::Result<(), alloc::string::String>, test::run_test_in_process::{closure_env#0}> () at library/core/src/panic/unwind_safe.rs:275
+#50 std::panicking::catch_unwind::do_call<core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>, core::result::Result<(), alloc::string::String>> () at library/std/src/panicking.rs:576
+#51 std::panicking::catch_unwind<core::result::Result<(), alloc::string::String>, core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>> () at library/std/src/panicking.rs:544
+#52 std::panic::catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>, core::result::Result<(), alloc::string::String>> () at library/std/src/panic.rs:359
+#53 test::run_test_in_process () at library/test/src/lib.rs:756
+#54 test::run_test::{closure#0} () at library/test/src/lib.rs:677
+#55 0x0000aaaab754ff40 in test::run_test::{closure#1} () at library/test/src/lib.rs:707
+#56 std::sys::backtrace::__rust_begin_short_backtrace<test::run_test::{closure_env#1}, ()> () at library/std/src/sys/backtrace.rs:166
+#57 0x0000aaaab7558910 in std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure#0}<test::run_test::{closure_env#1}, ()> () at library/std/src/thread/lifecycle.rs:70
+#58 core::panic::unwind_safe::{impl#25}::call_once<(), std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>> () at library/core/src/panic/unwind_safe.rs:275
+#59 std::panicking::catch_unwind::do_call<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>, ()> () at library/std/src/panicking.rs:576
+#60 std::panicking::catch_unwind<(), core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>> () at library/std/src/panicking.rs:544
+#61 std::panic::catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>, ()> () at library/std/src/panic.rs:359
+#62 std::thread::lifecycle::spawn_unchecked::{closure#1}<test::run_test::{closure_env#1}, ()> () at library/std/src/thread/lifecycle.rs:68
+#63 core::ops::function::FnOnce::call_once<std::thread::lifecycle::spawn_unchecked::{closure_env#1}<test::run_test::{closure_env#1}, ()>, ()> () at library/core/src/ops/function.rs:250
+#64 0x0000aaaab7542978 in alloc::boxed::{impl#31}::call_once<(), (dyn core::ops::function::FnOnce<(), Output=()> + core::marker::Send), alloc::alloc::Global> () at library/alloc/src/boxed.rs:2320
+#65 std::sys::thread::unix::{impl#2}::new::thread_start () at library/std/src/sys/thread/unix.rs:123
+#66 0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#67 0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 62 (Thread 0xffffb28ff080 (LWP 8322) "odd_even_and_ch"):
+#0  0x0000ffffb35e1df0 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e86a8 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffffb1a10aa4 in ?? () from /usr/local/lib/libnvidia-glsi.so.595.91.07
+#3  0x0000ffffb1a1b5f0 in _nv004glsi () from /usr/local/lib/libnvidia-glsi.so.595.91.07
+#4  0x0000ffff81576f58 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffff818bb130 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#6  0x0000ffff818bebc0 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#7  0x0000ffff818bef78 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#8  0x0000ffff818bd534 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#9  0x0000ffff818c0430 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#10 0x0000ffff818a4270 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#11 0x0000ffff818a4420 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#12 0x0000ffff81793da4 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#13 0x0000aaaab7730c50 in create_compute_pipelines () at /work/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ash-0.38.0+1.3.281/src/device.rs:2185
+#14 create_compute_pipeline () at src/vulkan/device.rs:2257
+#15 0x0000aaaab76128dc in create_compute_pipeline<wgpu_hal::vulkan::Device> () at /work/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wgpu-hal-30.0.1/src/dynamic/device.rs:452
+#16 0x0000aaaab766e654 in create_validation_pipeline () at src/indirect_validation/draw.rs:612
+#17 0x0000aaaab766bf70 in new () at src/indirect_validation/draw.rs:129
+#18 0x0000aaaab76cac4c in new () at src/indirect_validation/mod.rs:46
+#19 0x0000aaaab7601cec in new () at src/device/resource.rs:509
+#20 0x0000aaaab76a3b28 in create_device_and_queue_from_hal () at src/instance.rs:876
+#21 0x0000aaaab76a39b8 in create_device_and_queue () at src/instance.rs:953
+#22 0x0000aaaab7653604 in adapter_request_device () at src/instance.rs:1272
+#23 0x0000aaaab75a298c in request_device () at src/backend/wgpu_core.rs:937
+#24 0x0000aaaab7388eb4 in request_device () at /work/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wgpu-30.0.1/src/api/adapter.rs:62
+#25 with_options () at crates/lbm-gpu/src/native.rs:187
+#26 0x0000aaaab7582990 in gpu () at crates/lbm-gpu/tests/verification.rs:29
+#27 0x0000aaaab7581d7c in compare_incremental () at crates/lbm-gpu/tests/verification.rs:442
+#28 0x0000aaaab758adbc in odd_even_and_chunk_readbacks_match_the_cpu_around_an_obstacle () at crates/lbm-gpu/tests/verification.rs:513
+#29 {closure#0} () at crates/lbm-gpu/tests/verification.rs:496
+#30 call_once<verification::odd_even_and_chunk_readbacks_match_the_cpu_around_an_obstacle::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250
+#31 0x0000aaaab754a174 in core::ops::function::FnOnce::call_once<fn() -> core::result::Result<(), alloc::string::String>, ()> () at library/core/src/ops/function.rs:250
+#32 test::__rust_begin_short_backtrace<core::result::Result<(), alloc::string::String>, fn() -> core::result::Result<(), alloc::string::String>> () at library/test/src/lib.rs:733
+#33 0x0000aaaab75555f0 in test::types::RunnableTest::run () at library/test/src/types.rs:145
+#34 test::run_test_in_process::{closure#0} () at library/test/src/lib.rs:756
+#35 core::panic::unwind_safe::{impl#25}::call_once<core::result::Result<(), alloc::string::String>, test::run_test_in_process::{closure_env#0}> () at library/core/src/panic/unwind_safe.rs:275
+#36 std::panicking::catch_unwind::do_call<core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>, core::result::Result<(), alloc::string::String>> () at library/std/src/panicking.rs:576
+#37 std::panicking::catch_unwind<core::result::Result<(), alloc::string::String>, core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>> () at library/std/src/panicking.rs:544
+#38 std::panic::catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>, core::result::Result<(), alloc::string::String>> () at library/std/src/panic.rs:359
+#39 test::run_test_in_process () at library/test/src/lib.rs:756
+#40 test::run_test::{closure#0} () at library/test/src/lib.rs:677
+#41 0x0000aaaab754ff40 in test::run_test::{closure#1} () at library/test/src/lib.rs:707
+#42 std::sys::backtrace::__rust_begin_short_backtrace<test::run_test::{closure_env#1}, ()> () at library/std/src/sys/backtrace.rs:166
+#43 0x0000aaaab7558910 in std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure#0}<test::run_test::{closure_env#1}, ()> () at library/std/src/thread/lifecycle.rs:70
+#44 core::panic::unwind_safe::{impl#25}::call_once<(), std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>> () at library/core/src/panic/unwind_safe.rs:275
+#45 std::panicking::catch_unwind::do_call<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>, ()> () at library/std/src/panicking.rs:576
+#46 std::panicking::catch_unwind<(), core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>> () at library/std/src/panicking.rs:544
+#47 std::panic::catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>, ()> () at library/std/src/panic.rs:359
+#48 std::thread::lifecycle::spawn_unchecked::{closure#1}<test::run_test::{closure_env#1}, ()> () at library/std/src/thread/lifecycle.rs:68
+#49 core::ops::function::FnOnce::call_once<std::thread::lifecycle::spawn_unchecked::{closure_env#1}<test::run_test::{closure_env#1}, ()>, ()> () at library/core/src/ops/function.rs:250
+#50 0x0000aaaab7542978 in alloc::boxed::{impl#31}::call_once<(), (dyn core::ops::function::FnOnce<(), Output=()> + core::marker::Send), alloc::alloc::Global> () at library/alloc/src/boxed.rs:2320
+#51 std::sys::thread::unix::{impl#2}::new::thread_start () at library/std/src/sys/thread/unix.rs:123
+#52 0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#53 0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 61 (Thread 0xffffb26ef080 (LWP 8323) "odd_even_and_ch"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e7218 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81578624 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff819c0cf4 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff819c9c30 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffff8183071c in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#6  0x0000ffffb2242d48 in ?? () from /lib/aarch64-linux-gnu/libvulkan.so.1
+#7  0x0000ffffb225535c [PAC] in vkDestroyDevice () from /lib/aarch64-linux-gnu/libvulkan.so.1
+#8  0x0000aaaab7777ee4 [PAC] in drop_glue<wgpu_hal::vulkan::DeviceShared> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#9  drop_in_place<wgpu_hal::vulkan::DeviceShared> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:842
+#10 drop_slow<wgpu_hal::vulkan::DeviceShared, alloc::alloc::Global> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2149
+#11 0x0000aaaab760678c in drop<wgpu_hal::vulkan::DeviceShared, alloc::alloc::Global> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2911
+#12 drop_glue<alloc::sync::Arc<wgpu_hal::vulkan::DeviceShared, alloc::alloc::Global>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#13 drop_glue<wgpu_hal::vulkan::CommandEncoder> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#14 0x0000aaaab76cef08 in drop_glue<alloc::boxed::Box<dyn wgpu_hal::dynamic::command::DynCommandEncoder, alloc::alloc::Global>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#15 drop_glue<[alloc::boxed::Box<dyn wgpu_hal::dynamic::command::DynCommandEncoder, alloc::alloc::Global>]> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#16 drop_in_place<[alloc::boxed::Box<dyn wgpu_hal::dynamic::command::DynCommandEncoder, alloc::alloc::Global>]> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:842
+#17 drop_in_place<[alloc::boxed::Box<dyn wgpu_hal::dynamic::command::DynCommandEncoder, alloc::alloc::Global>]> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mut_ptr.rs:1384
+#18 drop<alloc::boxed::Box<dyn wgpu_hal::dynamic::command::DynCommandEncoder, alloc::alloc::Global>, alloc::alloc::Global> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/vec/mod.rs:4358
+#19 drop_glue<alloc::vec::Vec<alloc::boxed::Box<dyn wgpu_hal::dynamic::command::DynCommandEncoder, alloc::alloc::Global>, alloc::alloc::Global>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#20 drop_glue<core::cell::UnsafeCell<alloc::vec::Vec<alloc::boxed::Box<dyn wgpu_hal::dynamic::command::DynCommandEncoder, alloc::alloc::Global>, alloc::alloc::Global>>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#21 drop_glue<lock_api::mutex::Mutex<parking_lot::raw_mutex::RawMutex, alloc::vec::Vec<alloc::boxed::Box<dyn wgpu_hal::dynamic::command::DynCommandEncoder, alloc::alloc::Global>, alloc::alloc::Global>>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#22 drop_glue<wgpu_core::lock::vanilla::Mutex<alloc::vec::Vec<alloc::boxed::Box<dyn wgpu_hal::dynamic::command::DynCommandEncoder, alloc::alloc::Global>, alloc::alloc::Global>>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#23 drop_glue<wgpu_core::command::allocator::CommandAllocator> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#24 drop_glue<wgpu_core::device::resource::Device> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#25 drop_in_place<wgpu_core::device::resource::Device> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:842
+#26 drop_slow<wgpu_core::device::resource::Device, alloc::alloc::Global> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2149
+#27 0x0000aaaab76ce450 in drop<wgpu_core::device::resource::Device, alloc::alloc::Global> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2911
+#28 drop_glue<alloc::sync::Arc<wgpu_core::device::resource::Device, alloc::alloc::Global>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#29 drop_glue<wgpu_core::resource::Buffer> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#30 drop_in_place<wgpu_core::resource::Buffer> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:842
+#31 drop_slow<wgpu_core::resource::Buffer, alloc::alloc::Global> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2149
+#32 0x0000aaaab764fa90 in drop<wgpu_core::resource::Buffer, alloc::alloc::Global> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2911
+#33 drop_glue<alloc::sync::Arc<wgpu_core::resource::Buffer, alloc::alloc::Global>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#34 buffer_drop () at src/device/global.rs:322
+#35 0x0000aaaab75da2c0 in drop () at src/backend/wgpu_core.rs:2295
+#36 drop_glue<wgpu::backend::wgpu_core::CoreBuffer> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#37 drop_in_place<wgpu::backend::wgpu_core::CoreBuffer> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:842
+#38 drop_slow<wgpu::backend::wgpu_core::CoreBuffer, alloc::alloc::Global> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2149
+#39 0x0000aaaab757ea8c in drop<wgpu::backend::wgpu_core::CoreBuffer, alloc::alloc::Global> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2911
+#40 drop_glue<alloc::sync::Arc<wgpu::backend::wgpu_core::CoreBuffer, alloc::alloc::Global>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#41 drop_glue<wgpu::dispatch::DispatchBuffer> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#42 drop_glue<wgpu::api::buffer::Buffer> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#43 drop_glue<[wgpu::api::buffer::Buffer]> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#44 drop_glue<[wgpu::api::buffer::Buffer; 2]> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#45 drop_glue<core::option::Option<[wgpu::api::buffer::Buffer; 2]>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#46 0x0000aaaab75804e8 in drop_glue<fieldcraft_lbm_gpu::native::GpuFlow> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#47 0x0000aaaab7582574 in compare_incremental () at crates/lbm-gpu/tests/verification.rs:466
+#48 0x0000aaaab758c0e0 in odd_even_and_chunk_readbacks_match_the_cpu_with_heat_open_and_slip_faces () at crates/lbm-gpu/tests/verification.rs:491
+#49 {closure#0} () at crates/lbm-gpu/tests/verification.rs:469
+#50 call_once<verification::odd_even_and_chunk_readbacks_match_the_cpu_with_heat_open_and_slip_faces::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250
+#51 0x0000aaaab754a174 in core::ops::function::FnOnce::call_once<fn() -> core::result::Result<(), alloc::string::String>, ()> () at library/core/src/ops/function.rs:250
+#52 test::__rust_begin_short_backtrace<core::result::Result<(), alloc::string::String>, fn() -> core::result::Result<(), alloc::string::String>> () at library/test/src/lib.rs:733
+#53 0x0000aaaab75555f0 in test::types::RunnableTest::run () at library/test/src/types.rs:145
+#54 test::run_test_in_process::{closure#0} () at library/test/src/lib.rs:756
+#55 core::panic::unwind_safe::{impl#25}::call_once<core::result::Result<(), alloc::string::String>, test::run_test_in_process::{closure_env#0}> () at library/core/src/panic/unwind_safe.rs:275
+#56 std::panicking::catch_unwind::do_call<core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>, core::result::Result<(), alloc::string::String>> () at library/std/src/panicking.rs:576
+#57 std::panicking::catch_unwind<core::result::Result<(), alloc::string::String>, core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>> () at library/std/src/panicking.rs:544
+#58 std::panic::catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>, core::result::Result<(), alloc::string::String>> () at library/std/src/panic.rs:359
+#59 test::run_test_in_process () at library/test/src/lib.rs:756
+#60 test::run_test::{closure#0} () at library/test/src/lib.rs:677
+#61 0x0000aaaab754ff40 in test::run_test::{closure#1} () at library/test/src/lib.rs:707
+#62 std::sys::backtrace::__rust_begin_short_backtrace<test::run_test::{closure_env#1}, ()> () at library/std/src/sys/backtrace.rs:166
+#63 0x0000aaaab7558910 in std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure#0}<test::run_test::{closure_env#1}, ()> () at library/std/src/thread/lifecycle.rs:70
+#64 core::panic::unwind_safe::{impl#25}::call_once<(), std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>> () at library/core/src/panic/unwind_safe.rs:275
+#65 std::panicking::catch_unwind::do_call<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>, ()> () at library/std/src/panicking.rs:576
+#66 std::panicking::catch_unwind<(), core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>> () at library/std/src/panicking.rs:544
+#67 std::panic::catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>, ()> () at library/std/src/panic.rs:359
+#68 std::thread::lifecycle::spawn_unchecked::{closure#1}<test::run_test::{closure_env#1}, ()> () at library/std/src/thread/lifecycle.rs:68
+#69 core::ops::function::FnOnce::call_once<std::thread::lifecycle::spawn_unchecked::{closure_env#1}<test::run_test::{closure_env#1}, ()>, ()> () at library/core/src/ops/function.rs:250
+#70 0x0000aaaab7542978 in alloc::boxed::{impl#31}::call_once<(), (dyn core::ops::function::FnOnce<(), Output=()> + core::marker::Send), alloc::alloc::Global> () at library/alloc/src/boxed.rs:2320
+#71 std::sys::thread::unix::{impl#2}::new::thread_start () at library/std/src/sys/thread/unix.rs:123
+#72 0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#73 0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 60 (Thread 0xffffb24da080 (LWP 8324) "plane_poiseuill"):
+#0  0x0000ffffb35e1df0 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e86a8 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffffb1a10aa4 in ?? () from /usr/local/lib/libnvidia-glsi.so.595.91.07
+#3  0x0000ffffb1a1b5f0 in _nv004glsi () from /usr/local/lib/libnvidia-glsi.so.595.91.07
+#4  0x0000ffff81576f58 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffff815e5a04 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#6  0x0000ffff81668630 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#7  0x0000ffff81668794 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#8  0x0000ffff8160c540 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#9  0x0000ffff818d27c4 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#10 0x0000ffff8179467c in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#11 0x0000aaaab77361cc in queue_submit () at /work/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ash-0.38.0+1.3.281/src/device.rs:2470
+#12 submit () at src/vulkan/mod.rs:1493
+#13 0x0000aaaab760e604 in submit<wgpu_hal::vulkan::Queue> () at /work/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wgpu-hal-30.0.1/src/dynamic/queue.rs:42
+#14 0x0000aaaab7695d30 in submit_pending_submission () at src/device/queue.rs:1713
+#15 submit () at src/device/queue.rs:624
+#16 0x0000aaaab7699148 in submit () at src/device/queue.rs:1531
+#17 0x0000aaaab765436c in queue_submit () at src/device/queue.rs:1978
+#18 0x0000aaaab75a764c in submit () at src/backend/wgpu_core.rs:2109
+#19 0x0000aaaab73958b4 in submit<[wgpu::api::command_buffer::CommandBuffer; 1]> () at /work/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wgpu-30.0.1/src/api/queue.rs:288
+#20 0x0000aaaab738c874 in read () at crates/lbm-gpu/src/native.rs:650
+#21 0x0000aaaab738ee48 in advance_chunk () at crates/lbm-gpu/src/native.rs:739
+#22 advance () at crates/lbm-gpu/src/native.rs:770
+#23 0x0000aaaab7582d5c in both () at crates/lbm-gpu/tests/verification.rs:48
+#24 0x0000aaaab7589fc0 in plane_poiseuille_matches_the_analytic_profile_and_the_cpu () at crates/lbm-gpu/tests/verification.rs:82
+#25 {closure#0} () at crates/lbm-gpu/tests/verification.rs:68
+#26 call_once<verification::plane_poiseuille_matches_the_analytic_profile_and_the_cpu::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250
+#27 0x0000aaaab754a174 in core::ops::function::FnOnce::call_once<fn() -> core::result::Result<(), alloc::string::String>, ()> () at library/core/src/ops/function.rs:250
+#28 test::__rust_begin_short_backtrace<core::result::Result<(), alloc::string::String>, fn() -> core::result::Result<(), alloc::string::String>> () at library/test/src/lib.rs:733
+#29 0x0000aaaab75555f0 in test::types::RunnableTest::run () at library/test/src/types.rs:145
+#30 test::run_test_in_process::{closure#0} () at library/test/src/lib.rs:756
+#31 core::panic::unwind_safe::{impl#25}::call_once<core::result::Result<(), alloc::string::String>, test::run_test_in_process::{closure_env#0}> () at library/core/src/panic/unwind_safe.rs:275
+#32 std::panicking::catch_unwind::do_call<core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>, core::result::Result<(), alloc::string::String>> () at library/std/src/panicking.rs:576
+#33 std::panicking::catch_unwind<core::result::Result<(), alloc::string::String>, core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>> () at library/std/src/panicking.rs:544
+#34 std::panic::catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>, core::result::Result<(), alloc::string::String>> () at library/std/src/panic.rs:359
+#35 test::run_test_in_process () at library/test/src/lib.rs:756
+#36 test::run_test::{closure#0} () at library/test/src/lib.rs:677
+#37 0x0000aaaab754ff40 in test::run_test::{closure#1} () at library/test/src/lib.rs:707
+#38 std::sys::backtrace::__rust_begin_short_backtrace<test::run_test::{closure_env#1}, ()> () at library/std/src/sys/backtrace.rs:166
+#39 0x0000aaaab7558910 in std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure#0}<test::run_test::{closure_env#1}, ()> () at library/std/src/thread/lifecycle.rs:70
+#40 core::panic::unwind_safe::{impl#25}::call_once<(), std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>> () at library/core/src/panic/unwind_safe.rs:275
+#41 std::panicking::catch_unwind::do_call<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>, ()> () at library/std/src/panicking.rs:576
+#42 std::panicking::catch_unwind<(), core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>> () at library/std/src/panicking.rs:544
+#43 std::panic::catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>, ()> () at library/std/src/panic.rs:359
+#44 std::thread::lifecycle::spawn_unchecked::{closure#1}<test::run_test::{closure_env#1}, ()> () at library/std/src/thread/lifecycle.rs:68
+#45 core::ops::function::FnOnce::call_once<std::thread::lifecycle::spawn_unchecked::{closure_env#1}<test::run_test::{closure_env#1}, ()>, ()> () at library/core/src/ops/function.rs:250
+#46 0x0000aaaab7542978 in alloc::boxed::{impl#31}::call_once<(), (dyn core::ops::function::FnOnce<(), Output=()> + core::marker::Send), alloc::alloc::Global> () at library/alloc/src/boxed.rs:2320
+#47 std::sys::thread::unix::{impl#2}::new::thread_start () at library/std/src/sys/thread/unix.rs:123
+#48 0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#49 0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 59 (Thread 0xffffb221f080 (LWP 8325) "runs_to_steady_"):
+#0  0x0000ffffb35e1df0 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e86a8 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffffb1a10aa4 in ?? () from /usr/local/lib/libnvidia-glsi.so.595.91.07
+#3  0x0000ffffb1a1b5f0 in _nv004glsi () from /usr/local/lib/libnvidia-glsi.so.595.91.07
+#4  0x0000ffff81576f58 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffff8164fb88 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#6  0x0000ffff816687a4 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#7  0x0000ffff8160c540 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#8  0x0000ffff818d27c4 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#9  0x0000ffff8179467c in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#10 0x0000aaaab77361cc in queue_submit () at /work/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ash-0.38.0+1.3.281/src/device.rs:2470
+#11 submit () at src/vulkan/mod.rs:1493
+#12 0x0000aaaab760e604 in submit<wgpu_hal::vulkan::Queue> () at /work/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wgpu-hal-30.0.1/src/dynamic/queue.rs:42
+#13 0x0000aaaab7695d30 in submit_pending_submission () at src/device/queue.rs:1713
+#14 submit () at src/device/queue.rs:624
+#15 0x0000aaaab7699148 in submit () at src/device/queue.rs:1531
+#16 0x0000aaaab765436c in queue_submit () at src/device/queue.rs:1978
+#17 0x0000aaaab75a764c in submit () at src/backend/wgpu_core.rs:2109
+#18 0x0000aaaab73958b4 in submit<[wgpu::api::command_buffer::CommandBuffer; 1]> () at /work/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wgpu-30.0.1/src/api/queue.rs:288
+#19 0x0000aaaab738cff4 in submit () at crates/lbm-gpu/src/native.rs:599
+#20 0x0000aaaab738edf8 in advance_chunk () at crates/lbm-gpu/src/native.rs:736
+#21 advance () at crates/lbm-gpu/src/native.rs:770
+#22 0x0000aaaab7376980 in run () at crates/lbm/src/solve.rs:240
+#23 0x0000aaaab758772c in runs_to_steady_state_stop_where_the_cpu_does () at crates/lbm-gpu/tests/verification.rs:424
+#24 {closure#0} () at crates/lbm-gpu/tests/verification.rs:379
+#25 call_once<verification::runs_to_steady_state_stop_where_the_cpu_does::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250
+#26 0x0000aaaab754a174 in core::ops::function::FnOnce::call_once<fn() -> core::result::Result<(), alloc::string::String>, ()> () at library/core/src/ops/function.rs:250
+#27 test::__rust_begin_short_backtrace<core::result::Result<(), alloc::string::String>, fn() -> core::result::Result<(), alloc::string::String>> () at library/test/src/lib.rs:733
+#28 0x0000aaaab75555f0 in test::types::RunnableTest::run () at library/test/src/types.rs:145
+#29 test::run_test_in_process::{closure#0} () at library/test/src/lib.rs:756
+#30 core::panic::unwind_safe::{impl#25}::call_once<core::result::Result<(), alloc::string::String>, test::run_test_in_process::{closure_env#0}> () at library/core/src/panic/unwind_safe.rs:275
+#31 std::panicking::catch_unwind::do_call<core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>, core::result::Result<(), alloc::string::String>> () at library/std/src/panicking.rs:576
+#32 std::panicking::catch_unwind<core::result::Result<(), alloc::string::String>, core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>> () at library/std/src/panicking.rs:544
+#33 std::panic::catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>, core::result::Result<(), alloc::string::String>> () at library/std/src/panic.rs:359
+#34 test::run_test_in_process () at library/test/src/lib.rs:756
+#35 test::run_test::{closure#0} () at library/test/src/lib.rs:677
+#36 0x0000aaaab754ff40 in test::run_test::{closure#1} () at library/test/src/lib.rs:707
+#37 std::sys::backtrace::__rust_begin_short_backtrace<test::run_test::{closure_env#1}, ()> () at library/std/src/sys/backtrace.rs:166
+#38 0x0000aaaab7558910 in std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure#0}<test::run_test::{closure_env#1}, ()> () at library/std/src/thread/lifecycle.rs:70
+#39 core::panic::unwind_safe::{impl#25}::call_once<(), std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>> () at library/core/src/panic/unwind_safe.rs:275
+#40 std::panicking::catch_unwind::do_call<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>, ()> () at library/std/src/panicking.rs:576
+#41 std::panicking::catch_unwind<(), core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>> () at library/std/src/panicking.rs:544
+#42 std::panic::catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>, ()> () at library/std/src/panic.rs:359
+#43 std::thread::lifecycle::spawn_unchecked::{closure#1}<test::run_test::{closure_env#1}, ()> () at library/std/src/thread/lifecycle.rs:68
+#44 core::ops::function::FnOnce::call_once<std::thread::lifecycle::spawn_unchecked::{closure_env#1}<test::run_test::{closure_env#1}, ()>, ()> () at library/core/src/ops/function.rs:250
+#45 0x0000aaaab7542978 in alloc::boxed::{impl#31}::call_once<(), (dyn core::ops::function::FnOnce<(), Output=()> + core::marker::Send), alloc::alloc::Global> () at library/alloc/src/boxed.rs:2320
+#46 std::sys::thread::unix::{impl#2}::new::thread_start () at library/std/src/sys/thread/unix.rs:123
+#47 0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#48 0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 58 (Thread 0xffffb200f080 (LWP 8326) "taylor_green_de"):
+#0  0x0000ffffb35e203c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e8b44 in pthread_mutex_lock () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffffb2257dbc in vkDestroyInstance () from /lib/aarch64-linux-gnu/libvulkan.so.1
+#3  0x0000aaaab777815c [PAC] in destroy_instance () at /work/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ash-0.38.0+1.3.281/src/instance.rs:395
+#4  drop () at src/vulkan/instance.rs:871
+#5  drop_glue<wgpu_hal::vulkan::InstanceShared> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#6  drop_in_place<wgpu_hal::vulkan::InstanceShared> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:842
+#7  drop_slow<wgpu_hal::vulkan::InstanceShared, alloc::alloc::Global> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2149
+#8  0x0000aaaab75adaec in drop_glue<alloc::boxed::Box<dyn wgpu_hal::dynamic::instance::DynInstance, alloc::alloc::Global>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#9  drop_glue<(wgpu_types::backend::Backend, alloc::boxed::Box<dyn wgpu_hal::dynamic::instance::DynInstance, alloc::alloc::Global>)> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#10 drop_glue<[(wgpu_types::backend::Backend, alloc::boxed::Box<dyn wgpu_hal::dynamic::instance::DynInstance, alloc::alloc::Global>)]> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#11 drop_in_place<[(wgpu_types::backend::Backend, alloc::boxed::Box<dyn wgpu_hal::dynamic::instance::DynInstance, alloc::alloc::Global>)]> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:842
+#12 drop_in_place<[(wgpu_types::backend::Backend, alloc::boxed::Box<dyn wgpu_hal::dynamic::instance::DynInstance, alloc::alloc::Global>)]> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mut_ptr.rs:1384
+#13 drop<(wgpu_types::backend::Backend, alloc::boxed::Box<dyn wgpu_hal::dynamic::instance::DynInstance, alloc::alloc::Global>), alloc::alloc::Global> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/vec/mod.rs:4358
+#14 0x0000aaaab75d9b94 in drop_glue<alloc::vec::Vec<(wgpu_types::backend::Backend, alloc::boxed::Box<dyn wgpu_hal::dynamic::instance::DynInstance, alloc::alloc::Global>), alloc::alloc::Global>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#15 drop_glue<wgpu_core::instance::Instance> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#16 0x0000aaaab75da1ec in drop_glue<wgpu_core::global::Global> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#17 drop_in_place<wgpu_core::global::Global> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:842
+#18 drop_slow<wgpu_core::global::Global, alloc::alloc::Global> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2149
+#19 0x0000aaaab75da2e0 in drop<wgpu_core::global::Global, alloc::alloc::Global> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2911
+#20 drop_glue<alloc::sync::Arc<wgpu_core::global::Global, alloc::alloc::Global>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#21 drop_glue<wgpu::backend::wgpu_core::ContextWgpuCore> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#22 drop_glue<wgpu::backend::wgpu_core::CoreBuffer> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#23 drop_in_place<wgpu::backend::wgpu_core::CoreBuffer> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:842
+#24 drop_slow<wgpu::backend::wgpu_core::CoreBuffer, alloc::alloc::Global> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2149
+#25 0x0000aaaab75804c0 in drop<wgpu::backend::wgpu_core::CoreBuffer, alloc::alloc::Global> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2911
+#26 drop_glue<alloc::sync::Arc<wgpu::backend::wgpu_core::CoreBuffer, alloc::alloc::Global>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#27 drop_glue<wgpu::dispatch::DispatchBuffer> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#28 drop_glue<wgpu::api::buffer::Buffer> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#29 drop_glue<fieldcraft_lbm_gpu::native::GpuFlow> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+#30 0x0000aaaab7589024 in taylor_green_decays_like_the_cpu_and_conserves_mass () at crates/lbm-gpu/tests/verification.rs:175
+#31 {closure#0} () at crates/lbm-gpu/tests/verification.rs:132
+#32 call_once<verification::taylor_green_decays_like_the_cpu_and_conserves_mass::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250
+#33 0x0000aaaab754a174 in core::ops::function::FnOnce::call_once<fn() -> core::result::Result<(), alloc::string::String>, ()> () at library/core/src/ops/function.rs:250
+#34 test::__rust_begin_short_backtrace<core::result::Result<(), alloc::string::String>, fn() -> core::result::Result<(), alloc::string::String>> () at library/test/src/lib.rs:733
+#35 0x0000aaaab75555f0 in test::types::RunnableTest::run () at library/test/src/types.rs:145
+#36 test::run_test_in_process::{closure#0} () at library/test/src/lib.rs:756
+#37 core::panic::unwind_safe::{impl#25}::call_once<core::result::Result<(), alloc::string::String>, test::run_test_in_process::{closure_env#0}> () at library/core/src/panic/unwind_safe.rs:275
+#38 std::panicking::catch_unwind::do_call<core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>, core::result::Result<(), alloc::string::String>> () at library/std/src/panicking.rs:576
+#39 std::panicking::catch_unwind<core::result::Result<(), alloc::string::String>, core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>> () at library/std/src/panicking.rs:544
+#40 std::panic::catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>, core::result::Result<(), alloc::string::String>> () at library/std/src/panic.rs:359
+#41 test::run_test_in_process () at library/test/src/lib.rs:756
+#42 test::run_test::{closure#0} () at library/test/src/lib.rs:677
+#43 0x0000aaaab754ff40 in test::run_test::{closure#1} () at library/test/src/lib.rs:707
+#44 std::sys::backtrace::__rust_begin_short_backtrace<test::run_test::{closure_env#1}, ()> () at library/std/src/sys/backtrace.rs:166
+#45 0x0000aaaab7558910 in std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure#0}<test::run_test::{closure_env#1}, ()> () at library/std/src/thread/lifecycle.rs:70
+#46 core::panic::unwind_safe::{impl#25}::call_once<(), std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>> () at library/core/src/panic/unwind_safe.rs:275
+#47 std::panicking::catch_unwind::do_call<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>, ()> () at library/std/src/panicking.rs:576
+#48 std::panicking::catch_unwind<(), core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>> () at library/std/src/panicking.rs:544
+#49 std::panic::catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>, ()> () at library/std/src/panic.rs:359
+#50 std::thread::lifecycle::spawn_unchecked::{closure#1}<test::run_test::{closure_env#1}, ()> () at library/std/src/thread/lifecycle.rs:68
+#51 core::ops::function::FnOnce::call_once<std::thread::lifecycle::spawn_unchecked::{closure_env#1}<test::run_test::{closure_env#1}, ()>, ()> () at library/core/src/ops/function.rs:250
+#52 0x0000aaaab7542978 in alloc::boxed::{impl#31}::call_once<(), (dyn core::ops::function::FnOnce<(), Output=()> + core::marker::Send), alloc::alloc::Global> () at library/alloc/src/boxed.rs:2320
+#53 std::sys::thread::unix::{impl#2}::new::thread_start () at library/std/src/sys/thread/unix.rs:123
+#54 0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#55 0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 57 (Thread 0xffffb1dff080 (LWP 8327) "zou_he_channel_"):
+#0  0x0000ffffb35e1df0 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e86a8 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffffb1a10aa4 in ?? () from /usr/local/lib/libnvidia-glsi.so.595.91.07
+#3  0x0000ffffb1a1b5f0 in _nv004glsi () from /usr/local/lib/libnvidia-glsi.so.595.91.07
+#4  0x0000ffff81576f58 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffff818d8e64 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#6  0x0000ffff818d67e0 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#7  0x0000ffff818d7838 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#8  0x0000ffff817f4934 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#9  0x0000ffff818a2114 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#10 0x0000ffff818a2ce4 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#11 0x0000ffff8179eeac in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#12 0x0000ffff8179f8e0 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#13 0x0000aaaab76812f4 in dispatch_workgroups () at src/command/compute.rs:1032
+#14 encode_compute_pass () at src/command/compute.rs:837
+#15 0x0000aaaab76d9ffc in encode_commands () at src/command/mod.rs:1187
+#16 finish () at src/command/mod.rs:1328
+#17 0x0000aaaab7654a4c in command_encoder_finish () at src/command/mod.rs:1807
+#18 0x0000aaaab75a3478 in finish () at src/backend/wgpu_core.rs:2675
+#19 0x0000aaaab738cfd4 in finish () at /work/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wgpu-30.0.1/src/api/command_encoder.rs:62
+#20 submit () at crates/lbm-gpu/src/native.rs:599
+#21 0x0000aaaab738edf8 in advance_chunk () at crates/lbm-gpu/src/native.rs:736
+#22 advance () at crates/lbm-gpu/src/native.rs:770
+#23 0x0000aaaab7582d5c in both () at crates/lbm-gpu/tests/verification.rs:48
+#24 0x0000aaaab7584b1c in zou_he_channel_matches_the_cpu () at crates/lbm-gpu/tests/verification.rs:223
+#25 {closure#0} () at crates/lbm-gpu/tests/verification.rs:211
+#26 call_once<verification::zou_he_channel_matches_the_cpu::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250
+#27 0x0000aaaab754a174 in core::ops::function::FnOnce::call_once<fn() -> core::result::Result<(), alloc::string::String>, ()> () at library/core/src/ops/function.rs:250
+#28 test::__rust_begin_short_backtrace<core::result::Result<(), alloc::string::String>, fn() -> core::result::Result<(), alloc::string::String>> () at library/test/src/lib.rs:733
+#29 0x0000aaaab75555f0 in test::types::RunnableTest::run () at library/test/src/types.rs:145
+#30 test::run_test_in_process::{closure#0} () at library/test/src/lib.rs:756
+#31 core::panic::unwind_safe::{impl#25}::call_once<core::result::Result<(), alloc::string::String>, test::run_test_in_process::{closure_env#0}> () at library/core/src/panic/unwind_safe.rs:275
+#32 std::panicking::catch_unwind::do_call<core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>, core::result::Result<(), alloc::string::String>> () at library/std/src/panicking.rs:576
+#33 std::panicking::catch_unwind<core::result::Result<(), alloc::string::String>, core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>> () at library/std/src/panicking.rs:544
+#34 std::panic::catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>, core::result::Result<(), alloc::string::String>> () at library/std/src/panic.rs:359
+#35 test::run_test_in_process () at library/test/src/lib.rs:756
+#36 test::run_test::{closure#0} () at library/test/src/lib.rs:677
+#37 0x0000aaaab754ff40 in test::run_test::{closure#1} () at library/test/src/lib.rs:707
+#38 std::sys::backtrace::__rust_begin_short_backtrace<test::run_test::{closure_env#1}, ()> () at library/std/src/sys/backtrace.rs:166
+#39 0x0000aaaab7558910 in std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure#0}<test::run_test::{closure_env#1}, ()> () at library/std/src/thread/lifecycle.rs:70
+#40 core::panic::unwind_safe::{impl#25}::call_once<(), std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>> () at library/core/src/panic/unwind_safe.rs:275
+#41 std::panicking::catch_unwind::do_call<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>, ()> () at library/std/src/panicking.rs:576
+#42 std::panicking::catch_unwind<(), core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>> () at library/std/src/panicking.rs:544
+#43 std::panic::catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>, ()> () at library/std/src/panic.rs:359
+#44 std::thread::lifecycle::spawn_unchecked::{closure#1}<test::run_test::{closure_env#1}, ()> () at library/std/src/thread/lifecycle.rs:68
+#45 core::ops::function::FnOnce::call_once<std::thread::lifecycle::spawn_unchecked::{closure_env#1}<test::run_test::{closure_env#1}, ()>, ()> () at library/core/src/ops/function.rs:250
+#46 0x0000aaaab7542978 in alloc::boxed::{impl#31}::call_once<(), (dyn core::ops::function::FnOnce<(), Output=()> + core::marker::Send), alloc::alloc::Global> () at library/alloc/src/boxed.rs:2320
+#47 std::sys::thread::unix::{impl#2}::new::thread_start () at library/std/src/sys/thread/unix.rs:123
+#48 0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#49 0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 56 (Thread 0xffff77ba4080 (LWP 8328) "a_heated_channe"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e4d20 in pthread_cond_timedwait () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576284 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff8187a18c in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff81579e38 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#6  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 55 (Thread 0xffff5d6f7080 (LWP 8333) "[vkcf] Analysis"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e49f0 in pthread_cond_wait () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576210 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff8188c014 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff81579e38 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#6  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 54 (Thread 0xffff5cd67080 (LWP 8334) "[vkrt] Analysis"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e4d20 in pthread_cond_timedwait () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576284 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff81895b74 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff81579e38 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#6  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 53 (Thread 0xffff57fff080 (LWP 8335) "[vkps] Update"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e4d20 in pthread_cond_timedwait () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576284 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff818776d4 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff81579e38 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#6  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 52 (Thread 0xffff577ef080 (LWP 8336) "conduction_betw"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e4d20 in pthread_cond_timedwait () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576284 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff819ccbe4 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff819bf8b4 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffff81579e38 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#6  0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#7  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 51 (Thread 0xffff56bdf080 (LWP 8337) "[vkcf] Analysis"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e49f0 in pthread_cond_wait () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576210 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff8188c014 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff81579e38 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#6  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 50 (Thread 0xffff562cf080 (LWP 8338) "[vkrt] Analysis"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e4d20 in pthread_cond_timedwait () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576284 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff81895b74 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff81579e38 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#6  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 49 (Thread 0xffff55abf080 (LWP 8339) "[vkps] Update"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e4d20 in pthread_cond_timedwait () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576284 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff818776d4 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff81579e38 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#6  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 48 (Thread 0xffff5504f080 (LWP 8340) "runs_to_steady_"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e4d20 in pthread_cond_timedwait () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576284 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff819ccbe4 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff819bf8b4 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffff81579e38 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#6  0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#7  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 47 (Thread 0xffff35ebf080 (LWP 8345) "[vkcf] Analysis"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e49f0 in pthread_cond_wait () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576210 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff8188c014 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff81579e38 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#6  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 46 (Thread 0xffff3514f080 (LWP 8346) "[vkrt] Analysis"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e4d20 in pthread_cond_timedwait () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576284 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff81895b74 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff81579e38 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#6  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 45 (Thread 0xffff3493f080 (LWP 8347) "[vkps] Update"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e4d20 in pthread_cond_timedwait () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576284 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff818776d4 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff81579e38 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#6  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 44 (Thread 0xffff17e7f080 (LWP 8348) "zou_he_channel_"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e4d20 in pthread_cond_timedwait () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576284 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff819ccbe4 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff819bf8b4 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffff81579e38 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#6  0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#7  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 43 (Thread 0xffff1744f080 (LWP 8349) "[vkcf] Analysis"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e49f0 in pthread_cond_wait () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576210 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff8188c014 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff81579e38 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#6  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 42 (Thread 0xffff16abf080 (LWP 8350) "[vkrt] Analysis"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e4d20 in pthread_cond_timedwait () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576284 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff81895b74 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff81579e38 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#6  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 41 (Thread 0xffff162af080 (LWP 8351) "[vkps] Update"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e4d20 in pthread_cond_timedwait () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576284 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff818776d4 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff81579e38 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#6  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 40 (Thread 0xffff1583f080 (LWP 8352) "flow_past_a_sph"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e4d20 in pthread_cond_timedwait () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576284 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff819ccbe4 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff819bf8b4 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffff81579e38 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#6  0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#7  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 39 (Thread 0xffff14e2f080 (LWP 8353) "[vkcf] Analysis"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e49f0 in pthread_cond_wait () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576210 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff8188c014 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff81579e38 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#6  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 38 (Thread 0xfffefbfff080 (LWP 8354) "[vkrt] Analysis"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e4d20 in pthread_cond_timedwait () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576284 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff81895b74 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff81579e38 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#6  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 37 (Thread 0xfffefb7ef080 (LWP 8355) "[vkps] Update"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e4d20 in pthread_cond_timedwait () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576284 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff818776d4 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff81579e38 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#6  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 36 (Thread 0xfffefafdf080 (LWP 8356) "couette_wall_fo"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e4d20 in pthread_cond_timedwait () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576284 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff819ccbe4 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff819bf8b4 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffff81579e38 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#6  0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#7  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 35 (Thread 0xfffefa7cf080 (LWP 8357) "[vkcf] Analysis"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e49f0 in pthread_cond_wait () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576210 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff8188c014 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff81579e38 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#6  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 34 (Thread 0xfffef9abf080 (LWP 8358) "[vkrt] Analysis"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e4d20 in pthread_cond_timedwait () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576284 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff81895b74 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff81579e38 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#6  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 33 (Thread 0xfffef92af080 (LWP 8359) "[vkps] Update"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e4d20 in pthread_cond_timedwait () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576284 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff818776d4 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff81579e38 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#6  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 32 (Thread 0xfffef891f080 (LWP 8360) "plane_poiseuill"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e4d20 in pthread_cond_timedwait () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576284 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff819ccbe4 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff819bf8b4 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffff81579e38 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#6  0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#7  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 31 (Thread 0xfffed179f080 (LWP 8365) "[vkcf] Analysis"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e49f0 in pthread_cond_wait () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576210 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff8188c014 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff81579e38 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#6  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 30 (Thread 0xfffed0e0f080 (LWP 8366) "[vkrt] Analysis"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e4d20 in pthread_cond_timedwait () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576284 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff81895b74 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff81579e38 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#6  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 29 (Thread 0xfffeb7fff080 (LWP 8367) "[vkps] Update"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e4d20 in pthread_cond_timedwait () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576284 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff818776d4 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff81579e38 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#6  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 28 (Thread 0xfffeb77ef080 (LWP 8368) "odd_even_and_ch"):
+#0  0x0000ffffb35e203c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e8ba8 in pthread_mutex_lock () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576f7c in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff815bbff4 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff8157875c in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffff81579ef4 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#6  0x0000ffff81592600 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#7  0x0000ffffb35e2424 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#8  0x0000ffffb35e5654 in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#9  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 27 (Thread 0xffff76904080 (LWP 8373) "[vkcf] Analysis"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e49f0 in pthread_cond_wait () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576210 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff8188c014 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff81579e38 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#6  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 26 (Thread 0xffff77394080 (LWP 8374) "[vkrt] Analysis"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e4d20 in pthread_cond_timedwait () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576284 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff81895b74 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff81579e38 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#6  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 25 (Thread 0xffff760f4080 (LWP 8375) "[vkps] Update"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e4d20 in pthread_cond_timedwait () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576284 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff818776d4 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff81579e38 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#6  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 24 (Thread 0xffff75204080 (LWP 8376) "a_heated_channe"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e4d20 in pthread_cond_timedwait () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576284 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff819ccbe4 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff819bf8b4 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffff81579e38 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#6  0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#7  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 23 (Thread 0xfffe5b7ff080 (LWP 8377) "fieldcraft-work"):
+#0  0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000aaaab732a2b4 in std::sys::sync::futex::unix::futex_wait () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/futex/unix.rs:63
+#2  std::sys::sync::condvar::futex::Condvar::wait_optional_timeout () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/condvar/futex.rs:49
+#3  std::sys::sync::condvar::futex::Condvar::wait () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/condvar/futex.rs:33
+#4  wait<bool> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sync/poison/condvar.rs:128
+#5  sleep<rayon_core::registry::{impl#10}::wait_until_cold::{closure_env#0}> () at src/sleep/mod.rs:187
+#6  0x0000aaaab73299f4 in no_work_found<rayon_core::registry::{impl#10}::wait_until_cold::{closure_env#0}> () at src/sleep/mod.rs:106
+#7  wait_until_cold () at src/registry.rs:806
+#8  0x0000aaaab75105d4 in wait_until<rayon_core::latch::OnceLatch> () at src/registry.rs:775
+#9  wait_until_out_of_work () at src/registry.rs:824
+#10 main_loop () at src/registry.rs:929
+#11 run () at src/registry.rs:50
+#12 0x0000aaaab7514540 in {closure#0} () at src/registry.rs:95
+#13 __rust_begin_short_backtrace<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/backtrace.rs:166
+#14 0x0000aaaab7512918 in {closure#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:70
+#15 call_once<(), std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/panic/unwind_safe.rs:275
+#16 do_call<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:576
+#17 catch_unwind<(), core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:544
+#18 catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panic.rs:359
+#19 {closure#1}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:68
+#20 call_once<std::thread::lifecycle::spawn_unchecked::{closure_env#1}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250
+#21 0x0000aaaab7542978 in alloc::boxed::{impl#31}::call_once<(), (dyn core::ops::function::FnOnce<(), Output=()> + core::marker::Send), alloc::alloc::Global> () at library/alloc/src/boxed.rs:2320
+#22 std::sys::thread::unix::{impl#2}::new::thread_start () at library/std/src/sys/thread/unix.rs:123
+#23 0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#24 0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 22 (Thread 0xfffe5afef080 (LWP 8378) "fieldcraft-work"):
+#0  0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000aaaab732a2b4 in std::sys::sync::futex::unix::futex_wait () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/futex/unix.rs:63
+#2  std::sys::sync::condvar::futex::Condvar::wait_optional_timeout () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/condvar/futex.rs:49
+#3  std::sys::sync::condvar::futex::Condvar::wait () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/condvar/futex.rs:33
+#4  wait<bool> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sync/poison/condvar.rs:128
+#5  sleep<rayon_core::registry::{impl#10}::wait_until_cold::{closure_env#0}> () at src/sleep/mod.rs:187
+#6  0x0000aaaab73299f4 in no_work_found<rayon_core::registry::{impl#10}::wait_until_cold::{closure_env#0}> () at src/sleep/mod.rs:106
+#7  wait_until_cold () at src/registry.rs:806
+#8  0x0000aaaab75105d4 in wait_until<rayon_core::latch::OnceLatch> () at src/registry.rs:775
+#9  wait_until_out_of_work () at src/registry.rs:824
+#10 main_loop () at src/registry.rs:929
+#11 run () at src/registry.rs:50
+#12 0x0000aaaab7514540 in {closure#0} () at src/registry.rs:95
+#13 __rust_begin_short_backtrace<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/backtrace.rs:166
+#14 0x0000aaaab7512918 in {closure#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:70
+#15 call_once<(), std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/panic/unwind_safe.rs:275
+#16 do_call<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:576
+#17 catch_unwind<(), core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:544
+#18 catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panic.rs:359
+#19 {closure#1}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:68
+#20 call_once<std::thread::lifecycle::spawn_unchecked::{closure_env#1}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250
+#21 0x0000aaaab7542978 in alloc::boxed::{impl#31}::call_once<(), (dyn core::ops::function::FnOnce<(), Output=()> + core::marker::Send), alloc::alloc::Global> () at library/alloc/src/boxed.rs:2320
+#22 std::sys::thread::unix::{impl#2}::new::thread_start () at library/std/src/sys/thread/unix.rs:123
+#23 0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#24 0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 21 (Thread 0xfffe525ff080 (LWP 8379) "fieldcraft-work"):
+#0  0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000aaaab732a2b4 in std::sys::sync::futex::unix::futex_wait () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/futex/unix.rs:63
+#2  std::sys::sync::condvar::futex::Condvar::wait_optional_timeout () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/condvar/futex.rs:49
+#3  std::sys::sync::condvar::futex::Condvar::wait () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/condvar/futex.rs:33
+#4  wait<bool> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sync/poison/condvar.rs:128
+#5  sleep<rayon_core::registry::{impl#10}::wait_until_cold::{closure_env#0}> () at src/sleep/mod.rs:187
+#6  0x0000aaaab73299f4 in no_work_found<rayon_core::registry::{impl#10}::wait_until_cold::{closure_env#0}> () at src/sleep/mod.rs:106
+#7  wait_until_cold () at src/registry.rs:806
+#8  0x0000aaaab75105d4 in wait_until<rayon_core::latch::OnceLatch> () at src/registry.rs:775
+#9  wait_until_out_of_work () at src/registry.rs:824
+#10 main_loop () at src/registry.rs:929
+#11 run () at src/registry.rs:50
+#12 0x0000aaaab7514540 in {closure#0} () at src/registry.rs:95
+#13 __rust_begin_short_backtrace<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/backtrace.rs:166
+#14 0x0000aaaab7512918 in {closure#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:70
+#15 call_once<(), std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/panic/unwind_safe.rs:275
+#16 do_call<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:576
+#17 catch_unwind<(), core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:544
+#18 catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panic.rs:359
+#19 {closure#1}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:68
+#20 call_once<std::thread::lifecycle::spawn_unchecked::{closure_env#1}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250
+#21 0x0000aaaab7542978 in alloc::boxed::{impl#31}::call_once<(), (dyn core::ops::function::FnOnce<(), Output=()> + core::marker::Send), alloc::alloc::Global> () at library/alloc/src/boxed.rs:2320
+#22 std::sys::thread::unix::{impl#2}::new::thread_start () at library/std/src/sys/thread/unix.rs:123
+#23 0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#24 0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 20 (Thread 0xfffe5a7df080 (LWP 8380) "fieldcraft-work"):
+#0  0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000aaaab732a2b4 in std::sys::sync::futex::unix::futex_wait () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/futex/unix.rs:63
+#2  std::sys::sync::condvar::futex::Condvar::wait_optional_timeout () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/condvar/futex.rs:49
+#3  std::sys::sync::condvar::futex::Condvar::wait () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/condvar/futex.rs:33
+#4  wait<bool> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sync/poison/condvar.rs:128
+#5  sleep<rayon_core::registry::{impl#10}::wait_until_cold::{closure_env#0}> () at src/sleep/mod.rs:187
+#6  0x0000aaaab73299f4 in no_work_found<rayon_core::registry::{impl#10}::wait_until_cold::{closure_env#0}> () at src/sleep/mod.rs:106
+#7  wait_until_cold () at src/registry.rs:806
+#8  0x0000aaaab75105d4 in wait_until<rayon_core::latch::OnceLatch> () at src/registry.rs:775
+#9  wait_until_out_of_work () at src/registry.rs:824
+#10 main_loop () at src/registry.rs:929
+#11 run () at src/registry.rs:50
+#12 0x0000aaaab7514540 in {closure#0} () at src/registry.rs:95
+#13 __rust_begin_short_backtrace<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/backtrace.rs:166
+#14 0x0000aaaab7512918 in {closure#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:70
+#15 call_once<(), std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/panic/unwind_safe.rs:275
+#16 do_call<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:576
+#17 catch_unwind<(), core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:544
+#18 catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panic.rs:359
+#19 {closure#1}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:68
+#20 call_once<std::thread::lifecycle::spawn_unchecked::{closure_env#1}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250
+#21 0x0000aaaab7542978 in alloc::boxed::{impl#31}::call_once<(), (dyn core::ops::function::FnOnce<(), Output=()> + core::marker::Send), alloc::alloc::Global> () at library/alloc/src/boxed.rs:2320
+#22 std::sys::thread::unix::{impl#2}::new::thread_start () at library/std/src/sys/thread/unix.rs:123
+#23 0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#24 0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 19 (Thread 0xfffe59fcf080 (LWP 8381) "fieldcraft-work"):
+#0  0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000aaaab732a2b4 in std::sys::sync::futex::unix::futex_wait () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/futex/unix.rs:63
+#2  std::sys::sync::condvar::futex::Condvar::wait_optional_timeout () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/condvar/futex.rs:49
+#3  std::sys::sync::condvar::futex::Condvar::wait () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/condvar/futex.rs:33
+#4  wait<bool> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sync/poison/condvar.rs:128
+#5  sleep<rayon_core::registry::{impl#10}::wait_until_cold::{closure_env#0}> () at src/sleep/mod.rs:187
+#6  0x0000aaaab73299f4 in no_work_found<rayon_core::registry::{impl#10}::wait_until_cold::{closure_env#0}> () at src/sleep/mod.rs:106
+#7  wait_until_cold () at src/registry.rs:806
+#8  0x0000aaaab75105d4 in wait_until<rayon_core::latch::OnceLatch> () at src/registry.rs:775
+#9  wait_until_out_of_work () at src/registry.rs:824
+#10 main_loop () at src/registry.rs:929
+#11 run () at src/registry.rs:50
+#12 0x0000aaaab7514540 in {closure#0} () at src/registry.rs:95
+#13 __rust_begin_short_backtrace<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/backtrace.rs:166
+#14 0x0000aaaab7512918 in {closure#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:70
+#15 call_once<(), std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/panic/unwind_safe.rs:275
+#16 do_call<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:576
+#17 catch_unwind<(), core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:544
+#18 catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panic.rs:359
+#19 {closure#1}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:68
+#20 call_once<std::thread::lifecycle::spawn_unchecked::{closure_env#1}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250
+#21 0x0000aaaab7542978 in alloc::boxed::{impl#31}::call_once<(), (dyn core::ops::function::FnOnce<(), Output=()> + core::marker::Send), alloc::alloc::Global> () at library/alloc/src/boxed.rs:2320
+#22 std::sys::thread::unix::{impl#2}::new::thread_start () at library/std/src/sys/thread/unix.rs:123
+#23 0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#24 0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 18 (Thread 0xfffe597bf080 (LWP 8382) "fieldcraft-work"):
+#0  0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000aaaab732a2b4 in std::sys::sync::futex::unix::futex_wait () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/futex/unix.rs:63
+#2  std::sys::sync::condvar::futex::Condvar::wait_optional_timeout () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/condvar/futex.rs:49
+#3  std::sys::sync::condvar::futex::Condvar::wait () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/condvar/futex.rs:33
+#4  wait<bool> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sync/poison/condvar.rs:128
+#5  sleep<rayon_core::registry::{impl#10}::wait_until_cold::{closure_env#0}> () at src/sleep/mod.rs:187
+#6  0x0000aaaab73299f4 in no_work_found<rayon_core::registry::{impl#10}::wait_until_cold::{closure_env#0}> () at src/sleep/mod.rs:106
+#7  wait_until_cold () at src/registry.rs:806
+#8  0x0000aaaab75105d4 in wait_until<rayon_core::latch::OnceLatch> () at src/registry.rs:775
+#9  wait_until_out_of_work () at src/registry.rs:824
+#10 main_loop () at src/registry.rs:929
+#11 run () at src/registry.rs:50
+#12 0x0000aaaab7514540 in {closure#0} () at src/registry.rs:95
+#13 __rust_begin_short_backtrace<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/backtrace.rs:166
+#14 0x0000aaaab7512918 in {closure#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:70
+#15 call_once<(), std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/panic/unwind_safe.rs:275
+#16 do_call<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:576
+#17 catch_unwind<(), core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:544
+#18 catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panic.rs:359
+#19 {closure#1}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:68
+#20 call_once<std::thread::lifecycle::spawn_unchecked::{closure_env#1}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250
+#21 0x0000aaaab7542978 in alloc::boxed::{impl#31}::call_once<(), (dyn core::ops::function::FnOnce<(), Output=()> + core::marker::Send), alloc::alloc::Global> () at library/alloc/src/boxed.rs:2320
+#22 std::sys::thread::unix::{impl#2}::new::thread_start () at library/std/src/sys/thread/unix.rs:123
+#23 0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#24 0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 17 (Thread 0xfffe58faf080 (LWP 8383) "fieldcraft-work"):
+#0  0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000aaaab732a2b4 in std::sys::sync::futex::unix::futex_wait () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/futex/unix.rs:63
+#2  std::sys::sync::condvar::futex::Condvar::wait_optional_timeout () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/condvar/futex.rs:49
+#3  std::sys::sync::condvar::futex::Condvar::wait () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/condvar/futex.rs:33
+#4  wait<bool> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sync/poison/condvar.rs:128
+#5  sleep<rayon_core::registry::{impl#10}::wait_until_cold::{closure_env#0}> () at src/sleep/mod.rs:187
+#6  0x0000aaaab73299f4 in no_work_found<rayon_core::registry::{impl#10}::wait_until_cold::{closure_env#0}> () at src/sleep/mod.rs:106
+#7  wait_until_cold () at src/registry.rs:806
+#8  0x0000aaaab75105d4 in wait_until<rayon_core::latch::OnceLatch> () at src/registry.rs:775
+#9  wait_until_out_of_work () at src/registry.rs:824
+#10 main_loop () at src/registry.rs:929
+#11 run () at src/registry.rs:50
+#12 0x0000aaaab7514540 in {closure#0} () at src/registry.rs:95
+#13 __rust_begin_short_backtrace<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/backtrace.rs:166
+#14 0x0000aaaab7512918 in {closure#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:70
+#15 call_once<(), std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/panic/unwind_safe.rs:275
+#16 do_call<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:576
+#17 catch_unwind<(), core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:544
+#18 catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panic.rs:359
+#19 {closure#1}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:68
+#20 call_once<std::thread::lifecycle::spawn_unchecked::{closure_env#1}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250
+#21 0x0000aaaab7542978 in alloc::boxed::{impl#31}::call_once<(), (dyn core::ops::function::FnOnce<(), Output=()> + core::marker::Send), alloc::alloc::Global> () at library/alloc/src/boxed.rs:2320
+#22 std::sys::thread::unix::{impl#2}::new::thread_start () at library/std/src/sys/thread/unix.rs:123
+#23 0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#24 0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 16 (Thread 0xfffe53fff080 (LWP 8384) "fieldcraft-work"):
+#0  0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000aaaab732a2b4 in std::sys::sync::futex::unix::futex_wait () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/futex/unix.rs:63
+#2  std::sys::sync::condvar::futex::Condvar::wait_optional_timeout () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/condvar/futex.rs:49
+#3  std::sys::sync::condvar::futex::Condvar::wait () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/condvar/futex.rs:33
+#4  wait<bool> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sync/poison/condvar.rs:128
+#5  sleep<rayon_core::registry::{impl#10}::wait_until_cold::{closure_env#0}> () at src/sleep/mod.rs:187
+#6  0x0000aaaab73299f4 in no_work_found<rayon_core::registry::{impl#10}::wait_until_cold::{closure_env#0}> () at src/sleep/mod.rs:106
+#7  wait_until_cold () at src/registry.rs:806
+#8  0x0000aaaab75105d4 in wait_until<rayon_core::latch::OnceLatch> () at src/registry.rs:775
+#9  wait_until_out_of_work () at src/registry.rs:824
+#10 main_loop () at src/registry.rs:929
+#11 run () at src/registry.rs:50
+#12 0x0000aaaab7514540 in {closure#0} () at src/registry.rs:95
+#13 __rust_begin_short_backtrace<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/backtrace.rs:166
+#14 0x0000aaaab7512918 in {closure#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:70
+#15 call_once<(), std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/panic/unwind_safe.rs:275
+#16 do_call<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:576
+#17 catch_unwind<(), core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:544
+#18 catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panic.rs:359
+#19 {closure#1}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:68
+#20 call_once<std::thread::lifecycle::spawn_unchecked::{closure_env#1}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250
+#21 0x0000aaaab7542978 in alloc::boxed::{impl#31}::call_once<(), (dyn core::ops::function::FnOnce<(), Output=()> + core::marker::Send), alloc::alloc::Global> () at library/alloc/src/boxed.rs:2320
+#22 std::sys::thread::unix::{impl#2}::new::thread_start () at library/std/src/sys/thread/unix.rs:123
+#23 0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#24 0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 15 (Thread 0xfffe537ef080 (LWP 8385) "fieldcraft-work"):
+#0  0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000aaaab732a2b4 in std::sys::sync::futex::unix::futex_wait () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/futex/unix.rs:63
+#2  std::sys::sync::condvar::futex::Condvar::wait_optional_timeout () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/condvar/futex.rs:49
+#3  std::sys::sync::condvar::futex::Condvar::wait () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/condvar/futex.rs:33
+#4  wait<bool> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sync/poison/condvar.rs:128
+#5  sleep<rayon_core::registry::{impl#10}::wait_until_cold::{closure_env#0}> () at src/sleep/mod.rs:187
+#6  0x0000aaaab73299f4 in no_work_found<rayon_core::registry::{impl#10}::wait_until_cold::{closure_env#0}> () at src/sleep/mod.rs:106
+#7  wait_until_cold () at src/registry.rs:806
+#8  0x0000aaaab75105d4 in wait_until<rayon_core::latch::OnceLatch> () at src/registry.rs:775
+#9  wait_until_out_of_work () at src/registry.rs:824
+#10 main_loop () at src/registry.rs:929
+#11 run () at src/registry.rs:50
+#12 0x0000aaaab7514540 in {closure#0} () at src/registry.rs:95
+#13 __rust_begin_short_backtrace<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/backtrace.rs:166
+#14 0x0000aaaab7512918 in {closure#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:70
+#15 call_once<(), std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/panic/unwind_safe.rs:275
+#16 do_call<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:576
+#17 catch_unwind<(), core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:544
+#18 catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panic.rs:359
+#19 {closure#1}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:68
+#20 call_once<std::thread::lifecycle::spawn_unchecked::{closure_env#1}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250
+#21 0x0000aaaab7542978 in alloc::boxed::{impl#31}::call_once<(), (dyn core::ops::function::FnOnce<(), Output=()> + core::marker::Send), alloc::alloc::Global> () at library/alloc/src/boxed.rs:2320
+#22 std::sys::thread::unix::{impl#2}::new::thread_start () at library/std/src/sys/thread/unix.rs:123
+#23 0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#24 0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 14 (Thread 0xfffe52fdf080 (LWP 8386) "fieldcraft-work"):
+#0  0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000aaaab732a2b4 in std::sys::sync::futex::unix::futex_wait () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/futex/unix.rs:63
+#2  std::sys::sync::condvar::futex::Condvar::wait_optional_timeout () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/condvar/futex.rs:49
+#3  std::sys::sync::condvar::futex::Condvar::wait () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/condvar/futex.rs:33
+#4  wait<bool> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sync/poison/condvar.rs:128
+#5  sleep<rayon_core::registry::{impl#10}::wait_until_cold::{closure_env#0}> () at src/sleep/mod.rs:187
+#6  0x0000aaaab73299f4 in no_work_found<rayon_core::registry::{impl#10}::wait_until_cold::{closure_env#0}> () at src/sleep/mod.rs:106
+#7  wait_until_cold () at src/registry.rs:806
+#8  0x0000aaaab75105d4 in wait_until<rayon_core::latch::OnceLatch> () at src/registry.rs:775
+#9  wait_until_out_of_work () at src/registry.rs:824
+#10 main_loop () at src/registry.rs:929
+#11 run () at src/registry.rs:50
+#12 0x0000aaaab7514540 in {closure#0} () at src/registry.rs:95
+#13 __rust_begin_short_backtrace<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/backtrace.rs:166
+#14 0x0000aaaab7512918 in {closure#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:70
+#15 call_once<(), std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/panic/unwind_safe.rs:275
+#16 do_call<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:576
+#17 catch_unwind<(), core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:544
+#18 catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panic.rs:359
+#19 {closure#1}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:68
+#20 call_once<std::thread::lifecycle::spawn_unchecked::{closure_env#1}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250
+#21 0x0000aaaab7542978 in alloc::boxed::{impl#31}::call_once<(), (dyn core::ops::function::FnOnce<(), Output=()> + core::marker::Send), alloc::alloc::Global> () at library/alloc/src/boxed.rs:2320
+#22 std::sys::thread::unix::{impl#2}::new::thread_start () at library/std/src/sys/thread/unix.rs:123
+#23 0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#24 0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 13 (Thread 0xfffe51def080 (LWP 8387) "fieldcraft-work"):
+#0  0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000aaaab732a2b4 in std::sys::sync::futex::unix::futex_wait () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/futex/unix.rs:63
+#2  std::sys::sync::condvar::futex::Condvar::wait_optional_timeout () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/condvar/futex.rs:49
+#3  std::sys::sync::condvar::futex::Condvar::wait () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/condvar/futex.rs:33
+#4  wait<bool> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sync/poison/condvar.rs:128
+#5  sleep<rayon_core::registry::{impl#10}::wait_until_cold::{closure_env#0}> () at src/sleep/mod.rs:187
+#6  0x0000aaaab73299f4 in no_work_found<rayon_core::registry::{impl#10}::wait_until_cold::{closure_env#0}> () at src/sleep/mod.rs:106
+#7  wait_until_cold () at src/registry.rs:806
+#8  0x0000aaaab75105d4 in wait_until<rayon_core::latch::OnceLatch> () at src/registry.rs:775
+#9  wait_until_out_of_work () at src/registry.rs:824
+#10 main_loop () at src/registry.rs:929
+#11 run () at src/registry.rs:50
+#12 0x0000aaaab7514540 in {closure#0} () at src/registry.rs:95
+#13 __rust_begin_short_backtrace<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/backtrace.rs:166
+#14 0x0000aaaab7512918 in {closure#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:70
+#15 call_once<(), std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/panic/unwind_safe.rs:275
+#16 do_call<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:576
+#17 catch_unwind<(), core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:544
+#18 catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panic.rs:359
+#19 {closure#1}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:68
+#20 call_once<std::thread::lifecycle::spawn_unchecked::{closure_env#1}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250
+#21 0x0000aaaab7542978 in alloc::boxed::{impl#31}::call_once<(), (dyn core::ops::function::FnOnce<(), Output=()> + core::marker::Send), alloc::alloc::Global> () at library/alloc/src/boxed.rs:2320
+#22 std::sys::thread::unix::{impl#2}::new::thread_start () at library/std/src/sys/thread/unix.rs:123
+#23 0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#24 0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 12 (Thread 0xfffe515df080 (LWP 8388) "fieldcraft-work"):
+#0  0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000aaaab732a2b4 in std::sys::sync::futex::unix::futex_wait () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/futex/unix.rs:63
+#2  std::sys::sync::condvar::futex::Condvar::wait_optional_timeout () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/condvar/futex.rs:49
+#3  std::sys::sync::condvar::futex::Condvar::wait () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/condvar/futex.rs:33
+#4  wait<bool> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sync/poison/condvar.rs:128
+#5  sleep<rayon_core::registry::{impl#10}::wait_until_cold::{closure_env#0}> () at src/sleep/mod.rs:187
+#6  0x0000aaaab73299f4 in no_work_found<rayon_core::registry::{impl#10}::wait_until_cold::{closure_env#0}> () at src/sleep/mod.rs:106
+#7  wait_until_cold () at src/registry.rs:806
+#8  0x0000aaaab75105d4 in wait_until<rayon_core::latch::OnceLatch> () at src/registry.rs:775
+#9  wait_until_out_of_work () at src/registry.rs:824
+#10 main_loop () at src/registry.rs:929
+#11 run () at src/registry.rs:50
+#12 0x0000aaaab7514540 in {closure#0} () at src/registry.rs:95
+#13 __rust_begin_short_backtrace<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/backtrace.rs:166
+#14 0x0000aaaab7512918 in {closure#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:70
+#15 call_once<(), std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/panic/unwind_safe.rs:275
+#16 do_call<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:576
+#17 catch_unwind<(), core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:544
+#18 catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panic.rs:359
+#19 {closure#1}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:68
+#20 call_once<std::thread::lifecycle::spawn_unchecked::{closure_env#1}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250
+#21 0x0000aaaab7542978 in alloc::boxed::{impl#31}::call_once<(), (dyn core::ops::function::FnOnce<(), Output=()> + core::marker::Send), alloc::alloc::Global> () at library/alloc/src/boxed.rs:2320
+#22 std::sys::thread::unix::{impl#2}::new::thread_start () at library/std/src/sys/thread/unix.rs:123
+#23 0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#24 0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 11 (Thread 0xfffe50dcf080 (LWP 8389) "fieldcraft-work"):
+#0  0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000aaaab732a2b4 in std::sys::sync::futex::unix::futex_wait () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/futex/unix.rs:63
+#2  std::sys::sync::condvar::futex::Condvar::wait_optional_timeout () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/condvar/futex.rs:49
+#3  std::sys::sync::condvar::futex::Condvar::wait () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/condvar/futex.rs:33
+#4  wait<bool> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sync/poison/condvar.rs:128
+#5  sleep<rayon_core::registry::{impl#10}::wait_until_cold::{closure_env#0}> () at src/sleep/mod.rs:187
+#6  0x0000aaaab73299f4 in no_work_found<rayon_core::registry::{impl#10}::wait_until_cold::{closure_env#0}> () at src/sleep/mod.rs:106
+#7  wait_until_cold () at src/registry.rs:806
+#8  0x0000aaaab75105d4 in wait_until<rayon_core::latch::OnceLatch> () at src/registry.rs:775
+#9  wait_until_out_of_work () at src/registry.rs:824
+#10 main_loop () at src/registry.rs:929
+#11 run () at src/registry.rs:50
+#12 0x0000aaaab7514540 in {closure#0} () at src/registry.rs:95
+#13 __rust_begin_short_backtrace<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/backtrace.rs:166
+#14 0x0000aaaab7512918 in {closure#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:70
+#15 call_once<(), std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/panic/unwind_safe.rs:275
+#16 do_call<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:576
+#17 catch_unwind<(), core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:544
+#18 catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panic.rs:359
+#19 {closure#1}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:68
+#20 call_once<std::thread::lifecycle::spawn_unchecked::{closure_env#1}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250
+#21 0x0000aaaab7542978 in alloc::boxed::{impl#31}::call_once<(), (dyn core::ops::function::FnOnce<(), Output=()> + core::marker::Send), alloc::alloc::Global> () at library/alloc/src/boxed.rs:2320
+#22 std::sys::thread::unix::{impl#2}::new::thread_start () at library/std/src/sys/thread/unix.rs:123
+#23 0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#24 0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 10 (Thread 0xfffe33fff080 (LWP 8390) "fieldcraft-work"):
+#0  0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000aaaab732a2b4 in std::sys::sync::futex::unix::futex_wait () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/futex/unix.rs:63
+#2  std::sys::sync::condvar::futex::Condvar::wait_optional_timeout () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/condvar/futex.rs:49
+#3  std::sys::sync::condvar::futex::Condvar::wait () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/condvar/futex.rs:33
+#4  wait<bool> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sync/poison/condvar.rs:128
+#5  sleep<rayon_core::registry::{impl#10}::wait_until_cold::{closure_env#0}> () at src/sleep/mod.rs:187
+#6  0x0000aaaab73299f4 in no_work_found<rayon_core::registry::{impl#10}::wait_until_cold::{closure_env#0}> () at src/sleep/mod.rs:106
+#7  wait_until_cold () at src/registry.rs:806
+#8  0x0000aaaab75105d4 in wait_until<rayon_core::latch::OnceLatch> () at src/registry.rs:775
+#9  wait_until_out_of_work () at src/registry.rs:824
+#10 main_loop () at src/registry.rs:929
+#11 run () at src/registry.rs:50
+#12 0x0000aaaab7514540 in {closure#0} () at src/registry.rs:95
+#13 __rust_begin_short_backtrace<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/backtrace.rs:166
+#14 0x0000aaaab7512918 in {closure#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:70
+#15 call_once<(), std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/panic/unwind_safe.rs:275
+#16 do_call<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:576
+#17 catch_unwind<(), core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:544
+#18 catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panic.rs:359
+#19 {closure#1}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:68
+#20 call_once<std::thread::lifecycle::spawn_unchecked::{closure_env#1}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250
+#21 0x0000aaaab7542978 in alloc::boxed::{impl#31}::call_once<(), (dyn core::ops::function::FnOnce<(), Output=()> + core::marker::Send), alloc::alloc::Global> () at library/alloc/src/boxed.rs:2320
+#22 std::sys::thread::unix::{impl#2}::new::thread_start () at library/std/src/sys/thread/unix.rs:123
+#23 0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#24 0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 9 (Thread 0xfffe337ef080 (LWP 8391) "fieldcraft-work"):
+#0  0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000aaaab732a2b4 in std::sys::sync::futex::unix::futex_wait () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/futex/unix.rs:63
+#2  std::sys::sync::condvar::futex::Condvar::wait_optional_timeout () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/condvar/futex.rs:49
+#3  std::sys::sync::condvar::futex::Condvar::wait () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/condvar/futex.rs:33
+#4  wait<bool> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sync/poison/condvar.rs:128
+#5  sleep<rayon_core::registry::{impl#10}::wait_until_cold::{closure_env#0}> () at src/sleep/mod.rs:187
+#6  0x0000aaaab73299f4 in no_work_found<rayon_core::registry::{impl#10}::wait_until_cold::{closure_env#0}> () at src/sleep/mod.rs:106
+#7  wait_until_cold () at src/registry.rs:806
+#8  0x0000aaaab75105d4 in wait_until<rayon_core::latch::OnceLatch> () at src/registry.rs:775
+#9  wait_until_out_of_work () at src/registry.rs:824
+#10 main_loop () at src/registry.rs:929
+#11 run () at src/registry.rs:50
+#12 0x0000aaaab7514540 in {closure#0} () at src/registry.rs:95
+#13 __rust_begin_short_backtrace<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/backtrace.rs:166
+#14 0x0000aaaab7512918 in {closure#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:70
+#15 call_once<(), std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/panic/unwind_safe.rs:275
+#16 do_call<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:576
+#17 catch_unwind<(), core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:544
+#18 catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panic.rs:359
+#19 {closure#1}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:68
+#20 call_once<std::thread::lifecycle::spawn_unchecked::{closure_env#1}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250
+#21 0x0000aaaab7542978 in alloc::boxed::{impl#31}::call_once<(), (dyn core::ops::function::FnOnce<(), Output=()> + core::marker::Send), alloc::alloc::Global> () at library/alloc/src/boxed.rs:2320
+#22 std::sys::thread::unix::{impl#2}::new::thread_start () at library/std/src/sys/thread/unix.rs:123
+#23 0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#24 0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 8 (Thread 0xfffe32fdf080 (LWP 8392) "fieldcraft-work"):
+#0  0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000aaaab732a2b4 in std::sys::sync::futex::unix::futex_wait () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/futex/unix.rs:63
+#2  std::sys::sync::condvar::futex::Condvar::wait_optional_timeout () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/condvar/futex.rs:49
+#3  std::sys::sync::condvar::futex::Condvar::wait () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/condvar/futex.rs:33
+#4  wait<bool> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sync/poison/condvar.rs:128
+#5  sleep<rayon_core::registry::{impl#10}::wait_until_cold::{closure_env#0}> () at src/sleep/mod.rs:187
+#6  0x0000aaaab73299f4 in no_work_found<rayon_core::registry::{impl#10}::wait_until_cold::{closure_env#0}> () at src/sleep/mod.rs:106
+#7  wait_until_cold () at src/registry.rs:806
+#8  0x0000aaaab75105d4 in wait_until<rayon_core::latch::OnceLatch> () at src/registry.rs:775
+#9  wait_until_out_of_work () at src/registry.rs:824
+#10 main_loop () at src/registry.rs:929
+#11 run () at src/registry.rs:50
+#12 0x0000aaaab7514540 in {closure#0} () at src/registry.rs:95
+#13 __rust_begin_short_backtrace<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/backtrace.rs:166
+#14 0x0000aaaab7512918 in {closure#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:70
+#15 call_once<(), std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/panic/unwind_safe.rs:275
+#16 do_call<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:576
+#17 catch_unwind<(), core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:544
+#18 catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panic.rs:359
+#19 {closure#1}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:68
+#20 call_once<std::thread::lifecycle::spawn_unchecked::{closure_env#1}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250
+#21 0x0000aaaab7542978 in alloc::boxed::{impl#31}::call_once<(), (dyn core::ops::function::FnOnce<(), Output=()> + core::marker::Send), alloc::alloc::Global> () at library/alloc/src/boxed.rs:2320
+#22 std::sys::thread::unix::{impl#2}::new::thread_start () at library/std/src/sys/thread/unix.rs:123
+#23 0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#24 0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 7 (Thread 0xfffe327cf080 (LWP 8393) "fieldcraft-work"):
+#0  0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000aaaab732a2b4 in std::sys::sync::futex::unix::futex_wait () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/futex/unix.rs:63
+#2  std::sys::sync::condvar::futex::Condvar::wait_optional_timeout () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/condvar/futex.rs:49
+#3  std::sys::sync::condvar::futex::Condvar::wait () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/condvar/futex.rs:33
+#4  wait<bool> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sync/poison/condvar.rs:128
+#5  sleep<rayon_core::registry::{impl#10}::wait_until_cold::{closure_env#0}> () at src/sleep/mod.rs:187
+#6  0x0000aaaab73299f4 in no_work_found<rayon_core::registry::{impl#10}::wait_until_cold::{closure_env#0}> () at src/sleep/mod.rs:106
+#7  wait_until_cold () at src/registry.rs:806
+#8  0x0000aaaab75105d4 in wait_until<rayon_core::latch::OnceLatch> () at src/registry.rs:775
+#9  wait_until_out_of_work () at src/registry.rs:824
+#10 main_loop () at src/registry.rs:929
+#11 run () at src/registry.rs:50
+#12 0x0000aaaab7514540 in {closure#0} () at src/registry.rs:95
+#13 __rust_begin_short_backtrace<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/backtrace.rs:166
+#14 0x0000aaaab7512918 in {closure#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:70
+#15 call_once<(), std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/panic/unwind_safe.rs:275
+#16 do_call<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:576
+#17 catch_unwind<(), core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:544
+#18 catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panic.rs:359
+#19 {closure#1}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:68
+#20 call_once<std::thread::lifecycle::spawn_unchecked::{closure_env#1}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250
+#21 0x0000aaaab7542978 in alloc::boxed::{impl#31}::call_once<(), (dyn core::ops::function::FnOnce<(), Output=()> + core::marker::Send), alloc::alloc::Global> () at library/alloc/src/boxed.rs:2320
+#22 std::sys::thread::unix::{impl#2}::new::thread_start () at library/std/src/sys/thread/unix.rs:123
+#23 0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#24 0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 6 (Thread 0xfffe31fbf080 (LWP 8394) "fieldcraft-work"):
+#0  0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000aaaab732a2b4 in std::sys::sync::futex::unix::futex_wait () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/futex/unix.rs:63
+#2  std::sys::sync::condvar::futex::Condvar::wait_optional_timeout () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/condvar/futex.rs:49
+#3  std::sys::sync::condvar::futex::Condvar::wait () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/condvar/futex.rs:33
+#4  wait<bool> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sync/poison/condvar.rs:128
+#5  sleep<rayon_core::registry::{impl#10}::wait_until_cold::{closure_env#0}> () at src/sleep/mod.rs:187
+#6  0x0000aaaab73299f4 in no_work_found<rayon_core::registry::{impl#10}::wait_until_cold::{closure_env#0}> () at src/sleep/mod.rs:106
+#7  wait_until_cold () at src/registry.rs:806
+#8  0x0000aaaab75105d4 in wait_until<rayon_core::latch::OnceLatch> () at src/registry.rs:775
+#9  wait_until_out_of_work () at src/registry.rs:824
+#10 main_loop () at src/registry.rs:929
+#11 run () at src/registry.rs:50
+#12 0x0000aaaab7514540 in {closure#0} () at src/registry.rs:95
+#13 __rust_begin_short_backtrace<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/backtrace.rs:166
+#14 0x0000aaaab7512918 in {closure#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:70
+#15 call_once<(), std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/panic/unwind_safe.rs:275
+#16 do_call<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:576
+#17 catch_unwind<(), core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:544
+#18 catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panic.rs:359
+#19 {closure#1}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:68
+#20 call_once<std::thread::lifecycle::spawn_unchecked::{closure_env#1}<rayon_core::registry::{impl#2}::spawn::{closure_env#0}, ()>, ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250
+#21 0x0000aaaab7542978 in alloc::boxed::{impl#31}::call_once<(), (dyn core::ops::function::FnOnce<(), Output=()> + core::marker::Send), alloc::alloc::Global> () at library/alloc/src/boxed.rs:2320
+#22 std::sys::thread::unix::{impl#2}::new::thread_start () at library/std/src/sys/thread/unix.rs:123
+#23 0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#24 0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 5 (Thread 0xffff377ef080 (LWP 8395) "[vkcf] Analysis"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e49f0 in pthread_cond_wait () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576210 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff8188c014 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff81579e38 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#6  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 4 (Thread 0xffff37fff080 (LWP 8396) "[vkrt] Analysis"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e4d20 in pthread_cond_timedwait () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576284 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff81895b74 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff81579e38 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#6  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 3 (Thread 0xffff36fdf080 (LWP 8397) "[vkps] Update"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e4d20 in pthread_cond_timedwait () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576284 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff818776d4 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff81579e38 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#6  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 2 (Thread 0xffff367cf080 (LWP 8398) "odd_even_and_ch"):
+#0  0x0000ffffb35e1d6c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000ffffb35e4d20 in pthread_cond_timedwait () from /lib/aarch64-linux-gnu/libc.so.6
+#2  0x0000ffff81576284 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#3  0x0000ffff819ccbe4 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#4  0x0000ffff819bf8b4 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#5  0x0000ffff81579e38 in ?? () from /usr/local/lib/libnvidia-eglcore.so.595.91.07
+#6  0x0000ffffb35e582c in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+#7  0x0000ffffb364b8dc in ?? () from /lib/aarch64-linux-gnu/libc.so.6
+
+Thread 1 (Thread 0xffffb3833020 (LWP 8313) "verification-47"):
+#0  0x0000ffffb3649764 in syscall () from /lib/aarch64-linux-gnu/libc.so.6
+#1  0x0000aaaab7556940 in std::sys::sync::futex::unix::futex_wait () at library/std/src/sys/sync/futex/unix.rs:63
+#2  std::sys::sync::thread_parking::futex::Parker::park () at library/std/src/sys/sync/thread_parking/futex.rs:55
+#3  std::thread::thread::Thread::park () at library/std/src/thread/thread.rs:121
+#4  std::sync::mpmc::context::Context::wait_until () at library/std/src/sync/mpmc/context.rs:143
+#5  std::sync::mpmc::list::{impl#3}::recv::{closure#1}<test::event::CompletedTest> () at library/std/src/sync/mpmc/list.rs:453
+#6  0x0000aaaab7560ab0 in std::sync::mpmc::context::{impl#0}::with::{closure#0}<std::sync::mpmc::list::{impl#3}::recv::{closure_env#1}<test::event::CompletedTest>, ()> () at library/std/src/sync/mpmc/context.rs:49
+#7  std::sync::mpmc::context::{impl#0}::with::{closure#1}<std::sync::mpmc::list::{impl#3}::recv::{closure_env#1}<test::event::CompletedTest>, ()> () at library/std/src/sync/mpmc/context.rs:57
+#8  std::thread::local::LocalKey::try_with<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, std::sync::mpmc::context::{impl#0}::with::{closure_env#1}<std::sync::mpmc::list::{impl#3}::recv::{closure_env#1}<test::event::CompletedTest>, ()>, ()> () at library/std/src/thread/local.rs:463
+#9  std::sync::mpmc::context::Context::with<std::sync::mpmc::list::{impl#3}::recv::{closure_env#1}<test::event::CompletedTest>, ()> () at library/std/src/sync/mpmc/context.rs:53
+#10 std::sync::mpmc::list::Channel::recv<test::event::CompletedTest> () at library/std/src/sync/mpmc/list.rs:442
+#11 0x0000aaaab756a664 in std::sync::mpmc::Receiver::recv<test::event::CompletedTest> () at library/std/src/sync/mpmc/mod.rs:1025
+#12 std::sync::mpsc::Receiver::recv<test::event::CompletedTest> () at library/std/src/sync/mpsc.rs:890
+#13 test::run_tests<test::console::run_tests_console::{closure_env#2}> () at library/test/src/lib.rs:495
+#14 test::console::run_tests_console () at library/test/src/console.rs:328
+#15 0x0000aaaab755a2f8 in test::test_main_inner<test::test_main_static::{closure_env#0}> () at library/test/src/lib.rs:170
+#16 test::test_main_static () at library/test/src/lib.rs:195
+#17 0x0000aaaab75972ec in call_once<fn(), ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250
+#18 __rust_begin_short_backtrace<fn(), ()> () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/backtrace.rs:166
+#19 0x0000aaaab7597700 in std::rt::lang_start::<()>::{closure#0} () at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/rt.rs:206
+#20 0x0000aaaab753b66c in core::ops::function::impls::{impl#2}::call_once<(), (dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe)> () at library/core/src/ops/function.rs:287
+#21 std::panicking::catch_unwind::do_call<&(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe), i32> () at library/std/src/panicking.rs:576
+#22 std::panicking::catch_unwind<i32, &(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe)> () at library/std/src/panicking.rs:544
+#23 std::panic::catch_unwind<&(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe), i32> () at library/std/src/panic.rs:359
+#24 std::rt::lang_start_internal::{closure#0} () at library/std/src/rt.rs:175
+#25 std::panicking::catch_unwind::do_call<std::rt::lang_start_internal::{closure_env#0}, isize> () at library/std/src/panicking.rs:576
+#26 std::panicking::catch_unwind<isize, std::rt::lang_start_internal::{closure_env#0}> () at library/std/src/panicking.rs:544
+#27 std::panic::catch_unwind<std::rt::lang_start_internal::{closure_env#0}, isize> () at library/std/src/panic.rs:359
+#28 std::rt::lang_start_internal () at library/std/src/rt.rs:171
+#29 0x0000aaaab758c524 in main ()
+[Inferior 1 (process 8313) detached]
