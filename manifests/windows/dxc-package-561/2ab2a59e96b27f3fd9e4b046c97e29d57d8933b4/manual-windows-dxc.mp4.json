@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "agent": "windows-dxc-agent",
+  "branch": "windows/dxc-package-561",
+  "head_sha": "2ab2a59e96b27f3fd9e4b046c97e29d57d8933b4",
+  "name": "manual-windows-dxc.mp4",
+  "bytes": 798432,
+  "sha256": "df8c56156c4a4e018e83de602294eac679a52c3d66a940ae7c95ed5d5a92bcab",
+  "description": "Revised docs-only PR: ordinary Windows zip contains no DXC; user manually installs checksum-verified Microsoft dxcompiler.dll. Actual RTX 4090 DX12 app, single-air-domain physical transient, 5 mm cells, 5824 cells, 180 steps, 45 s. No throughput claim. Supersedes old bundled-package demo at3145551; reproduction is docs/windows-dxc.md.",
+  "submitted_at": "2026-10-23T23:19:02.733484+00:00"
+}
