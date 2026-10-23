@@ -1,0 +1,11 @@
+[
+  {"command":"file.sample","params":{"name":"heat-exchanger"}},
+  {"command":"geometry.open","params":{"path":"coupled-exchanger-plate.solidcraft","model":"keep"}},
+  {"command":"model.units","params":{"system":"mm-t-s-N-MPa","overrides":{"pressure":"Pa","mass_flow":"mg/s"}}},
+  {"command":"solve.exchanger","params":{"name":"Counterflow","backend":"cpu","threads":4}},
+  {"command":"results.slice","params":{"step":"AirFlow","field":"temperature","axis":"z"}},
+  {"command":"results.contour","params":{"field":"temperature","range":{"min":20,"max":50}}},
+  {"command":"results.surface","params":{"show":true}},
+  {"command":"results.streamlines","params":{"show":true}},
+  {"command":"results.frame","params":{"step":"AirFlow","frame":10}}
+]

@@ -1,0 +1,601 @@
+{
+  "solve": {
+    "budget": {
+      "external": [
+        -5.854691731421724e-17,
+        1.48318857196017e-15
+      ],
+      "fluid_storage": [
+        0.024627506211845167,
+        11.474547792030165
+      ],
+      "interface_residual": -2.4984857932564e-11,
+      "into_wall": [
+        -3.6793964789506206,
+        50.038583482920046
+      ],
+      "open": [
+        -3.6547689727387875,
+        61.513131274923595
+      ],
+      "residual": 9.020562075079397e-13,
+      "time": 5.0,
+      "wall_power": 0.0,
+      "wall_storage": 46.3591870039437
+    },
+    "budget_interval": "average rates since previous saved frame; zero at the initial frame",
+    "capacity_owner": "AirFlow",
+    "circuits": [
+      {
+        "backend": "cpu",
+        "cells": 3840,
+        "collision": "regularized",
+        "components_ok": null,
+        "end_time": 5.0,
+        "final_max_speed": 0.001476671971520802,
+        "fluid_cells": 2560,
+        "forces": [
+          {
+            "body": null,
+            "final": [
+              1.1340675141994213e-09,
+              -1.2853670814610997e-06,
+              0.0
+            ],
+            "mean": [
+              1.1340674637699274e-09,
+              -1.2853670815254574e-06,
+              0.0
+            ],
+            "name": "y_min"
+          },
+          {
+            "body": "Separator",
+            "final": [
+              0.0,
+              1.87246883866009e-08,
+              -1.87246883866009e-08
+            ],
+            "mean": [
+              0.0,
+              1.872468838767591e-08,
+              -1.872468838767591e-08
+            ],
+            "name": "F2:start"
+          },
+          {
+            "body": "Separator",
+            "final": [
+              1.145053544454179e-09,
+              1.255936824233351e-06,
+              1.87246883866009e-08
+            ],
+            "mean": [
+              1.1450535435904442e-09,
+              1.2559368243465124e-06,
+              1.872468838767591e-08
+            ],
+            "name": "F2:side:l1"
+          }
+        ],
+        "frames": [
+          0.0,
+          0.5,
+          1.0,
+          1.5,
+          2.0,
+          2.5,
+          3.0,
+          3.5,
+          4.0,
+          4.5,
+          5.0
+        ],
+        "heat": [
+          {
+            "body": "Separator",
+            "final": -3.7031375095665977,
+            "mean": -3.653930900613984,
+            "name": "F2:side:l1"
+          }
+        ],
+        "lattice_velocity": 0.0025,
+        "mach": 0.004330127018922193,
+        "magic": 0.1875,
+        "mass": {
+          "first": 4.800000000003916e-11,
+          "last": 4.819871659202674e-11,
+          "relative_change": 0.004139928999738097
+        },
+        "max_speed": 1.476671971520802,
+        "max_speed_time": 5.0,
+        "ports": {
+          "faces": [
+            {
+              "area": 3.9999999999999947,
+              "face": "x_min",
+              "inflow": {
+                "mass_flow": 0.004800000227987771,
+                "pressure": 0.0005727617681259281,
+                "sensible_heat": 0.09600000455975527,
+                "temperature": 19.999999999999943,
+                "volume_flow": 4.00000018998981
+              },
+              "outflow": {
+                "mass_flow": 0.0,
+                "pressure": null,
+                "sensible_heat": 0.0,
+                "temperature": null,
+                "volume_flow": 0.0
+              }
+            },
+            {
+              "area": 3.9999999999999947,
+              "face": "x_max",
+              "inflow": {
+                "mass_flow": 0.0,
+                "pressure": null,
+                "sensible_heat": 0.0,
+                "temperature": null,
+                "volume_flow": 0.0
+              },
+              "outflow": {
+                "mass_flow": 0.004842961882241075,
+                "pressure": -2.6065018310869734e-18,
+                "sensible_heat": 0.23334266392588693,
+                "temperature": 48.18180890119,
+                "volume_flow": 4.035801568534229
+              }
+            }
+          ],
+          "heat_convention": "advective sensible heat relative to temperature_reference; excludes port conduction, storage, wall heat and sources",
+          "mass_convention": "reference density (incompressible)",
+          "net_mass_flow": 4.2961654253303454e-05,
+          "net_sensible_heat": 0.13734265936613166,
+          "net_volume_flow": 0.035801378544419546,
+          "positive": "outward",
+          "source": "saved boundary-layer cell fields; separate inflow and outflow, flow-weighted temperature and static gauge pressure",
+          "temperature_reference": 0.0,
+          "units": {
+            "area": "mm\u00b2",
+            "mass_flow": "mg/s",
+            "power": "mW",
+            "pressure": "Pa",
+            "temperature": "\u00b0C",
+            "volume_flow": "mm\u00b3/s"
+          }
+        },
+        "solids": [
+          {
+            "body": "Separator",
+            "cells": 1280,
+            "heat_to_fluid": {
+              "final": 3.7031375095665977,
+              "mean": 3.653930900613984
+            },
+            "limit": null,
+            "margin": null,
+            "ok": null,
+            "peak": 49.874149322509766,
+            "peak_time": 5.0,
+            "power": 0.0,
+            "temperature": {
+              "max": 49.874149322509766,
+              "mean": 45.74792356491662,
+              "min": 43.56890869140625
+            }
+          }
+        ],
+        "step": "AirFlow",
+        "steps": 8000,
+        "stop": null,
+        "tau": 0.9500000000000001,
+        "tau_minus": 0.9166666666666666,
+        "tau_thermal": 1.3000000000000003,
+        "temperature": {
+          "max": 48.86973571777344,
+          "min": 20.0
+        },
+        "time_step": 0.000625,
+        "units": {
+          "force": "N",
+          "mass": "t",
+          "power": "mW",
+          "temperature": "\u00b0C",
+          "time": "s",
+          "velocity": "mm/s"
+        },
+        "velocity_scale": 1.0,
+        "warnings": [
+          "the density varies by 1.2% in circuit `AirFlow`: weak compressibility is visible; reduce the common time step or refine the grids"
+        ],
+        "zones": []
+      },
+      {
+        "backend": "cpu",
+        "cells": 3840,
+        "collision": "regularized",
+        "components_ok": null,
+        "end_time": 5.0,
+        "final_max_speed": 0.0007992875873469683,
+        "fluid_cells": 2560,
+        "forces": [
+          {
+            "body": null,
+            "final": [
+              -3.446249900541321e-08,
+              0.0010668391675301445,
+              0.0
+            ],
+            "mean": [
+              -3.446167939067139e-08,
+              0.0010668391643825304,
+              0.0
+            ],
+            "name": "y_max"
+          },
+          {
+            "body": "Separator",
+            "final": [
+              0.0,
+              -2.000343211620736e-05,
+              -2.000343211620736e-05
+            ],
+            "mean": [
+              0.0,
+              -2.0003432059746956e-05,
+              -2.0003432059746956e-05
+            ],
+            "name": "F2:start"
+          },
+          {
+            "body": "Separator",
+            "final": [
+              -3.4766741588422304e-08,
+              -0.001031273952972481,
+              1.3336269657192313e-05
+            ],
+            "mean": [
+              -3.4765955232037665e-08,
+              -0.0010312739499995927,
+              1.333626961160894e-05
+            ],
+            "name": "F2:side:l3"
+          },
+          {
+            "body": "Separator",
+            "final": [
+              0.0,
+              -6.667162459015053e-06,
+              6.667162459015053e-06
+            ],
+            "mean": [
+              0.0,
+              -6.6671624481380185e-06,
+              6.6671624481380185e-06
+            ],
+            "name": "F2:top"
+          }
+        ],
+        "frames": [
+          0.0,
+          0.5,
+          1.0,
+          1.5,
+          2.0,
+          2.5,
+          3.0,
+          3.5,
+          4.0,
+          4.5,
+          5.0
+        ],
+        "heat": [
+          {
+            "body": "Separator",
+            "final": 47.02940312304236,
+            "mean": 52.46467708631216,
+            "name": "F2:side:l3"
+          }
+        ],
+        "lattice_velocity": 0.00125,
+        "mach": 0.0021650635094610966,
+        "magic": 0.1875,
+        "mass": {
+          "first": 4.000000000003263e-08,
+          "last": 4.000623959880972e-08,
+          "relative_change": 0.00015598996942697323
+        },
+        "max_speed": 0.879816783970539,
+        "max_speed_time": 1.0,
+        "ports": {
+          "faces": [
+            {
+              "area": 3.9999999999999947,
+              "face": "x_min",
+              "inflow": {
+                "mass_flow": 0.0,
+                "pressure": null,
+                "sensible_heat": 0.0,
+                "temperature": null,
+                "volume_flow": 0.0
+              },
+              "outflow": {
+                "mass_flow": 2.0009970903629437,
+                "pressure": -1.5377242822459007e-14,
+                "sensible_heat": 390.77009490089915,
+                "temperature": 46.49706850350918,
+                "volume_flow": 2.0009970903629437
+              }
+            },
+            {
+              "area": 3.9999999999999947,
+              "face": "x_max",
+              "inflow": {
+                "mass_flow": 2.000000094994905,
+                "pressure": 0.017468981910496926,
+                "sensible_heat": 420.000019948929,
+                "temperature": 49.999999999999886,
+                "volume_flow": 2.000000094994905
+              },
+              "outflow": {
+                "mass_flow": 0.0,
+                "pressure": null,
+                "sensible_heat": 0.0,
+                "temperature": null,
+                "volume_flow": 0.0
+              }
+            }
+          ],
+          "heat_convention": "advective sensible heat relative to temperature_reference; excludes port conduction, storage, wall heat and sources",
+          "mass_convention": "reference density (incompressible)",
+          "net_mass_flow": 0.0009969953680389694,
+          "net_sensible_heat": -29.22992504802985,
+          "net_volume_flow": 0.0009969953680389694,
+          "positive": "outward",
+          "source": "saved boundary-layer cell fields; separate inflow and outflow, flow-weighted temperature and static gauge pressure",
+          "temperature_reference": 0.0,
+          "units": {
+            "area": "mm\u00b2",
+            "mass_flow": "mg/s",
+            "power": "mW",
+            "pressure": "Pa",
+            "temperature": "\u00b0C",
+            "volume_flow": "mm\u00b3/s"
+          }
+        },
+        "solids": [
+          {
+            "body": "Separator",
+            "cells": 1280,
+            "heat_to_fluid": {
+              "final": -47.02940312304236,
+              "mean": -52.46467708631216
+            },
+            "limit": null,
+            "margin": null,
+            "ok": null,
+            "peak": 49.874149322509766,
+            "peak_time": 5.0,
+            "power": 0.0,
+            "temperature": {
+              "max": 49.874149322509766,
+              "mean": 45.74792356491662,
+              "min": 43.56890869140625
+            }
+          }
+        ],
+        "step": "CoolantFlow",
+        "steps": 8000,
+        "stop": null,
+        "tau": 0.53,
+        "tau_minus": 6.749999999999995,
+        "tau_thermal": 0.5057142857142857,
+        "temperature": {
+          "max": 50.25035095214844,
+          "min": 43.79151153564453
+        },
+        "time_step": 0.000625,
+        "units": {
+          "force": "N",
+          "mass": "t",
+          "power": "mW",
+          "temperature": "\u00b0C",
+          "time": "s",
+          "velocity": "mm/s"
+        },
+        "velocity_scale": 0.5,
+        "warnings": [],
+        "zones": []
+      }
+    ],
+    "frame": 10,
+    "memory": {
+      "bound_bytes": 33884680192,
+      "cells": 7680,
+      "coupling_bytes": 2019584,
+      "frame_bytes": 1689600,
+      "preparation_bytes": 8059136
+    },
+    "mode": "physical_transient",
+    "open_exchange_convention": "net scalar energy inserted by discrete open-boundary resets; includes advection and conduction; port diagnostics report directional advective transport separately",
+    "stale": false,
+    "steps": [
+      "AirFlow",
+      "CoolantFlow"
+    ],
+    "system": "Counterflow",
+    "units": {
+      "power": "mW",
+      "time": "s"
+    },
+    "wall": "Separator",
+    "wall_cells": 1280
+  },
+  "reopened": {
+    "budget": {
+      "external": [
+        -5.854691731421724e-17,
+        1.48318857196017e-15
+      ],
+      "fluid_storage": [
+        0.024627506211845167,
+        11.474547792030165
+      ],
+      "interface_residual": -2.4984857932564e-11,
+      "into_wall": [
+        -3.6793964789506206,
+        50.038583482920046
+      ],
+      "open": [
+        -3.6547689727387875,
+        61.513131274923595
+      ],
+      "residual": 9.020562075079397e-13,
+      "time": 5.0,
+      "wall_power": 0.0,
+      "wall_storage": 46.3591870039437
+    },
+    "budget_interval": "average rates since previous saved frame; zero at the initial frame",
+    "capacity_owner": "AirFlow",
+    "circuits": [
+      {
+        "ports": {
+          "faces": [
+            {
+              "area": 3.9999999999999947,
+              "face": "x_min",
+              "inflow": {
+                "mass_flow": 0.004800000227987771,
+                "pressure": 0.0005727617681259281,
+                "sensible_heat": 0.09600000455975527,
+                "temperature": 19.999999999999943,
+                "volume_flow": 4.00000018998981
+              },
+              "outflow": {
+                "mass_flow": 0.0,
+                "pressure": null,
+                "sensible_heat": 0.0,
+                "temperature": null,
+                "volume_flow": 0.0
+              }
+            },
+            {
+              "area": 3.9999999999999947,
+              "face": "x_max",
+              "inflow": {
+                "mass_flow": 0.0,
+                "pressure": null,
+                "sensible_heat": 0.0,
+                "temperature": null,
+                "volume_flow": 0.0
+              },
+              "outflow": {
+                "mass_flow": 0.004842961882241075,
+                "pressure": -2.6065018310869734e-18,
+                "sensible_heat": 0.23334266392588693,
+                "temperature": 48.18180890119,
+                "volume_flow": 4.035801568534229
+              }
+            }
+          ],
+          "heat_convention": "advective sensible heat relative to temperature_reference; excludes port conduction, storage, wall heat and sources",
+          "mass_convention": "reference density (incompressible)",
+          "net_mass_flow": 4.2961654253303454e-05,
+          "net_sensible_heat": 0.13734265936613166,
+          "net_volume_flow": 0.035801378544419546,
+          "positive": "outward",
+          "source": "saved boundary-layer cell fields; separate inflow and outflow, flow-weighted temperature and static gauge pressure",
+          "temperature_reference": 0.0,
+          "units": {
+            "area": "mm\u00b2",
+            "mass_flow": "mg/s",
+            "power": "mW",
+            "pressure": "Pa",
+            "temperature": "\u00b0C",
+            "volume_flow": "mm\u00b3/s"
+          }
+        },
+        "step": "AirFlow"
+      },
+      {
+        "ports": {
+          "faces": [
+            {
+              "area": 3.9999999999999947,
+              "face": "x_min",
+              "inflow": {
+                "mass_flow": 0.0,
+                "pressure": null,
+                "sensible_heat": 0.0,
+                "temperature": null,
+                "volume_flow": 0.0
+              },
+              "outflow": {
+                "mass_flow": 2.0009970903629437,
+                "pressure": -1.5377242822459007e-14,
+                "sensible_heat": 390.77009490089915,
+                "temperature": 46.49706850350918,
+                "volume_flow": 2.0009970903629437
+              }
+            },
+            {
+              "area": 3.9999999999999947,
+              "face": "x_max",
+              "inflow": {
+                "mass_flow": 2.000000094994905,
+                "pressure": 0.017468981910496926,
+                "sensible_heat": 420.000019948929,
+                "temperature": 49.999999999999886,
+                "volume_flow": 2.000000094994905
+              },
+              "outflow": {
+                "mass_flow": 0.0,
+                "pressure": null,
+                "sensible_heat": 0.0,
+                "temperature": null,
+                "volume_flow": 0.0
+              }
+            }
+          ],
+          "heat_convention": "advective sensible heat relative to temperature_reference; excludes port conduction, storage, wall heat and sources",
+          "mass_convention": "reference density (incompressible)",
+          "net_mass_flow": 0.0009969953680389694,
+          "net_sensible_heat": -29.22992504802985,
+          "net_volume_flow": 0.0009969953680389694,
+          "positive": "outward",
+          "source": "saved boundary-layer cell fields; separate inflow and outflow, flow-weighted temperature and static gauge pressure",
+          "temperature_reference": 0.0,
+          "units": {
+            "area": "mm\u00b2",
+            "mass_flow": "mg/s",
+            "power": "mW",
+            "pressure": "Pa",
+            "temperature": "\u00b0C",
+            "volume_flow": "mm\u00b3/s"
+          }
+        },
+        "step": "CoolantFlow"
+      }
+    ],
+    "frame": 10,
+    "mode": "physical_transient",
+    "open_exchange_convention": "net scalar energy inserted by discrete open-boundary resets; includes advection and conduction; port diagnostics report directional advective transport separately",
+    "stale": false,
+    "steps": [
+      "AirFlow",
+      "CoolantFlow"
+    ],
+    "system": "Counterflow",
+    "units": {
+      "power": "mW",
+      "time": "s"
+    },
+    "wall": "Separator",
+    "wall_cells": 1280
+  },
+  "runtime_seconds": 6.9504404999897815,
+  "source_commit": "098f2f7e08ec4d4629f659b50d8e7f042f845250",
+  "hardware": "AMD Ryzen 9 7950X, Windows, CPU solve with four threads; RTX 4090 Vulkan viewport",
+  "media_delivery": "GitHub PR attachment upload pending; recording, still and solved project preserved outside git"
+}

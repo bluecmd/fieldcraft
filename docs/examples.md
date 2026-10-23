@@ -379,3 +379,14 @@ AIO's numbers: its run is 10¹¹ cell updates, hours on a CPU; a heavy test solv
 
 **Regenerate:** `python3 tools/cooling/make.py aio --backend gpu` (the CPU solver also runs it,
 far more slowly at 5 M cells).
+
+## Coupled heat exchanger (`heat-exchanger`)
+
+Air and coolant counterflow on either side of one steel separator. Solve advances
+both CPU circuits together for a five-second physical transient with a single
+wall capacity. Results let you switch circuits and inspect their common wall
+budget alongside the independent port reports.
+
+This short demonstration is the first coupled path toward #700; steady stopping,
+refinement and NTU acceptance remain pending. See [the recorded app workflow,
+solved project and verification details](coupled-exchanger.md).

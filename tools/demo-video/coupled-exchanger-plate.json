@@ -1,0 +1,6 @@
+{"commands":[
+  {"command":"sketch.create","params":{"plane":"XY","name":"Plate"}},
+  {"command":"sketch.line","params":{"points":[[0,2],[10,2],[10,3],[0,3]],"closed":true}},
+  {"command":"sketch.finish","params":{}},
+  {"command":"solid.extrude","params":{"distance":2,"body_name":"Separator"}}
+]}
