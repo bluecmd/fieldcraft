@@ -1,0 +1,179 @@
+{
+  "number": 709,
+  "branch": "fix/legend-fit-610",
+  "head_sha": "252fa873b5ed4cfc1a0e5714f56806b47b9a9f00",
+  "state": "open",
+  "merged": false,
+  "draft": false,
+  "title": "Results: keep dense legends readable above navigation",
+  "body": "## What and why\n\nCloses #610. A clamped 24-band Cantilever plot had a 507-point legend in a 406-point viewport at 960 by 600, hiding its lowest bands and Max/Min links. The legend now keeps its full-size title, metadata and clickable extrema, and fits every colour swatch into the available space above navigation. Short windows show fewer numeric ticks at readable spacing. The over-limit swatch keeps both the true and clamped maxima labelled. Expanding the window restores the normal swatch spacing and tick density without changing the result, range or selected band count.\n\n## Demonstration\n\nA 32-second native app recording shows the failure, the corrected 960 by 600 layout, clicks on Max (node 23) and Min (node 127), expansion to 1400 by 900, and a return to the smaller window. The original Cantilever sample is a small-strain linear-elastic static solve, with 24 stress bands clamped to 0–10 MPa and an extra over-limit colour. This is a UI resize demonstration, not a physical transient. The true maximum (151.0 MPa) and clamp maximum (10.00 MPa) stay distinct. The small legend is 316 points tall; the larger view restores its natural 507-point height.\n\nGitHub video/still attachment upload is pending. The recording, native stills and solved project are preserved outside git for attachment after publication. No demo raster or video is present in any feature-branch commit. Original commands, reproduction notes, and the small layout/probe report are in `tools/demo-video/legend-fit-610*` and `docs/legend-layout.md`.\n\n## Validation\n\n- `cargo build -p fieldcraft`: passed; native app demonstrated on Windows with the NVIDIA GeForce RTX 4090 Vulkan viewport.\n- `cargo test -p fieldcraft-ui-egui`: 188 tests and 3 doctests passed, with no ignored or filtered tests; rerun on the submitted head after updating against current develop.\n- `cargo check -p fieldcraft-ui-egui`: passed.\n- `cargo clippy -p fieldcraft-ui-egui --all-targets -- -D warnings`: passed.\n- `cargo fmt --all -- --check` and `git diff --check`: passed.\n- Regression coverage checks small/large/small resizing, selection/navigation clearance, unchanged band count and over-limit colour, full-size Max/Min targets, actual focus/probe behavior, and non-overlapping numeric tick glyphs with and without a stale-result warning.\n\n## Known limitations\n\nNative sizes below the supported 960 by 600 minimum and other operating systems were not tested. No solver numerics or commands changed; solver oracles and the full workspace gate were not run locally. GitHub CI remains responsible for the upstream gate. The media receipt remains pending until GitHub attachments are actually uploaded.\n",
+  "updated_at": "2026-10-23T21:00:32Z",
+  "url": "https://github.com/tangency-labs/fieldcraft/pull/709",
+  "comments": [],
+  "reviews": [],
+  "inline_comments": [],
+  "checks": [
+    {
+      "id": 120654123187,
+      "name": "cargo xtask ci",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-23T21:01:05Z",
+      "completed_at": "2026-10-23T21:05:46Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40023518993/job/120654123187",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 1,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120654123187/annotations"
+      },
+      "log_truncated": false,
+      "log": "feedback/logs/fix/legend-fit-610/252fa873b5ed4cfc1a0e5714f56806b47b9a9f00/40023518993-120654123187.txt"
+    },
+    {
+      "id": 120654123082,
+      "name": "cargo xtask test --heavy",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-23T21:01:04Z",
+      "completed_at": "2026-10-23T21:22:53Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40023518993/job/120654123082",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120654123082/annotations"
+      }
+    },
+    {
+      "id": 120654122988,
+      "name": "cargo xtask oracle",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-23T21:01:04Z",
+      "completed_at": "2026-10-23T21:06:33Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40023518993/job/120654122988",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120654122988/annotations"
+      }
+    },
+    {
+      "id": 120653838533,
+      "name": "cargo xtask oracle (macOS)",
+      "status": "completed",
+      "conclusion": "skipped",
+      "started_at": "2026-10-23T21:00:17Z",
+      "completed_at": "2026-10-23T21:00:17Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40023518993/job/120653838533",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120653838533/annotations"
+      }
+    },
+    {
+      "id": 120653837955,
+      "name": "Claim bot",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-23T21:00:29Z",
+      "completed_at": "2026-10-23T21:00:38Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40023518654/job/120653837955",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120653837955/annotations"
+      }
+    },
+    {
+      "id": 120653837584,
+      "name": "Windows app tests",
+      "status": "completed",
+      "conclusion": "skipped",
+      "started_at": "2026-10-23T21:00:17Z",
+      "completed_at": "2026-10-23T21:00:17Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40023518993/job/120653837584",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120653837584/annotations"
+      }
+    },
+    {
+      "id": 120653837237,
+      "name": "Triage bot",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-23T21:00:26Z",
+      "completed_at": "2026-10-23T21:00:36Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40023518905/job/120653837237",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120653837237/annotations"
+      }
+    },
+    {
+      "id": 120653835898,
+      "name": "Claim and triage bot tests",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-23T21:00:26Z",
+      "completed_at": "2026-10-23T21:00:33Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40023518993/job/120653835898",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120653835898/annotations"
+      }
+    },
+    {
+      "id": 120653835872,
+      "name": "Dependency licences, advisories and sources",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-23T21:00:26Z",
+      "completed_at": "2026-10-23T21:02:57Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40023518993/job/120653835872",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120653835872/annotations"
+      }
+    },
+    {
+      "id": 120653835614,
+      "name": "Plan (affected crates)",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-23T21:00:25Z",
+      "completed_at": "2026-10-23T21:00:56Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40023518993/job/120653835614",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120653835614/annotations"
+      }
+    }
+  ]
+}
