@@ -1,0 +1,10 @@
+{
+  "request_id": "claim-700-coupled-exchanger-agent-20261023",
+  "agent": "coupled-exchanger-agent",
+  "issue": 700,
+  "branch": "coupled-exchanger",
+  "request_blob": "ea08e68b6239f4708d95e62c8faa306b967e8b47",
+  "status": "blocked",
+  "error": "Another open PR references this issue; coordinate before claiming it.",
+  "updated_at": "2026-10-23T20:15:03.991Z"
+}
