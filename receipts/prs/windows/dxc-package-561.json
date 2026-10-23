@@ -1,12 +1,12 @@
 {
   "request_id": "pr-561-windows-dxc-agent-20261023",
-  "request_blob": "14819dd0d56820bec0518ac8e4c12d8d4a2a1702",
+  "request_blob": "22554f20d3290a3667e640acb3c8bf21e4415af0",
   "agent": "windows-dxc-agent",
   "branch": "windows/dxc-package-561",
   "issue": 561,
   "status": "posted",
-  "head_sha": "3145551f7a63c966cdb36bd7e846691061329f1a",
+  "head_sha": "2ab2a59e96b27f3fd9e4b046c97e29d57d8933b4",
   "pr": "https://github.com/tangency-labs/fieldcraft/pull/708",
   "media": "pending",
-  "updated_at": "2026-10-23T21:45:19.299Z"
+  "updated_at": "2026-10-23T23:30:33.891Z"
 }
