@@ -2,7 +2,11 @@
 
 This is the proposed minimum for [#700](https://github.com/tangency-labs/Fieldcraft/issues/700),
 under [release acceptance #697](https://github.com/tangency-labs/Fieldcraft/issues/697).
-It specifies work still to implement. The existing `cooling-aio` is an air-side study with a held
+It specifies the release acceptance target. A first CPU coupling implementation now provides
+bounded **physical transients** through one shared wall, common budgets, both circuit results
+and save/reopen ([implementation and demonstration](../coupled-exchanger.md)). Steady acceptance,
+the prescribed-conductance effectiveness reference and the refined planar case below remain
+to verify; this first implementation does not close #700. The existing `cooling-aio` is an air-side study with a held
 radiator temperature. Two domain definitions and two independent solves do not exchange heat.
 
 ## First coupled case
@@ -60,10 +64,13 @@ iteration, manual flux handoff, duplicate solid solve or hidden relaxation is pe
 use relaxation factor 1 and physical heat capacities. Any later under-relaxation must preserve
 the equal/opposite transferred energy, report its factor, and pass a tighter-tolerance study.
 
-The first public support is **CPU + CPU, steady state only**. Reject transient requests, GPU
-and mixed backends by name until verified. Iteration playback is labelled convergence toward
-steady state. Accelerated solid capacity is disabled initially; if added later it is saved and
-labelled, and is never presented as a physical warm-up.
+The first implementation is **CPU + CPU, bounded physical transients**, verified by closed
+two-fluid/wall energy conservation and equivalence to the existing single-domain CHT step.
+This revises the original proposal to start with steady-only runs: verifying real capacity
+first makes ownership and energy storage directly testable. It rejects per-circuit steady
+rules, accelerated capacity, GPU and mixed backends. The release steady workflow must add the
+joint stopping criteria below before reporting convergence. Later acceleration must be saved
+and labelled, and must never be presented as a physical warm-up.
 
 ## Stop rules, budgets and reference hierarchy
 

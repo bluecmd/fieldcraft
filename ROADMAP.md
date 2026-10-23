@@ -20,6 +20,13 @@ The capability checklist is [docs/parity.md](docs/parity.md). Beyond the pre-pro
 linear solver come our own explicit, CFD (lattice Boltzmann) and fluid–structure solvers (M10–M14;
 methods and papers in [docs/solvers/literature.md](docs/solvers/literature.md)).
 
+0.7.5 heat exchanger progress (#700): a first CPU pair of fluid lattices now exchanges heat
+through one conducting wall, with physical capacity/source counted once, joint energy budgets,
+named circuit views and grouped save/reopen. The original short counterflow sample and
+[in-app demonstration](docs/coupled-exchanger.md) exercise the normal commands. This is a
+bounded transient path: joint steady stopping, effectiveness/reference refinement and release
+validation remain to complete. GPU/mixed backends and accelerated wall capacity are refused.
+
 Order (revised 2026-10-13): one end-to-end slice first — *SolidCraft part → named faces → sets →
 mesh → material and section → BCs and loads → static and frequency steps → Abaqus, Nastran and
 LS-DYNA decks and our own solve → contour plot* — on tet meshes, so every hex mesher lands in a

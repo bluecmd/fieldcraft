@@ -45,6 +45,29 @@ pub const SET_RESOLVE: &[Field] = existing!("Set", C::Set);
 
 // ---- Model definitions ----
 
+pub const EXCHANGER: &[Field] = &[
+    NAME,
+    reference("first", "First circuit step", C::Step)
+        .req()
+        .help("The first existing fluid step; its circuit owns the shared wall capacity and power."),
+    reference("second", "Second circuit step", C::Step).req().help("The second existing fluid step; its fluid material remains independent."),
+    reference("wall", "Shared wall body", C::Body).req().help("The same complete conducting separator body in both domains."),
+    num("initial_temperature", "Initial wall temperature", D::Temperature).req().help("One physical wall state shared by both circuits."),
+];
+pub const EXCHANGER_NAME: &[Field] = &[text("name", "Heat exchanger").req().help("The coupled-system definition to remove.")];
+pub const EXCHANGER_SOLVE: &[Field] = &[
+    text("name", "Heat exchanger").help("The only exchanger when empty."),
+    choice("backend", "Backend", &[("cpu", "CPU"), ("gpu", "GPU")])
+        .hint("CPU")
+        .help("The initial shared-wall implementation supports CPU + CPU only."),
+    int("threads", "Threads", 1, 256).hint("the session's").help("CPU threads; fixed operation order keeps the result identical."),
+    flag("estimate", "Estimate only").help("Combined preparation, coupling and result-frame upper bound before constructing either lattice."),
+];
+pub const EXCHANGER_RESULTS: &[Field] = &[
+    text("name", "Heat exchanger").help("The exchanger of the displayed circuit when empty."),
+    int("frame", "Saved frame", 0, 1000).hint("the displayed frame").help("The common saved frame whose budget and both circuits' ports to inspect."),
+];
+
 pub const SET: &[Field] = &[
     NAME,
     rows(
@@ -2178,6 +2201,7 @@ pub const SAMPLE: &[Field] = &[choice(
         ("rubber-seal", "Rubber seal"),
         ("flow-past", "Flow past a bracket"),
         ("heated-flow", "Heated flow past a bracket"),
+        ("heat-exchanger", "Two-fluid heat exchanger"),
         ("cooling-heat-sink", "Heat sink in forced air"),
         ("cooling-enclosure", "Sealed enclosure cooling"),
         ("cooling-aio", "AIO cooler radiator"),
@@ -2597,6 +2621,7 @@ mod tests {
         "FIELDCRAFT_CRASH_TEST",
         "no relaxation field",
         "no saved view",
+        "no saved coupled exchanger result",
         "no render",
     ];
 

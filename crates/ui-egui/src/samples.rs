@@ -21,6 +21,7 @@ const THUMBNAILS: &[(&str, &[u8])] = &[
     ("bracket-hex", include_bytes!("../thumbnails/bracket-hex.png")),
     ("flow-past", include_bytes!("../thumbnails/flow-past.png")),
     ("heated-flow", include_bytes!("../thumbnails/heated-flow.png")),
+    ("heat-exchanger", include_bytes!("../thumbnails/heat-exchanger.png")),
     ("cooling-heat-sink", include_bytes!("../thumbnails/cooling-heat-sink.png")),
     ("cooling-enclosure", include_bytes!("../thumbnails/cooling-enclosure.png")),
     ("cooling-aio", include_bytes!("../thumbnails/cooling-aio.png")),

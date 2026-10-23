@@ -13,6 +13,15 @@ SolidCraft B-rep ──tessellate──▶ boundary surface ──▶ volume mes
 
 ## Crates and layers
 
+The first two-fluid CPU path (`lbm::coupled`, `coupled_run`) orchestrates two ordinary fluid
+steps through one `SolidHeat` owner. Interfaces convert their affine heat terms through
+joules into that owner's units; it advances once and supplies the effective wall temperature
+to both incoming scalar populations. Circuit momentum/material scales remain independent.
+`model.exchanger.*` explicitly pairs the steps, `solve.exchanger`/`solve.run` advance them
+together, and `results.exchanger` inspects immutable common budgets. Ordinary fluid frame
+views identify each circuit by its existing step name. Kind-6 result envelopes retain the
+pair identity/budgets without changing kind-4/5 payloads. See [coupled-exchanger.md](coupled-exchanger.md).
+
 `cargo xtask layers` enforces the table in `xtask/src/layers.rs`: a crate may depend only on
 crates in strictly lower layers.
 

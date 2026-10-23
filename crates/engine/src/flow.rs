@@ -380,7 +380,7 @@ pub fn plot_with_surfaces(
     {
         // An obstacle face held at a temperature is drawn at it: sampling the fluid beside it
         // would mix in the cooler cells further out.
-        let held = held_temperatures(session, r, base, bodies);
+        let held = surface_temperatures(session, r, view.pick(), base, bodies);
         if held.iter().any(Option::is_some) {
             if let Some(c) = &mut out.contour {
                 // A held face beyond the fluid's range is the extreme: the legend, its Max/Min
@@ -420,12 +420,43 @@ pub fn plot_with_surfaces(
     Ok(out)
 }
 
-/// Per displayed surface triangle, the temperature its obstacle face is held at, when the step's
-/// domain holds that face at one and the result is of the current model.
-fn held_temperatures(session: &crate::Session, r: &FluidResult, base: &fieldcraft_render::DisplayMesh, bodies: &[&str]) -> Vec<Option<f64>> {
+/// Held faces use their prescribed temperature; conducting bodies use the saved wall field,
+/// averaged over each displayed triangle's vertices. Sampling only that body's sorted cells
+/// prevents fluid temperatures or another solid from colouring its surface.
+fn surface_temperatures(
+    session: &crate::Session,
+    r: &FluidResult,
+    pick: Pick,
+    base: &fieldcraft_render::DisplayMesh,
+    bodies: &[&str],
+) -> Vec<Option<f64>> {
     let faces = held_faces(session, r);
     let held: std::collections::BTreeMap<_, _> = faces.iter().map(|h| ((h.body.as_str(), h.index), h.value)).collect();
-    base.surface_tris.iter().map(|t| bodies.get(t.body as usize).and_then(|name| held.get(&(*name, t.face)).copied())).collect()
+    let solids: std::collections::BTreeMap<&str, &[u32]> = r.solids.iter().map(|s| (s.body.as_str(), s.cells.as_slice())).collect();
+    let frame = frame_index(r, pick).ok().and_then(|k| r.frames.get(k));
+    let grid = grid(r);
+    base.surface_tris
+        .iter()
+        .map(|t| {
+            let body = *bodies.get(t.body as usize)?;
+            if let Some(value) = held.get(&(body, t.face)) {
+                return Some(*value);
+            }
+            let cells = *solids.get(body)?;
+            let frame = frame?;
+            let values = t.p.map(|p| {
+                flow::sample_with(
+                    &grid,
+                    |cell| {
+                        cells.binary_search(&(cell as u32)).ok()?;
+                        frame.temperature.get(cell).map(|v| fieldcraft_model::units::kelvin_from(f64::from(*v), r.temperature_reference))
+                    },
+                    p,
+                )
+            });
+            values.iter().all(|v| v.is_finite()).then(|| values.iter().sum::<f64>() / 3.0)
+        })
+        .collect()
 }
 
 /// An obstacle face the step's fluid domain holds at a temperature.
@@ -614,6 +645,7 @@ pub(crate) mod tests {
             tau_thermal: None,
         };
         FluidResult {
+            coupling: None,
             port_properties: None,
             step: "Flow".into(),
             grid,

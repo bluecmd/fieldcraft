@@ -152,7 +152,7 @@ u32 steps
 steps × { u64 length, step name (UTF-8),
           32 bytes: SHA-256 of the definition it was solved from,
           u8 kind (0 static, 1 frequency, 2 heat transfer, 3 explicit dynamic,
-                   4 legacy fluid, 5 fluid with port properties),
+                   4 legacy fluid, 5 fluid with port properties, 6 coupled fluid),
           u64 length, the result }                                     names ascending
 ```
 
@@ -169,6 +169,13 @@ an optional value and before each field of a structure, a `u32` before a variant
 follows the order of the solvers' result types, so it has a version of its own in the magic: a
 change to those types is a new version. A file whose results are of another version opens without
 them, with a warning to solve again: results are what solving gives again, the definition is not.
+Kind 6 wraps the same fluid payload, optional solve-time port properties and a common coupled
+solve descriptor: system, both circuit step names, shared wall identity, initial temperature,
+and the common budget at each saved frame. Both records must be present with matching
+descriptors; they retain independently scaled circuit fields. The first circuit owns the
+wall capacity and power; the second includes its temperatures for display. These results
+can be reopened without solving. An unknown kind does not change the model definition.
+
 Kind 5 wraps the unchanged kind-4 fluid payload followed by optional solve-time port properties
 (density, optional specific heat). Kind 4 remains readable and has no port properties: mass and
 sensible-heat transport are unavailable, rather than inferred from an edited material. Adding a

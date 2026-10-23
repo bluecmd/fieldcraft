@@ -20,6 +20,7 @@ use fieldcraft_model::units::{DisplaySystem, Preset, Quantity, Typed};
 use serde_json::{Value, json};
 
 mod cooling;
+mod exchanger;
 mod heated_flow;
 
 /// A sample the app offers (Help › Samples, the empty viewport, `file.sample`, `--sample NAME`).
@@ -103,6 +104,14 @@ pub const SAMPLES: &[Sample] = &[
         design: Some(UPRIGHT_BRACKET),
         prepare: None,
         script: heated_flow::script,
+    },
+    Sample {
+        name: "heat-exchanger",
+        label: "Two-Fluid Heat Exchanger",
+        about: "Air and coolant counterflow through a shared conducting separator: coupled CPU transient, both circuit results and energy budget",
+        design: Some(exchanger::DESIGN),
+        prepare: None,
+        script: exchanger::script,
     },
     Sample {
         name: "cooling-heat-sink",

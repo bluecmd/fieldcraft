@@ -548,7 +548,7 @@ pub static CATALOGUE: &[Capability] = &[
         Loads,
         "Flow",
         "The box of fluid cells, its fluid, and the obstacle bodies voxelised from their face-tagged surfaces",
-        &["model.fluid_domain.edit", "model.fluid_domain.delete"],
+        &["model.fluid_domain.edit", "model.fluid_domain.delete", "model.exchanger.create", "model.exchanger.edit", "model.exchanger.delete"],
     ),
     ready_more(
         "model.fluid_domain.boundary",
@@ -663,7 +663,7 @@ pub static CATALOGUE: &[Capability] = &[
         Solve,
         "Fluids",
         "Lattice Boltzmann flow of a fluid step on the CPU or a GPU, with wall forces, and the heat it carries",
-        &["solve.settings"],
+        &["solve.settings", "solve.exchanger"],
     ),
     soon("solve.fsi", "Fluid–Structure", Solve, "Fluids", "M13", "Coupled fluid and structure solve"),
     // ---- Results ----
@@ -686,7 +686,14 @@ pub static CATALOGUE: &[Capability] = &[
         "Displacement, rotation, reaction and stress at nodes, element section forces, a mode shape, or an explicit field frame (or click the model)",
         &["solve.history"],
     ),
-    ready_more("results.reactions", "Reactions", Results, "Query", "Reaction force and moment sums per set", &["results.export.csv"]),
+    ready_more(
+        "results.reactions",
+        "Reactions",
+        Results,
+        "Query",
+        "Reaction force and moment sums per set",
+        &["results.export.csv", "results.exchanger"],
+    ),
     soon("results.free_body", "Free Body", Results, "Query", "M9", "Free-body forces across a cut"),
     ready("results.xy", "XY Plot", Results, "Plots", "Plot a quantity against the load factor, time or mode"),
     soon("results.path", "Path Plot", Results, "Plots", "M9", "Plot a quantity along a path"),

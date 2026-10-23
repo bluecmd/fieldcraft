@@ -108,7 +108,7 @@ the control channel and AI agents over MCP (docs/mcp.md) run the same commands.
 |---|---|---|---|
 | Boundary Conditions | Boundary Condition — Fixed, displacement or symmetry condition on a set or reference point | ready | `model.boundary_condition.create`, `model.boundary_condition.edit`, `model.boundary_condition.delete`, `model.boundary_condition.symmetry` |
 | Loads | Load — Force, moment, pressure, traction, gravity or body force | ready | `model.load.create`, `model.load.edit`, `model.load.delete` |
-| Flow | Fluid Domain — The box of fluid cells, its fluid, and the obstacle bodies voxelised from their face-tagged surfaces | ready | `model.fluid_domain.create`, `model.fluid_domain.edit`, `model.fluid_domain.delete` |
+| Flow | Fluid Domain — The box of fluid cells, its fluid, and the obstacle bodies voxelised from their face-tagged surfaces | ready | `model.fluid_domain.create`, `model.fluid_domain.edit`, `model.fluid_domain.delete`, `model.exchanger.create`, `model.exchanger.edit`, `model.exchanger.delete` |
 | Flow | Inlet & Outlet — Velocity inlets, pressure outlets, walls, moving and slip walls, periodic faces; held temperatures, heat fluxes and adiabatic faces; conducting solids' temperature limits | ready | `model.fluid_domain.boundary`, `model.fluid_domain.thermal_boundary`, `model.fluid_domain.limit` |
 
 ## Interactions
@@ -142,7 +142,7 @@ the control channel and AI agents over MCP (docs/mcp.md) run the same commands.
 | Implicit | Frequency — Natural frequencies and mode shapes of a frequency step | ready | `solve.frequency` |
 | Explicit | Explicit — Transient dynamics of an explicit step by central differences (contact and erosion coming in M10) | ready | `solve.explicit` |
 | Explicit | Blast & Impact — EOS-driven fluids with fluid–structure contact (ALE or SPH) | coming soon (M14) |  |
-| Fluids | Lattice Boltzmann — Lattice Boltzmann flow of a fluid step on the CPU or a GPU, with wall forces, and the heat it carries | ready | `solve.fluid`, `solve.settings` |
+| Fluids | Lattice Boltzmann — Lattice Boltzmann flow of a fluid step on the CPU or a GPU, with wall forces, and the heat it carries | ready | `solve.fluid`, `solve.settings`, `solve.exchanger` |
 | Fluids | Fluid–Structure — Coupled fluid and structure solve | coming soon (M13) |  |
 
 ## Results
@@ -154,7 +154,7 @@ the control channel and AI agents over MCP (docs/mcp.md) run the same commands.
 | Display | Mode Shapes — Mode shapes and frequencies of a frequency step | ready | `results.modes` |
 | Display | Animate — Animate the deformed shape, a mode or an explicit step's frames | ready | `results.animate`, `results.frame` |
 | Query | Probe — Displacement, rotation, reaction and stress at nodes, element section forces, a mode shape, or an explicit field frame (or click the model) | ready | `solve.probe`, `solve.history` |
-| Query | Reactions — Reaction force and moment sums per set | ready | `results.reactions`, `results.export.csv` |
+| Query | Reactions — Reaction force and moment sums per set | ready | `results.reactions`, `results.export.csv`, `results.exchanger` |
 | Query | Free Body — Free-body forces across a cut | coming soon (M9) |  |
 | Plots | XY Plot — Plot a quantity against the load factor, time or mode | ready | `results.xy` |
 | Plots | Path Plot — Plot a quantity along a path | coming soon (M9) |  |

@@ -38,6 +38,7 @@ pub mod contact;
 mod convert;
 pub mod datums;
 pub mod discrete;
+pub mod exchangers;
 pub mod fluid_zones;
 pub mod fluids;
 pub mod geometry;
@@ -69,6 +70,7 @@ pub use constraints::{Coupling, CouplingKind, ReferencePoint};
 pub use contact::{Contact, ContactSurfaces, Friction, InitialPenetration};
 pub use datums::{Datum, Partition};
 pub use discrete::{Direction, Mass, PointMass, ResolvedDirection, ResolvedMass, ResolvedSpring, Spring};
+pub use exchangers::HeatExchanger;
 pub use fluid_zones::{Axis, Fan, FanDirection, PorousZone, Resistance};
 pub use fluids::{
     BoxFace, BoxFaces, BoxThermalFaces, ConductingSolid, FaceCondition, FluidBoundary, FluidDomain, FluidThermal, Outflow, Profile, SurfaceBoundary,
@@ -168,6 +170,8 @@ pub struct Model {
     loads: BTreeMap<String, Load>,
     #[serde(skip_serializing_if = "BTreeMap::is_empty")]
     fluid_domains: BTreeMap<String, FluidDomain>,
+    #[serde(skip_serializing_if = "BTreeMap::is_empty")]
+    heat_exchangers: BTreeMap<String, HeatExchanger>,
     /// In analysis order.
     steps: Vec<Step>,
     #[serde(skip_serializing_if = "BTreeMap::is_empty")]
@@ -243,6 +247,8 @@ struct ModelData {
     loads: BTreeMap<String, Load>,
     #[serde(default)]
     fluid_domains: BTreeMap<String, FluidDomain>,
+    #[serde(default)]
+    heat_exchangers: BTreeMap<String, HeatExchanger>,
     #[serde(default)]
     steps: Vec<Step>,
     #[serde(default)]
@@ -339,6 +345,9 @@ impl TryFrom<ModelData> for Model {
         }
         for s in d.steps {
             m.add_step(s, None)?;
+        }
+        for (name, exchanger) in d.heat_exchangers {
+            m.add_heat_exchanger(&name, exchanger)?;
         }
         for (n, v) in d.datums {
             m.add_datum(&n, v)?;
@@ -500,6 +509,7 @@ impl Model {
             boundary_conditions: self.boundary_conditions.clone(),
             loads: self.loads.clone(),
             fluid_domains: self.fluid_domains.clone(),
+            heat_exchangers: self.heat_exchangers.clone(),
             steps: self.steps.clone(),
             datums: self.datums.clone(),
             partitions: self.partitions.clone(),
@@ -563,7 +573,7 @@ impl Model {
     }
 
     /// Counts of each kind of definition, for summaries.
-    pub fn definition_counts(&self) -> [(&'static str, usize); 21] {
+    pub fn definition_counts(&self) -> [(&'static str, usize); 22] {
         [
             ("sets", self.sets.len()),
             ("materials", self.materials.len()),
@@ -577,6 +587,7 @@ impl Model {
             ("boundary_conditions", self.boundary_conditions.len()),
             ("loads", self.loads.len()),
             ("fluid_domains", self.fluid_domains.len()),
+            ("heat_exchangers", self.heat_exchangers.len()),
             ("steps", self.steps.len()),
             ("datums", self.datums.len()),
             ("partitions", self.partitions.len()),

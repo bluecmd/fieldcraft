@@ -58,6 +58,8 @@
 pub mod backend;
 pub mod conduction;
 pub mod coupled;
+mod coupled_run;
+pub use coupled_run::{CoupledBudget, CoupledReport, prepare_exchanger, solve_exchanger};
 pub mod flow;
 pub mod lattice;
 pub mod memory;

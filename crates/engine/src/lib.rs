@@ -748,6 +748,28 @@ impl Session {
     /// Keep a step's result for the current state. With no results shown, the display shows it;
     /// a view of the same step stays as it is (on mode 1 and the last frame if its own are gone).
     pub(crate) fn store_result(&mut self, result: StepResult) {
+        // A coupled pair is one result group. Releasing its definition and replacing one
+        // circuit independently must retire the old pair, rather than leave an unsavable
+        // orphan whose metadata still claims a matching partner.
+        let incoming = match &result {
+            StepResult::Fluid(r) => r.coupling.as_ref().map(|c| (&c.system, &c.steps)),
+            _ => None,
+        };
+        let retire = self.results.get(result.step()).and_then(|(_, r)| match r.as_ref() {
+            StepResult::Fluid(r) => r.coupling.as_ref().filter(|c| incoming != Some((&c.system, &c.steps))).cloned(),
+            _ => None,
+        });
+        if let Some(pair) = retire {
+            for name in &pair.steps {
+                if self.results.get(name).is_some_and(|(_, r)| matches!(r.as_ref(),StepResult::Fluid(f) if f.coupling.as_ref()==Some(&pair))) {
+                    self.results.remove(name);
+                    self.result_inputs.remove(name);
+                }
+            }
+            if self.results_view.as_ref().is_some_and(|v| !self.results.contains_key(&v.step)) {
+                self.results_view = None;
+            }
+        }
         match &mut self.results_view {
             None => self.results_view = Some(results::ResultsView::for_result(&result)),
             Some(v) if v.step == result.step() && results::displacements(&result, v.pick()).is_err() => {

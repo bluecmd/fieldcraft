@@ -863,6 +863,13 @@ impl Model {
 
     pub fn replace_fluid_domain(&mut self, name: &str, domain: FluidDomain) -> Result<()> {
         self.check_fluid_domain(&domain).map_err(|e| context("fluid domain", name, e))?;
+        for (system, e) in &self.heat_exchangers {
+            if e.steps().iter().any(|step| self.step(step).and_then(|s| s.procedure.fluid_domain()) == Some(name))
+                && !domain.solids().any(|solid| solid.body == e.wall)
+            {
+                return Err(Error::InUse(format!("fluid domain `{name}` must retain conducting wall `{}` for heat exchanger `{system}`", e.wall)));
+            }
+        }
         replace_existing(&mut self.fluid_domains, "fluid domain", name, domain)
     }
 

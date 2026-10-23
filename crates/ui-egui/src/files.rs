@@ -125,7 +125,15 @@ pub fn is_long(command: &str) -> bool {
         || opens(command)
         || matches!(
             command,
-            "solve.run" | "solve.static" | "solve.nonlinear" | "solve.heat" | "solve.frequency" | "solve.buckle" | "solve.explicit" | "solve.fluid"
+            "solve.run"
+                | "solve.static"
+                | "solve.nonlinear"
+                | "solve.heat"
+                | "solve.frequency"
+                | "solve.buckle"
+                | "solve.explicit"
+                | "solve.fluid"
+                | "solve.exchanger"
         )
 }
 

@@ -396,6 +396,7 @@ pub fn controls(app: &mut ModelApp, plot: &Plot, ui: &mut egui::Ui, t: &Tokens) 
         ui.label(RichText::new(format!("t = {}", with_unit(number(at), unit_of(Quantity::Time, &plot.units).as_deref()))).color(t.text_dim));
         if let Kind::Fluid(f) = plot.result.kind() {
             component_limits(ui, f, &plot.units, t);
+            coupled_budget(ui, f, plot.pick, &plot.units, t, &mut run);
             port_transport(ui, f, plot.pick, &plot.units, t);
         }
     } else if let Some((k, factor, n)) = plot.frame().filter(|_| matches!(plot.result.kind(), Kind::Static(_))) {
@@ -994,6 +995,52 @@ fn heat_flows(ui: &mut egui::Ui, flows: &Value, units: &fieldcraft_model::Displa
 
 /// The conducting solids in the order the limits list shows them: those over their limit
 /// first, then those under it, each from the smallest margin up, then those without a limit.
+fn coupled_budget(
+    ui: &mut egui::Ui,
+    f: &FluidResult,
+    pick: fieldcraft_engine::results::Pick,
+    units: &fieldcraft_model::DisplaySystem,
+    t: &Tokens,
+    run: &mut Vec<(&'static str, Value)>,
+) {
+    let Some(c) = &f.coupling else { return };
+    let Ok(frame) = fieldcraft_engine::flow::frame_index(f, pick) else { return };
+    let report = fieldcraft_engine::results::fluid_coupling(f, frame, units);
+    ui.separator();
+    ui.label(RichText::new(format!("{} · coupled transient", c.system)).color(t.text_dim));
+    ui.horizontal_wrapped(|ui| {
+        for step in &c.steps {
+            if ui.selectable_label(step == &f.step, step).clicked() {
+                run.push(("results.frame", json!({"step":step,"frame":frame})));
+            }
+        }
+    });
+    egui::CollapsingHeader::new("Shared-wall energy budget").default_open(true).show(ui, |ui| {
+        ui.label(RichText::new("Average rates since previous frame").small().color(t.text_dim));
+        let budget = &report["budget"];
+        let power = report["units"]["power"].as_str().unwrap_or("W");
+        egui::Grid::new("fc_coupled_budget").num_columns(2).show(ui, |ui| {
+            let row = |ui: &mut egui::Ui, label: &str, value: &Value| {
+                ui.label(label);
+                ui.label(value.as_f64().map(|v| with_unit(number(v), Some(power))).unwrap_or_else(|| "—".into()));
+                ui.end_row();
+            };
+            for (side, step) in c.steps.iter().enumerate() {
+                row(ui, &format!("{step} to wall"), &budget["into_wall"][side]);
+            }
+            row(ui, "Wall storage", &budget["wall_storage"]);
+            row(ui, "Wall power (once)", &budget["wall_power"]);
+            for (side, step) in c.steps.iter().enumerate() {
+                row(ui, &format!("{step} storage"), &budget["fluid_storage"][side]);
+            }
+            row(ui, "Combined residual", &budget["residual"]);
+            row(ui, "Interface residual", &budget["interface_residual"]);
+        });
+        ui.label(RichText::new(format!("{}: capacity and power owned by {}", c.wall, c.steps[0])).small().color(t.text_dim));
+        ui.label(RichText::new("Open-boundary exchange and other wall losses: Results › Exchanger Budgets").small().color(t.text_dim));
+    });
+}
+
 fn port_transport(ui: &mut egui::Ui, f: &FluidResult, pick: fieldcraft_engine::results::Pick, units: &fieldcraft_model::DisplaySystem, t: &Tokens) {
     let Ok(frame) = fieldcraft_engine::flow::frame_index(f, pick) else { return };
     if !f.open_faces.contains(&true) {

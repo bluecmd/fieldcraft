@@ -735,6 +735,7 @@ impl Session {
                 out["frames"] = f.frames.iter().map(|f| time(f.time)).collect();
                 if let Ok(frame) = crate::flow::frame_index(f, v.pick()) {
                     out["ports"] = fluid_ports(f, frame, display);
+                    out["coupling"] = fluid_coupling(f, frame, display);
                 }
                 if let Value::Object(flow) = crate::flow::report(v, f, display) {
                     for (k, x) in flow {
@@ -797,6 +798,16 @@ impl Session {
 /// Open-face transport, already converted to display units. Both the solve reply and current
 /// results view use this, so a reopened result and a selected earlier frame report the same
 /// values. No complete energy-balance verdict is inferred from advective transport alone.
+pub fn fluid_coupling(r: &FluidResult, frame: usize, display: &DisplaySystem) -> Value {
+    let Some(c) = &r.coupling else { return Value::Null };
+    let Some(b) = c.history.get(frame) else { return json!({"error":"coupled frame unavailable"}) };
+    let mut out = json!({"system":c.system,"steps":c.steps,"wall":c.wall,"capacity_owner":c.steps[0],"mode":"physical_transient","budget":b});
+    if let Err(e) = crate::units::convert_reply("results.exchanger", &mut out, crate::units::si(), display) {
+        return json!({"error":e.to_string()});
+    }
+    out
+}
+
 pub fn fluid_ports(r: &FluidResult, frame: usize, display: &DisplaySystem) -> Value {
     let ports = match r.ports(frame) {
         Ok(ports) => ports,

@@ -10,7 +10,7 @@
 //! steps × { u64 length, step name (UTF-8),
 //!           32 bytes: SHA-256 of the definition it was solved from ([`definition_hash`]),
 //!           u8 kind (0 static, 1 frequency, 2 heat transfer, 3 explicit dynamic,
-//!                    4 legacy fluid, 5 fluid with port properties),
+//!                    4 legacy fluid, 5 fluid with port properties, 6 coupled fluid),
 //!           u64 length, the result in the [`crate::codec`] encoding }   names ascending
 //! ```
 //!
@@ -28,6 +28,8 @@
 //! gives again, unlike the definition.
 //! Kind 5 adds an envelope around the unchanged kind-4 fluid payload. New kinds do not alter
 //! existing payloads; older readers refuse an unknown kind and keep the model definition.
+//! Kind 6 adds the common coupled solve descriptor and budget history beside the unchanged
+//! fluid payload/properties. Both partner records must be present with matching descriptors.
 //!
 //! Reading treats the part as hostile, as `mesh.bin`: the number of steps is capped, every length
 //! is checked against the bytes present before anything is read for it, nothing may be left
@@ -87,6 +89,20 @@ struct FluidPorts {
     properties: Option<fieldcraft_lbm::PortProperties>,
 }
 
+#[derive(serde::Serialize)]
+struct FluidCoupledRef<'a> {
+    flow: &'a FluidResult,
+    properties: Option<fieldcraft_lbm::PortProperties>,
+    coupling: &'a fieldcraft_lbm::CoupledReport,
+}
+
+#[derive(serde::Deserialize)]
+struct FluidCoupled {
+    flow: FluidResult,
+    properties: Option<fieldcraft_lbm::PortProperties>,
+    coupling: fieldcraft_lbm::CoupledReport,
+}
+
 impl Solved {
     pub fn as_ref(&self) -> SolvedRef<'_> {
         match self {
@@ -117,7 +133,13 @@ impl<'a> SolvedRef<'a> {
             SolvedRef::Implicit(fieldcraft_solver::StepResult::Frequency(_)) => 1,
             SolvedRef::Implicit(fieldcraft_solver::StepResult::Heat(_)) => 2,
             SolvedRef::Explicit(_) => 3,
-            SolvedRef::Fluid(_) => 5,
+            SolvedRef::Fluid(r) => {
+                if r.coupling.is_some() {
+                    6
+                } else {
+                    5
+                }
+            }
         }
     }
 
@@ -127,7 +149,10 @@ impl<'a> SolvedRef<'a> {
             SolvedRef::Implicit(fieldcraft_solver::StepResult::Frequency(r)) => codec::encode_into(r, out),
             SolvedRef::Implicit(fieldcraft_solver::StepResult::Heat(r)) => codec::encode_into(r, out),
             SolvedRef::Explicit(r) => codec::encode_into(r, out),
-            SolvedRef::Fluid(r) => codec::encode_into(&FluidPortsRef { flow: r, properties: r.port_properties }, out),
+            SolvedRef::Fluid(r) => match &r.coupling {
+                Some(coupling) => codec::encode_into(&FluidCoupledRef { flow: r, properties: r.port_properties, coupling }, out),
+                None => codec::encode_into(&FluidPortsRef { flow: r, properties: r.port_properties }, out),
+            },
         }
     }
 }
@@ -188,6 +213,10 @@ pub fn encode(results: &[(&str, StoredRef<'_>)]) -> Result<Vec<u8>> {
     if results.len() > MAX_STEPS {
         return Err(Error::Limit(format!("{PART}: at most {MAX_STEPS} steps' results")));
     }
+    check_coupled_pairs(results.iter().filter_map(|(_, r)| match r.result {
+        SolvedRef::Fluid(f) => Some(f),
+        _ => None,
+    }))?;
     let mut sorted: Vec<&(&str, StoredRef<'_>)> = results.iter().collect();
     sorted.sort_by(|a, b| a.0.cmp(b.0));
     if sorted.windows(2).any(|w| w.first().map(|a| a.0) == w.get(1).map(|b| b.0)) {
@@ -287,6 +316,12 @@ pub fn decode(bytes: &[u8]) -> Result<Decoded> {
                 stored.flow.port_properties = stored.properties;
                 Solved::Fluid(stored.flow)
             }
+            6 => {
+                let mut stored: FluidCoupled = codec::decode(payload).map_err(damaged)?;
+                stored.flow.port_properties = stored.properties;
+                stored.flow.coupling = Some(stored.coupling);
+                Solved::Fluid(stored.flow)
+            }
             k => return invalid(format!("{PART}: step `{name}` has a result of unknown kind {k}")),
         };
         if result.step() != name {
@@ -301,7 +336,28 @@ pub fn decode(bytes: &[u8]) -> Result<Decoded> {
     if !r.bytes.is_empty() {
         return invalid(format!("{PART} has {} trailing bytes", r.bytes.len()));
     }
+    check_coupled_pairs(out.iter().filter_map(|r| match &r.result {
+        Solved::Fluid(f) => Some(f),
+        _ => None,
+    }))?;
     Ok(Decoded::Results(out))
+}
+
+fn check_coupled_pairs<'a>(flows: impl Iterator<Item = &'a FluidResult>) -> Result<()> {
+    let flows: std::collections::BTreeMap<&str, &FluidResult> = flows.map(|f| (f.step.as_str(), f)).collect();
+    for flow in flows.values() {
+        if let Some(c) = &flow.coupling {
+            for name in &c.steps {
+                if flows.get(name.as_str()).is_none_or(|partner| partner.coupling.as_ref() != Some(c)) {
+                    return invalid(format!(
+                        "{PART}: coupled exchanger `{}` needs both circuit results from the same solve (`{name}` is missing or different)",
+                        c.system
+                    ));
+                }
+            }
+        }
+    }
+    Ok(())
 }
 
 /// Whether labels strictly ascend (results look them up by binary search).
@@ -413,6 +469,34 @@ pub fn check(r: &Solved) -> std::result::Result<(), String> {
 }
 
 fn check_fluid(f: &FluidResult) -> std::result::Result<(), String> {
+    if let Some(c) = &f.coupling {
+        for name in [&c.system, &c.steps[0], &c.steps[1], &c.wall] {
+            fieldcraft_model::check_name("coupled definition", name).map_err(|e| e.to_string())?;
+        }
+        if c.steps[0] == c.steps[1]
+            || !c.steps.contains(&f.step)
+            || c.wall_cells == 0
+            || f.grid.cells.iter().try_fold(1usize, |n, s| n.checked_mul(*s)).is_none_or(|n| c.wall_cells > n)
+            || !c.initial_temperature.is_finite()
+            || c.initial_temperature < 0.0
+            || c.history.len() != f.frames.len()
+        {
+            return Err("invalid coupled solve identity, wall occupancy or history length".into());
+        }
+        for (h, frame) in c.history.iter().zip(&f.frames) {
+            if h.time != frame.time
+                || [h.wall_storage, h.wall_power, h.residual, h.interface_residual]
+                    .iter()
+                    .chain(&h.into_wall)
+                    .chain(&h.fluid_storage)
+                    .chain(&h.open)
+                    .chain(&h.external)
+                    .any(|v| !v.is_finite())
+            {
+                return Err("invalid coupled budget time or rates".into());
+            }
+        }
+    }
     if f.port_properties
         .is_some_and(|p| !(p.density > 0.0 && p.density.is_finite()) || p.specific_heat.is_some_and(|cp| !(cp > 0.0 && cp.is_finite())))
     {
@@ -448,6 +532,9 @@ fn check_fluid(f: &FluidResult) -> std::result::Result<(), String> {
     }
     if f.solids.iter().any(|s| s.cells.iter().any(|c| *c as usize >= n)) {
         return Err("a conducting solid has a cell outside the grid".into());
+    }
+    if f.solids.iter().any(|s| s.cells.windows(2).any(|pair| pair[0] >= pair[1])) {
+        return Err("conducting solid cells must be sorted and unique".into());
     }
     Ok(())
 }

@@ -9,6 +9,7 @@ mod defeature;
 pub(crate) mod define;
 pub mod diagnostics;
 mod edit;
+pub(crate) mod exchanger;
 mod extrude;
 pub(crate) mod file;
 pub(crate) mod forms;
@@ -63,6 +64,11 @@ use crate::{CommandSpec, EngineError, Result, Session};
 
 pub static ALL: &[CommandSpec] = &[
     model::INFO,
+    exchanger::CREATE,
+    exchanger::EDIT,
+    exchanger::DELETE,
+    exchanger::SOLVE,
+    exchanger::RESULTS,
     geometry::OPEN,
     geometry::BODIES,
     geometry::FEATURES,

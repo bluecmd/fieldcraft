@@ -210,6 +210,10 @@ impl Model {
                 }
             }
             Kind::Step => {
+                for exchanger in self.heat_exchangers.values_mut() {
+                    swap(&mut exchanger.first, from, to);
+                    swap(&mut exchanger.second, from, to);
+                }
                 for step in &mut self.steps {
                     if let Procedure::NonlinearStatic(n) = &mut step.procedure
                         && let Some(i) = &mut n.imperfection

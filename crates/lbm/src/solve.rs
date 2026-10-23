@@ -136,6 +136,9 @@ pub struct FluidStats {
 /// The result of a fluid step.
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct FluidResult {
+    /// Common solve identity and budgets of both circuits. Stored by the kind-6 IO envelope.
+    #[serde(skip)]
+    pub coupling: Option<crate::CoupledReport>,
     /// Material properties when solved, for open-face transport. Absent in older packages.
     // Kept by the versioned fluid-results envelope, not the original kind-4 encoding.
     #[serde(skip)]
@@ -251,7 +254,7 @@ pub fn solve_fluid_on(model: &Model, step: Option<&str>, obstacles: &[Obstacle],
     run(&setup, backend.as_mut(), limits)
 }
 
-fn frame(setup: &Setup, flow: &mut dyn Backend, step: u64) -> Result<Frame> {
+pub(crate) fn frame(setup: &Setup, flow: &mut dyn Backend, step: u64) -> Result<Frame> {
     let n = setup.grid.len();
     let mut velocity = Vec::new();
     let mut pressure = Vec::new();
@@ -436,6 +439,7 @@ pub fn run(setup: &Setup, flow: &mut dyn Backend, limits: &Limits) -> Result<Flu
         })
         .collect();
     Ok(FluidResult {
+        coupling: None,
         port_properties: Some(crate::PortProperties {
             density: setup.density,
             specific_heat: setup.thermal.as_ref().map(|t| t.heat_scale * setup.time_step / (setup.density * setup.grid.spacing.powi(3))),

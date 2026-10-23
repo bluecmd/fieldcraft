@@ -160,7 +160,7 @@ fn cap<T: Copy + TryInto<u64> + TryFrom<u64> + std::fmt::Display>(p: &Value, key
 }
 
 /// The `threads` parameter: 1 to [`parallel::MAX_THREADS`], by default the session's.
-fn threads(s: &Session, p: &Value) -> Result<usize> {
+pub(super) fn threads(s: &Session, p: &Value) -> Result<usize> {
     match p.get("threads") {
         None => Ok(s.limits.threads.clamp(1, parallel::MAX_THREADS)),
         Some(v) => v
@@ -193,7 +193,7 @@ fn extreme(values: impl Iterator<Item = (u32, f64)>, better: fn(f64, f64) -> boo
 }
 
 /// [`parallel::with_threads`], the caller's progress reporter carried onto the pool's thread.
-fn with_threads<R: Send>(threads: usize, f: impl FnOnce() -> R + Send) -> R {
+pub(super) fn with_threads<R: Send>(threads: usize, f: impl FnOnce() -> R + Send) -> R {
     let progress = fieldcraft_model::progress::current();
     parallel::with_threads(threads, move || fieldcraft_model::progress::scoped(progress, f))
 }
@@ -224,7 +224,18 @@ fn run_all(s: &mut Session, _: &Value) -> Result<Value> {
     }
     let mut done = Vec::new();
     let count = steps.len();
+    let mut coupled_done = std::collections::BTreeSet::new();
     for (index, (name, procedure, solve, id)) in steps.into_iter().enumerate() {
+        if let Some(system) = s.model.exchanger_of_step(&name).map(|(n, _)| n.to_owned()) {
+            if !coupled_done.insert(system.clone()) {
+                continue;
+            }
+            let mut summary = super::exchanger::solve(s, &json!({"name":system}))?;
+            let display = s.units().clone();
+            crate::units::convert_reply("solve.exchanger", &mut summary, crate::units::si(), &display)?;
+            done.push(json!({"step":name,"procedure":"coupled_fluid","summary":summary}));
+            continue;
+        }
         fieldcraft_model::progress::step(&name, index + 1, count);
         fieldcraft_model::progress::check()?;
         let mut summary =
@@ -543,7 +554,7 @@ fn nonlinear_history(s: &Session, step: &str, r: &fieldcraft_solver::StaticResul
 /// The surfaces of a fluid domain's obstacles: bodies of the open design (triangulated at the
 /// domain's tolerance) or imported surfaces, by name. The geometry is in millimetres; the
 /// surfaces come out in metres, as the domain is.
-fn obstacles(s: &Session, domain: &FluidDomain) -> Result<Vec<Obstacle>> {
+pub(super) fn obstacles(s: &Session, domain: &FluidDomain) -> Result<Vec<Obstacle>> {
     let tolerance = crate::units::to_geometry_length(domain.tolerance.unwrap_or(domain.spacing / 10.0));
     let mut out = Vec::with_capacity(domain.obstacles.len());
     for body in &domain.obstacles {
@@ -588,7 +599,7 @@ fn raisable(p: &Value, key: &str, default: u64, ceiling: u64, bound: u64) -> Res
 /// The caps and backend of a `solve.fluid` call: `max_steps` may only be lowered;
 /// `max_cells`, `max_cell_updates` and `max_frame_bytes` may be raised up to what the session's
 /// memory bound holds.
-fn fluid_limits(s: &Session, p: &Value) -> Result<(fieldcraft_lbm::Limits, BackendChoice)> {
+pub(super) fn fluid_limits(s: &Session, p: &Value) -> Result<(fieldcraft_lbm::Limits, BackendChoice)> {
     use fieldcraft_lbm::Limits as L;
     let bound = s.limits.memory;
     let ceilings = L { max_memory: bound, ..L::default() };
@@ -805,6 +816,10 @@ pub fn fluid_estimate(s: &Session, p: &Value) -> Result<FluidEstimate> {
 }
 
 fn run_fluid(s: &mut Session, p: &Value) -> Result<Value> {
+    let selected = opt::<String>(p, "step")?;
+    if let Some((name, _)) = selected.as_deref().and_then(|step| s.model.exchanger_of_step(step)) {
+        return Err(EngineError::Params(format!("step belongs to heat exchanger `{name}`: use solve.exchanger so both circuits share the wall")));
+    }
     let estimate = fluid_estimate(s, p)?;
     if opt::<bool>(p, "estimate")? == Some(true) {
         return Ok(json!({"memory": estimate.to_json()}));
@@ -829,7 +844,7 @@ fn run_fluid(s: &mut Session, p: &Value) -> Result<Value> {
 
 /// The reply of a fluid solve, in SI but for the steady monitors' history, which is in `display`
 /// (its quantities follow the monitors, so the reply table cannot name them).
-fn fluid_summary(r: &FluidResult, display: &DisplaySystem) -> Value {
+pub(super) fn fluid_summary(r: &FluidResult, display: &DisplaySystem) -> Value {
     let speed = |v: &[f32; 3]| (f64::from(v[0]).powi(2) + f64::from(v[1]).powi(2) + f64::from(v[2]).powi(2)).sqrt();
     let last = r.frames.last();
     // The largest speed of every frame: `max_speed` is the largest of all (the start-up often

@@ -456,7 +456,21 @@ pub fn with_units(form: &[Field], params: &Value, input: &DisplaySystem) -> Valu
 /// pattern, dimension) list). A `*` segment matches any key or index; a value is a number or a
 /// list (of lists) of them. Replies are converted from the command's frame into the display
 /// system by these, and get a `units` object naming the unit of each quantity they hold.
+const EXCHANGER_REPLY: Numbers = &[
+    ("/budget/time", Dim::Time),
+    ("/budget/into_wall", Dim::Power),
+    ("/budget/fluid_storage", Dim::Power),
+    ("/budget/wall_storage", Dim::Power),
+    ("/budget/wall_power", Dim::Power),
+    ("/budget/open", Dim::Power),
+    ("/budget/external", Dim::Power),
+    ("/budget/residual", Dim::Power),
+    ("/budget/interface_residual", Dim::Power),
+];
+
 pub const REPLIES: &[(&str, &[(&str, Dim)])] = &[
+    ("solve.exchanger", EXCHANGER_REPLY),
+    ("results.exchanger", EXCHANGER_REPLY),
     ("solve.static", STATIC),
     ("solve.nonlinear", NONLINEAR),
     (

@@ -506,6 +506,7 @@ impl Model {
             boundary_conditions,
             loads,
             fluid_domains,
+            heat_exchangers,
             steps,
             datums,
             partitions: _,
@@ -539,6 +540,7 @@ impl Model {
         boundary_conditions.values_mut().for_each(|x| x.quantities(f));
         loads.values_mut().for_each(|x| x.quantities(f));
         fluid_domains.values_mut().for_each(|x| x.quantities(f));
+        heat_exchangers.values_mut().for_each(|e| f(Q::Temperature, &mut e.initial_temperature));
         steps.iter_mut().for_each(|x| x.quantities(f));
         datums.values_mut().for_each(|x| x.quantities(f));
         seeds.iter_mut().for_each(|x| x.quantities(f));
@@ -617,6 +619,7 @@ impl Model {
         keep_map(&self.boundary_conditions, &c.boundary_conditions, &b.boundary_conditions, &mut out.boundary_conditions);
         keep_map(&self.loads, &c.loads, &b.loads, &mut out.loads);
         keep_map(&self.fluid_domains, &c.fluid_domains, &b.fluid_domains, &mut out.fluid_domains);
+        keep_map(&self.heat_exchangers, &c.heat_exchangers, &b.heat_exchangers, &mut out.heat_exchangers);
         keep_list(&self.steps, &c.steps, &b.steps, &mut out.steps);
         keep_map(&self.datums, &c.datums, &b.datums, &mut out.datums);
         keep_list(&self.seeds, &c.seeds, &b.seeds, &mut out.seeds);

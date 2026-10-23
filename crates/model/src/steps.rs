@@ -1011,6 +1011,10 @@ pub struct StepInputs<'a> {
     boundary_conditions: BTreeMap<&'a str, &'a crate::BoundaryCondition>,
     loads: BTreeMap<&'a str, &'a crate::Load>,
     fluid_domains: &'a BTreeMap<String, crate::FluidDomain>,
+    #[serde(skip_serializing_if = "BTreeMap::is_empty")]
+    heat_exchangers: &'a BTreeMap<String, crate::HeatExchanger>,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    coupled_steps: Vec<&'a Step>,
     step: &'a Step,
 }
 
@@ -1043,6 +1047,8 @@ impl Model {
                 .collect(),
             loads: self.loads.iter().filter(|(n, _)| step.loads.contains(*n)).map(|(n, l)| (n.as_str(), l)).collect(),
             fluid_domains: &self.fluid_domains,
+            heat_exchangers: &self.heat_exchangers,
+            coupled_steps: self.exchanger_of_step(name).map_or_else(Vec::new, |(_, e)| e.steps().into_iter().filter_map(|n| self.step(n)).collect()),
             step,
         })
     }
@@ -1131,6 +1137,14 @@ impl Model {
 
     /// Replace a step's definition (procedure, output and table entries), keeping its place.
     pub fn replace_step(&mut self, step: Step) -> Result<()> {
+        if step.procedure.fluid_domain().is_none() && self.exchanger_of_step(&step.name).is_some() {
+            return Err(Error::InUse(format!("step `{}` belongs to a heat exchanger and must remain a fluid step", step.name)));
+        }
+        if let Some((system, e)) = self.exchanger_of_step(&step.name)
+            && step.procedure.fluid_domain().and_then(|n| self.fluid_domain(n)).is_none_or(|d| !d.solids().any(|solid| solid.body == e.wall))
+        {
+            return Err(Error::InUse(format!("step `{}` must keep conducting wall `{}` for heat exchanger `{system}`", step.name, e.wall)));
+        }
         self.check_step(&step)?;
         let name = step.name.clone();
         *self.step_mut(&name)? = step;
@@ -1138,6 +1152,9 @@ impl Model {
     }
 
     pub fn remove_step(&mut self, name: &str) -> Result<()> {
+        if let Some((system, _)) = self.exchanger_of_step(name) {
+            return Err(Error::InUse(format!("step `{name}` belongs to heat exchanger `{system}`")));
+        }
         let i = self.step_index(name)?;
         self.steps.remove(i);
         Ok(())
