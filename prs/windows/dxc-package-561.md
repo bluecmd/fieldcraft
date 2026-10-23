@@ -7,37 +7,35 @@
   "agent": "windows-dxc-agent",
   "branch": "windows/dxc-package-561",
   "issue": 561,
-  "head_sha": "3145551f7a63c966cdb36bd7e846691061329f1a",
+  "head_sha": "2ab2a59e96b27f3fd9e4b046c97e29d57d8933b4",
   "base": "develop",
   "draft": false,
-  "title": "Windows: ship verified official DXC in the x64 package",
+  "title": "Windows: document optional manual DXC setup for DX12",
   "media": "pending"
 }
 ---
 ## What and why
 
-Closes #561. The Windows zip now places the official x64 `dxcompiler.dll` beside both FieldCraft executables, allowing wgpu's existing automatic DX12 compiler selection to use DXC. Packaging pins Microsoft's immutable v1.9.2609 archive URL and SHA-256, extracts only that DLL, and appends the complete MIT/NCSA notices to the Windows package's licence file. `dxil.dll`, SDK tools/headers and the proprietary licence stay out.
+Closes #561. Windows users whose status bar shows Dx12 now have a short guide for optionally installing Microsoft's DXC themselves. Vulkan users need no setup. The guide links the official v1.9.2609 archive, gives its SHA-256, explains copying only the x64 `dxcompiler.dll` beside the executables, and shows how to confirm the loaded module. It also explains updater retention, manual updates and removal. DXC is downloaded by the user from Microsoft; FieldCraft does not redistribute it.
 
-A missing input, download failure or invalid cached/supplied checksum stops packaging with recovery instructions. `-DxcArchive` supports offline packaging with the same mandatory checksum. The updater regression verifies installing a previously absent DLL and replacing an old one while preserving user-added files. Backend selection and solver numerics are unchanged.
+The Windows zip remains unchanged. This PR contains only `docs/windows-dxc.md` and links from the GPU performance documentation and Windows release notes. No packaging, runtime, updater, licence-policy, attribution or ROADMAP change remains in the feature history. The approximate 8-second/0.5-second pipeline times are explicitly attributed to the measured RTX 4090 example in #561, not asserted as new or universal results.
 
 ## Demonstration
 
-A 27.5-second native-window recording shows the extracted package opening the original heated-flow sample, choosing GPU in Solve Fluid, and displaying temperature frames and signed wall heat. The window reports RTX 4090 (Dx12); process inspection confirms the loaded DLL is adjacent to the packaged executable, version 1.9.2609.5 with SHA-256 `0689e2fee0a1c9df8662a59680469f24e2a3ad7ce6bbbcc9284f7a83172bfc59`. The compiler override is unset, DXC directories are removed from PATH, and the working directory contains no DLL.
+A fresh 27.5-second native-window recording, `manual-windows-dxc.mp4`, shows the original heated-flow sample solving on RTX 4090 (Dx12), temperature frames and signed wall heat after **manual** DXC installation. Its captions state that the standard Windows zip is unchanged and that the verified Microsoft DLL was added by the user.
 
-The sample is a single-air-domain physical transient over a held 80 °C bracket: 5 mm cells, 5,824 total cells, 180 steps and 45 s. It is not a coupled two-fluid exchanger. The recording/stills are preserved outside source git. Transfer through the separate fork-only `artifact-queue` Git LFS inbox is prepared and awaits the required upstream-root LFS initialization; no successful transfer or received receipt is claimed yet. The maintainer retrieves and verifies the bytes, then handles GitHub PR attachments. **Media remains pending until a real attachment URL is supplied.** Agents use only the fork deploy key and git feedback, without GitHub login or UI upload. No videos, raster demo images or LFS pointers are committed to this feature branch. No throughput or pipeline-time improvement is claimed from these runs.
+The demo uses a freshly extracted original seven-file Windows package containing no DXC. The downloaded archive matched `AD31B1FC8443175D204F77A611FDB3EF2EC42759BDC2F1167368DE24A4A7E7F1`; only `bin/x64/dxcompiler.dll` was manually copied into the installation folder. Module inspection confirmed that adjacent user-added DLL loaded, with the compiler override unset and DXC directories excluded from PATH. The app reports GPU execution on RTX 4090. Removing the DLL restored the original seven-file layout, and the app restarted successfully afterward.
 
-[Reproduction notes](https://github.com/bluecmd/fieldcraft/blob/3145551f7a63c966cdb36bd7e846691061329f1a/docs/windows-dxc.md) and the linked small JSON report pin the source, package hash, compiler, settings and results.
-
-Artifact handoff status: the coordinated local `artifact/parallel-handoff` staging commit `c49122a` contains nine objects across the three parallel PR handoffs, with every LFS pointer, SHA-256 and size verified. Two normal SSH deploy-key pushes both failed at the LFS batch endpoint with HTTP 502 and `0/9` objects uploaded. The remote `artifact-queue` remains at `8536cb1`; no successful transfer or `received` receipt exists. Please confirm that the upstream-root LFS bootstrap has completed and that the LFS endpoint is available before the next coordinated retry. The originals remain preserved locally, and this PR's media status remains `pending`.
+The sample is a single-air-domain physical transient over a held 80 °C bracket: 5 mm cells, 5,824 total cells, 180 steps and 45 s. It is not a coupled two-fluid exchanger. The fresh video and `manual-temperature.png` / `manual-wall-heat.png` are prepared outside source git for the separate ordinary-Git `artifact-queue` handoff at this new tested head. **Media remains pending until the maintainer supplies real GitHub attachment URLs.** Earlier bundled-package artifacts at head `3145551` were received but are immutable, superseded evidence and must not be attached as the demonstration of this revised PR.
 
 ## Validation
 
-- Built both release-profile x64 executables and ran the production Windows packaging script. Download/checksum, GUI icon/PE checks, CLI version check and extraction of the resulting zip passed. No `dxil.dll` or tools are packaged; complete notices are present.
-- `packaging/windows/test-dxc.ps1`: real upstream download and verified offline archive passed; missing input and corrupt supplied/cached archive refusals passed.
-- Real RTX 4090, Windows 11 Pro build 26200, NVIDIA driver 616.56: all **22 existing GPU verification integration tests pass, no skips**, with DX12, automatic compiler selection and the packaged DLL adjacent to the test executable. Includes CPU/analytic flow and thermal parity, both collisions/layouts, conjugate solids and contacts. Hardware GPU required; no throughput benchmark.
-- Updater: 17 tests and doc tests pass with two explicitly excluded existing Windows failures. Both failures were independently reproduced on unchanged develop source: `verify::tests::the_release_key_verifies_the_release_tooling` (signature text fixture) and `stage::tests::app_images_and_packages` (Linux package-command path assertion). The new DLL install/replacement regression passes.
-- `cargo clippy -p fieldcraft-update --all-targets -- -D warnings`, `cargo fmt --all -- --check`, `cargo xtask assets` (377 assets attributed), and `git diff --check` pass. Rebased on current upstream develop and repeated affected checks before the tested head was pushed.
+- Reviewed the three-file docs-only diff, archive/hash/module PowerShell instructions, local documentation target and release-note link. `git diff --check` passes. No code or package changes remain.
+- Ran the unchanged production packaging script with the existing release-profile binaries; verified the zip has seven original files and no `dxcompiler.dll` or `dxil.dll` before manual setup.
+- Followed manual installation on Windows 11 Pro build 26200, RTX 4090 driver 616.56; verified the user-added module path and hash, completed the native GPU/thermal sample, then removed the DLL and restarted. No new throughput or pipeline-time measurement is claimed.
+- Verified updater retention with the existing Windows file-by-file mock updater fixture temporarily naming the user-added file `dxcompiler.dll`: one targeted test passed, source restored afterward. No updater code or test changes are included.
+- Rebased onto the maintainer's current `upstream-develop` mirror before the exact-lease rewrite of this owned feature branch. No full local gates were rerun for documentation-only changes. Earlier CI results and bundled-package verification belong to the superseded head and are not asserted for this new head.
 
 ## Known limitations
 
-Older Windows 10/driver combinations were not available for testing; this does not establish their unsigned-DXIL compatibility. The standalone release licence attachment still describes the Rust crates; the Windows zip adds the complete DXC notices. The local developer package retains the workspace's 0.7.0 label and is not a published release. No full local CI gate or numerical oracle was run for this packaging-only change.
+Manual setup is optional and specific to DX12; Vulkan users need nothing. Timing varies with hardware, driver and workload. Older Windows 10/driver combinations were unavailable for this manual smoke test. The local app used the current unchanged developer binaries labelled 0.7.0; this is not a published release. Artifact receipt and GitHub attachment remain separate maintainer steps; no GitHub login or UI upload is required of agents.
