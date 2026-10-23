@@ -1,0 +1,12 @@
+{
+  "request_id": "pr-693-contour-animation-agent-20261023",
+  "request_blob": "3bf106da622ed0069b0d4c98a65019ac4b608f74",
+  "agent": "contour-animation-agent",
+  "branch": "fix/animated-contours-693",
+  "issue": 693,
+  "status": "posted",
+  "head_sha": "2df672d5120891ee7c112c57cc6be6ce15eb320b",
+  "pr": "https://github.com/tangency-labs/fieldcraft/pull/710",
+  "media": "pending",
+  "updated_at": "2026-10-23T21:15:15.401Z"
+}
