@@ -334,15 +334,18 @@
     "title": "Lattice Boltzmann: Smagorinsky subgrid closure (LES) on the CPU",
     "body": "**Why.** Without a turbulence model the lattice solver needs cell Reynolds numbers below roughly 30–40 (u·Δx/ν; the regularised collision at τ ≈ 0.508). Real cooling flows break that on any grid we can hold. The graphics card of #642 diverges with only 0.5 m/s into its intake on 0.5 mm cells: a jet in the 1.9 mm gap between the VRM blocks and a fin stack's base plate reaches a cell Reynolds number of about 90, at the same step on the CPU and the GPU (details on #642 and #661). A subgrid closure is the standard way lattice Boltzmann reaches such speeds on practical grids.\n\n**What.** A Smagorinsky eddy viscosity in the CPU lattice solver (`crates/lbm`), opt-in per fluid step.\n- **Momentum:**\n  - ν_t = (C_s Δ)² |S|, with the strain rate taken locally from the non-equilibrium momentum flux each cell already has. The regularised collision computes `P = Π^neq + ½(uF + Fu) ≈ −2ρ c_s² τ S`.\n  - That makes the relaxation time a per-cell closed form with no extra neighbour access: τ = ½(τ₀ + √(τ₀² + 18√2 C_s² |P| / ρ)), in lattice units, from S. Hou, J. Sterling, S. Chen, G. D. Doolen, *A lattice Boltzmann subgrid model for high Reynolds number flows*, Fields Inst. Commun. 6:151–166, 1996.\n  - Built on the recursive regularised collision, as in O. Malaspinas, P. Sagaut, *Consistent subgrid scale modelling for lattice Boltzmann methods*, J. Fluid Mech. 700:514–542, 2012.\n- **Heat:** with a thermal lattice, the turbulent diffusivity α_t = ν_t / Pr_t (Pr_t ≈ 0.85–0.9) is added to the scalar lattice's relaxation per cell. Otherwise the temperature lattice runs at the same high cell Péclet numbers. That means one stored ν_t (or τ) per fluid cell.\n- **Model and commands:** a step setting, for example `\"turbulence\": {\"type\": \"smagorinsky\", \"constant\": 0.1, \"prandtl\": 0.9}` (or a collision value), with reply fields for the largest eddy viscosity ratio ν_t/ν. Off by default, so every current result stays bit for bit. The TRT collision refuses it clearly, or it's defined for TRT too.\n- Cited in the module docs and in the literature list. No code of any LES or lattice Boltzmann package is read.\n\n**Verification (docs/verification.md, `tests/oracle/` where it fits):**\n- Off: all current tests and fixtures unchanged.\n- Laminar: Poiseuille or Couette, where |S| is known, gives the closed-form ν_t, and the profile follows the effective viscosity.\n- Taylor–Green decay: the energy decays at the effective viscosity's rate.\n- A case the plain scheme can't hold (a lid-driven cavity or channel at high cell Reynolds number) stays stable, with a published reference where one fits.\n- Heat: a heated channel where α_t follows ν_t / Pr_t.\n- Hostile parameters: a negative, huge or NaN constant is refused.\n\n**Done when** the CPU solver runs the #642 card (0.36–0.5 mm cells, 2–3 m/s into the intake) to steady state with the closure on, and the checks above pass.\n\nThe GPU port is a separate issue. Part of #642's path to real fan speeds; related to #157.\n",
     "state": "open",
-    "updated_at": "2026-10-23T16:54:10Z",
+    "updated_at": "2026-10-23T22:20:21Z",
     "labels": [
       "enhancement",
+      "in progress",
       "size: M",
       "blocked",
       "area:cfd",
       "priority: high"
     ],
-    "assignees": [],
+    "assignees": [
+      "jyviko"
+    ],
     "url": "https://github.com/tangency-labs/fieldcraft/issues/664"
   },
   {
@@ -350,12 +353,15 @@
     "title": "lbm: a turbulence model for fan and duct flows (Smagorinsky LES with Van Driest wall damping)",
     "body": "### Current behaviour\n\nA fluid step's collision is TRT or recursive regularized, with no turbulence model. Fans and ducts at everyday sizes run at Reynolds numbers of 10⁴ and more (a 50 mm duct at 5 m/s is 16 700). On the cells people can afford (about 1 mm), air's viscosity puts τ within 0.001 of ½, so the run either needs far smaller cells or relies on numerical dissipation that changes with the grid.\n\n### What you need and why\n\nDuct, fan and cooling studies at real speeds on a coarse grid, with an eddy viscosity that can be switched off for laminar cases and verified like the rest of the solver.\n\nI built this for SolidCraft's Airflow studies (D3Q19, regularized collision, Smagorinsky, Van Driest damping, wgpu), and it is the part FieldCraft's flow solver doesn't have yet. Measured there on a 50 mm pipe, 300 mm long, 5 m/s, 1 mm cells, against a wall-resolved laminar O-grid solution and Shah & London's developing-flow correlation (which agree to 0.5%):\n\n| | reference | with the model |\n|---|---|---|\n| pressure gradient mid-pipe, Pa per 50 mm | 0.50 | 0.48 (−3%) |\n| inlet pressure, Pa | 3.93 | 4.25 (+8%) |\n\nOne finding worth carrying over: with millimetre cells the first cell sits at y⁺ ≥ 10, and the textbook damping constant A⁺ = 26 leaves too much eddy viscosity there (the gradient read 1.5× high). That is why the damping should be tested on a resolved and an under-resolved grid, not tuned on one case.\n\nI discussed bringing this to FieldCraft with a contributor, who suggested opening it here.\n\n### Expected behaviour\n\nAn opt-in turbulence model on a fluid step, CPU first and then GPU, each as its own commit:\n\n1. `model`: a fluid step's turbulence: none (default) or Smagorinsky with its constant, plus optional Van Driest damping. Stored in SI, with no change to existing models.\n2. `lbm` (CPU): the local relaxation time from the non-equilibrium momentum flux, τ = ½(τ₀ + √(τ₀² + 18√2 (C_s Δ)² |Π⁽¹⁾| / ρ)) (Hou et al. 1996), in both collision operators. TRT keeps its magic parameter by moving τ⁻ with τ⁺. Van Driest damping uses the wall distance on the lattice.\n3. `lbm-gpu`: the same in `lbm.wgsl`, checked against the CPU within the stated f32 tolerance.\n4. Verification (`tests/oracle/`, docs/verification.md):\n   - **theory:** with laminar flow below the model's threshold, Poiseuille and the lid-driven cavity at Re 100 are unchanged;\n   - **experiment and benchmark:** the turbulent channel at Re_τ 180 against Moser, Kim & Mansour (1999), for the mean velocity profile and the friction coefficient;\n   - developing pipe flow against Shah & London (1978).\n\nDoes this fit how you want turbulence in M12? I'd rather match your plan than land a model you'd replace.\n\n### Pictures\n\n_No response_\n\n### References\n\n- Smagorinsky, J. (1963), General circulation experiments with the primitive equations, Monthly Weather Review 91(3).\n- Hou, S., Sterling, J., Chen, S., Doolen, G. (1996), A lattice Boltzmann subgrid model for high Reynolds number flows, Fields Inst. Commun. 6.\n- Van Driest, E. R. (1956), On turbulent flow near a wall, J. Aeronaut. Sci. 23(11).\n- Moser, R. D., Kim, J., Mansour, N. N. (1999), Direct numerical simulation of turbulent channel flow up to Re_τ = 590, Phys. Fluids 11(4).\n- Shah, R. K., London, A. L. (1978), Laminar Flow Forced Convection in Ducts, Academic Press.",
     "state": "open",
-    "updated_at": "2026-10-21T13:09:07Z",
+    "updated_at": "2026-10-23T22:20:19Z",
     "labels": [
       "enhancement",
+      "in progress",
       "area:cfd"
     ],
-    "assignees": [],
+    "assignees": [
+      "jyviko"
+    ],
     "url": "https://github.com/tangency-labs/fieldcraft/issues/663"
   },
   {
