@@ -22,7 +22,7 @@ Closes #610. A clamped 24-band Cantilever plot had a 507-point legend in a 406-p
 
 A 32-second native app recording shows the failure, the corrected 960 by 600 layout, clicks on Max (node 23) and Min (node 127), expansion to 1400 by 900, and a return to the smaller window. The original Cantilever sample is a small-strain linear-elastic static solve, with 24 stress bands clamped to 0–10 MPa and an extra over-limit colour. This is a UI resize demonstration, not a physical transient. The true maximum (151.0 MPa) and clamp maximum (10.00 MPa) stay distinct. The small legend is 316 points tall; the larger view restores its natural 507-point height.
 
-The recording and stills are staged for the separate `artifact-queue` Git LFS handoff; the maintainer retrieves the verified bytes and handles GitHub attachments. Two normal deploy-key uploads returned LFS batch HTTP 502 with 0 of 9 objects transferred. The remote artifact inbox is unchanged and there is no `received` receipt. Transfer remains pending the documented maintainer LFS bootstrap/service recovery; local originals are preserved. No demo raster, video or LFS pointer is present in any feature-branch commit. Original commands, reproduction notes, and the small layout/probe report are in `tools/demo-video/legend-fit-610*` and `docs/legend-layout.md`.
+The recording and two stills were transferred through the separate ordinary-Git `artifact-queue` inbox in commit `bfb109cf307cb7109d55e8743276c272fc01322c`. Maintainer receipts for this exact tested head confirm `received` for `legend-fit-610.mp4`, `after-small.png` and `after-max.png`, with file sizes and SHA-256 hashes verified. The receipts say `github_attachment: pending_maintainer`: the bytes are received, but GitHub PR attachments are still pending. Local originals are preserved. Feature commits retain only original commands, reproduction notes and the small layout/probe report in `tools/demo-video/legend-fit-610*` and `docs/legend-layout.md`.
 
 ## Validation
 
@@ -36,7 +36,7 @@ The recording and stills are staged for the separate `artifact-queue` Git LFS ha
 
 ## Known limitations
 
-Native sizes below the supported 960 by 600 minimum were not demonstrated. The exact-head Linux CI result above complements the local Windows checks; the full local workspace gate was not run. No local baseline cancellation outcome is available: its fresh lower-layer dependency build was stopped before test execution, so no pass or reproduction is claimed. The red engine cancellation timing check is unresolved; do not treat the upstream gate as passing. The artifact transfer receipt and GitHub attachment remain pending.
+Native sizes below the supported 960 by 600 minimum were not demonstrated. The exact-head Linux CI result above complements the local Windows checks; the full local workspace gate was not run. No local baseline cancellation outcome is available: its fresh lower-layer dependency build was stopped before test execution, so no pass or reproduction is claimed. The red engine cancellation timing check is unresolved; do not treat the upstream gate as passing. GitHub attachment remains pending.
 
 ## Maintainer follow-up
 
