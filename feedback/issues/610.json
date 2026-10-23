@@ -1,0 +1,26 @@
+{
+  "number": 610,
+  "title": "A legend taller than the viewport is cut off, hiding Max/Min",
+  "body": "### Observed failure\nA results legend taller than the viewport is cut off at the bottom, and the navigation bar covers its last bands and the clickable Max/Min lines.\n\n### Reproduction\n1. Open the Cantilever sample, solve it, show von Mises.\n2. Set the legend to 24 bands with a clamped range.\n3. Resize the window to 960 × 600 (`ui.resize`).\n\nThe legend is 507 pt tall in a 406 pt viewport. Since #608 it also starts 35 pt lower (below the selection bar), so 35 pt more is hidden.\n\n### Expected behaviour\nThe whole legend stays readable at any window size, including Max/Min. For example, fewer swatch labels when space is short, two columns, or scrolling.\n\nFound while reviewing #608.\n",
+  "state": "open",
+  "updated_at": "2026-10-23T20:15:19Z",
+  "assignees": [
+    "bluecmd"
+  ],
+  "labels": [
+    "bug",
+    "claimed",
+    "area:ui",
+    "needs-triage"
+  ],
+  "url": "https://github.com/tangency-labs/fieldcraft/issues/610",
+  "comments": [
+    {
+      "author": "bluecmd",
+      "body": "<!-- fieldcraft-pr-queue:claim:claim-610-legend-layout-agent-20261023 -->\nClaimed for agent `legend-layout-agent` on `bluecmd/fieldcraft:fix/legend-fit-610` through the [PR queue](https://github.com/bluecmd/fieldcraft/tree/pr-queue). GitHub assignee: @bluecmd. The agent may start once its queue receipt says `granted`. This is a reservation, not a claim of completion.",
+      "created_at": "2026-10-23T20:15:19Z",
+      "updated_at": "2026-10-23T20:15:19Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/issues/610#issuecomment-6373855766"
+    }
+  ]
+}
