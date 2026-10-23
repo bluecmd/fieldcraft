@@ -229,9 +229,9 @@ Click each Max/Min line to centre its node and show the probe. Resize to 1400 by
 - New housekeeping head: `cargo check -p fieldcraft-ui-egui`, `cargo clippy -p fieldcraft-ui-egui --all-targets -- -D warnings`, `cargo fmt --all -- --check` and `git diff --check` passed.
 - Comparing the old and new heads gives no diff under `crates/ui-egui`; only the roadmap/QA housekeeping was removed. The native app build and demonstration were performed on the original implementation, not repeated for this housekeeping rewrite.
 - Regression coverage checks small/large/small resizing, selection/navigation clearance, unchanged band count and over-limit colour, full-size Max/Min targets, focus/probe behavior, and non-overlapping numeric tick glyphs with and without a stale-result warning.
-- Historical upstream CI at `252fa873…` passed: `cargo xtask ci` rerun completed at `2026-10-23T23:18:58Z` (run `40023518993`, job `120703853463`); heavy tests, oracle, dependency checks, bot tests and plan also passed. Windows app tests and the macOS oracle were skipped. New-head upstream CI is pending and is not covered by that previous success.
+- Current-head upstream CI at `1d4ed083c09f25cc2027e9cc8a57d03b2637a825` passed: `cargo xtask ci` completed at `2026-10-23T23:42:28Z` (job `120711077592`); dependency checks, bot tests and plan also passed. Heavy tests, oracle, Windows app tests and the macOS oracle were skipped, not passed. Historical CI at the original `252fa873…` head separately passed its main gate rerun, heavy tests and oracle.
 - The first old-head CI attempt failed only an unchanged engine cancellation timing check: 5.792319807 seconds exceeded its existing 5-second limit. Its rerun passed at the same old source head; no solver polling, cancellation deadline or test was changed to obtain that result.
 
-## Limits and maintainer handoff
+## Known limitations
 
 Native sizes below the supported 960 by 600 minimum were not demonstrated. Below the fixed text plus one pixel per band, the legend can still reach navigation; the supported minimum case is covered above. The full workspace gate was not run locally. The already-received media remains applicable because the UI source is unchanged; no duplicate upload is needed. GitHub video/still attachment upload remains pending and is handled by the maintainer.
