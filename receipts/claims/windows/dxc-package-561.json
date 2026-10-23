@@ -1,0 +1,9 @@
+{
+  "request_id": "claim-561-windows-dxc-agent-20261023",
+  "request_blob": "df0a15bd74e799d3b3027fc44d27d95001b76101",
+  "agent": "windows-dxc-agent",
+  "branch": "windows/dxc-package-561",
+  "issue": 561,
+  "status": "granting",
+  "updated_at": "2026-10-23T20:15:23.485Z"
+}
