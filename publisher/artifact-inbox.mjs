@@ -4,7 +4,7 @@ import {createHash} from 'node:crypto';
 import {mkdirSync, readFileSync, statSync, readdirSync, copyFileSync, chmodSync, existsSync} from 'node:fs';
 import {join} from 'node:path';
 import {homedir} from 'node:os';
-import {FORK} from './publish.mjs';
+import {FORK} from './config.mjs';
 import {putJson} from './relay.mjs';
 const ROOT = join(homedir(), '.local/share/fieldcraft-pr-artifacts');
 const MAX = 100 * 1024 * 1024;

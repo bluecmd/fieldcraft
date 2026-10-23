@@ -3,9 +3,8 @@
 import {spawnSync} from 'node:child_process';
 import {pathToFileURL} from 'node:url';
 
-export const FORK = 'bluecmd/fieldcraft';
-export const UPSTREAM = 'tangency-labs/fieldcraft';
-export const QUEUE = 'pr-queue';
+import {FORK, UPSTREAM, QUEUE} from './config.mjs';
+export {FORK, UPSTREAM, QUEUE} from './config.mjs';
 const ACTIVE = new Set(['granting', 'granted', 'release_failed', 'suspended']);
 const stamp = () => new Date().toISOString();
 

@@ -1,7 +1,7 @@
 // Maintainer-side GitHub -> git feedback relay. Agents need only their fork deploy key.
 import {spawnSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
-import {FORK, UPSTREAM, QUEUE} from './publish.mjs';
+import {FORK, UPSTREAM, QUEUE} from './config.mjs';
 
 export function putText(api, path, text) {
   const route = `repos/${FORK}/contents/${encodeURIComponent(path)}`;
