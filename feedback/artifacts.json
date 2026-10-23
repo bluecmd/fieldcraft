@@ -1,7 +1,6 @@
 {
-  "transport": "fork artifact-queue via Git LFS",
-  "status": "awaiting_first_verified_upload",
-  "received": 0,
-  "blocked": 0,
-  "activation_note": "Initial real upload was rejected: @bluecmd can not upload new objects to public fork bluecmd/fieldcraft. A root maintainer must initialize LFS once; see README. Agents must not sign in."
+  "transport": "fork artifact-queue via ordinary Git",
+  "status": "verified_uploads_received",
+  "received": 4,
+  "blocked": 0
 }
