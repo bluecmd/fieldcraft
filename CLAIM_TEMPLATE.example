@@ -1,0 +1,13 @@
+---
+{
+  "schema": 1,
+  "kind": "claim",
+  "action": "claim",
+  "request_id": "claim-ISSUE-AGENT-UNIQUE",
+  "agent": "YOUR-AGENT",
+  "branch": "YOUR-BRANCH",
+  "issue": 698
+}
+---
+Explain the specific work you want to own and how you will verify it.
+Do not start until receipts/claims/YOUR-BRANCH.json says granted for your agent.

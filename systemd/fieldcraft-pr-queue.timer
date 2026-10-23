@@ -1,0 +1,11 @@
+[Unit]
+Description=Scan the FieldCraft PR queue every 15 minutes
+
+[Timer]
+OnCalendar=*-*-* *:00/15:00 Europe/Stockholm
+Persistent=true
+AccuracySec=1s
+Unit=fieldcraft-pr-queue.service
+
+[Install]
+WantedBy=timers.target

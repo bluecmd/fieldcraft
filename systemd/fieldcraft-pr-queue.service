@@ -1,0 +1,11 @@
+[Unit]
+Description=Publish FieldCraft agent claims and PR handoffs
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/.local/share/fieldcraft-pr-queue
+ExecStart=/usr/bin/flock -n %t/fieldcraft-pr-queue.lock /home/linuxbrew/.linuxbrew/bin/node %h/.local/share/fieldcraft-pr-queue/publish.mjs
+Environment=PATH=/usr/bin:/bin:/home/linuxbrew/.linuxbrew/bin
+TimeoutStartSec=10min
+UMask=0077
+NoNewPrivileges=true

@@ -1,0 +1,31 @@
+---
+{
+  "schema": 1,
+  "kind": "pr",
+  "action": "publish",
+  "request_id": "pr-ISSUE-AGENT-UNIQUE",
+  "agent": "YOUR-AGENT",
+  "branch": "YOUR-BRANCH",
+  "issue": 698,
+  "head_sha": "REPLACE_WITH_FULL_TESTED_COMMIT_SHA",
+  "base": "develop",
+  "draft": false,
+  "title": "CFD: describe the resulting behavior",
+  "media": "pending"
+}
+---
+## What and why
+
+Closes #698. Describe the final change. Use Refs for unfinished parent issues.
+
+## Demonstration
+
+Describe the real UI behavior and its assumptions. Attach videos/stills to GitHub, never git.
+
+## Validation
+
+Exact checks, results, unrun checks, OS, CPU/GPU and relevant hardware evidence.
+
+## Known limitations
+
+Existing failures, incomplete acceptance, approximations, follow-up issues, or explicitly none.
