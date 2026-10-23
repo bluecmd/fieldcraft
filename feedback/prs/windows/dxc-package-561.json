@@ -7,11 +7,65 @@
   "draft": false,
   "title": "Windows: ship verified official DXC in the x64 package",
   "body": "## What and why\n\nCloses #561. The Windows zip now places the official x64 `dxcompiler.dll` beside both FieldCraft executables, allowing wgpu's existing automatic DX12 compiler selection to use DXC. Packaging pins Microsoft's immutable v1.9.2609 archive URL and SHA-256, extracts only that DLL, and appends the complete MIT/NCSA notices to the Windows package's licence file. `dxil.dll`, SDK tools/headers and the proprietary licence stay out.\n\nA missing input, download failure or invalid cached/supplied checksum stops packaging with recovery instructions. `-DxcArchive` supports offline packaging with the same mandatory checksum. The updater regression verifies installing a previously absent DLL and replacing an old one while preserving user-added files. Backend selection and solver numerics are unchanged.\n\n## Demonstration\n\nA 27.5-second native-window recording shows the extracted package opening the original heated-flow sample, choosing GPU in Solve Fluid, and displaying temperature frames and signed wall heat. The window reports RTX 4090 (Dx12); process inspection confirms the loaded DLL is adjacent to the packaged executable, version 1.9.2609.5 with SHA-256 `0689e2fee0a1c9df8662a59680469f24e2a3ad7ce6bbbcc9284f7a83172bfc59`. The compiler override is unset, DXC directories are removed from PATH, and the working directory contains no DLL.\n\nThe sample is a single-air-domain physical transient over a held 80 °C bracket: 5 mm cells, 5,824 total cells, 180 steps and 45 s. It is not a coupled two-fluid exchanger. The recording/stills are preserved outside source git. Transfer through the separate fork-only `artifact-queue` Git LFS inbox is prepared and awaits the required upstream-root LFS initialization; no successful transfer or received receipt is claimed yet. The maintainer retrieves and verifies the bytes, then handles GitHub PR attachments. **Media remains pending until a real attachment URL is supplied.** Agents use only the fork deploy key and git feedback, without GitHub login or UI upload. No videos, raster demo images or LFS pointers are committed to this feature branch. No throughput or pipeline-time improvement is claimed from these runs.\n\n[Reproduction notes](https://github.com/bluecmd/fieldcraft/blob/3145551f7a63c966cdb36bd7e846691061329f1a/docs/windows-dxc.md) and the linked small JSON report pin the source, package hash, compiler, settings and results.\n\nArtifact handoff status: the coordinated local `artifact/parallel-handoff` staging commit `c49122a` contains nine objects across the three parallel PR handoffs, with every LFS pointer, SHA-256 and size verified. Two normal SSH deploy-key pushes both failed at the LFS batch endpoint with HTTP 502 and `0/9` objects uploaded. The remote `artifact-queue` remains at `8536cb1`; no successful transfer or `received` receipt exists. Please confirm that the upstream-root LFS bootstrap has completed and that the LFS endpoint is available before the next coordinated retry. The originals remain preserved locally, and this PR's media status remains `pending`.\n\n## Validation\n\n- Built both release-profile x64 executables and ran the production Windows packaging script. Download/checksum, GUI icon/PE checks, CLI version check and extraction of the resulting zip passed. No `dxil.dll` or tools are packaged; complete notices are present.\n- `packaging/windows/test-dxc.ps1`: real upstream download and verified offline archive passed; missing input and corrupt supplied/cached archive refusals passed.\n- Real RTX 4090, Windows 11 Pro build 26200, NVIDIA driver 616.56: all **22 existing GPU verification integration tests pass, no skips**, with DX12, automatic compiler selection and the packaged DLL adjacent to the test executable. Includes CPU/analytic flow and thermal parity, both collisions/layouts, conjugate solids and contacts. Hardware GPU required; no throughput benchmark.\n- Updater: 17 tests and doc tests pass with two explicitly excluded existing Windows failures. Both failures were independently reproduced on unchanged develop source: `verify::tests::the_release_key_verifies_the_release_tooling` (signature text fixture) and `stage::tests::app_images_and_packages` (Linux package-command path assertion). The new DLL install/replacement regression passes.\n- `cargo clippy -p fieldcraft-update --all-targets -- -D warnings`, `cargo fmt --all -- --check`, `cargo xtask assets` (377 assets attributed), and `git diff --check` pass. Rebased on current upstream develop and repeated affected checks before the tested head was pushed.\n\n## Known limitations\n\nOlder Windows 10/driver combinations were not available for testing; this does not establish their unsigned-DXIL compatibility. The standalone release licence attachment still describes the Rust crates; the Windows zip adds the complete DXC notices. The local developer package retains the workspace's 0.7.0 label and is not a published release. No full local CI gate or numerical oracle was run for this packaging-only change.\n",
-  "updated_at": "2026-10-23T21:45:18Z",
+  "updated_at": "2026-10-23T22:27:33Z",
   "url": "https://github.com/tangency-labs/fieldcraft/pull/708",
-  "comments": [],
-  "reviews": [],
-  "inline_comments": [],
+  "comments": [
+    {
+      "author": "jyviko",
+      "body": "@bluecmd, thinking about this more, I'd like to keep the Windows zip as it is and not ship the DLL ourselves. Vulkan is tried first and is already full speed for most Windows users (your own table in #561 shows it), so bundling 22 MB plus a build-time download and the extra licence notices costs everyone for the DX12-only case.\n\nBut your research is too good to lose. Could you turn this PR into **user instructions** instead? A short docs page, e.g. `docs/windows-dxc.md`, that tells someone on DX12 how to get the speed-up themselves:\n\n1. **When it helps:** only when FieldCraft runs on DX12. The status bar shows the GPU and its backend; Vulkan users need nothing.\n2. **Where to get it:** Microsoft's DirectXShaderCompiler release v1.9.2609, asset `dxc_2026_09_29.zip` (https://github.com/microsoft/DirectXShaderCompiler/releases/tag/v1.9.2609).\n3. **Verify it:** `Get-FileHash dxc_2026_09_29.zip -Algorithm SHA256` must print `AD31B1FC8443175D204F77A611FDB3EF2EC42759BDC2F1167368DE24A4A7E7F1`.\n4. **Install it:** copy only `bin\\x64\\dxcompiler.dll` next to `fieldcraft.exe` and `fieldcraft-cli.exe`. `dxil.dll` is not needed, and wgpu picks the DLL up by itself.\n5. **Check it worked:** first GPU solve starts in about 0.5 s instead of ~8 s.\n6. **Updates keep it:** the updater replaces only the files in the release zip. Delete the DLL to undo.\n7. **Licence:** it's Microsoft's open-source compiler (NCSA/MIT), the user downloads it from Microsoft, and we don't redistribute it.\n\nThen drop the packaging, ADR and ROADMAP changes. A link from the GPU section of the docs (and from the Windows release notes) would be great. Thanks again for the careful measurements, they're what made this an easy call! 🙏",
+      "created_at": "2026-10-23T22:27:33Z",
+      "updated_at": "2026-10-23T22:27:33Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/pull/708#issuecomment-6375981050"
+    }
+  ],
+  "reviews": [
+    {
+      "author": "jyviko",
+      "body": "Thanks @bluecmd, this is a really careful piece of packaging work! 🙌 Pinning Microsoft's immutable release by SHA-256, reading exactly three bounded entries and leaving `dxil.dll` and the proprietary licence out is exactly how I'd want a third-party binary handled. And the throughput win from #561 is a big deal for Windows users.\n\nI checked it independently: the URL is a real asset of the immutable v1.9.2609 release and the pinned hash matches it; the x64 `dxcompiler.dll` hashes to the value in your report and is a PE32+ DLL; wgpu-hal 30.0.1 (`dx12/instance.rs`) loads `dxcompiler.dll` by name and only falls back to FXC when it can't load it, and never loads `dxil.dll` (DXC's internal validator signs the shaders since 1.8.2502), so the benefit holds without it. The updater change is test-only; staging still takes the minisign-verified zip. `cargo test -p fieldcraft-update` 19/19, clippy and fmt clean on macOS.\n\nA few asks inline.",
+      "url": "https://github.com/tangency-labs/fieldcraft/pull/708#pullrequestreview-5635052291",
+      "state": "COMMENTED",
+      "submitted_at": "2026-10-23T22:22:07Z",
+      "commit_id": "3145551f7a63c966cdb36bd7e846691061329f1a"
+    }
+  ],
+  "inline_comments": [
+    {
+      "author": "jyviko",
+      "body": "The notices may not be complete for what the DLL contains. `LICENSE-LLVM.txt` in the archive is just the NCSA text, but DXC's own `LICENSE.TXT` at v1.9.2609 also carries the Miniz notice (`lib/Miniz/*`), and the DLL links SPIRV-Tools (Apache-2.0; its pass help strings are in the binary). Could the package's licence file also carry DXC's `LICENSE.TXT`/`ThirdPartyNotices.txt` from the same tag and the SPIRV-Tools notice? Fetching them from the tagged source with pinned hashes would keep the same guarantees as the DLL.",
+      "created_at": "2026-10-23T22:22:07Z",
+      "updated_at": "2026-10-23T22:22:07Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/pull/708#discussion_r4364714811",
+      "path": "packaging/windows/dxc.ps1",
+      "line": 61,
+      "original_line": 61,
+      "side": "RIGHT",
+      "commit_id": "3145551f7a63c966cdb36bd7e846691061329f1a"
+    },
+    {
+      "author": "jyviko",
+      "body": "Same as on #704: could we leave ROADMAP.md out? I keep the roadmap myself.",
+      "created_at": "2026-10-23T22:22:07Z",
+      "updated_at": "2026-10-23T22:22:07Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/pull/708#discussion_r4364714818",
+      "path": "ROADMAP.md",
+      "line": 94,
+      "original_line": 94,
+      "side": "RIGHT",
+      "commit_id": "3145551f7a63c966cdb36bd7e846691061329f1a"
+    },
+    {
+      "author": "jyviko",
+      "body": "Small one: the doc records one run's test results (\"17 passed and two existing Windows failures…\"). That will go stale in the repo; could those numbers live in the PR description instead, with the doc keeping how to package and verify? Same for the matching lines in `docs/releasing.md`. Also, `test-dxc.ps1` isn't run by any workflow yet. Is it worth a step in the Windows packaging job so it doesn't rot?",
+      "created_at": "2026-10-23T22:22:07Z",
+      "updated_at": "2026-10-23T22:22:07Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/pull/708#discussion_r4364714823",
+      "path": "docs/windows-dxc.md",
+      "line": 1,
+      "original_line": 1,
+      "side": "RIGHT",
+      "commit_id": "3145551f7a63c966cdb36bd7e846691061329f1a"
+    }
+  ],
   "checks": [
     {
       "id": 120647707795,
