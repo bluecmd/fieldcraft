@@ -6,7 +6,7 @@ receipt, do the work in their feature branch, then submit a PR description here 
 
 Agents have **only a fork deploy key**. They must not log into GitHub, install `gh` credentials,
 read Actions logs through the website, or upload PR attachments themselves. Only the maintainer
-runs authenticated GitHub operations. Everything agents need is exchanged through git and LFS.
+runs authenticated GitHub operations. Everything agents need is exchanged through ordinary git.
 
 Target: **tangency-labs/fieldcraft:develop**. Feature branches live in **bluecmd/fieldcraft**.
 No queue action merges a PR, closes an issue, changes CI settings, or executes feature-branch code.
@@ -78,7 +78,7 @@ Closes #698. Describe the final change and its user-visible behavior.
 
 ## Demonstration
 
-Describe the actual app behavior. Push the recording/still through the separate artifact-queue LFS handoff; the maintainer handles GitHub attachments.
+Describe the actual app behavior. Push the recording/still through the separate artifact-queue Git handoff; the maintainer handles GitHub attachments.
 
 ## Validation
 
@@ -112,7 +112,7 @@ request files after completion if desired; retain the receipts.
 The maintainer's [request on #704](https://github.com/tangency-labs/fieldcraft/pull/704#issuecomment-6372535663)
 applies to new handoffs: **do not commit demonstration videos or stills**. Removing them in a later
 commit is insufficient: amend/rebase the unmerged commits so the binaries are absent from the
-branch history. Agents hand recordings to the maintainer through the separate LFS inbox below;
+branch history. Agents hand recordings to the maintainer through the separate Git inbox below;
 only the maintainer performs GitHub PR attachment upload. Keep
 small original recipes, numerical report JSON, settings, hardware and reproduction notes in git.
 Remove attribution rows for binaries removed from the repository; preserve provenance in the
@@ -125,7 +125,7 @@ manual handoff. There is no raw-repository-video fallback.
 `media` has three values:
 
 - `pending`: post the PR with an honest textual demonstration and a pending attachment receipt.
-  The agent transfers recordings/stills through the LFS artifact inbox below. The maintainer
+  The agent transfers recordings/stills through the Git artifact inbox below. The maintainer
   retrieves the files and handles GitHub attachment upload. Agents never need GitHub sign-in.
   `pending` does not block PR creation, and a received artifact does not mean it is attached.
 - `attached`: the maintainer has supplied real GitHub attachment URLs; the body contains them (`github.com/user-attachments/...` or
@@ -187,18 +187,11 @@ Agents should request missing context in their queue handoff instead of attempti
 rebase onto `fork/upstream-develop`; they need no upstream credentials. No force update or change
 to the fork’s normal develop branch is performed.
 
-## Artifact transfer: separate Git LFS inbox
+## Artifact transfer: separate ordinary Git inbox
 
 Recordings, screenshots and other binary evidence go to **bluecmd/fieldcraft:artifact-queue**,
-not a feature branch or pr-queue. Its `objects/**` files are Git LFS pointers; small manifests
-remain normal JSON. Never merge this branch upstream. Use the same fork deploy key, with no new
-SSH server access, GitHub login or token. Install Git LFS on the agent machine if necessary.
-
-**Current activation blocker:** a real upload returned `@bluecmd can not upload new objects to
-public fork bluecmd/fieldcraft`. GitHub requires an existing LFS object in the repository network
-or root write permission. The maintainer must initialize it once as described below. Do not
-claim files are transferred based on a pointer commit or failed push. Keep the originals locally.
-The branch and client are ready; wait for a successful LFS push and `received` receipt.
+never a feature branch or pr-queue. Agents push ordinary Git blobs using their existing fork
+SSH deploy key. No LFS installation, GitHub login, token or upstream setup is required.
 
 In a separate worktree based on artifact-queue:
 
@@ -206,54 +199,33 @@ In a separate worktree based on artifact-queue:
 git fetch fork artifact-queue
 git worktree add -b artifact/YOUR-AGENT /tmp/fieldcraft-artifacts-YOUR-AGENT fork/artifact-queue
 cd /tmp/fieldcraft-artifacts-YOUR-AGENT
-git lfs install --local --skip-smudge
 python /path/to/pr-queue/publisher/queue-artifact.py /path/to/recording.mp4 \
-  --agent YOUR-AGENT --branch YOUR-FEATURE-BRANCH --head-sha FULL_TESTED_SHA \
-  --description 'Actual app capture; assumptions and reproduction are in the feature docs'
-git commit -m 'artifacts: hand off recording for YOUR-FEATURE-BRANCH'
+  --branch YOUR-FEATURE-BRANCH --head-sha FULL-TESTED-HEAD-SHA --agent YOUR-AGENT
+git commit -m 'artifacts: hand off recording'
 git push fork HEAD:artifact-queue
 ```
 
-The staging helper validates that Git’s index contains an LFS pointer whose SHA-256 and size match
-the actual file. It stages the object and its manifest, not the source path. The normal LFS
-pre-push hook uploads the bytes through GitHub using the existing deploy key. Never skip the LFS
-push/check, put base64 media in Markdown, or put full binaries in ordinary git blobs. On a race,
-fetch/rebase artifact-queue and retry; never force-push it. The staging helper accepts at most
-100 MiB per file; request larger transfers through the maintainer.
+The helper stages actual binary bytes under `objects/<branch>/<head-sha>/<filename>` and a small
+JSON manifest under `manifests/` recording their size and SHA-256. It verifies the index contains
+the exact original bytes. Files must be at most 100 MiB each; prefer below 50 MiB. Changed bytes
+need a new filename or tested head. Fetch/rebase and retry concurrent pushes; never force-push.
+Do not enable LFS for this branch. Never merge this branch into a feature branch or upstream.
 
-The maintainer pulls **actual LFS bytes**, verifies size/hash and retains them outside source git.
-`pr-queue:receipts/artifacts/<branch>/<head-sha>/<filename>.json` says `received` only after that
-verification. `github_attachment: pending_maintainer` means the file is in the maintainer’s hands,
-not yet a GitHub PR attachment. The maintainer handles that separate step and provides the real
-URL. `receipts/artifact-errors/` records missing objects or retrieval problems without asking an
-agent to sign in. Small recipes/reports/provenance still belong in the feature PR.
+Every 15 minutes the maintainer retrieves the actual Git blobs, verifies size and SHA-256, and
+retains them in a private local cache. Only then does
+`pr-queue:receipts/artifacts/<branch>/<head-sha>/<filename>.json` say `received`.
+`github_attachment: pending_maintainer` means the bytes are received but are not yet attached to
+the PR. Attaching media remains the maintainer's separate task. Agents never need GitHub login.
+Retrieval failures are reported under `receipts/artifact-errors/`.
 
-### One-time root LFS initialization (core maintainer only)
-
-[GitHub’s documented rule](https://docs.github.com/en/repositories/working-with-files/managing-large-files/collaboration-with-git-large-file-storage#pushing-large-files-to-forks)
-explains the observed rejection. LFS storage/bandwidth for public forks is charged to the parent
-repository network. A core maintainer with upstream write permission can run the following in a
-clone whose `origin` is tangency-labs/fieldcraft, using **their own existing authentication**:
-
-```sh
-git remote get-url origin  # verify tangency-labs/fieldcraft
-git lfs install --local
-queue_bootstrap_oid=$(printf 'FieldCraft artifact transport bootstrap v1\n' | \
-  git lfs clean --filename queue-bootstrap.txt | sed -n 's/^oid sha256://p')
-git lfs push --object-id origin "$queue_bootstrap_oid"
-```
-
-This uploads one tiny object without a source file, staged change, branch push or merge. Once
-it succeeds, retry the fork artifact upload and verify a received receipt. Our backup-maintainer
-account has only upstream triage access and cannot perform this root-write step. No upstream
-credential should be given to an agent. Until a real transfer succeeds, artifact transport is
-not declared operational.
+This replaces the earlier LFS proposal; root LFS initialization is unnecessary. Git history
+retains binary versions, so keep recordings compact and avoid repeated unchanged uploads.
 
 ## Publisher operation
 
 Source: [publisher/publish.mjs](publisher/publish.mjs), tests:
 `node --test publisher/publish.test.mjs publisher/handoff.test.mjs`. The maintainer service uses
-Node, git/Git LFS and authenticated `gh`; agents use only git/Git LFS and their deploy key. The
+Node, git and authenticated `gh`; agents use only git and their deploy key. The
 staging helper uses Python’s standard library.
 Only the installed, reviewed copy runs; committing replacement executable instructions to a
 request does not execute anything. The scanner uses GitHub APIs, not branch checkouts or shell

@@ -15,7 +15,8 @@ Actions logs through the website, or perform UI attachment uploads. The maintain
 feedback/CI logs through feedback/ and upstream develop through fork/upstream-develop.
 
 Demo videos and stills are handed to the maintainer on the fork-only artifact-queue branch using
-Git LFS plus manifests. Wait for received receipts; GitHub currently requires root LFS bootstrap.
+ordinary Git blobs plus manifests (at most 100 MiB each). Wait for received receipts.
+No LFS or upstream initialization is required.
 The maintainer handles GitHub PR attachments, not the agent. No media or LFS pointers belong in
 unmerged feature-branch commits.
 Keep recipes, small numerical reports and reproduction notes in git; preserve binaries outside git.

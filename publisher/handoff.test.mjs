@@ -6,27 +6,26 @@ import {manifestRecord, syncArtifacts} from './artifact-inbox.mjs';
 const sha = 'a'.repeat(40);
 const meta = {schema: 1, agent: 'ui-agent', branch: 'fix/legend-fit-610', head_sha: sha, name: 'demo.mp4', bytes: 1234, sha256: 'b'.repeat(64), description: 'Actual app recording'};
 const path = `manifests/${meta.branch}/${sha}/demo.mp4.json`;
-const pointer = `version https://git-lfs.github.com/spec/v1\noid sha256:${meta.sha256}\nsize 1234\n`;
+const blob = {type: 'blob', sha: 'c'.repeat(40), size: 1234};
 
-test('manifest must match an actual LFS pointer, not an ordinary binary', () => {
-  assert.equal(manifestRecord(path, JSON.stringify(meta), pointer).sha256, meta.sha256);
-  for (const p of ['binary data', pointer.replace('1234', '1235'), pointer.replace('b'.repeat(64), 'c'.repeat(64))]) assert.throws(() => manifestRecord(path, JSON.stringify(meta), p));
+test('manifest must match an existing ordinary Git blob size', () => {
+  assert.equal(manifestRecord(path, JSON.stringify(meta), blob).sha256, meta.sha256);
+  for (const invalid of [undefined, {...blob, size: 1235}, {...blob, sha: 'invalid'}]) assert.throws(() => manifestRecord(path, JSON.stringify(meta), invalid));
 });
 test('rejects traversal, private source paths, huge files, mismatched paths and invalid heads', () => {
-  for (const change of [{branch: '../../x'}, {name: '../demo.mp4'}, {name: 'C:\\private.mp4'}, {bytes: 101 * 1024 * 1024}, {head_sha: 'HEAD'}]) assert.throws(() => manifestRecord(path, JSON.stringify({...meta, ...change}), pointer));
-  assert.throws(() => manifestRecord('manifests/other.json', JSON.stringify(meta), pointer));
+  for (const change of [{branch: '../../x'}, {name: '../demo.mp4'}, {name: 'C:\\private.mp4'}, {bytes: 101 * 1024 * 1024}, {head_sha: 'HEAD'}]) assert.throws(() => manifestRecord(path, JSON.stringify({...meta, ...change}), blob));
+  assert.throws(() => manifestRecord('manifests/other.json', JSON.stringify(meta), blob));
 });
-test('artifact is not marked received until LFS bytes are retrieved and verified', () => {
+test('artifact is not marked received until Git blob bytes are retrieved and verified', () => {
   const writes = []; const data = (content, size = content.length) => ({type: 'blob', sha: content, size});
   const api = (route, method, value) => {
     if (method) { writes.push({route, value}); return {}; }
     if (route.includes('/git/ref/')) return {object: {sha: 'commit'}};
-    if (route.includes('/git/trees/')) return {tree: [{...data('manifest'), path}, {...data('pointer'), path: `objects/${meta.branch}/${sha}/demo.mp4`}]};
+    if (route.includes('/git/trees/')) return {tree: [{...data('manifest'), path}, {...blob, path: `objects/${meta.branch}/${sha}/demo.mp4`}]};
     if (route.endsWith('/git/blobs/manifest')) return {encoding: 'base64', content: Buffer.from(JSON.stringify(meta)).toString('base64')};
-    if (route.endsWith('/git/blobs/pointer')) return {encoding: 'base64', content: Buffer.from(pointer).toString('base64')};
     const e = Error('missing'); e.notFound = true; throw e;
   };
-  syncArtifacts(api, '/unused', () => { throw Error('LFS object unavailable'); });
+  syncArtifacts(api, '/unused', () => { throw Error('Git object unavailable'); });
   assert.ok(writes.some(w => w.route.includes('artifact-errors'))); assert.ok(!writes.some(w => w.route.includes('receipts%2Fartifacts%2F')));
   writes.length = 0; let fetched = false;
   syncArtifacts(api, '/unused', () => { fetched = true; });

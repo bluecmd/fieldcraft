@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Stage a Git LFS artifact and its manifest. Uses git only; no GitHub login or token."""
+"""Stage an ordinary Git artifact and its manifest. Uses git only; no GitHub login or token."""
 import argparse
 import datetime
 import hashlib
@@ -66,13 +66,12 @@ def main():
         p.error('Source changed during staging; retry with a stable file.')
     previous.parent.mkdir(parents=True, exist_ok=True)
     previous.write_text(json.dumps(description, indent=2) + '\n')
-    if not git('check-attr', 'filter', '--', str(relative)).endswith(': lfs'):
-        p.error('Artifact is not LFS-tracked. Install Git LFS and restore .gitattributes before proceeding.')
+    if git('check-attr', 'filter', '--', str(relative)).endswith(': lfs'):
+        p.error('Artifact is still LFS-tracked. Fetch/rebase the current artifact-queue attributes before staging.')
     subprocess.run(['git', 'add', '--', str(relative), str(manifest)], check=True)
-    pointer = git('show', ':' + str(relative))
-    expected = f'version https://git-lfs.github.com/spec/v1\noid sha256:{oid}\nsize {size}'
-    if pointer != expected:
-        p.error('Index contains ordinary bytes instead of the expected LFS pointer. Do not commit; install git lfs --local and restage.')
+    staged = subprocess.check_output(['git', 'show', ':' + str(relative)])
+    if len(staged) != size or hashlib.sha256(staged).hexdigest() != oid:
+        p.error('Index bytes differ from the artifact. Check Git filters before committing.')
     print(json.dumps({'status': 'staged_not_pushed', 'object': str(relative), 'manifest': str(manifest), 'sha256': oid, 'bytes': size}))
     print('Commit these two paths and push HEAD:artifact-queue using the existing fork deploy key.')
 
