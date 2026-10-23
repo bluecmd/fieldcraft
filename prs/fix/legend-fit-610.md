@@ -22,7 +22,7 @@ Closes #610. A clamped 24-band Cantilever plot had a 507-point legend in a 406-p
 
 A 32-second native app recording shows the failure, the corrected 960 by 600 layout, clicks on Max (node 23) and Min (node 127), expansion to 1400 by 900, and a return to the smaller window. The original Cantilever sample is a small-strain linear-elastic static solve, with 24 stress bands clamped to 0–10 MPa and an extra over-limit colour. This is a UI resize demonstration, not a physical transient. The true maximum (151.0 MPa) and clamp maximum (10.00 MPa) stay distinct. The small legend is 316 points tall; the larger view restores its natural 507-point height.
 
-GitHub video/still attachment upload is pending. The recording, native stills and solved project are preserved outside git for attachment after publication. No demo raster or video is present in any feature-branch commit. Original commands, reproduction notes, and the small layout/probe report are in `tools/demo-video/legend-fit-610*` and `docs/legend-layout.md`.
+The recording and stills are staged for the separate `artifact-queue` Git LFS handoff; the maintainer retrieves the verified bytes and handles GitHub attachments. Two normal deploy-key uploads returned LFS batch HTTP 502 with 0 of 9 objects transferred. The remote artifact inbox is unchanged and there is no `received` receipt. Transfer remains pending the documented maintainer LFS bootstrap/service recovery; local originals are preserved. No demo raster, video or LFS pointer is present in any feature-branch commit. Original commands, reproduction notes, and the small layout/probe report are in `tools/demo-video/legend-fit-610*` and `docs/legend-layout.md`.
 
 ## Validation
 
@@ -32,7 +32,12 @@ GitHub video/still attachment upload is pending. The recording, native stills an
 - `cargo clippy -p fieldcraft-ui-egui --all-targets -- -D warnings`: passed.
 - `cargo fmt --all -- --check` and `git diff --check`: passed.
 - Regression coverage checks small/large/small resizing, selection/navigation clearance, unchanged band count and over-limit colour, full-size Max/Min targets, actual focus/probe behavior, and non-overlapping numeric tick glyphs with and without a stale-result warning.
+- Maintainer-relayed CI on this exact head passed all 188 UI tests, the 17-crate wasm check, heavy tests and oracle. The main gate remains red: the unchanged engine `cancel_tests::explicit_stops_between_time_steps` returned `cancelled` after 5.792319807 seconds, exceeding its existing 5-second wall-clock assertion while 22 test binaries ran concurrently (engine: 369 passed, 1 failed, 15 ignored). The engine, explicit, parallel and model-progress sources have no diff from mirrored upstream develop `7d9c027d71b2c1ea3395e2552e95f0455a7244db`; this PR changes only the UI and reproduction notes. Scheduling contention is a possible explanation, not a proven diagnosis. The cancellation deadline and solver polling have not been weakened or changed.
 
 ## Known limitations
 
-Native sizes below the supported 960 by 600 minimum and other operating systems were not tested. No solver numerics or commands changed; solver oracles and the full workspace gate were not run locally. GitHub CI remains responsible for the upstream gate. The media receipt remains pending until GitHub attachments are actually uploaded.
+Native sizes below the supported 960 by 600 minimum were not demonstrated. The exact-head Linux CI result above complements the local Windows checks; the full local workspace gate was not run. No local baseline cancellation outcome is available: its fresh lower-layer dependency build was stopped before test execution, so no pass or reproduction is claimed. The red engine cancellation timing check is unresolved; do not treat the upstream gate as passing. The artifact transfer receipt and GitHub attachment remain pending.
+
+## Maintainer follow-up
+
+Please rerun the failed `cargo xtask ci` job from run `40023518993` at this unchanged head after reviewing the cancellation findings above. If the timing failure repeats, relay its log and preserve the failure for a separate cancellation-latency investigation; no request is made to skip the check, extend its deadline or waive CI. Relay any further review or CI context through this queue. Only the maintainer handles authenticated GitHub operations and attachment upload.
