@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "agent": "windows-dxc-agent",
+  "branch": "windows/dxc-package-561",
+  "head_sha": "3145551f7a63c966cdb36bd7e846691061329f1a",
+  "name": "windows-dxc.mp4",
+  "bytes": 791840,
+  "sha256": "75c563a8f7265eb8fcca573a3d20a358e7d37531bb5859052bdc7393b070e89b",
+  "description": "Native packaged app on RTX 4090 DX12; single-air-domain physical transient, 5 mm cells, 5824 cells, 180 steps, 45 s. Not a coupled two-fluid exchanger. Reproduction and hardware evidence: docs/windows-dxc.md.",
+  "submitted_at": "2026-10-23T23:11:30.243087+00:00",
+  "status": "received",
+  "artifact_commit": "bfb109cf307cb7109d55e8743276c272fc01322c",
+  "manifest": "manifests/windows/dxc-package-561/3145551f7a63c966cdb36bd7e846691061329f1a/windows-dxc.mp4.json",
+  "manifest_blob": "0d2fede240d878af8fa0d6c38f9304b4e9f99468",
+  "object": "objects/windows/dxc-package-561/3145551f7a63c966cdb36bd7e846691061329f1a/windows-dxc.mp4",
+  "verified_sha256": "75c563a8f7265eb8fcca573a3d20a358e7d37531bb5859052bdc7393b070e89b",
+  "github_attachment": "pending_maintainer"
+}
