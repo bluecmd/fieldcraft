@@ -1,0 +1,1214 @@
+PR #709; head 252fa873b5ed4cfc1a0e5714f56806b47b9a9f00
+Check: cargo xtask ci
+Source: https://github.com/tangency-labs/fieldcraft/actions/runs/40023518993/job/120654123187
+Completed: 2026-10-23T21:05:46Z
+
+﻿2026-10-23T21:01:06.5031321Z Current runner version: '2.337.0'
+2026-10-23T21:01:06.5037416Z Runner name: 'blacksmith-16vcpu-ubuntu-2404-mryfbnu75lqbrqm3'
+2026-10-23T21:01:06.5038282Z Runner group name: 'blacksmith scale sets - blacksmith-16vcpu-ubuntu-2404'
+2026-10-23T21:01:06.5039452Z Machine name: 'ip-172-31-73-130'
+2026-10-23T21:01:06.5041619Z ##[group]GITHUB_TOKEN Permissions
+2026-10-23T21:01:06.5043404Z Contents: read
+2026-10-23T21:01:06.5043953Z Metadata: read
+2026-10-23T21:01:06.5044399Z ##[endgroup]
+2026-10-23T21:01:06.5046327Z Secret source: None
+2026-10-23T21:01:06.5047050Z Cache mode: write
+2026-10-23T21:01:06.5047604Z Prepare workflow directory
+2026-10-23T21:01:06.5388947Z Prepare all required actions
+2026-10-23T21:01:06.5440848Z Getting action download info
+2026-10-23T21:01:06.8758434Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-10-23T21:01:06.9433941Z Download action repository 'dtolnay/rust-toolchain@stable' (SHA:b725eda525362e7cf34af9a7243cac1e3f01a7ec)
+2026-10-23T21:01:07.2207416Z Download action repository 'Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6' (SHA:6323deb102c322ba6fcbdcafc7e3dddab59af2b6)
+2026-10-23T21:01:08.0379939Z Setting BLACKSMITH_ACTIONS_RESULTS_URL to https://results-receiver.actions.githubusercontent.com/
+2026-10-23T21:01:08.0423715Z Complete job name: cargo xtask ci
+2026-10-23T21:01:08.1058163Z A job started hook has been configured by the self-hosted runner administrator
+2026-10-23T21:01:08.1246752Z ##[group]Run '/setup.sh'
+2026-10-23T21:01:08.1289798Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-23T21:01:08.1291775Z env:
+2026-10-23T21:01:08.1292599Z   BLACKSMITH_RUNNER_MESSAGE_WAIT_MS: 740
+2026-10-23T21:01:08.1293613Z   BLACKSMITH_RUNNER_ACQUIRE_JOB_MS: 960
+2026-10-23T21:01:08.1294587Z   BLACKSMITH_CHECK_RUN_ID: 120654123187
+2026-10-23T21:01:08.1295653Z   BLACKSMITH_JOB_DISPLAY_NAME: cargo xtask ci
+2026-10-23T21:01:08.1296673Z   GITHUB_ACTIONS_CACHE_MODE: write
+2026-10-23T21:01:08.1297714Z ##[endgroup]
+2026-10-23T21:01:08.1788081Z Logging daemon started (blacksmithd for logs)
+2026-10-23T21:01:08.1969476Z Results daemon started (blacksmithd for results)
+2026-10-23T21:01:08.2291207Z Background adoption and SSH setup started (PID: 3568)
+2026-10-23T21:01:08.2292387Z 
+2026-10-23T21:01:08.2295471Z ----------------------------------------
+2026-10-23T21:01:08.2297385Z View this job: https://app.blacksmith.sh/tangency-labs/runs/40023518993/jobs/120654123187
+2026-10-23T21:01:08.2299007Z SSH Access (using your GitHub SSH key):
+2026-10-23T21:01:08.2300518Z   ssh -p 64001 runner@blacksmith-16vcpu-ubuntu-2404-mryfbnu75lqbrqm3.vm.blacksmith.sh
+2026-10-23T21:01:08.2301602Z 
+2026-10-23T21:01:08.2301987Z No GitHub SSH key? Add one at:
+2026-10-23T21:01:08.2303732Z https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
+2026-10-23T21:01:08.2305748Z 
+2026-10-23T21:01:08.2306162Z ----------------------------------------
+2026-10-23T21:01:08.2306852Z 
+2026-10-23T21:01:08.2307399Z VM ID: blacksmith-16vcpu-ubuntu-2404-mryfbnu75lqbrqm3
+2026-10-23T21:01:08.2308500Z Host: production-192.240.249.10-x8664
+2026-10-23T21:01:08.2309441Z Host Agent PID: 3913983
+2026-10-23T21:01:08.2448966Z Host Agent Git SHA: af74fd76b
+2026-10-23T21:01:08.2451507Z Host CPU Manufacturer: AuthenticAMD
+2026-10-23T21:01:08.2452641Z Blacksmith Host Generation: gen 2
+2026-10-23T21:01:08.2453726Z Petname: production-premium-macaw-45aac726
+2026-10-23T21:01:08.2454734Z Region: us-west
+2026-10-23T21:01:08.2455502Z Rootfs Version: ubuntu24-full-x64-081926
+2026-10-23T21:01:08.2456463Z OS Version: Ubuntu 24.04.4 LTS
+2026-10-23T21:01:08.2457009Z 
+2026-10-23T21:01:08.2457417Z Enabling Blacksmith transparent cache
+2026-10-23T21:01:08.2929440Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+2026-10-23T21:01:08.2930676Z with:
+2026-10-23T21:01:08.2931351Z   fetch-depth: 0
+2026-10-23T21:01:08.2932151Z   repository: tangency-labs/fieldcraft
+2026-10-23T21:01:08.2939891Z   token: ***
+2026-10-23T21:01:08.2941145Z   ssh-strict: true
+2026-10-23T21:01:08.2941870Z   ssh-user: git
+2026-10-23T21:01:08.2942622Z   persist-credentials: true
+2026-10-23T21:01:08.2943472Z   clean: true
+2026-10-23T21:01:08.2944242Z   sparse-checkout-cone-mode: true
+2026-10-23T21:01:08.2945101Z   fetch-tags: false
+2026-10-23T21:01:08.2945839Z   show-progress: true
+2026-10-23T21:01:08.2946610Z   lfs: false
+2026-10-23T21:01:08.2947299Z   submodules: false
+2026-10-23T21:01:08.2948064Z   set-safe-directory: true
+2026-10-23T21:01:08.2948915Z   allow-unsafe-pr-checkout: false
+2026-10-23T21:01:08.2949780Z env:
+2026-10-23T21:01:08.2950465Z   CARGO_TERM_COLOR: always
+2026-10-23T21:01:08.2951332Z   BLACKSMITH_RUNNER_MESSAGE_WAIT_MS: 740
+2026-10-23T21:01:08.2952340Z   BLACKSMITH_RUNNER_ACQUIRE_JOB_MS: 960
+2026-10-23T21:01:08.2953283Z   GITHUB_REPO_NAME: tangency-labs/fieldcraft
+2026-10-23T21:01:08.2954367Z ##[endgroup]
+2026-10-23T21:01:08.5352087Z Syncing repository: tangency-labs/fieldcraft
+2026-10-23T21:01:08.5355395Z ##[group]Getting Git version info
+2026-10-23T21:01:08.5356281Z Working directory is '/home/runner/_work/fieldcraft/fieldcraft'
+2026-10-23T21:01:08.5357464Z [command]/usr/local/bin/git version
+2026-10-23T21:01:08.5546173Z git version 2.55.0
+2026-10-23T21:01:08.5572058Z ##[endgroup]
+2026-10-23T21:01:08.5594678Z Temporarily overriding HOME='/home/runner/_work/_temp/1222a929-c16f-461e-874a-7708e668b9f0' before making global git config changes
+2026-10-23T21:01:08.5597067Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-23T21:01:08.5606680Z [command]/usr/local/bin/git config --global --add safe.directory /home/runner/_work/fieldcraft/fieldcraft
+2026-10-23T21:01:08.5696460Z Deleting the contents of '/home/runner/_work/fieldcraft/fieldcraft'
+2026-10-23T21:01:08.5721199Z ##[group]Determining repository object format
+2026-10-23T21:01:08.5723613Z ##[endgroup]
+2026-10-23T21:01:08.5724806Z ##[group]Initializing the repository
+2026-10-23T21:01:08.5732305Z [command]/usr/local/bin/git init /home/runner/_work/fieldcraft/fieldcraft
+2026-10-23T21:01:08.5827453Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-23T21:01:08.5829290Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-23T21:01:08.5830883Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-23T21:01:08.5832112Z hint: call:
+2026-10-23T21:01:08.5832810Z hint:
+2026-10-23T21:01:08.5833966Z hint: 	git config --global init.defaultBranch <name>
+2026-10-23T21:01:08.5834996Z hint:
+2026-10-23T21:01:08.5835983Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-23T21:01:08.5837730Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-23T21:01:08.5838980Z hint:
+2026-10-23T21:01:08.5839720Z hint: 	git branch -m <name>
+2026-10-23T21:01:08.5840575Z hint:
+2026-10-23T21:01:08.5841623Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-23T21:01:08.5843544Z Initialized empty Git repository in /home/runner/_work/fieldcraft/fieldcraft/.git/
+2026-10-23T21:01:08.5847105Z [command]/usr/local/bin/git remote add origin https://github.com/tangency-labs/fieldcraft
+2026-10-23T21:01:08.5926461Z ##[endgroup]
+2026-10-23T21:01:08.5928161Z ##[group]Disabling automatic garbage collection
+2026-10-23T21:01:08.5930148Z [command]/usr/local/bin/git config --local gc.auto 0
+2026-10-23T21:01:08.6009632Z ##[endgroup]
+2026-10-23T21:01:08.6010996Z ##[group]Setting up auth
+2026-10-23T21:01:08.6012001Z Removing SSH command configuration
+2026-10-23T21:01:08.6017123Z [command]/usr/local/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-23T21:01:08.6092647Z [command]/usr/local/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-23T21:01:08.6493054Z Removing HTTP extra header
+2026-10-23T21:01:08.6501748Z [command]/usr/local/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-23T21:01:08.6552041Z [command]/usr/local/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-23T21:01:08.6840487Z Removing includeIf entries pointing to credentials config files
+2026-10-23T21:01:08.6842432Z [command]/usr/local/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-23T21:01:08.6912012Z [command]/usr/local/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-23T21:01:08.7149089Z [command]/usr/local/bin/git config --file /home/runner/_work/_temp/git-credentials-6eebcc3c-1123-42ef-af3d-bbfeebd09405.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-23T21:01:08.7215408Z [command]/usr/local/bin/git config --local includeIf.gitdir:/home/runner/_work/fieldcraft/fieldcraft/.git.path /home/runner/_work/_temp/git-credentials-6eebcc3c-1123-42ef-af3d-bbfeebd09405.config
+2026-10-23T21:01:08.7265514Z [command]/usr/local/bin/git config --local includeIf.gitdir:/home/runner/_work/fieldcraft/fieldcraft/.git/worktrees/*.path /home/runner/_work/_temp/git-credentials-6eebcc3c-1123-42ef-af3d-bbfeebd09405.config
+2026-10-23T21:01:08.7322242Z [command]/usr/local/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-6eebcc3c-1123-42ef-af3d-bbfeebd09405.config
+2026-10-23T21:01:08.7385564Z [command]/usr/local/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-6eebcc3c-1123-42ef-af3d-bbfeebd09405.config
+2026-10-23T21:01:08.7437747Z ##[endgroup]
+2026-10-23T21:01:08.7439059Z ##[group]Fetching the repository
+2026-10-23T21:01:08.7447434Z [command]/usr/local/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/* +93abfa0c02832c9d9b9f7f29a6cae34b033e4e20:refs/remotes/pull/709/merge
+2026-10-23T21:01:12.1040560Z From https://github.com/tangency-labs/fieldcraft
+2026-10-23T21:01:12.1042273Z  * [new branch]      contact-folding                          -> origin/contact-folding
+2026-10-23T21:01:12.1042767Z  * [new branch]      corpus-goldens                           -> origin/corpus-goldens
+2026-10-23T21:01:12.1043259Z  * [new branch]      develop                                  -> origin/develop
+2026-10-23T21:01:12.1043675Z  * [new branch]      issue-media                              -> origin/issue-media
+2026-10-23T21:01:12.1044134Z  * [new branch]      main                                     -> origin/main
+2026-10-23T21:01:12.1044529Z  * [new branch]      octree-85b                               -> origin/octree-85b
+2026-10-23T21:01:12.1044950Z  * [new branch]      pr-media                                 -> origin/pr-media
+2026-10-23T21:01:12.1045359Z  * [new branch]      rmt-594                                  -> origin/rmt-594
+2026-10-23T21:01:12.1045740Z  * [new tag]         v0.1.0                                   -> v0.1.0
+2026-10-23T21:01:12.1046108Z  * [new tag]         v0.2.0                                   -> v0.2.0
+2026-10-23T21:01:12.1046464Z  * [new tag]         v0.3.0                                   -> v0.3.0
+2026-10-23T21:01:12.1046700Z  * [new tag]         v0.4.0                                   -> v0.4.0
+2026-10-23T21:01:12.1046919Z  * [new tag]         v0.5.0                                   -> v0.5.0
+2026-10-23T21:01:12.1047326Z  * [new tag]         v0.5.1                                   -> v0.5.1
+2026-10-23T21:01:12.1048167Z  * [new tag]         v0.5.2                                   -> v0.5.2
+2026-10-23T21:01:12.1048520Z  * [new tag]         v0.5.3                                   -> v0.5.3
+2026-10-23T21:01:12.1048886Z  * [new tag]         v0.5.4                                   -> v0.5.4
+2026-10-23T21:01:12.1049208Z  * [new tag]         v0.5.5                                   -> v0.5.5
+2026-10-23T21:01:12.1049563Z  * [new tag]         v0.5.7                                   -> v0.5.7
+2026-10-23T21:01:12.1049889Z  * [new tag]         v0.5.8                                   -> v0.5.8
+2026-10-23T21:01:12.1050243Z  * [new tag]         v0.5.9                                   -> v0.5.9
+2026-10-23T21:01:12.1050590Z  * [new tag]         v0.6.0                                   -> v0.6.0
+2026-10-23T21:01:12.1050948Z  * [new tag]         v0.7.0                                   -> v0.7.0
+2026-10-23T21:01:12.1051345Z  * [new ref]         93abfa0c02832c9d9b9f7f29a6cae34b033e4e20 -> pull/709/merge
+2026-10-23T21:01:12.1089061Z ##[endgroup]
+2026-10-23T21:01:12.1089506Z ##[group]Determining the checkout info
+2026-10-23T21:01:12.1090461Z ##[endgroup]
+2026-10-23T21:01:12.1096401Z [command]/usr/local/bin/git sparse-checkout disable
+2026-10-23T21:01:12.1154004Z [command]/usr/local/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-23T21:01:12.1188621Z ##[group]Checking out the ref
+2026-10-23T21:01:12.1192359Z [command]/usr/local/bin/git checkout --progress --force refs/remotes/pull/709/merge
+2026-10-23T21:01:12.2545588Z Note: switching to 'refs/remotes/pull/709/merge'.
+2026-10-23T21:01:12.2545984Z 
+2026-10-23T21:01:12.2546120Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-23T21:01:12.2546412Z changes and commit them, and you can discard any commits you make in this
+2026-10-23T21:01:12.2546682Z state without impacting any branches by switching back to a branch.
+2026-10-23T21:01:12.2546835Z 
+2026-10-23T21:01:12.2546960Z If you want to create a new branch to retain commits you create, you may
+2026-10-23T21:01:12.2547261Z do so (now or later) by using -c with the switch command. Example:
+2026-10-23T21:01:12.2547407Z 
+2026-10-23T21:01:12.2547488Z   git switch -c <new-branch-name>
+2026-10-23T21:01:12.2547585Z 
+2026-10-23T21:01:12.2547667Z Or undo this operation with:
+2026-10-23T21:01:12.2547762Z 
+2026-10-23T21:01:12.2547825Z   git switch -
+2026-10-23T21:01:12.2547894Z 
+2026-10-23T21:01:12.2548028Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-23T21:01:12.2548188Z 
+2026-10-23T21:01:12.2548392Z HEAD is now at 93abfa0 Merge 252fa873b5ed4cfc1a0e5714f56806b47b9a9f00 into 7d9c027d71b2c1ea3395e2552e95f0455a7244db
+2026-10-23T21:01:12.2553281Z ##[endgroup]
+2026-10-23T21:01:12.2618803Z [command]/usr/local/bin/git log -1 --format=%H
+2026-10-23T21:01:12.2654748Z 93abfa0c02832c9d9b9f7f29a6cae34b033e4e20
+2026-10-23T21:01:12.2877913Z ##[group]Run dtolnay/rust-toolchain@stable
+2026-10-23T21:01:12.2878149Z with:
+2026-10-23T21:01:12.2878303Z   components: rustfmt, clippy
+2026-10-23T21:01:12.2878464Z   targets: wasm32-unknown-unknown
+2026-10-23T21:01:12.2878626Z   toolchain: stable
+2026-10-23T21:01:12.2878763Z env:
+2026-10-23T21:01:12.2878919Z   CARGO_TERM_COLOR: always
+2026-10-23T21:01:12.2879086Z   BLACKSMITH_RUNNER_MESSAGE_WAIT_MS: 740
+2026-10-23T21:01:12.2879264Z   BLACKSMITH_RUNNER_ACQUIRE_JOB_MS: 960
+2026-10-23T21:01:12.2879466Z   GITHUB_REPO_NAME: tangency-labs/fieldcraft
+2026-10-23T21:01:12.2879638Z ##[endgroup]
+2026-10-23T21:01:12.3106164Z ##[start-action display=Parse toolchain version;id=__dtolnay_rust-toolchain.parse]
+2026-10-23T21:01:12.3154860Z ##[group]Run if [[ -z $toolchain ]]; then
+2026-10-23T21:01:12.3155160Z [36;1mif [[ -z $toolchain ]]; then[0m
+2026-10-23T21:01:12.3155486Z [36;1m  # GitHub does not enforce `required: true` inputs itself. https://github.com/actions/runner/issues/1070[0m
+2026-10-23T21:01:12.3155876Z [36;1m  echo "'toolchain' is a required input" >&2[0m
+2026-10-23T21:01:12.3156047Z [36;1m  exit 1[0m
+2026-10-23T21:01:12.3156245Z [36;1melif [[ $toolchain =~ ^stable' '[0-9]+' '(year|month|week|day)s?' 'ago$ ]]; then[0m
+2026-10-23T21:01:12.3156492Z [36;1m  if [[ Linux == macOS ]]; then[0m
+2026-10-23T21:01:12.3156793Z [36;1m    echo "toolchain=1.$((($(date -v-$(sed 's/stable \([0-9]*\) \(.\).*/\1\2/' <<< $toolchain) +%s)/60/60/24-16569)/7/6))" >> $GITHUB_OUTPUT[0m
+2026-10-23T21:01:12.3157060Z [36;1m  else[0m
+2026-10-23T21:01:12.3157313Z [36;1m    echo "toolchain=1.$((($(date --date "${toolchain#stable }" +%s)/60/60/24-16569)/7/6))" >> $GITHUB_OUTPUT[0m
+2026-10-23T21:01:12.3157570Z [36;1m  fi[0m
+2026-10-23T21:01:12.3157748Z [36;1melif [[ $toolchain =~ ^stable' 'minus' '[0-9]+' 'releases?$ ]]; then[0m
+2026-10-23T21:01:12.3158065Z [36;1m  echo "toolchain=1.$((($(date +%s)/60/60/24-16569)/7/6-${toolchain//[^0-9]/}))" >> $GITHUB_OUTPUT[0m
+2026-10-23T21:01:12.3158321Z [36;1melif [[ $toolchain =~ ^1\.[0-9]+$ ]]; then[0m
+2026-10-23T21:01:12.3158608Z [36;1m  echo "toolchain=1.$((i=${toolchain#1.}, c=($(date +%s)/60/60/24-16569)/7/6, i+9*i*(10*i<=c)+90*i*(100*i<=c)))" >> $GITHUB_OUTPUT[0m
+2026-10-23T21:01:12.3158886Z [36;1melse[0m
+2026-10-23T21:01:12.3159013Z [36;1m  delimiter=EOF[0m
+2026-10-23T21:01:12.3159197Z [36;1m  while [[ $toolchain == *$delimiter* ]]; do delimiter+=_; done[0m
+2026-10-23T21:01:12.3159512Z [36;1m  printf 'toolchain<<%s\n%s\n%s\n' "$delimiter" "$toolchain" "$delimiter" >> $GITHUB_OUTPUT[0m
+2026-10-23T21:01:12.3159741Z [36;1mfi[0m
+2026-10-23T21:01:12.3175145Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-23T21:01:12.3175344Z env:
+2026-10-23T21:01:12.3175498Z   CARGO_TERM_COLOR: always
+2026-10-23T21:01:12.3175647Z   BLACKSMITH_RUNNER_MESSAGE_WAIT_MS: 740
+2026-10-23T21:01:12.3175828Z   BLACKSMITH_RUNNER_ACQUIRE_JOB_MS: 960
+2026-10-23T21:01:12.3176003Z   GITHUB_REPO_NAME: tangency-labs/fieldcraft
+2026-10-23T21:01:12.3176173Z   toolchain: stable
+2026-10-23T21:01:12.3176296Z ##[endgroup]
+2026-10-23T21:01:12.3228503Z ##[end-action id=__dtolnay_rust-toolchain.parse;outcome=success;conclusion=success;duration_ms=12]
+2026-10-23T21:01:12.3230412Z ##[start-action display=Set $CARGO_HOME;id=__dtolnay_rust-toolchain.__run]
+2026-10-23T21:01:12.3262653Z ##[group]Run echo CARGO_HOME=${CARGO_HOME:-"$HOME/.cargo"} >> $GITHUB_ENV
+2026-10-23T21:01:12.3263503Z [36;1mecho CARGO_HOME=${CARGO_HOME:-"$HOME/.cargo"} >> $GITHUB_ENV[0m
+2026-10-23T21:01:12.3279671Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-23T21:01:12.3279956Z env:
+2026-10-23T21:01:12.3280139Z   CARGO_TERM_COLOR: always
+2026-10-23T21:01:12.3280289Z   BLACKSMITH_RUNNER_MESSAGE_WAIT_MS: 740
+2026-10-23T21:01:12.3280477Z   BLACKSMITH_RUNNER_ACQUIRE_JOB_MS: 960
+2026-10-23T21:01:12.3280642Z   GITHUB_REPO_NAME: tangency-labs/fieldcraft
+2026-10-23T21:01:12.3280798Z ##[endgroup]
+2026-10-23T21:01:12.3321121Z ##[end-action id=__dtolnay_rust-toolchain.__run;outcome=success;conclusion=success;duration_ms=8]
+2026-10-23T21:01:12.3323694Z ##[start-action display=Install rustup if needed;id=__dtolnay_rust-toolchain.__run_2]
+2026-10-23T21:01:12.3397440Z ##[group]Run if ! command -v rustup &>/dev/null; then
+2026-10-23T21:01:12.3397777Z [36;1mif ! command -v rustup &>/dev/null; then[0m
+2026-10-23T21:01:12.3398200Z [36;1m  curl --proto '=https' --tlsv1.2 --retry 10 --retry-connrefused --location --silent --show-error --fail https://sh.rustup.rs | sh -s -- --default-toolchain none -y[0m
+2026-10-23T21:01:12.3398582Z [36;1m  echo "$CARGO_HOME/bin" >> $GITHUB_PATH[0m
+2026-10-23T21:01:12.3398751Z [36;1mfi[0m
+2026-10-23T21:01:12.3415453Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-23T21:01:12.3416080Z env:
+2026-10-23T21:01:12.3416210Z   CARGO_TERM_COLOR: always
+2026-10-23T21:01:12.3416373Z   BLACKSMITH_RUNNER_MESSAGE_WAIT_MS: 740
+2026-10-23T21:01:12.3416550Z   BLACKSMITH_RUNNER_ACQUIRE_JOB_MS: 960
+2026-10-23T21:01:12.3416745Z   GITHUB_REPO_NAME: tangency-labs/fieldcraft
+2026-10-23T21:01:12.3416930Z   CARGO_HOME: /home/runner/.cargo
+2026-10-23T21:01:12.3417147Z ##[endgroup]
+2026-10-23T21:01:12.3458795Z ##[end-action id=__dtolnay_rust-toolchain.__run_2;outcome=success;conclusion=success;duration_ms=13]
+2026-10-23T21:01:12.3461706Z ##[start-action display=Install rustup if needed on windows;id=__dtolnay_rust-toolchain.__run_3]
+2026-10-23T21:01:12.3468563Z ##[end-action id=__dtolnay_rust-toolchain.__run_3;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-10-23T21:01:12.3480504Z ##[start-action display=rustup toolchain install stable;id=__dtolnay_rust-toolchain.__run_4]
+2026-10-23T21:01:12.3500390Z ##[group]Run set -f  # split targets and components on commas and whitespace, without glob expansion
+2026-10-23T21:01:12.3500819Z [36;1mset -f  # split targets and components on commas and whitespace, without glob expansion[0m
+2026-10-23T21:01:12.3501043Z [36;1mflags=()[0m
+2026-10-23T21:01:12.3501213Z [36;1mfor t in ${targets//,/ }; do flags+=(--target "$t"); done[0m
+2026-10-23T21:01:12.3501431Z [36;1mfor c in ${components//,/ }; do flags+=(--component "$c"); done[0m
+2026-10-23T21:01:12.3501695Z [36;1mif [[ $toolchain == nightly && -n $components ]]; then flags+=(--allow-downgrade); fi[0m
+2026-10-23T21:01:12.3501910Z [36;1mlog=$(mktemp)[0m
+2026-10-23T21:01:12.3502048Z [36;1mtrap 'rm -f "$log"' EXIT[0m
+2026-10-23T21:01:12.3502192Z [36;1mfor attempt in 1 2 3 4 5; do[0m
+2026-10-23T21:01:12.3502488Z [36;1m  if rustup toolchain install "$toolchain" "${flags[@]}" --profile minimal --no-self-update --force-non-host 2>&1 | tee "$log"; then[0m
+2026-10-23T21:01:12.3502868Z [36;1m    break[0m
+2026-10-23T21:01:12.3502990Z [36;1m  else[0m
+2026-10-23T21:01:12.3503110Z [36;1m    status=$?[0m
+2026-10-23T21:01:12.3503235Z [36;1m  fi[0m
+2026-10-23T21:01:12.3503406Z [36;1m  if [[ $attempt == 5 ]] || ! grep -Fq 'checksum failed for ' "$log" \[0m
+2026-10-23T21:01:12.3503701Z [36;1m      || ! grep -Fq 'this is likely due to an ongoing update of the official release server' "$log"; then[0m
+2026-10-23T21:01:12.3503943Z [36;1m    exit "$status"[0m
+2026-10-23T21:01:12.3504078Z [36;1m  fi[0m
+2026-10-23T21:01:12.3504281Z [36;1m  echo "Retrying rustup toolchain install in 30 seconds (retry $attempt of 4)" >&2[0m
+2026-10-23T21:01:12.3504501Z [36;1m  sleep 30[0m
+2026-10-23T21:01:12.3504623Z [36;1mdone[0m
+2026-10-23T21:01:12.3519534Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-23T21:01:12.3519743Z env:
+2026-10-23T21:01:12.3519882Z   CARGO_TERM_COLOR: always
+2026-10-23T21:01:12.3520030Z   BLACKSMITH_RUNNER_MESSAGE_WAIT_MS: 740
+2026-10-23T21:01:12.3520207Z   BLACKSMITH_RUNNER_ACQUIRE_JOB_MS: 960
+2026-10-23T21:01:12.3520376Z   GITHUB_REPO_NAME: tangency-labs/fieldcraft
+2026-10-23T21:01:12.3520559Z   CARGO_HOME: /home/runner/.cargo
+2026-10-23T21:01:12.3520699Z   toolchain: stable
+2026-10-23T21:01:12.3520833Z   targets: wasm32-unknown-unknown
+2026-10-23T21:01:12.3520982Z   components: rustfmt, clippy
+2026-10-23T21:01:12.3521689Z   RUSTUP_PERMIT_COPY_RENAME: 1
+2026-10-23T21:01:12.3521833Z ##[endgroup]
+2026-10-23T21:01:12.4707008Z info: syncing channel updates for stable-x86_64-unknown-linux-gnu
+2026-10-23T21:01:12.5389604Z info: latest update on 2026-10-15 for version 1.99.1 (58cf8f9c3 2026-10-13)
+2026-10-23T21:01:12.5525711Z info: removing previous version of component clippy
+2026-10-23T21:01:12.5534296Z info: removing previous version of component rustfmt
+2026-10-23T21:01:12.5540616Z info: removing previous version of component cargo
+2026-10-23T21:01:12.5558656Z info: removing previous version of component rust-std
+2026-10-23T21:01:12.5576726Z info: removing previous version of component rustc
+2026-10-23T21:01:12.5592693Z info: downloading 6 components
+2026-10-23T21:01:20.3564971Z 
+2026-10-23T21:01:20.3619078Z   stable-x86_64-unknown-linux-gnu updated - rustc 1.99.1 (58cf8f9c3 2026-10-13) (from rustc 1.97.1 (8bab26f4f 2026-07-14))
+2026-10-23T21:01:20.3619379Z 
+2026-10-23T21:01:20.3690518Z ##[end-action id=__dtolnay_rust-toolchain.__run_4;outcome=success;conclusion=success;duration_ms=8020]
+2026-10-23T21:01:20.3695885Z ##[start-action display=rustup default stable;id=__dtolnay_rust-toolchain.__run_5]
+2026-10-23T21:01:20.3707304Z ##[group]Run rustup default "$toolchain" --force-non-host
+2026-10-23T21:01:20.3707546Z [36;1mrustup default "$toolchain" --force-non-host[0m
+2026-10-23T21:01:20.3720732Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-23T21:01:20.3720908Z env:
+2026-10-23T21:01:20.3721028Z   CARGO_TERM_COLOR: always
+2026-10-23T21:01:20.3721170Z   BLACKSMITH_RUNNER_MESSAGE_WAIT_MS: 740
+2026-10-23T21:01:20.3721328Z   BLACKSMITH_RUNNER_ACQUIRE_JOB_MS: 960
+2026-10-23T21:01:20.3721496Z   GITHUB_REPO_NAME: tangency-labs/fieldcraft
+2026-10-23T21:01:20.3721677Z   CARGO_HOME: /home/runner/.cargo
+2026-10-23T21:01:20.3721829Z   toolchain: stable
+2026-10-23T21:01:20.3721953Z ##[endgroup]
+2026-10-23T21:01:20.3780527Z info: using existing install for stable-x86_64-unknown-linux-gnu
+2026-10-23T21:01:20.3783589Z info: default toolchain set to stable-x86_64-unknown-linux-gnu
+2026-10-23T21:01:20.3783737Z 
+2026-10-23T21:01:20.3846808Z   stable-x86_64-unknown-linux-gnu unchanged - rustc 1.99.1 (58cf8f9c3 2026-10-13)
+2026-10-23T21:01:20.3846998Z 
+2026-10-23T21:01:20.3860128Z ##[end-action id=__dtolnay_rust-toolchain.__run_5;outcome=success;conclusion=success;duration_ms=16]
+2026-10-23T21:01:20.3863147Z ##[start-action display=Create cachekey;id=__dtolnay_rust-toolchain.rustc-version]
+2026-10-23T21:01:20.3875786Z ##[group]Run DATE=$(rustc +"$toolchain" --version --verbose | sed -ne 's/^commit-date: \(20[0-9][0-9]\)-\([01][0-9]\)-\([0-3][0-9]\)$/\1\2\3/p')
+2026-10-23T21:01:20.3876256Z [36;1mDATE=$(rustc +"$toolchain" --version --verbose | sed -ne 's/^commit-date: \(20[0-9][0-9]\)-\([01][0-9]\)-\([0-3][0-9]\)$/\1\2\3/p')[0m
+2026-10-23T21:01:20.3876597Z [36;1mHASH=$(rustc +"$toolchain" --version --verbose | sed -ne 's/^commit-hash: //p')[0m
+2026-10-23T21:01:20.3876855Z [36;1mecho "cachekey=$(echo $DATE$HASH | head -c12)" >> $GITHUB_OUTPUT[0m
+2026-10-23T21:01:20.3888973Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-23T21:01:20.3889138Z env:
+2026-10-23T21:01:20.3889257Z   CARGO_TERM_COLOR: always
+2026-10-23T21:01:20.3889393Z   BLACKSMITH_RUNNER_MESSAGE_WAIT_MS: 740
+2026-10-23T21:01:20.3889546Z   BLACKSMITH_RUNNER_ACQUIRE_JOB_MS: 960
+2026-10-23T21:01:20.3889702Z   GITHUB_REPO_NAME: tangency-labs/fieldcraft
+2026-10-23T21:01:20.3889864Z   CARGO_HOME: /home/runner/.cargo
+2026-10-23T21:01:20.3889997Z   toolchain: stable
+2026-10-23T21:01:20.3890112Z ##[endgroup]
+2026-10-23T21:01:20.4104742Z ##[end-action id=__dtolnay_rust-toolchain.rustc-version;outcome=success;conclusion=success;duration_ms=24]
+2026-10-23T21:01:20.4107819Z ##[start-action display=Disable incremental compilation;id=__dtolnay_rust-toolchain.__run_6]
+2026-10-23T21:01:20.4137654Z ##[group]Run if [ -z "${CARGO_INCREMENTAL+set}" ]; then
+2026-10-23T21:01:20.4137888Z [36;1mif [ -z "${CARGO_INCREMENTAL+set}" ]; then[0m
+2026-10-23T21:01:20.4138063Z [36;1m  echo CARGO_INCREMENTAL=0 >> $GITHUB_ENV[0m
+2026-10-23T21:01:20.4138212Z [36;1mfi[0m
+2026-10-23T21:01:20.4151253Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-23T21:01:20.4151427Z env:
+2026-10-23T21:01:20.4151535Z   CARGO_TERM_COLOR: always
+2026-10-23T21:01:20.4151668Z   BLACKSMITH_RUNNER_MESSAGE_WAIT_MS: 740
+2026-10-23T21:01:20.4151825Z   BLACKSMITH_RUNNER_ACQUIRE_JOB_MS: 960
+2026-10-23T21:01:20.4151980Z   GITHUB_REPO_NAME: tangency-labs/fieldcraft
+2026-10-23T21:01:20.4152139Z   CARGO_HOME: /home/runner/.cargo
+2026-10-23T21:01:20.4152286Z ##[endgroup]
+2026-10-23T21:01:20.4216277Z ##[end-action id=__dtolnay_rust-toolchain.__run_6;outcome=success;conclusion=success;duration_ms=10]
+2026-10-23T21:01:20.4218197Z ##[start-action display=Enable colors in Cargo output;id=__dtolnay_rust-toolchain.__run_7]
+2026-10-23T21:01:20.4230336Z ##[group]Run if [ -z "${CARGO_TERM_COLOR+set}" ]; then
+2026-10-23T21:01:20.4230693Z [36;1mif [ -z "${CARGO_TERM_COLOR+set}" ]; then[0m
+2026-10-23T21:01:20.4230993Z [36;1m  echo CARGO_TERM_COLOR=always >> $GITHUB_ENV[0m
+2026-10-23T21:01:20.4231198Z [36;1mfi[0m
+2026-10-23T21:01:20.4244978Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-23T21:01:20.4245179Z env:
+2026-10-23T21:01:20.4245294Z   CARGO_TERM_COLOR: always
+2026-10-23T21:01:20.4245436Z   BLACKSMITH_RUNNER_MESSAGE_WAIT_MS: 740
+2026-10-23T21:01:20.4245592Z   BLACKSMITH_RUNNER_ACQUIRE_JOB_MS: 960
+2026-10-23T21:01:20.4245756Z   GITHUB_REPO_NAME: tangency-labs/fieldcraft
+2026-10-23T21:01:20.4245913Z   CARGO_HOME: /home/runner/.cargo
+2026-10-23T21:01:20.4246055Z   CARGO_INCREMENTAL: 0
+2026-10-23T21:01:20.4246180Z ##[endgroup]
+2026-10-23T21:01:20.4273333Z ##[end-action id=__dtolnay_rust-toolchain.__run_7;outcome=success;conclusion=success;duration_ms=5]
+2026-10-23T21:01:20.4276682Z ##[start-action display=Enable Cargo sparse registry;id=__dtolnay_rust-toolchain.__run_8]
+2026-10-23T21:01:20.4288394Z ##[group]Run # implemented in 1.66, stabilized in 1.68, made default in 1.70
+2026-10-23T21:01:20.4288691Z [36;1m# implemented in 1.66, stabilized in 1.68, made default in 1.70[0m
+2026-10-23T21:01:20.4289050Z [36;1mif [ -z "${CARGO_REGISTRIES_CRATES_IO_PROTOCOL+set}" -o -f "/home/runner/_work/_temp"/.implicit_cargo_registries_crates_io_protocol ]; then[0m
+2026-10-23T21:01:20.4289432Z [36;1m  if rustc +"$toolchain" --version --verbose | grep -q '^release: 1\.6[89]\.'; then[0m
+2026-10-23T21:01:20.4289735Z [36;1m    touch "/home/runner/_work/_temp"/.implicit_cargo_registries_crates_io_protocol || true[0m
+2026-10-23T21:01:20.4290014Z [36;1m    echo CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse >> $GITHUB_ENV[0m
+2026-10-23T21:01:20.4290282Z [36;1m  elif rustc +"$toolchain" --version --verbose | grep -q '^release: 1\.6[67]\.'; then[0m
+2026-10-23T21:01:20.4290587Z [36;1m    touch "/home/runner/_work/_temp"/.implicit_cargo_registries_crates_io_protocol || true[0m
+2026-10-23T21:01:20.4290857Z [36;1m    echo CARGO_REGISTRIES_CRATES_IO_PROTOCOL=git >> $GITHUB_ENV[0m
+2026-10-23T21:01:20.4291041Z [36;1m  fi[0m
+2026-10-23T21:01:20.4291149Z [36;1mfi[0m
+2026-10-23T21:01:20.4301575Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-23T21:01:20.4301844Z env:
+2026-10-23T21:01:20.4302020Z   CARGO_TERM_COLOR: always
+2026-10-23T21:01:20.4302224Z   BLACKSMITH_RUNNER_MESSAGE_WAIT_MS: 740
+2026-10-23T21:01:20.4302468Z   BLACKSMITH_RUNNER_ACQUIRE_JOB_MS: 960
+2026-10-23T21:01:20.4302719Z   GITHUB_REPO_NAME: tangency-labs/fieldcraft
+2026-10-23T21:01:20.4302970Z   CARGO_HOME: /home/runner/.cargo
+2026-10-23T21:01:20.4303188Z   CARGO_INCREMENTAL: 0
+2026-10-23T21:01:20.4303377Z   toolchain: stable
+2026-10-23T21:01:20.4303585Z ##[endgroup]
+2026-10-23T21:01:20.4519160Z ##[end-action id=__dtolnay_rust-toolchain.__run_8;outcome=success;conclusion=success;duration_ms=24]
+2026-10-23T21:01:20.4522454Z ##[start-action display=Work around spurious network errors in curl 8.0;id=__dtolnay_rust-toolchain.__run_9]
+2026-10-23T21:01:20.4533952Z ##[group]Run # https://rust-lang.zulipchat.com/#narrow/stream/246057-t-cargo/topic/timeout.20investigation
+2026-10-23T21:01:20.4534435Z [36;1m# https://rust-lang.zulipchat.com/#narrow/stream/246057-t-cargo/topic/timeout.20investigation[0m
+2026-10-23T21:01:20.4534802Z [36;1mif rustc +"$toolchain" --version --verbose | grep -q '^release: 1\.7[01]\.'; then[0m
+2026-10-23T21:01:20.4535058Z [36;1m  echo CARGO_HTTP_MULTIPLEXING=false >> $GITHUB_ENV[0m
+2026-10-23T21:01:20.4535226Z [36;1mfi[0m
+2026-10-23T21:01:20.4549795Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-23T21:01:20.4549975Z env:
+2026-10-23T21:01:20.4550098Z   CARGO_TERM_COLOR: always
+2026-10-23T21:01:20.4550250Z   BLACKSMITH_RUNNER_MESSAGE_WAIT_MS: 740
+2026-10-23T21:01:20.4550411Z   BLACKSMITH_RUNNER_ACQUIRE_JOB_MS: 960
+2026-10-23T21:01:20.4550614Z   GITHUB_REPO_NAME: tangency-labs/fieldcraft
+2026-10-23T21:01:20.4550795Z   CARGO_HOME: /home/runner/.cargo
+2026-10-23T21:01:20.4550940Z   CARGO_INCREMENTAL: 0
+2026-10-23T21:01:20.4551076Z   toolchain: stable
+2026-10-23T21:01:20.4551212Z ##[endgroup]
+2026-10-23T21:01:20.4667732Z ##[end-action id=__dtolnay_rust-toolchain.__run_9;outcome=success;conclusion=success;duration_ms=14]
+2026-10-23T21:01:20.4671862Z ##[start-action display=rustc +stable --version --verbose;id=__dtolnay_rust-toolchain.__run_10]
+2026-10-23T21:01:20.4683519Z ##[group]Run rustc +"$toolchain" --version --verbose
+2026-10-23T21:01:20.4683745Z [36;1mrustc +"$toolchain" --version --verbose[0m
+2026-10-23T21:01:20.4697275Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-23T21:01:20.4697445Z env:
+2026-10-23T21:01:20.4697565Z   CARGO_TERM_COLOR: always
+2026-10-23T21:01:20.4697698Z   BLACKSMITH_RUNNER_MESSAGE_WAIT_MS: 740
+2026-10-23T21:01:20.4697846Z   BLACKSMITH_RUNNER_ACQUIRE_JOB_MS: 960
+2026-10-23T21:01:20.4698208Z   GITHUB_REPO_NAME: tangency-labs/fieldcraft
+2026-10-23T21:01:20.4698447Z   CARGO_HOME: /home/runner/.cargo
+2026-10-23T21:01:20.4698580Z   CARGO_INCREMENTAL: 0
+2026-10-23T21:01:20.4698694Z   toolchain: stable
+2026-10-23T21:01:20.4698805Z ##[endgroup]
+2026-10-23T21:01:20.4793634Z rustc 1.99.1 (58cf8f9c3 2026-10-13)
+2026-10-23T21:01:20.4793990Z binary: rustc
+2026-10-23T21:01:20.4794223Z commit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67
+2026-10-23T21:01:20.4794399Z commit-date: 2026-10-13
+2026-10-23T21:01:20.4794535Z host: x86_64-unknown-linux-gnu
+2026-10-23T21:01:20.4794675Z release: 1.99.1
+2026-10-23T21:01:20.4794786Z LLVM version: 23.1.1
+2026-10-23T21:01:20.4805492Z ##[end-action id=__dtolnay_rust-toolchain.__run_10;outcome=success;conclusion=success;duration_ms=13]
+2026-10-23T21:01:20.4885128Z ##[group]Run Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6
+2026-10-23T21:01:20.4885333Z with:
+2026-10-23T21:01:20.4885439Z   shared-key: ci
+2026-10-23T21:01:20.4885548Z   save-if: false
+2026-10-23T21:01:20.4885658Z   prefix-key: v0-rust
+2026-10-23T21:01:20.4885794Z   add-job-id-key: true
+2026-10-23T21:01:20.4886030Z   add-rust-environment-hash-key: true
+2026-10-23T21:01:20.4886172Z   cache-targets: true
+2026-10-23T21:01:20.4886290Z   cache-all-crates: false
+2026-10-23T21:01:20.4886417Z   cache-workspace-crates: false
+2026-10-23T21:01:20.4886552Z   cache-provider: github
+2026-10-23T21:01:20.4886671Z   cache-bin: true
+2026-10-23T21:01:20.4886777Z   lookup-only: false
+2026-10-23T21:01:20.4886892Z   cmd-format: {0}
+2026-10-23T21:01:20.4886997Z env:
+2026-10-23T21:01:20.4887106Z   CARGO_TERM_COLOR: always
+2026-10-23T21:01:20.4887241Z   BLACKSMITH_RUNNER_MESSAGE_WAIT_MS: 740
+2026-10-23T21:01:20.4887387Z   BLACKSMITH_RUNNER_ACQUIRE_JOB_MS: 960
+2026-10-23T21:01:20.4887573Z   GITHUB_REPO_NAME: tangency-labs/fieldcraft
+2026-10-23T21:01:20.4887723Z   CARGO_HOME: /home/runner/.cargo
+2026-10-23T21:01:20.4887856Z   CARGO_INCREMENTAL: 0
+2026-10-23T21:01:20.4887970Z ##[endgroup]
+2026-10-23T21:01:20.6742924Z ##[group]Cache Configuration
+2026-10-23T21:01:20.6743118Z Cache Provider:
+2026-10-23T21:01:20.6743261Z     github
+2026-10-23T21:01:20.6743368Z Workspaces:
+2026-10-23T21:01:20.6743963Z     /home/runner/_work/fieldcraft/fieldcraft
+2026-10-23T21:01:20.6744645Z Cache Paths:
+2026-10-23T21:01:20.6744820Z     /home/runner/.cargo/bin
+2026-10-23T21:01:20.6745036Z     /home/runner/.cargo/.crates.toml
+2026-10-23T21:01:20.6745243Z     /home/runner/.cargo/.crates2.json
+2026-10-23T21:01:20.6745437Z     /home/runner/.cargo/registry
+2026-10-23T21:01:20.6745633Z     /home/runner/.cargo/git
+2026-10-23T21:01:20.6745894Z     /home/runner/_work/fieldcraft/fieldcraft/target
+2026-10-23T21:01:20.6746104Z Restore Key:
+2026-10-23T21:01:20.6762915Z     v0-rust-ci-Linux-x64-01b81e85
+2026-10-23T21:01:20.6763238Z Cache Key:
+2026-10-23T21:01:20.6763439Z     v0-rust-ci-Linux-x64-01b81e85-568bea43
+2026-10-23T21:01:20.6763676Z .. Prefix:
+2026-10-23T21:01:20.6763870Z   - v0-rust-ci-Linux-x64
+2026-10-23T21:01:20.6764159Z .. Environment considered:
+2026-10-23T21:01:20.6764348Z   - Rust Versions:
+2026-10-23T21:01:20.6764611Z     - 1.99.1 x86_64-unknown-linux-gnu 58cf8f9c35b355199727627d07ae34a4e2846d67
+2026-10-23T21:01:20.6764911Z   - CARGO_HOME
+2026-10-23T21:01:20.6765081Z   - CARGO_INCREMENTAL
+2026-10-23T21:01:20.6765274Z   - CARGO_TERM_COLOR
+2026-10-23T21:01:20.6765461Z .. Lockfiles considered:
+2026-10-23T21:01:20.6765727Z   - /home/runner/_work/fieldcraft/fieldcraft/.cargo/config.toml
+2026-10-23T21:01:20.6766110Z   - /home/runner/_work/fieldcraft/fieldcraft/apps/fieldcraft-cli/Cargo.toml
+2026-10-23T21:01:20.6766511Z   - /home/runner/_work/fieldcraft/fieldcraft/apps/fieldcraft-web/Cargo.toml
+2026-10-23T21:01:20.6766895Z   - /home/runner/_work/fieldcraft/fieldcraft/apps/fieldcraft/Cargo.toml
+2026-10-23T21:01:20.6767235Z   - /home/runner/_work/fieldcraft/fieldcraft/Cargo.lock
+2026-10-23T21:01:20.6767570Z   - /home/runner/_work/fieldcraft/fieldcraft/crates/decks/Cargo.toml
+2026-10-23T21:01:20.6767923Z   - /home/runner/_work/fieldcraft/fieldcraft/crates/engine/Cargo.toml
+2026-10-23T21:01:20.6768277Z   - /home/runner/_work/fieldcraft/fieldcraft/crates/explicit/Cargo.toml
+2026-10-23T21:01:20.6769136Z   - /home/runner/_work/fieldcraft/fieldcraft/crates/fem/Cargo.toml
+2026-10-23T21:01:20.6769476Z   - /home/runner/_work/fieldcraft/fieldcraft/crates/geometry/Cargo.toml
+2026-10-23T21:01:20.6769827Z   - /home/runner/_work/fieldcraft/fieldcraft/crates/gpu/Cargo.toml
+2026-10-23T21:01:20.6770170Z   - /home/runner/_work/fieldcraft/fieldcraft/crates/io/Cargo.toml
+2026-10-23T21:01:20.6770536Z   - /home/runner/_work/fieldcraft/fieldcraft/crates/lbm-gpu/Cargo.toml
+2026-10-23T21:01:20.6770904Z   - /home/runner/_work/fieldcraft/fieldcraft/crates/lbm/Cargo.toml
+2026-10-23T21:01:20.6771543Z   - /home/runner/_work/fieldcraft/fieldcraft/crates/mcp/Cargo.toml
+2026-10-23T21:01:20.6771909Z   - /home/runner/_work/fieldcraft/fieldcraft/crates/mesh-gpu/Cargo.toml
+2026-10-23T21:01:20.6772287Z   - /home/runner/_work/fieldcraft/fieldcraft/crates/mesh/Cargo.toml
+2026-10-23T21:01:20.6772637Z   - /home/runner/_work/fieldcraft/fieldcraft/crates/model/Cargo.toml
+2026-10-23T21:01:20.6773013Z   - /home/runner/_work/fieldcraft/fieldcraft/crates/parallel/Cargo.toml
+2026-10-23T21:01:20.6773357Z   - /home/runner/_work/fieldcraft/fieldcraft/crates/render/Cargo.toml
+2026-10-23T21:01:20.6773715Z   - /home/runner/_work/fieldcraft/fieldcraft/crates/solver/Cargo.toml
+2026-10-23T21:01:20.6774051Z   - /home/runner/_work/fieldcraft/fieldcraft/crates/testkit/Cargo.toml
+2026-10-23T21:01:20.6774451Z   - /home/runner/_work/fieldcraft/fieldcraft/crates/ui-egui/Cargo.toml
+2026-10-23T21:01:20.6774791Z   - /home/runner/_work/fieldcraft/fieldcraft/crates/update/Cargo.toml
+2026-10-23T21:01:20.6775112Z   - /home/runner/_work/fieldcraft/fieldcraft/xtask/Cargo.toml
+2026-10-23T21:01:20.6775689Z ##[endgroup]
+2026-10-23T21:01:20.6775789Z 
+2026-10-23T21:01:20.6775865Z ... Restoring cache ...
+2026-10-23T21:01:20.8729719Z Cache hit for: v0-rust-ci-Linux-x64-01b81e85-568bea43
+2026-10-23T21:01:21.9618510Z Received 402653184 of 2743565437 (14.7%), 361.2 MBs/sec
+2026-10-23T21:01:22.9633208Z Received 801112064 of 2743565437 (29.2%), 370.2 MBs/sec
+2026-10-23T21:01:23.9644591Z Received 1069547520 of 2743565437 (39.0%), 332.7 MBs/sec
+2026-10-23T21:01:24.9651096Z Received 1472200704 of 2743565437 (53.7%), 345.3 MBs/sec
+2026-10-23T21:01:25.9658998Z Received 1874853888 of 2743565437 (68.3%), 352.9 MBs/sec
+2026-10-23T21:01:26.9668028Z Received 2269118464 of 2743565437 (82.7%), 356.6 MBs/sec
+2026-10-23T21:01:27.9672782Z Received 2537553920 of 2743565437 (92.5%), 342.3 MBs/sec
+2026-10-23T21:01:28.7499715Z Received 2743565437 of 2743565437 (100.0%), 333.3 MBs/sec
+2026-10-23T21:01:28.7500624Z Cache Size: ~2616 MB (2743565437 B)
+2026-10-23T21:01:28.7540553Z [command]/usr/bin/tar -xf /home/runner/_work/_temp/8bce136a-c21b-41ff-93b9-51ebf3ee162d/cache.tzst -P -C /home/runner/_work/fieldcraft/fieldcraft --use-compress-program unzstd
+2026-10-23T21:01:41.2391174Z Cache restored successfully
+2026-10-23T21:01:41.3860542Z Restored from cache key "v0-rust-ci-Linux-x64-01b81e85-568bea43" full match: true.
+2026-10-23T21:01:41.3981817Z ##[group]Run sudo apt-get update -q && sudo apt-get install -y -q --no-install-recommends mesa-vulkan-drivers libvulkan1
+2026-10-23T21:01:41.3982283Z [36;1msudo apt-get update -q && sudo apt-get install -y -q --no-install-recommends mesa-vulkan-drivers libvulkan1[0m
+2026-10-23T21:01:41.4008716Z shell: /usr/bin/bash -e {0}
+2026-10-23T21:01:41.4008883Z env:
+2026-10-23T21:01:41.4009003Z   CARGO_TERM_COLOR: always
+2026-10-23T21:01:41.4009156Z   BLACKSMITH_RUNNER_MESSAGE_WAIT_MS: 740
+2026-10-23T21:01:41.4009328Z   BLACKSMITH_RUNNER_ACQUIRE_JOB_MS: 960
+2026-10-23T21:01:41.4009488Z   GITHUB_REPO_NAME: tangency-labs/fieldcraft
+2026-10-23T21:01:41.4009652Z   CARGO_HOME: /home/runner/.cargo
+2026-10-23T21:01:41.4009793Z   CARGO_INCREMENTAL: 0
+2026-10-23T21:01:41.4009915Z   CACHE_ON_FAILURE: false
+2026-10-23T21:01:41.4010044Z ##[endgroup]
+2026-10-23T21:01:41.5097012Z Get:1 file:/etc/apt/blacksmith-ubuntu-mirrors.txt Mirrorlist [194 B]
+2026-10-23T21:01:41.5397268Z Hit:6 https://packages.microsoft.com/repos/azure-cli noble InRelease
+2026-10-23T21:01:41.5397640Z Get:7 https://packages.microsoft.com/ubuntu/24.04/prod noble InRelease [3600 B]
+2026-10-23T21:01:41.6006300Z Get:8 https://packages.microsoft.com/ubuntu/24.04/prod noble/main arm64 Packages [586 kB]
+2026-10-23T21:01:41.6162836Z Hit:2 http://azure.archive.ubuntu.com/ubuntu noble InRelease
+2026-10-23T21:01:41.6231445Z Get:9 https://packages.microsoft.com/ubuntu/24.04/prod noble/main amd64 Packages [649 kB]
+2026-10-23T21:01:41.6306203Z Get:10 https://dl.google.com/linux/chrome-stable/deb stable InRelease [2548 B]
+2026-10-23T21:01:41.6615911Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+2026-10-23T21:01:41.8466703Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
+2026-10-23T21:01:41.8928696Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+2026-10-23T21:01:41.9401148Z Get:11 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1401 kB]
+2026-10-23T21:01:41.9831692Z Get:22 https://dl.google.com/linux/chrome-stable/deb stable/main amd64 Packages [1410 B]
+2026-10-23T21:01:42.0785169Z Get:12 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 Components [181 kB]
+2026-10-23T21:01:42.1246405Z Get:13 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [1706 kB]
+2026-10-23T21:01:42.2156301Z Get:14 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Components [388 kB]
+2026-10-23T21:01:42.2622786Z Get:15 http://azure.archive.ubuntu.com/ubuntu noble-updates/multiverse amd64 Components [940 B]
+2026-10-23T21:01:42.3076601Z Get:16 http://azure.archive.ubuntu.com/ubuntu noble-backports/main amd64 Components [5760 B]
+2026-10-23T21:01:42.3527435Z Get:17 http://azure.archive.ubuntu.com/ubuntu noble-backports/universe amd64 Components [12.6 kB]
+2026-10-23T21:01:42.3982478Z Get:18 http://azure.archive.ubuntu.com/ubuntu noble-security/main amd64 Packages [1146 kB]
+2026-10-23T21:01:42.4480518Z Get:19 http://azure.archive.ubuntu.com/ubuntu noble-security/main amd64 Components [46.4 kB]
+2026-10-23T21:01:42.4933249Z Get:20 http://azure.archive.ubuntu.com/ubuntu noble-security/universe amd64 Packages [1222 kB]
+2026-10-23T21:01:42.6284776Z Get:21 http://azure.archive.ubuntu.com/ubuntu noble-security/universe amd64 Components [76.3 kB]
+2026-10-23T21:01:46.0183561Z Fetched 7807 kB in 1s (6822 kB/s)
+2026-10-23T21:01:46.7577998Z Reading package lists...
+2026-10-23T21:01:46.7947093Z Reading package lists...
+2026-10-23T21:01:47.0202320Z Building dependency tree...
+2026-10-23T21:01:47.0207510Z Reading state information...
+2026-10-23T21:01:47.1751722Z libvulkan1 is already the newest version (1.3.275.0-1build1).
+2026-10-23T21:01:47.1751980Z libvulkan1 set to manually installed.
+2026-10-23T21:01:47.1752165Z The following additional packages will be installed:
+2026-10-23T21:01:47.1758391Z   libegl-mesa0 libgbm1 libgl1-mesa-dri libglx-mesa0 mesa-libgallium
+2026-10-23T21:01:47.1927095Z The following NEW packages will be installed:
+2026-10-23T21:01:47.1928713Z   mesa-vulkan-drivers
+2026-10-23T21:01:47.1935958Z The following packages will be upgraded:
+2026-10-23T21:01:47.1942085Z   libegl-mesa0 libgbm1 libgl1-mesa-dri libglx-mesa0 mesa-libgallium
+2026-10-23T21:01:47.2093258Z 5 upgraded, 1 newly installed, 0 to remove and 253 not upgraded.
+2026-10-23T21:01:47.2093500Z Need to get 28.6 MB of archives.
+2026-10-23T21:01:47.2093723Z After this operation, 98.5 MB of additional disk space will be used.
+2026-10-23T21:01:47.2094017Z Get:1 file:/etc/apt/blacksmith-ubuntu-mirrors.txt Mirrorlist [194 B]
+2026-10-23T21:01:47.3359780Z Get:2 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libgl1-mesa-dri amd64 25.2.8-0ubuntu0.24.04.4 [38.0 kB]
+2026-10-23T21:01:47.4436090Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libglx-mesa0 amd64 25.2.8-0ubuntu0.24.04.4 [110 kB]
+2026-10-23T21:01:47.5532616Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libegl-mesa0 amd64 25.2.8-0ubuntu0.24.04.4 [117 kB]
+2026-10-23T21:01:47.6174772Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libgbm1 amd64 25.2.8-0ubuntu0.24.04.4 [34.2 kB]
+2026-10-23T21:01:47.6814950Z Get:6 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 mesa-libgallium amd64 25.2.8-0ubuntu0.24.04.4 [10.8 MB]
+2026-10-23T21:01:48.0204507Z Get:7 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 mesa-vulkan-drivers amd64 25.2.8-0ubuntu0.24.04.4 [17.5 MB]
+2026-10-23T21:01:48.6391960Z Fetched 28.6 MB in 1s (23.0 MB/s)
+2026-10-23T21:01:48.6608255Z (Reading database ... 
+2026-10-23T21:01:48.6608469Z (Reading database ... 5%
+2026-10-23T21:01:48.6608610Z (Reading database ... 10%
+2026-10-23T21:01:48.6608740Z (Reading database ... 15%
+2026-10-23T21:01:48.6608871Z (Reading database ... 20%
+2026-10-23T21:01:48.6608993Z (Reading database ... 25%
+2026-10-23T21:01:48.6609119Z (Reading database ... 30%
+2026-10-23T21:01:48.6609239Z (Reading database ... 35%
+2026-10-23T21:01:48.6609366Z (Reading database ... 40%
+2026-10-23T21:01:48.6609487Z (Reading database ... 45%
+2026-10-23T21:01:48.6609610Z (Reading database ... 50%
+2026-10-23T21:01:48.6941345Z (Reading database ... 55%
+2026-10-23T21:01:48.7034626Z (Reading database ... 60%
+2026-10-23T21:01:48.7106564Z (Reading database ... 65%
+2026-10-23T21:01:48.7153168Z (Reading database ... 70%
+2026-10-23T21:01:48.7221059Z (Reading database ... 75%
+2026-10-23T21:01:48.7313920Z (Reading database ... 80%
+2026-10-23T21:01:48.7377053Z (Reading database ... 85%
+2026-10-23T21:01:48.7575179Z (Reading database ... 90%
+2026-10-23T21:01:48.7670464Z (Reading database ... 95%
+2026-10-23T21:01:48.7670673Z (Reading database ... 100%
+2026-10-23T21:01:48.7672895Z (Reading database ... 207973 files and directories currently installed.)
+2026-10-23T21:01:48.7707414Z Preparing to unpack .../0-libgl1-mesa-dri_25.2.8-0ubuntu0.24.04.4_amd64.deb ...
+2026-10-23T21:01:48.7795282Z Unpacking libgl1-mesa-dri:amd64 (25.2.8-0ubuntu0.24.04.4) over (25.2.8-0ubuntu0.24.04.2) ...
+2026-10-23T21:01:48.8026529Z Preparing to unpack .../1-libglx-mesa0_25.2.8-0ubuntu0.24.04.4_amd64.deb ...
+2026-10-23T21:01:48.8032989Z Unpacking libglx-mesa0:amd64 (25.2.8-0ubuntu0.24.04.4) over (25.2.8-0ubuntu0.24.04.2) ...
+2026-10-23T21:01:48.8185216Z Preparing to unpack .../2-libegl-mesa0_25.2.8-0ubuntu0.24.04.4_amd64.deb ...
+2026-10-23T21:01:48.8190677Z Unpacking libegl-mesa0:amd64 (25.2.8-0ubuntu0.24.04.4) over (25.2.8-0ubuntu0.24.04.2) ...
+2026-10-23T21:01:48.8345142Z Preparing to unpack .../3-libgbm1_25.2.8-0ubuntu0.24.04.4_amd64.deb ...
+2026-10-23T21:01:48.8350326Z Unpacking libgbm1:amd64 (25.2.8-0ubuntu0.24.04.4) over (25.2.8-0ubuntu0.24.04.2) ...
+2026-10-23T21:01:48.8510127Z Preparing to unpack .../4-mesa-libgallium_25.2.8-0ubuntu0.24.04.4_amd64.deb ...
+2026-10-23T21:01:48.8516900Z Unpacking mesa-libgallium:amd64 (25.2.8-0ubuntu0.24.04.4) over (25.2.8-0ubuntu0.24.04.2) ...
+2026-10-23T21:01:48.9440972Z Selecting previously unselected package mesa-vulkan-drivers:amd64.
+2026-10-23T21:01:48.9504517Z Preparing to unpack .../5-mesa-vulkan-drivers_25.2.8-0ubuntu0.24.04.4_amd64.deb ...
+2026-10-23T21:01:48.9507208Z Unpacking mesa-vulkan-drivers:amd64 (25.2.8-0ubuntu0.24.04.4) ...
+2026-10-23T21:01:49.1307323Z Setting up mesa-vulkan-drivers:amd64 (25.2.8-0ubuntu0.24.04.4) ...
+2026-10-23T21:01:49.1314547Z Setting up mesa-libgallium:amd64 (25.2.8-0ubuntu0.24.04.4) ...
+2026-10-23T21:01:49.1319828Z Setting up libgbm1:amd64 (25.2.8-0ubuntu0.24.04.4) ...
+2026-10-23T21:01:49.1325189Z Setting up libgl1-mesa-dri:amd64 (25.2.8-0ubuntu0.24.04.4) ...
+2026-10-23T21:01:49.1355977Z Setting up libegl-mesa0:amd64 (25.2.8-0ubuntu0.24.04.4) ...
+2026-10-23T21:01:49.1361163Z Setting up libglx-mesa0:amd64 (25.2.8-0ubuntu0.24.04.4) ...
+2026-10-23T21:01:49.1368290Z Processing triggers for libc-bin (2.39-0ubuntu8.8) ...
+2026-10-23T21:01:49.5460901Z 
+2026-10-23T21:01:49.5461445Z No services need to be restarted.
+2026-10-23T21:01:49.5461712Z 
+2026-10-23T21:01:49.5461851Z No containers need to be restarted.
+2026-10-23T21:01:49.5462029Z 
+2026-10-23T21:01:49.5462140Z No user sessions are running outdated binaries.
+2026-10-23T21:01:49.5462339Z 
+2026-10-23T21:01:49.5462519Z No VM guests are running outdated hypervisor (qemu) binaries on this host.
+2026-10-23T21:01:49.5690365Z ##[group]Run if [ -n "$BASE" ]; then cargo xtask ci --affected "$BASE"; else cargo xtask ci; fi
+2026-10-23T21:01:49.5690762Z [36;1mif [ -n "$BASE" ]; then cargo xtask ci --affected "$BASE"; else cargo xtask ci; fi[0m
+2026-10-23T21:01:49.5702567Z shell: /usr/bin/bash -e {0}
+2026-10-23T21:01:49.5702806Z env:
+2026-10-23T21:01:49.5702984Z   CARGO_TERM_COLOR: always
+2026-10-23T21:01:49.5703205Z   BLACKSMITH_RUNNER_MESSAGE_WAIT_MS: 740
+2026-10-23T21:01:49.5703425Z   BLACKSMITH_RUNNER_ACQUIRE_JOB_MS: 960
+2026-10-23T21:01:49.5703617Z   GITHUB_REPO_NAME: tangency-labs/fieldcraft
+2026-10-23T21:01:49.5703779Z   CARGO_HOME: /home/runner/.cargo
+2026-10-23T21:01:49.5703922Z   CARGO_INCREMENTAL: 0
+2026-10-23T21:01:49.5704222Z   CACHE_ON_FAILURE: false
+2026-10-23T21:01:49.5704430Z   BASE: 7d9c027d71b2c1ea3395e2552e95f0455a7244db
+2026-10-23T21:01:49.5704593Z   FIELDCRAFT_GPU: software
+2026-10-23T21:01:49.5704751Z   FIELDCRAFT_REQUIRE_GPU: 1
+2026-10-23T21:01:49.5704972Z ##[endgroup]
+2026-10-23T21:01:49.6103295Z [1m[92m    Updating[0m crates.io index
+2026-10-23T21:01:49.7243092Z [1m[92m   Compiling[0m xtask v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/xtask)
+2026-10-23T21:01:51.5765730Z [1m[92m    Finished[0m `dev` profile [optimized + debuginfo] target(s) in 1.99s
+2026-10-23T21:01:51.5810527Z [1m[92m     Running[0m `target/debug/xtask ci --affected 7d9c027d71b2c1ea3395e2552e95f0455a7244db`
+2026-10-23T21:01:51.6861448Z $ cargo fmt --check
+2026-10-23T21:01:51.6861816Z affected since 7d9c027d71b2c1ea3395e2552e95f0455a7244db: 7 changed file(s)
+2026-10-23T21:01:51.6862335Z crates (9): fieldcraft fieldcraft-cli fieldcraft-engine fieldcraft-geometry fieldcraft-mcp fieldcraft-testkit fieldcraft-ui-egui fieldcraft-web xtask
+2026-10-23T21:01:51.6862741Z flags: everything=false solver=true wasm=true
+2026-10-23T21:01:53.3921351Z assets: 377 asset file(s), all attributed
+2026-10-23T21:01:53.4035215Z Dependency layering (docs/architecture.md)
+2026-10-23T21:01:53.4035439Z 
+2026-10-23T21:01:53.4035597Z crate                        layer          workspace deps
+2026-10-23T21:01:53.4035928Z fieldcraft                   exempt         engine, io, lbm-gpu, mesh-gpu, ui-egui, update
+2026-10-23T21:01:53.4036341Z fieldcraft-cli               exempt         engine, gpu, io, lbm-gpu, mcp, mesh-gpu, render, update, update (dev)
+2026-10-23T21:01:53.4036691Z fieldcraft-decks             L1             model
+2026-10-23T21:01:53.4037133Z fieldcraft-engine            L6             decks, explicit, fem, geometry, io, lbm, mesh, model, parallel, render, solver, update
+2026-10-23T21:01:53.4037555Z fieldcraft-explicit          L2             fem, model, parallel
+2026-10-23T21:01:53.4037897Z fieldcraft-fem               L1             model
+2026-10-23T21:01:53.4038069Z fieldcraft-geometry          L1             model
+2026-10-23T21:01:53.4038250Z fieldcraft-gpu               L7             render
+2026-10-23T21:01:53.4038448Z fieldcraft-io                L5             explicit, lbm, model, solver
+2026-10-23T21:01:53.4038689Z fieldcraft-lbm               L2             mesh, model, parallel
+2026-10-23T21:01:53.4038907Z fieldcraft-lbm-gpu           L7             gpu, lbm, model, mesh (dev)
+2026-10-23T21:01:53.4039143Z fieldcraft-mcp               L7             engine, gpu, io, render, testkit (dev)
+2026-10-23T21:01:53.4039366Z fieldcraft-mesh              L1             model, parallel
+2026-10-23T21:01:53.4039563Z fieldcraft-mesh-gpu          L7             gpu, mesh
+2026-10-23T21:01:53.4039735Z fieldcraft-model             L0             
+2026-10-23T21:01:53.4039905Z fieldcraft-parallel          L0 standalone  
+2026-10-23T21:01:53.4040071Z fieldcraft-render            L1             model
+2026-10-23T21:01:53.4040270Z fieldcraft-solver            L2             fem, model, parallel, mesh (dev)
+2026-10-23T21:01:53.4040523Z fieldcraft-testkit           testkit        engine, geometry, mesh, parallel (dev)
+2026-10-23T21:01:53.4041244Z fieldcraft-ui-egui           L7             decks, engine, explicit, geometry, gpu, model, render, update
+2026-10-23T21:01:53.4041483Z fieldcraft-update            L0 standalone  
+2026-10-23T21:01:53.4041667Z fieldcraft-web               exempt         engine, io, ui-egui
+2026-10-23T21:01:53.4041857Z xtask                        exempt         
+2026-10-23T21:01:53.4041954Z 
+2026-10-23T21:01:53.4042019Z OK: 23 crates, no layering violations.
+2026-10-23T21:01:54.1890989Z unit-factors: crates/io/src/migrate/v2_to_v3.rs keeps its factors: the format 2 → 3 migration step is frozen: it converts old files with its own copy of the factors, so a later change to the table cannot change how an old file migrates
+2026-10-23T21:01:54.1891581Z unit-factors: 0 literal factor(s) outside crates/model/src/units/; 9 in the frozen step
+2026-10-23T21:01:54.1895379Z $ cargo clippy -D warnings (9 crates)
+2026-10-23T21:01:54.8241621Z [1m[92m    Checking[0m fieldcraft-model v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/model)
+2026-10-23T21:01:54.8263563Z [1m[92m    Checking[0m digest v0.10.7
+2026-10-23T21:01:54.8287438Z [1m[92m    Checking[0m fieldcraft-parallel v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/parallel)
+2026-10-23T21:01:54.8314856Z [1m[92m    Checking[0m fieldcraft-update v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/update)
+2026-10-23T21:01:54.8350420Z [1m[92m   Compiling[0m fieldcraft-ui-egui v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/ui-egui)
+2026-10-23T21:01:54.8368723Z [1m[92m    Checking[0m xtask v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/xtask)
+2026-10-23T21:01:54.8370539Z [1m[92m   Compiling[0m fieldcraft v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/apps/fieldcraft)
+2026-10-23T21:01:54.8848029Z [1m[92m    Checking[0m sha2 v0.10.9
+2026-10-23T21:01:54.9860457Z [1m[92m    Checking[0m solidcraft-render v0.18.2 (https://github.com/tangency-labs/solidcraft?rev=4927214976ff20758fde35af03bd6b2d6cf73e18#49272149)
+2026-10-23T21:01:55.6380616Z [1m[92m    Checking[0m solidcraft-doc v0.18.2 (https://github.com/tangency-labs/solidcraft?rev=4927214976ff20758fde35af03bd6b2d6cf73e18#49272149)
+2026-10-23T21:01:56.9409588Z [1m[92m    Checking[0m fieldcraft-mesh v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/mesh)
+2026-10-23T21:01:56.9410029Z [1m[92m    Checking[0m fieldcraft-render v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/render)
+2026-10-23T21:01:56.9410397Z [1m[92m    Checking[0m fieldcraft-fem v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/fem)
+2026-10-23T21:01:56.9410744Z [1m[92m    Checking[0m fieldcraft-decks v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/decks)
+2026-10-23T21:01:57.2725358Z [1m[92m    Checking[0m fieldcraft-gpu v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/gpu)
+2026-10-23T21:01:57.5903235Z [1m[92m    Checking[0m fieldcraft-solver v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/solver)
+2026-10-23T21:01:57.5904068Z [1m[92m    Checking[0m fieldcraft-explicit v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/explicit)
+2026-10-23T21:02:00.4885276Z [1m[92m    Checking[0m fieldcraft-lbm v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/lbm)
+2026-10-23T21:02:00.4885848Z [1m[92m    Checking[0m fieldcraft-mesh-gpu v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/mesh-gpu)
+2026-10-23T21:02:01.0477540Z [1m[92m    Checking[0m fieldcraft-io v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/io)
+2026-10-23T21:02:01.0477992Z [1m[92m    Checking[0m fieldcraft-lbm-gpu v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/lbm-gpu)
+2026-10-23T21:02:02.4936344Z [1m[92m    Checking[0m solidcraft-io v0.18.2 (https://github.com/tangency-labs/solidcraft?rev=4927214976ff20758fde35af03bd6b2d6cf73e18#49272149)
+2026-10-23T21:02:03.4399489Z [1m[92m    Checking[0m solidcraft-engine v0.18.2 (https://github.com/tangency-labs/solidcraft?rev=4927214976ff20758fde35af03bd6b2d6cf73e18#49272149)
+2026-10-23T21:02:08.4058914Z [1m[92m    Checking[0m fieldcraft-geometry v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/geometry)
+2026-10-23T21:02:09.0132543Z [1m[92m    Checking[0m fieldcraft-engine v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/engine)
+2026-10-23T21:02:13.3044024Z [1m[92m    Checking[0m fieldcraft-testkit v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/testkit)
+2026-10-23T21:02:13.3044691Z [1m[92m    Checking[0m fieldcraft-mcp v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/mcp)
+2026-10-23T21:02:13.5052144Z [1m[92m    Checking[0m fieldcraft-cli v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/apps/fieldcraft-cli)
+2026-10-23T21:02:15.2583028Z [1m[92m    Checking[0m fieldcraft-web v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/apps/fieldcraft-web)
+2026-10-23T21:02:18.0100891Z [1m[92m    Finished[0m `ci` profile [optimized + debuginfo] target(s) in 23.80s
+2026-10-23T21:02:18.0764624Z $ cargo test 9 packages --profile ci --no-run
+2026-10-23T21:02:18.2831566Z [1m[92m   Compiling[0m fieldcraft-model v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/model)
+2026-10-23T21:02:18.2858382Z [1m[92m   Compiling[0m digest v0.10.7
+2026-10-23T21:02:18.2875588Z [1m[92m   Compiling[0m fieldcraft-parallel v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/parallel)
+2026-10-23T21:02:18.2899256Z [1m[92m   Compiling[0m fieldcraft-update v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/update)
+2026-10-23T21:02:18.2941448Z [1m[92m   Compiling[0m fieldcraft-ui-egui v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/ui-egui)
+2026-10-23T21:02:18.2968355Z [1m[92m   Compiling[0m fieldcraft v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/apps/fieldcraft)
+2026-10-23T21:02:18.2970900Z [1m[92m   Compiling[0m xtask v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/xtask)
+2026-10-23T21:02:18.3540417Z [1m[92m   Compiling[0m sha2 v0.10.9
+2026-10-23T21:02:18.5191249Z [1m[92m   Compiling[0m solidcraft-render v0.18.2 (https://github.com/tangency-labs/solidcraft?rev=4927214976ff20758fde35af03bd6b2d6cf73e18#49272149)
+2026-10-23T21:02:19.9978487Z [1m[92m   Compiling[0m solidcraft-doc v0.18.2 (https://github.com/tangency-labs/solidcraft?rev=4927214976ff20758fde35af03bd6b2d6cf73e18#49272149)
+2026-10-23T21:02:22.3982034Z [1m[92m   Compiling[0m fieldcraft-mesh v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/mesh)
+2026-10-23T21:02:22.3982480Z [1m[92m   Compiling[0m fieldcraft-render v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/render)
+2026-10-23T21:02:22.3982850Z [1m[92m   Compiling[0m fieldcraft-fem v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/fem)
+2026-10-23T21:02:22.3983212Z [1m[92m   Compiling[0m fieldcraft-decks v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/decks)
+2026-10-23T21:02:23.0152852Z [1m[92m   Compiling[0m fieldcraft-gpu v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/gpu)
+2026-10-23T21:02:23.7869115Z [1m[92m   Compiling[0m fieldcraft-solver v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/solver)
+2026-10-23T21:02:23.8316620Z [1m[92m   Compiling[0m fieldcraft-explicit v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/explicit)
+2026-10-23T21:02:31.5179080Z [1m[92m   Compiling[0m fieldcraft-lbm v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/lbm)
+2026-10-23T21:02:31.5179616Z [1m[92m   Compiling[0m fieldcraft-mesh-gpu v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/mesh-gpu)
+2026-10-23T21:02:32.3898182Z [1m[92m   Compiling[0m fieldcraft-io v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/io)
+2026-10-23T21:02:32.3898630Z [1m[92m   Compiling[0m fieldcraft-lbm-gpu v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/lbm-gpu)
+2026-10-23T21:02:35.2036226Z [1m[92m   Compiling[0m solidcraft-io v0.18.2 (https://github.com/tangency-labs/solidcraft?rev=4927214976ff20758fde35af03bd6b2d6cf73e18#49272149)
+2026-10-23T21:02:38.8357093Z [1m[92m   Compiling[0m solidcraft-engine v0.18.2 (https://github.com/tangency-labs/solidcraft?rev=4927214976ff20758fde35af03bd6b2d6cf73e18#49272149)
+2026-10-23T21:02:54.4617479Z [1m[92m   Compiling[0m fieldcraft-geometry v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/geometry)
+2026-10-23T21:02:55.6181103Z [1m[92m   Compiling[0m fieldcraft-engine v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/engine)
+2026-10-23T21:03:02.6161884Z [1m[92m   Compiling[0m fieldcraft-testkit v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/testkit)
+2026-10-23T21:03:02.6162782Z [1m[92m   Compiling[0m fieldcraft-mcp v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/crates/mcp)
+2026-10-23T21:03:17.4107488Z [1m[92m   Compiling[0m fieldcraft-cli v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/apps/fieldcraft-cli)
+2026-10-23T21:03:17.4108352Z [1m[92m   Compiling[0m fieldcraft-web v0.7.0 (/home/runner/_work/fieldcraft/fieldcraft/apps/fieldcraft-web)
+2026-10-23T21:04:04.6230511Z [1m[92m    Finished[0m `ci` profile [optimized + debuginfo] target(s) in 1m 46s
+2026-10-23T21:04:04.7018402Z ok    testkit bin skill                               0.0s  ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2026-10-23T21:04:04.7019473Z ok    testkit bin oracle                              0.0s  ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2026-10-23T21:04:04.7030910Z ok    testkit bin corpus                              0.0s  ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2026-10-23T21:04:04.7031808Z ok    fieldcraft-web bin fieldcraft-web               0.0s  ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2026-10-23T21:04:04.7179467Z ok    fieldcraft-cli test version                     0.0s  ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+2026-10-23T21:04:04.7260660Z ok    xtask bin xtask                                 0.0s  ok. 31 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+2026-10-23T21:04:04.7328624Z ok    testkit test bracket_blocks                     0.0s  ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+2026-10-23T21:04:04.7605408Z ok    fieldcraft-cli test update                      0.1s  ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+2026-10-23T21:04:05.0492910Z ok    fieldcraft-cli test crashes                     0.3s  ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.34s
+2026-10-23T21:04:05.2076851Z ok    fieldcraft bin fieldcraft                       0.5s  ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.48s
+2026-10-23T21:04:05.2278127Z ok    fieldcraft-cli test run                         0.5s  ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.51s
+2026-10-23T21:04:05.7520200Z ok    geometry test void_shells                       1.1s  ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.04s
+2026-10-23T21:04:07.9598256Z ok    fieldcraft-cli bin fieldcraft-cli               3.3s  ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.17s
+2026-10-23T21:04:07.9935939Z ok    mcp lib fieldcraft_mcp                          3.3s  ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.98s
+2026-10-23T21:04:08.3076348Z ok    mcp test workflow                               3.6s  ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.50s
+2026-10-23T21:04:11.3397487Z ok    geometry test design_formats                    6.6s  ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.61s
+2026-10-23T21:04:11.4955575Z ok    geometry test design_names                      6.8s  ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.78s
+2026-10-23T21:04:12.7875793Z ok    geometry lib fieldcraft_geometry                8.1s  ok. 55 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.04s
+2026-10-23T21:04:13.8196719Z ok    testkit lib fieldcraft_testkit                  9.1s  ok. 16 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 9.06s
+2026-10-23T21:04:22.7156272Z ok    testkit test tet_metric_547                    18.0s  ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 18.00s
+2026-10-23T21:04:33.8251026Z ok    wasm32-unknown-unknown check (17 crates)       29.1s  
+2026-10-23T21:05:19.8585430Z ok    ui-egui lib fieldcraft_ui_egui                 75.2s  ok. 188 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 75.03s
+2026-10-23T21:05:43.9908830Z FAIL  engine lib fieldcraft_engine                   99.3s
+2026-10-23T21:05:43.9909178Z 
+2026-10-23T21:05:43.9909242Z running 385 tests
+2026-10-23T21:05:43.9915750Z test bug_report::tests::without_sharing_a_draft_names_no_paths_commands_or_model ... ok
+2026-10-23T21:05:43.9916067Z test bug_report::tests::encoding_round_trips ... ok
+2026-10-23T21:05:43.9916298Z test bug_report::tests::a_huge_message_is_cut_to_fit_the_link ... ok
+2026-10-23T21:05:43.9916547Z test bug_report::tests::a_short_session_goes_in_the_link ... ok
+2026-10-23T21:05:43.9916815Z test catalogue::tests::deck_entries_follow_the_writers ... ok
+2026-10-23T21:05:43.9917160Z test bug_report::tests::a_long_session_and_the_model_are_attachments ... ok
+2026-10-23T21:05:43.9917412Z test catalogue::tests::features_page_is_current ... ok
+2026-10-23T21:05:43.9917617Z test catalogue::tests::entries_are_well_formed ... ok
+2026-10-23T21:05:43.9917874Z test catalogue::tests::every_tab_is_on_a_workspace_and_every_command_has_an_entry ... ok
+2026-10-23T21:05:43.9918216Z test catalogue::tests::every_command_is_claimed_and_every_ready_entry_runs_a_command ... ok
+2026-10-23T21:05:43.9918521Z test catalogue::tests::no_command_appears_twice_across_ribbon_menus ... ok
+2026-10-23T21:05:43.9918789Z test catalogue::tests::the_ribbon_follows_each_command_to_its_stage ... ok
+2026-10-23T21:05:43.9919050Z test cmd::block::tests::curved_edges_and_hostile_parameters ... ok
+2026-10-23T21:05:43.9919309Z test cmd::block::tests::patches_mesh_2d_regions_that_join_and_solve ... ok
+2026-10-23T21:05:43.9919583Z test cancel_tests::static_frequency_and_solve_all_stop_at_the_factorization ... ok
+2026-10-23T21:05:43.9919875Z test cmd::block::tests::blocks_join_face_to_face_and_name_their_geometry ... ok
+2026-10-23T21:05:43.9920159Z test autosave::tests::autosaves_unsaved_work_and_recovers_it_after_a_crash ... ok
+2026-10-23T21:05:43.9920439Z test cmd::contact::tests::contacts_are_created_edited_and_deleted ... ok
+2026-10-23T21:05:43.9920716Z test cmd::contact::tests::find_reports_and_creates_the_touching_parts ... ok
+2026-10-23T21:05:43.9921010Z test cmd::contact::tests::rigid_walls_belong_to_the_explicit_step ... ok
+2026-10-23T21:05:43.9921298Z test cmd::contact::tests::ties_are_created_edited_and_deleted ... ok
+2026-10-23T21:05:43.9921531Z test cmd::cells::tests::ties_inside_one_body_say_why ... ok
+2026-10-23T21:05:43.9921790Z test cmd::cells::tests::a_tied_hex_tet_bar_in_tension_stretches_as_the_formula_says ... ok
+2026-10-23T21:05:43.9922061Z test cmd::datum::tests::a_vertex_point_is_at_the_tagged_mesh_node ... ok
+2026-10-23T21:05:43.9922314Z test cmd::cells::tests::auto_falls_back_to_tet_and_says_why ... ok
+2026-10-23T21:05:43.9922640Z test cmd::datum::tests::a_partition_that_cuts_nothing_changes_nothing ... ok
+2026-10-23T21:05:43.9922951Z test cmd::datum::tests::datums_by_each_definition ... ok
+2026-10-23T21:05:43.9923172Z test cmd::cells::tests::hostile_params_change_nothing ... ok
+2026-10-23T21:05:43.9923464Z error: failed: engine lib fieldcraft_engine
+2026-10-23T21:05:43.9923764Z test cmd::datum::tests::hostile_datum_params_change_nothing ... ok
+2026-10-23T21:05:43.9924014Z test cancel_tests::meshers_stop_and_leave_no_mesh ... ok
+2026-10-23T21:05:43.9924287Z test cmd::datum::tests::datum_points_by_each_definition_and_planes_and_axes_through_them ... ok
+2026-10-23T21:05:43.9924628Z test cmd::cells::tests::cells_of_a_body_sweep_together_and_merge_without_seeds ... ok
+2026-10-23T21:05:43.9924953Z test cmd::deck::tests::writes_lsdyna_keyword_decks ... ok
+2026-10-23T21:05:43.9925215Z test cmd::deck::tests::writes_the_defined_model_and_refuses_what_it_cannot ... ok
+2026-10-23T21:05:43.9925514Z test cmd::datum::tests::suppressed_partitions_and_datums_leave_the_design_uncut ... ok
+2026-10-23T21:05:43.9925845Z test cmd::cells::tests::a_tet_cell_among_swept_hex_cells_is_tied_once_and_the_heat_balances ... ok
+2026-10-23T21:05:43.9926190Z test cmd::cells::tests::a_hex_tet_bar_joined_by_pyramids_is_conforming_and_stretches_as_the_formula_says ... ok
+2026-10-23T21:05:43.9926691Z test cmd::datum::tests::a_partition_cuts_the_design_and_is_replayed_when_it_opens_again ... ok
+2026-10-23T21:05:43.9926986Z test cmd::define::tests::a_script_defines_a_model_that_checks_clean ... ok
+2026-10-23T21:05:43.9927253Z test cmd::datum::tests::editing_and_deleting_datums_follow_their_partitions ... ok
+2026-10-23T21:05:43.9927529Z test cmd::define::tests::edits_and_deletes_keep_the_model_consistent ... ok
+2026-10-23T21:05:43.9927897Z test cmd::define::tests::plasticity_and_damage_edit_a_material ... ok
+2026-10-23T21:05:43.9928166Z test cmd::define::tests::the_check_names_the_bad_items_and_sets_follow_a_retag ... ok
+2026-10-23T21:05:43.9928435Z test cmd::diagnostics::tests::crash_reports_are_deleted_one_or_all ... ok
+2026-10-23T21:05:43.9928695Z test cmd::define::tests::rename_keeps_the_model_whole_and_undoes ... ok
+2026-10-23T21:05:43.9928945Z test cmd::edit::tests::undo_and_redo_take_a_count_and_stop_at_the_ends ... ok
+2026-10-23T21:05:43.9929192Z test cmd::defeature::tests::bad_features_are_refused ... ok
+2026-10-23T21:05:43.9929945Z test cancel_tests::partition_cells_and_plan_apply_stop_and_change_nothing ... ok
+2026-10-23T21:05:43.9930351Z test cmd::datum::tests::meshes_go_with_the_bodies_partitions_remove ... ok
+2026-10-23T21:05:43.9930591Z test cancel_tests::fluid_stops_between_lattice_steps ... ok
+2026-10-23T21:05:43.9930862Z test cmd::extrude::tests::a_square_post_extrudes_up_to_a_sphere_cap_along_its_normal ... ok
+2026-10-23T21:05:43.9931164Z test cmd::file::tests::a_confined_session_reads_and_writes_only_inside_its_roots ... ok
+2026-10-23T21:05:43.9931446Z test cmd::extrude::tests::a_square_post_extrudes_up_to_a_cylinder ... ok
+2026-10-23T21:05:43.9931697Z test cmd::file::tests::fluid_and_explicit_results_reopen_bit_for_bit ... ok
+2026-10-23T21:05:43.9931947Z test cmd::extrude::tests::a_2d_mesh_extrudes_from_its_set ... ok
+2026-10-23T21:05:43.9932189Z test cmd::file::tests::hostile_file_params_and_files_change_nothing ... ok
+2026-10-23T21:05:43.9932429Z test cancel_tests::nonlinear_stops_between_increments ... ok
+2026-10-23T21:05:43.9932663Z test cmd::file::tests::new_starts_an_empty_model ... ok
+2026-10-23T21:05:43.9932887Z test cancel_tests::explicit_stops_between_time_steps ... FAILED
+2026-10-23T21:05:43.9933137Z test cmd::file::tests::outputs_never_replace_the_model_file ... ok
+2026-10-23T21:05:43.9933363Z test cmd::file::tests::results_of_this_encoding_read_back ... ok
+2026-10-23T21:05:43.9933630Z test cmd::file::tests::recovered_work_over_a_format_1_file_keeps_it_too ... ok
+2026-10-23T21:05:43.9933902Z test cmd::file::tests::a_packed_model_opens_with_its_geometry_and_nothing_else ... ok
+2026-10-23T21:05:43.9934169Z test cmd::file::tests::solved_results_reopen_without_solving ... ok
+2026-10-23T21:05:43.9934403Z test cmd::file::tests::the_first_save_over_a_format_1_file_keeps_it ... ok
+2026-10-23T21:05:43.9934722Z test cmd::file::tests::write_the_results_fixtures ... ignored, writes the results fixtures for a new results encoding
+2026-10-23T21:05:43.9935130Z test cmd::forms::tests::defaults_parse ... ok
+2026-10-23T21:05:43.9935333Z test cmd::forms::tests::every_command_has_a_form ... ok
+2026-10-23T21:05:43.9935546Z test cmd::forms::tests::every_field_has_help_and_a_unit ... ok
+2026-10-23T21:05:43.9935787Z test cmd::extrude::tests::hostile_params_are_errors_and_change_nothing ... ok
+2026-10-23T21:05:43.9936073Z test cmd::forms::tests::required_fields_are_phrased_by_kind ... ok
+2026-10-23T21:05:43.9936375Z test cmd::file::tests::save_and_open_keep_the_model_journal_and_design ... ok
+2026-10-23T21:05:43.9936627Z test cmd::geometry::tests::check_finds_a_gap_between_bodies ... ok
+2026-10-23T21:05:43.9936850Z test cmd::geometry::tests::check_finds_a_small_step ... ok
+2026-10-23T21:05:43.9937113Z test cmd::defeature::tests::the_plate_hole_is_suppressed_meshed_undone_saved_and_restored ... ok
+2026-10-23T21:05:43.9937402Z test cmd::geometry::tests::check_rejects_hostile_parameters ... ok
+2026-10-23T21:05:43.9937678Z test cmd::geometry::tests::import_adds_tagged_surfaces_and_failures_change_nothing ... ok
+2026-10-23T21:05:43.9937995Z test cmd::extrude::tests::the_extrusion_conforms_with_the_neighbour_it_starts_from ... ok
+2026-10-23T21:05:43.9938276Z test cmd::geometry::tests::centres_of_holes_vertices_and_faces ... ok
+2026-10-23T21:05:43.9938566Z test cmd::file::tests::a_kelvin_fluid_model_solves_as_it_did_whatever_it_is_shown_in ... ok
+2026-10-23T21:05:43.9938850Z test cmd::hex::tests::hostile_params_are_errors_and_change_nothing ... ok
+2026-10-23T21:05:43.9939134Z test cmd::file::tests::format_1_models_open_migrated_and_opening_writes_nothing ... ok
+2026-10-23T21:05:43.9939412Z test cmd::mesh::tests::a_tessellated_block_is_a_valid_boundary ... ok
+2026-10-23T21:05:43.9939680Z test cmd::geometry::tests::check_marks_its_findings_in_the_picture ... ok
+2026-10-23T21:05:43.9939936Z test cmd::hex::tests::mesh_cells_all_blocks_is_mesh_hex_blocks ... ok
+2026-10-23T21:05:43.9940187Z test cmd::mesh::tests::export_stl_refuses_a_mesh_of_lines ... ok
+2026-10-23T21:05:43.9940445Z test cmd::mesh::tests::delaunay_of_points_reports_tets_and_duplicates ... ok
+2026-10-23T21:05:43.9940857Z test cmd::mesh::tests::mark_rejects_hostile_parameters ... ok
+2026-10-23T21:05:43.9941205Z test cmd::mesh::tests::marks_bad_elements_as_a_set ... ok
+2026-10-23T21:05:43.9941431Z test cmd::mesh::tests::export_stl_writes_the_skin_or_a_set ... ok
+2026-10-23T21:05:43.9941695Z test cmd::mesh::tests::planar_meshes_a_polygon_that_solves_as_a_2d_model ... ok
+2026-10-23T21:05:43.9941951Z test cmd::mesh::tests::quality_summary_counts_invalid_elements ... ok
+2026-10-23T21:05:43.9942196Z test cmd::mesh::tests::reports_quality_and_inverted_elements ... ok
+2026-10-23T21:05:43.9942518Z test cmd::mesh::tests::planar_meshes_a_flat_face_of_a_design_with_edges_named_by_their_neighbours ... ok
+2026-10-23T21:05:43.9942882Z test cmd::mesh::tests::surface_check_on_an_open_design_and_on_imported_surfaces ... ok
+2026-10-23T21:05:43.9943167Z test cmd::hex::tests::cells_that_do_not_conform_and_hostile_params_are_errors ... ok
+2026-10-23T21:05:43.9943471Z test cmd::hex::tests::plate_with_a_hole_meshes_with_hexahedra_and_face_sets_resolve ... ok
+2026-10-23T21:05:43.9943759Z test cmd::mesh::tests::tet_generate_on_an_imported_surface_and_an_open_one ... ok
+2026-10-23T21:05:43.9944049Z test cmd::hex::tests::split_cells_mesh_into_one_conforming_hex_mesh ... ok
+2026-10-23T21:05:43.9944409Z test cmd::forms::tests::form_defaults_are_accepted_or_need_only_required_fields ... ok
+2026-10-23T21:05:43.9944672Z test cmd::mirror::tests::hostile_params_change_nothing ... ok
+2026-10-23T21:05:43.9945324Z test cmd::mesh::tests::tet_generate_honours_the_session_caps ... ok
+2026-10-23T21:05:43.9945842Z test cmd::model::temperature_tests::a_temperature_scale_carries_to_differences_and_per_degree_units ... ok
+2026-10-23T21:05:43.9946209Z test cmd::forms::tests::every_param_error_names_a_field_of_its_form ... ok
+2026-10-23T21:05:43.9946604Z test cmd::mirror::tests::mirrored_tets_are_valid_and_conforming ... ok
+2026-10-23T21:05:43.9946862Z test cmd::datum::tests::pieces_that_do_not_touch_are_separate_cells ... ok
+2026-10-23T21:05:43.9947169Z test cmd::file::tests::legacy_geometry_commands_replay_in_the_unit_they_were_typed_in ... ok
+2026-10-23T21:05:43.9947485Z test cmd::mesh::tests::tet_generate_quality_report_and_quadratic_elements ... ok
+2026-10-23T21:05:43.9947765Z test cmd::cells::tests::hex_and_tet_cells_are_tied_and_matching_hex_cells_merged ... ok
+2026-10-23T21:05:43.9948118Z test cmd::mesh::tests::tet_generate_meshes_a_body_with_tags_and_replaces_its_mesh ... ok
+2026-10-23T21:05:43.9948475Z test cmd::mirror::tests::a_mirrored_half_is_the_whole_mesh ... ok
+2026-10-23T21:05:43.9948876Z test cmd::node_move::tests::a_capped_prepare_counts_a_large_region_and_the_live_preview_matches ... ok
+2026-10-23T21:05:43.9949173Z test cmd::node_move::tests::by_moves_a_node_in_one_undo_step ... ok
+2026-10-23T21:05:43.9949477Z test cmd::node_move::tests::a_move_of_nothing_records_no_undo_step_and_min_quality_is_adjustable ... ok
+2026-10-23T21:05:43.9949804Z test cmd::node_move::tests::harmonic_propagation_is_zero_outside_the_radius ... ok
+2026-10-23T21:05:43.9950144Z test cmd::node_move::tests::hostile_move_params_are_refused ... ok
+2026-10-23T21:05:43.9950464Z test cmd::node_move::tests::each_falloff_moves_only_within_the_radius ... ok
+2026-10-23T21:05:43.9950795Z test cmd::node_move::tests::the_preview_is_the_move_without_doing_it ... ok
+2026-10-23T21:05:43.9951136Z test cmd::node_move::tests::the_guard_scales_back_to_no_inversion ... ok
+2026-10-23T21:05:43.9951495Z test cmd::nodes::tests::merging_two_halves_gives_the_whole ... ok
+2026-10-23T21:05:43.9951878Z test cmd::node_move::tests::on_geometry_keeps_nodes_on_faces_and_edges_and_holds_vertices ... ok
+2026-10-23T21:05:43.9952350Z test cmd::nodes::tests::renumbering_keeps_the_solution ... ok
+2026-10-23T21:05:43.9952616Z test cmd::octree::tests::hostile_params_are_errors_and_change_nothing ... ok
+2026-10-23T21:05:43.9952971Z test cmd::defeature::tests::a_bracket_is_meshed_with_its_small_fillet_defeatured ... ok
+2026-10-23T21:05:43.9953448Z test cmd::node_move::tests::to_puts_the_centroid_at_the_point ... ok
+2026-10-23T21:05:43.9954402Z test cmd::mesh::tests::tet_generate_defaults_to_every_body ... ok
+2026-10-23T21:05:43.9954984Z test cmd::names::tests::a_0_7_0_model_follows_its_renamed_faces_where_the_mesh_lies ... ok
+2026-10-23T21:05:43.9955284Z test cmd::names::tests::a_face_another_tag_also_lies_on_is_not_taken ... ok
+2026-10-23T21:05:43.9955582Z test cmd::names::tests::a_0_7_0_model_without_a_mesh_asks_for_its_stale_names_to_be_picked_again ... ok
+2026-10-23T21:05:43.9955875Z test cmd::names::tests::a_name_now_on_another_face_is_reported ... ok
+2026-10-23T21:05:43.9956134Z test cmd::names::tests::hostile_facets_cost_nothing_and_find_nothing ... ok
+2026-10-23T21:05:43.9956410Z test cmd::octree::tests::plate_with_a_hole_meshes_all_hex_and_face_sets_resolve ... ok
+2026-10-23T21:05:43.9956850Z test cmd::plan::acceptance::the_crank_arm_meshes_from_its_plan_with_rings_and_a_pillow ... ignored, heavy: cargo xtask test --heavy (CI heavy job)
+2026-10-23T21:05:43.9957280Z test cmd::plan::blocks::tests::winding_of_a_cube_is_one_inside_and_zero_outside ... ok
+2026-10-23T21:05:43.9957564Z test cmd::plan::acceptance::a_plate_with_four_holes_has_round_o_grid_rings ... ok
+2026-10-23T21:05:43.9957822Z test cmd::plan::pillow::tests::a_box_slices_into_its_rectangle ... ok
+2026-10-23T21:05:43.9958098Z test cmd::plan::pillow::tests::the_planes_keep_clear_of_a_filleted_corner ... ok
+2026-10-23T21:05:43.9958382Z test cmd::plan::acceptance::a_filleted_box_meshes_structured_round_its_corners ... ok
+2026-10-23T21:05:43.9958758Z test cmd::names::tests::a_stale_face_the_mesh_does_not_cover_alone_is_refused ... ok
+2026-10-23T21:05:43.9959066Z test cmd::plan::tests::a_frame_side_on_an_opening_s_end_face_moves_one_element_out_of_it ... ok
+2026-10-23T21:05:43.9959388Z test cmd::cells::tests::the_half_crank_extrudes_in_blocks_without_partitions ... ok
+2026-10-23T21:05:43.9959651Z test cancel_tests::transient_heat_stops_between_increments ... ok
+2026-10-23T21:05:43.9959916Z test cmd::plan::tests::a_joined_boss_is_a_butterfly_on_the_block ... ok
+2026-10-23T21:05:43.9960231Z test cmd::plan::acceptance::curved_bodies_mesh_within_a_percent_of_their_volume_at_the_plan_s_size ... ok
+2026-10-23T21:05:43.9960554Z test cmd::plan::tests::a_cylinder_is_a_butterfly_swept_along_its_axis ... ok
+2026-10-23T21:05:43.9960841Z test cmd::plan::tests::a_partitioned_body_and_its_cells_can_be_planned ... ok
+2026-10-23T21:05:43.9961138Z test cmd::plan::tests::a_shelled_box_takes_layers_through_its_wall ... ok
+2026-10-23T21:05:43.9961589Z test cmd::plan::tests::a_fillet_is_a_blend_layer_and_hostile_plans_are_refused ... ok
+2026-10-23T21:05:43.9962078Z test cmd::plan::tests::a_plate_with_holes_is_one_block_layout_with_an_o_grid_round_each_hole ... ok
+2026-10-23T21:05:43.9962551Z test cmd::plan::tests::a_saved_model_partitioned_after_opening_plans_its_body_and_cells ... ok
+2026-10-23T21:05:43.9962929Z test cmd::project::tests::cup_floor_double_o_grid_refined ... ignored, heavy: cargo xtask test --heavy (CI heavy job)
+2026-10-23T21:05:43.9963320Z test cmd::plan::tests::a_sketched_plate_sweeps_its_profile_and_o_grids_its_circle ... ok
+2026-10-23T21:05:43.9963676Z test cmd::project::tests::cup_with_a_handle_refined ... ignored, heavy: cargo xtask test --heavy (CI heavy job)
+2026-10-23T21:05:43.9964032Z test cmd::project::tests::a_fixed_face_takes_the_neighbours_mesh_as_given ... ok
+2026-10-23T21:05:43.9964289Z test cmd::project::tests::disc_butterfly ... ok
+2026-10-23T21:05:43.9964571Z test cmd::plan::acceptance::a_symmetric_filleted_base_tags_every_face_of_every_cell ... ok
+2026-10-23T21:05:43.9964972Z test cmd::mesh::tests::long_persistent_face_names_mesh_and_resolve ... ok
+2026-10-23T21:05:43.9965300Z test cmd::plan::decompose::tests::a_dome_on_a_plate_is_boxed_into_a_tet_cell_and_the_rest_is_hex ... ok
+2026-10-23T21:05:43.9965614Z test cmd::project::tests::sphere_seven_blocks_at_two_refinements ... ok
+2026-10-23T21:05:43.9965905Z test cmd::relax::tests::a_kept_field_is_applied_again_after_a_remesh ... ok
+2026-10-23T21:05:43.9966196Z test cmd::plan::acceptance::an_enclosure_base_meshes_its_four_corners_alike ... ok
+2026-10-23T21:05:43.9966664Z test cmd::project::tests::cylinder_with_a_side_branch ... ok
+2026-10-23T21:05:43.9967006Z test cmd::relax::tests::hostile_parameters_never_panic ... ok
+2026-10-23T21:05:43.9967267Z test cmd::plan::tests::a_patterned_and_mirrored_part_meshes_every_copy ... ok
+2026-10-23T21:05:43.9967539Z test cmd::project::tests::thin_enclosure_layers ... ok
+2026-10-23T21:05:43.9967775Z test cmd::relax::tests::nodes_on_a_partition_cut_move_freely ... ok
+2026-10-23T21:05:43.9968036Z test cmd::relax::tests::strong_mode_parameters_are_checked ... ok
+2026-10-23T21:05:43.9968291Z test cmd::relax::tests::hex_spikes_near_a_hole_relax_on_the_geometry ... ok
+2026-10-23T21:05:43.9968619Z test cmd::datum::tests::cuts_stay_on_the_plane_and_risky_ones_are_named has been running for over 60 seconds
+2026-10-23T21:05:43.9968969Z test cmd::plan::acceptance::a_box_filleted_on_every_edge_takes_a_blend_layer_on_every_side ... ok
+2026-10-23T21:05:43.9969260Z test cmd::project::tests::cup_with_a_handle ... ok
+2026-10-23T21:05:43.9969496Z test cmd::render::tests::a_render_writes_its_clip_as_a_png_sequence ... ok
+2026-10-23T21:05:43.9969772Z test cmd::render::tests::hostile_render_params_change_nothing ... ok
+2026-10-23T21:05:43.9970017Z test cmd::render::tests::labels_and_command_lines_read_well ... ok
+2026-10-23T21:05:43.9970269Z test cmd::replace::tests::an_element_type_change_is_named ... ok
+2026-10-23T21:05:43.9970498Z test cmd::replace::tests::every_mesher_is_a_command ... ok
+2026-10-23T21:05:43.9970752Z test cmd::replace::tests::every_mesher_replaces_the_mesh_of_its_body_only ... ok
+2026-10-23T21:05:43.9971071Z test cmd::replace::tests::results_solved_on_the_old_mesh_are_cleared_and_undo_brings_them_back ... ok
+2026-10-23T21:05:43.9971431Z test cmd::file::tests::every_migrated_journal_replays_to_its_migrated_model has been running for over 60 seconds
+2026-10-23T21:05:43.9971770Z test cmd::replace::tests::tets_over_hexahedra_leave_only_tets ... ok
+2026-10-23T21:05:43.9972024Z test cmd::results::tests::explicit_frames_drive_the_display ... ok
+2026-10-23T21:05:43.9972305Z test cmd::results::tests::export_vtu_writes_a_static_step_and_its_modes ... ok
+2026-10-23T21:05:43.9972588Z test cmd::results::tests::export_vtu_writes_explicit_frames_as_a_series ... ok
+2026-10-23T21:05:43.9972887Z test cmd::results::tests::export_vtu_writes_nonlinear_frames_and_heat ... ok
+2026-10-23T21:05:43.9973167Z test cmd::results::tests::fluid_display_hostile_params_never_panic ... ok
+2026-10-23T21:05:43.9973496Z test cmd::results::tests::fluid_steps_show_a_slice_the_obstacles_and_streamlines ... ok
+2026-10-23T21:05:43.9973791Z test cmd::results::tests::reactions_balance_the_load ... ok
+2026-10-23T21:05:43.9974059Z test cmd::results::tests::results_export_as_csv ... ok
+2026-10-23T21:05:43.9974350Z test cmd::relax::tests::relaxing_depends_on_the_stored_model_alone ... ok
+2026-10-23T21:05:43.9974713Z test cmd::results::tests::temperature_views_require_thermal_frames_and_follow_the_selected_frame ... ok
+2026-10-23T21:05:43.9975137Z test cmd::results::tests::the_display_follows_the_commands_and_is_not_an_edit ... ok
+2026-10-23T21:05:43.9975456Z test cmd::results::tests::the_legend_range_can_be_clamped ... ok
+2026-10-23T21:05:43.9975713Z test cmd::results::tests::results_hostile_params_never_panic ... ok
+2026-10-23T21:05:43.9975977Z test cmd::seeds::tests::hostile_seeds_are_refused_and_change_nothing ... ok
+2026-10-23T21:05:43.9976266Z test cmd::seeds::tests::seeds_are_set_replaced_listed_cleared_and_undone ... ok
+2026-10-23T21:05:43.9976571Z test cmd::seeds::tests::a_seed_on_a_cut_edge_holds_in_both_cells ... ok
+2026-10-23T21:05:43.9976853Z test cmd::project::tests::hostile_parameters_change_nothing ... ok
+2026-10-23T21:05:43.9977135Z test cmd::relax::tests::mesh_and_strong_relaxation_are_the_same_bits_everywhere ... ok
+2026-10-23T21:05:43.9977434Z test cmd::sizes::tests::controls_are_set_listed_cleared_saved_and_undone ... ok
+2026-10-23T21:05:43.9977699Z test cmd::sizes::tests::hostile_params_never_panic ... ok
+2026-10-23T21:05:43.9978055Z test cmd::seeds::tests::seeds_survive_save_open_and_a_design_edit ... ok
+2026-10-23T21:05:43.9978485Z test cmd::sizes::tests::hex_meshes_follow_size_controls ... ok
+2026-10-23T21:05:43.9978749Z test cmd::solve::tests::a_convective_outlet_is_set_by_command_and_solves ... ok
+2026-10-23T21:05:43.9979061Z test cmd::solve::tests::a_coupled_nonlinear_step_converges_the_same_in_either_display_system ... ok
+2026-10-23T21:05:43.9979423Z test cmd::solve::tests::a_fan_drives_a_duct_through_a_grille_and_the_reply_reports_the_operating_point ... ok
+2026-10-23T21:05:43.9979755Z test cmd::solve::tests::a_fluid_domain_takes_its_obstacles_from_the_open_design ... ok
+2026-10-23T21:05:43.9980043Z test cmd::solve::tests::a_fluid_step_carries_heat_between_its_walls ... ok
+2026-10-23T21:05:43.9980314Z test cmd::solve::tests::a_fluid_step_stops_at_steady_state_and_says_why ... ok
+2026-10-23T21:05:43.9980614Z test cmd::solve::tests::a_step_prefers_a_backend_and_falls_back_with_a_notice ... ok
+2026-10-23T21:05:43.9980979Z test cmd::solve::tests::explicit_cantilever_period_matches_the_modal_frequency ... ignored, heavy: cargo xtask test --heavy (CI heavy job)
+2026-10-23T21:05:43.9981358Z test cmd::solve::tests::explicit_results_are_kept_probed_and_guarded ... ok
+2026-10-23T21:05:43.9981647Z test cmd::solve::tests::factor_cap_can_be_raised_deliberately_to_a_finite_ceiling ... ok
+2026-10-23T21:05:43.9981993Z test cmd::solve::tests::fluid_caps_raise_up_to_the_machine_bound_and_refusals_say_what_to_change ... ok
+2026-10-23T21:05:43.9982497Z test cmd::solve::tests::heat_flows_balance_per_load ... ok
+2026-10-23T21:05:43.9982849Z test cmd::plan::acceptance::a_lid_with_screw_holes_in_its_rounded_corners_rings_each_hole_to_the_fillet ... ok
+2026-10-23T21:05:43.9983157Z test cmd::sizes::tests::octree_meshes_follow_size_controls ... ok
+2026-10-23T21:05:43.9983456Z test cmd::sizes::tests::tet_meshes_follow_size_controls ... ok
+2026-10-23T21:05:43.9983783Z test cmd::solve::tests::nonlinear_steps_solve_with_their_history_and_frames ... ok
+2026-10-23T21:05:43.9984121Z test cmd::solve::tests::raised_factor_caps_solve_small_models_and_failures_keep_results ... ok
+2026-10-23T21:05:43.9984431Z test cmd::solve::tests::nodes_in_two_ties_keep_the_heat_balance ... ok
+2026-10-23T21:05:43.9984709Z test cmd::solve::tests::solve_a_fluid_step_and_probe_its_fields_and_wall_forces ... ok
+2026-10-23T21:05:43.9985043Z test cmd::solve::tests::solve_and_probe_a_coupled_reference_point ... ok
+2026-10-23T21:05:43.9985360Z test cmd::solve::tests::samples_open_and_solve_run_solves_every_step ... ok
+2026-10-23T21:05:43.9985697Z test cmd::solve::tests::solve_and_probe_shells_and_beams ... ok
+2026-10-23T21:05:43.9985925Z test cmd::solve::tests::solve_and_probe_a_contact ... ok
+2026-10-23T21:05:43.9986258Z test cmd::solve::tests::solve_heat_and_probe_temperatures ... ok
+2026-10-23T21:05:43.9986576Z test cmd::solve::tests::solve_fluid_hostile_params_never_panic ... ok
+2026-10-23T21:05:43.9986807Z test cmd::seeds::tests::the_meshers_honour_seeds ... ok
+2026-10-23T21:05:43.9987019Z test cmd::solve::tests::spring_mass_through_commands ... ok
+2026-10-23T21:05:43.9988141Z test cmd::solve::tests::solve_keep_and_probe_results ... ok
+2026-10-23T21:05:43.9988457Z test cmd::solve::tests::the_fluid_summary_reports_the_largest_speed_of_all_frames ... ok
+2026-10-23T21:05:43.9988739Z test cmd::solve::tests::solve_hostile_params_never_panic ... ok
+2026-10-23T21:05:43.9988963Z test cmd::stitch::tests::bad_stitches_change_nothing ... ok
+2026-10-23T21:05:43.9989195Z test cmd::solve::tests::solve_and_probe_a_frictional_contact ... ok
+2026-10-23T21:05:43.9989462Z test cmd::stitch::tests::a_stitched_surface_meshes_and_the_stitch_is_replayed ... ok
+2026-10-23T21:05:43.9989762Z test cmd::symmetry::tests::hostile_params_change_nothing ... ok
+2026-10-23T21:05:43.9989997Z test cmd::update::tests::checks_are_off_unless_enabled ... ok
+2026-10-23T21:05:43.9990228Z test cmd::view::tests::hiding_is_saved_view_state_not_an_edit ... ok
+2026-10-23T21:05:43.9990472Z test cmd::views::tests::a_saved_view_comes_back_when_the_model_opens ... ok
+2026-10-23T21:05:43.9991283Z test cmd::views::tests::a_view_waits_for_its_step_to_be_solved ... ok
+2026-10-23T21:05:43.9991622Z test cmd::views::tests::hostile_view_params_change_nothing ... ok
+2026-10-23T21:05:43.9991875Z test cmd::symmetry::tests::a_half_model_with_symmetry_matches_the_whole ... ok
+2026-10-23T21:05:43.9992144Z test cmd::symmetry::tests::a_half_cut_on_an_inclined_plane_matches_the_whole ... ok
+2026-10-23T21:05:43.9992428Z test cmd::virtual_faces::tests::a_merge_is_one_face_undone_saved_and_replayed ... ok
+2026-10-23T21:05:43.9992713Z test cmd::solve::tests::ties_both_ways_on_one_interface_are_an_error_naming_them ... ok
+2026-10-23T21:05:43.9992962Z test cmd::virtual_faces::tests::absorbing_one_face ... ok
+2026-10-23T21:05:43.9993207Z test cmd::virtual_faces::tests::a_merged_face_is_drawn_in_one_colour ... ok
+2026-10-23T21:05:43.9993444Z test cmd::virtual_faces::tests::bad_merges_change_nothing ... ok
+2026-10-23T21:05:43.9993965Z test cmd::virtual_faces::tests::the_hex_mesher_meshes_a_merged_face_as_one ... ok
+2026-10-23T21:05:43.9994327Z test cmd::virtual_faces::tests::the_plan_sees_a_merged_face_as_one ... ok
+2026-10-23T21:05:43.9994567Z test cmd::xy::tests::explicit_series_are_the_histories ... ok
+2026-10-23T21:05:43.9994838Z test cmd::xy::tests::frequencies_against_the_mode_number ... ok
+2026-10-23T21:05:43.9995076Z test cmd::xy::tests::tip_deflection_against_the_load_factor ... ok
+2026-10-23T21:05:43.9995313Z test cmd::solve::tests::results_do_not_depend_on_the_thread_count ... ok
+2026-10-23T21:05:43.9995664Z test cmd::relax::tests::strong_relaxation_untangles_a_distorted_plate ... ok
+2026-10-23T21:05:43.9995907Z test cmd::xy::tests::xy_hostile_params_never_panic ... ok
+2026-10-23T21:05:43.9996148Z test crash::tests::a_hostile_native_file_still_makes_a_bounded_report ... ok
+2026-10-23T21:05:43.9996412Z test crash::tests::a_crash_while_starting_up_names_the_step_and_the_renderer ... ok
+2026-10-23T21:05:43.9996727Z test crash::tests::a_command_panic_is_reported_once_with_the_model_and_the_command_and_replays ... ok
+2026-10-23T21:05:43.9997050Z test crash::tests::a_native_crash_is_reported_with_the_module_the_step_and_the_minidump ... ok
+2026-10-23T21:05:43.9997346Z test crash::tests::an_unclean_exit_after_an_autosave_starts_from_the_autosave ... ok
+2026-10-23T21:05:43.9997618Z test crash::tests::a_panic_outside_commands_is_reported_from_the_journal ... ok
+2026-10-23T21:05:43.9997831Z test crash::tests::child ... ok
+2026-10-23T21:05:43.9998031Z test crash::tests::journals_parse_and_hostile_ids_are_refused ... ok
+2026-10-23T21:05:43.9998280Z test crash::tests::native_crash_files_without_their_journal_are_removed ... ok
+2026-10-23T21:05:43.9998520Z test crash::tests::reports_are_pruned_to_the_limits ... ok
+2026-10-23T21:05:43.9998719Z test crash::tests::signatures_ignore_numbers ... ok
+2026-10-23T21:05:43.9998955Z test crash::tests::startup_steps_survive_a_rebase_and_running_ends_startup ... ok
+2026-10-23T21:05:43.9999227Z test flow::line::tests::extremes_lie_on_the_parabola_through_three_samples ... ok
+2026-10-23T21:05:43.9999508Z test crash::tests::an_unclean_exit_is_found_at_the_next_start_with_its_commands ... ok
+2026-10-23T21:05:43.9999789Z test crash::tests::a_panic_caught_inside_a_command_is_reported_as_recovered ... ok
+2026-10-23T21:05:44.0000049Z test flow::tests::a_fluid_result_is_first_shown_across_the_flow ... ok
+2026-10-23T21:05:44.0000303Z test flow::tests::a_trace_is_shared_until_its_result_frame_or_settings_change ... ok
+2026-10-23T21:05:44.0000547Z test flow::tests::cell_fields_leave_the_solid_out ... ok
+2026-10-23T21:05:44.0000787Z test flow::tests::temperature_colours_cells_and_streamlines_and_masks_solids ... ok
+2026-10-23T21:05:44.0001052Z test flow::tests::the_plot_draws_the_slice_surface_and_streamlines ... ok
+2026-10-23T21:05:44.0001331Z test flow::wall::tests::histories_interpolate_without_fabricating_initial_heat ... ok
+2026-10-23T21:05:44.0001594Z test flow::tests::a_face_held_at_a_temperature_is_drawn_at_it ... ok
+2026-10-23T21:05:44.0002321Z test flow::wall::tests::wall_heat_uses_face_identity_area_sign_and_frame_in_both_views ... ok
+2026-10-23T21:05:44.0002716Z test history::tests::failed_commands_and_queries_are_not_undo_steps ... ok
+2026-10-23T21:05:44.0002978Z test history::tests::undo_and_redo_walk_the_journal ... ok
+2026-10-23T21:05:44.0003193Z test logfile::tests::tail_keeps_one_process_and_the_end ... ok
+2026-10-23T21:05:44.0003463Z test progress::tests::a_defined_model_is_ready_to_solve_then_to_show_results ... ok
+2026-10-23T21:05:44.0003722Z test history::tests::history_is_bounded_by_steps_and_memory ... ok
+2026-10-23T21:05:44.0003984Z test progress::tests::a_displacement_driven_model_needs_no_load ... ok
+2026-10-23T21:05:44.0004223Z test progress::tests::a_meshed_model_asks_for_its_material_next ... ok
+2026-10-23T21:05:44.0004487Z test flow::tests::a_conducting_plate_reports_its_temperatures_and_heat ... ok
+2026-10-23T21:05:44.0004731Z test progress::tests::empty_model_starts_with_geometry ... ok
+2026-10-23T21:05:44.0005009Z test progress::tests::model_check_returns_the_checklist ... ok
+2026-10-23T21:05:44.0005245Z test requirement::tests::collections_require_what_they_list ... ok
+2026-10-23T21:05:44.0005495Z test cmd::datum::tests::cuts_stay_on_the_plane_and_risky_ones_are_named ... ok
+2026-10-23T21:05:44.0005765Z test requirement::tests::providers_are_not_greyed_by_what_they_provide ... ok
+2026-10-23T21:05:44.0006043Z test requirement::tests::every_command_in_an_empty_session_runs_or_names_what_it_misses ... ok
+2026-10-23T21:05:44.0006298Z test results::tests::field_ids_round_trip ... ok
+2026-10-23T21:05:44.0006497Z test requirement::tests::targeted_requirements ... ok
+2026-10-23T21:05:44.0006713Z test results::tests::fields_follow_the_result ... ok
+2026-10-23T21:05:44.0006910Z test results::tests::units_follow_the_unit_system ... ok
+2026-10-23T21:05:44.0007233Z test sample::cooling::tests::a_short_aio_radiator_run_warms_the_air ... ignored, heavy: cargo xtask test --heavy (CI heavy job)
+2026-10-23T21:05:44.0007550Z test results::tests::unrelated_edits_keep_results_current ... ok
+2026-10-23T21:05:44.0007855Z test cmd::plan::acceptance::absorbed_slivers_stay_absorbed_in_the_plan_s_cells has been running for over 60 seconds
+2026-10-23T21:05:44.0008154Z test cmd::relax::tests::relaxing_fillet_faces_improves_them ... ok
+2026-10-23T21:05:44.0008429Z test progress::tests::a_free_body_in_explicit_dynamics_needs_no_boundary_condition ... ok
+2026-10-23T21:05:44.0008781Z test sample::cooling::tests::the_enclosure_settles_to_its_published_heat ... ignored, heavy: cargo xtask test --heavy (CI heavy job)
+2026-10-23T21:05:44.0009197Z test sample::cooling::tests::the_heat_sink_sheds_its_published_heat ... ignored, heavy: cargo xtask test --heavy (CI heavy job)
+2026-10-23T21:05:44.0009526Z test sample::cooling::tests::typed_constants_give_the_tuned_numbers ... ok
+2026-10-23T21:05:44.0009866Z test cmd::plan::acceptance::an_enclosure_base_rings_each_corner_boss_where_the_walls_join_it has been running for over 60 seconds
+2026-10-23T21:05:44.0010210Z test cmd::virtual_faces::tests::absorbing_the_check_findings_clears_them ... ok
+2026-10-23T21:05:44.0010524Z test sample::heated_flow::tests::heated_flow_sample_solves_and_exposes_temperature_and_wall_heat ... ok
+2026-10-23T21:05:44.0010895Z test sample::tests::hex20_extrudes_the_crank_with_tangent_root_arcs ... ignored, heavy: cargo xtask test --heavy (CI heavy job)
+2026-10-23T21:05:44.0011233Z test sample::cooling::tests::the_cooling_samples_open_ready_to_solve ... ok
+2026-10-23T21:05:44.0011488Z test sample::tests::the_cantilever_solves_close_to_beam_theory ... ok
+2026-10-23T21:05:44.0011807Z test sample::tests::the_crank_arm_root_bends_as_the_beam_formula_says ... ignored, heavy: cargo xtask test --heavy (CI heavy job)
+2026-10-23T21:05:44.0012152Z test cmd::virtual_faces::tests::the_tet_mesher_meshes_a_merged_face_as_one ... ok
+2026-10-23T21:05:44.0012391Z test cmd::project::tests::cup_floor_double_o_grid ... ok
+2026-10-23T21:05:44.0012634Z test sample::cooling::tests::a_short_heat_sink_run_warms_the_air ... ok
+2026-10-23T21:05:44.0013182Z test sample::tests::the_drop_test_lands_at_the_free_fall_speed_and_bounces ... ignored, heavy: cargo xtask test --heavy (CI heavy job)
+2026-10-23T21:05:44.0013615Z test sample::cooling::tests::a_short_enclosure_run_takes_heat_from_the_chip ... ok
+2026-10-23T21:05:44.0013949Z test sample::tests::the_flow_past_the_bracket_has_a_bluff_body_drag ... ignored, heavy: cargo xtask test --heavy (CI heavy job)
+2026-10-23T21:05:44.0014272Z test sample::tests::the_drop_test_opens_ready_to_solve ... ok
+2026-10-23T21:05:44.0014485Z test sample::tests::the_form_lists_every_sample ... ok
+2026-10-23T21:05:44.0014838Z test sample::tests::the_heated_bracket_opens_with_its_usual_mesh ... ignored, heavy: cargo xtask test --heavy (CI heavy job)
+2026-10-23T21:05:44.0015680Z test sample::tests::the_heated_bracket_warms_and_expands_as_steel ... ignored, heavy: cargo xtask test --heavy (CI heavy job)
+2026-10-23T21:05:44.0016132Z test sample::tests::the_hex_bracket_bends_like_the_fine_tet_solution ... ignored, heavy: cargo xtask test --heavy (CI heavy job)
+2026-10-23T21:05:44.0016470Z test sample::tests::the_flow_sample_opens_ready_to_solve ... ok
+2026-10-23T21:05:44.0016746Z test sample::tests::the_impact_runs_and_keeps_frames_with_stresses ... ok
+2026-10-23T21:05:44.0017023Z test cmd::relax::tests::strong_relaxation_of_a_filleted_box_keeps_faces_and_edges ... ok
+2026-10-23T21:05:44.0017314Z test cmd::project::tests::squeezed_junction_elements_are_reported_not_meshed ... ok
+2026-10-23T21:05:44.0017593Z test sample::tests::the_sample_builds_positive_elements_that_fill_both_parts ... ok
+2026-10-23T21:05:44.0017839Z test sample::tests::the_ibeam_bends_as_beam_theory ... ok
+2026-10-23T21:05:44.0018055Z test schema::tests::every_command_refuses_an_unknown_parameter ... ok
+2026-10-23T21:05:44.0018300Z test schema::tests::every_documented_parameter_is_accepted ... ok
+2026-10-23T21:05:44.0018542Z test schema::tests::json_schema_has_variants_and_requirements ... ok
+2026-10-23T21:05:44.0018768Z test schema::tests::labels_points_multi_and_auto_check ... ok
+2026-10-23T21:05:44.0018997Z test schema::tests::name_or_object_and_text_per_item ... ok
+2026-10-23T21:05:44.0019224Z test schema::tests::per_axis_takes_one_number_or_one_per_axis ... ok
+2026-10-23T21:05:44.0019447Z test schema::tests::prefill_switch_and_check ... ok
+2026-10-23T21:05:44.0019659Z test schema::tests::problems_carry_their_field_and_kind ... ok
+2026-10-23T21:05:44.0019883Z test schema::tests::sides_hold_element_and_local_number ... ok
+2026-10-23T21:05:44.0020093Z test schema::tests::table_rows_have_its_columns ... ok
+2026-10-23T21:05:44.0020325Z test schema::tests::tuple_takes_two_or_three_positive_numbers ... ok
+2026-10-23T21:05:44.0020536Z test schema::tests::units_follow_the_system ... ok
+2026-10-23T21:05:44.0020746Z test schema::tests::unknown_keys_are_found_per_variant ... ok
+2026-10-23T21:05:44.0020971Z test progress::tests::a_seed_after_the_mesh_marks_it_outdated ... ok
+2026-10-23T21:05:44.0021223Z test tests::a_different_design_starts_a_new_model_or_reports_what_is_stale ... ok
+2026-10-23T21:05:44.0021483Z test tests::command_ids_are_unique_and_well_formed ... ok
+2026-10-23T21:05:44.0021717Z test tests::a_new_model_is_untitled_and_undo_brings_the_file_back ... ok
+2026-10-23T21:05:44.0022035Z test cmd::plan::acceptance::an_enclosure_base_rings_each_corner_boss_where_the_walls_join_it ... ok
+2026-10-23T21:05:44.0022332Z test tests::keeping_the_model_keeps_its_file_and_a_sample_has_none ... ok
+2026-10-23T21:05:44.0022600Z test tests::reopening_the_same_design_keeps_the_mesh_and_definitions ... ok
+2026-10-23T21:05:44.0022849Z test tests::open_a_design_list_its_bodies_and_tessellate_one ... ok
+2026-10-23T21:05:44.0023098Z test tests::script_builds_a_hex_and_failures_leave_the_model_alone ... ok
+2026-10-23T21:05:44.0023384Z test units::geometry_tests::a_journal_from_before_si_storage_reads_its_millimetres_on_a_design ... ok
+2026-10-23T21:05:44.0023686Z test tests::the_open_document_changes_only_when_another_is_opened ... ok
+2026-10-23T21:05:44.0024223Z test sample::tests::the_rubber_seal_keeps_a_force_travel_curve ... ok
+2026-10-23T21:05:44.0024654Z test units::geometry_tests::a_model_shown_in_inches_or_si_meshes_as_in_millimetres ... ok
+2026-10-23T21:05:44.0025320Z test units::geometry_tests::datums_seeds_partitions_and_plans_round_trip_in_inches ... ok
+2026-10-23T21:05:44.0025652Z test units::geometry_tests::mesher_errors_are_shown_in_the_display_units ... ok
+2026-10-23T21:05:44.0025931Z test units::tests::a_journal_entry_typed_in_another_system_keeps_its_units ... ok
+2026-10-23T21:05:44.0026205Z test units::tests::bare_numbers_are_in_the_input_system_and_units_override ... ok
+2026-10-23T21:05:44.0026455Z test units::tests::geometry_amounts_read_in_millimetres ... ok
+2026-10-23T21:05:44.0026678Z test units::tests::hostile_units_are_refused_by_field ... ok
+2026-10-23T21:05:44.0026932Z test units::geometry_tests::geometry_and_mesh_sources_name_no_fixed_unit ... ok
+2026-10-23T21:05:44.0027194Z test usage::tests::a_scripted_session_sends_only_names_and_durations ... ok
+2026-10-23T21:05:44.0027449Z test usage::tests::nothing_is_queued_without_consent ... ok
+2026-10-23T21:05:44.0027733Z test usage::tests::telemetry_is_off_without_a_key_in_automation_and_ci_and_when_turned_off ... ok
+2026-10-23T21:05:44.0027993Z test usage::tests::the_body_is_a_posthog_batch ... ok
+2026-10-23T21:05:44.0028225Z test usage::tests::scripts_and_agents_can_be_left_out_and_the_queue_is_bounded ... ok
+2026-10-23T21:05:44.0028489Z test view::tests::a_mode_drawn_at_a_fixed_scale_moves_by_the_shape_shown ... ok
+2026-10-23T21:05:44.0028736Z test units::geometry_tests::geometry_and_mesh_replies_name_no_fixed_unit ... ok
+2026-10-23T21:05:44.0028950Z test view::tests::camera_json_is_checked ... ok
+2026-10-23T21:05:44.0029131Z test view::tests::camera_orientation_is_checked ... ok
+2026-10-23T21:05:44.0029310Z test view::tests::camera_targets ... ok
+2026-10-23T21:05:44.0029498Z test view::tests::a_fluid_step_draws_its_flow_around_the_part ... ok
+2026-10-23T21:05:44.0029713Z test view::tests::renders_the_model_and_its_results ... ok
+2026-10-23T21:05:44.0029949Z test view::tests::symbols_keep_their_size_in_pictures_at_any_distance ... ok
+2026-10-23T21:05:44.0030163Z test view::tests::a_yaw_sweep_orbits_the_model ... ok
+2026-10-23T21:05:44.0030396Z test cmd::plan::tests::every_corpus_design_has_a_feature_graph_and_a_plan ... ok
+2026-10-23T21:05:44.0030641Z test sample::tests::the_rubber_seal_squeezes_as_mooney_rivlin_rubber ... ok
+2026-10-23T21:05:44.0030899Z test sample::tests::the_sweep_takes_the_arm_profile_and_names_the_crank_levels ... ok
+2026-10-23T21:05:44.0031152Z test sample::tests::the_crank_pocket_floor_keeps_its_elements_square ... ok
+2026-10-23T21:05:44.0031388Z test sample::tests::the_crank_arm_hex20_mesh_is_conforming ... ok
+2026-10-23T21:05:44.0031631Z test cmd::virtual_faces::tests::a_split_face_meshes_with_a_node_row_along_the_cut ... ok
+2026-10-23T21:05:44.0032123Z test sample::tests::the_crank_opens_as_one_structured_mesh_of_two_alike_halves ... ok
+2026-10-23T21:05:44.0032474Z test cmd::plan::acceptance::absorbed_slivers_stay_absorbed_in_the_plan_s_cells ... ok
+2026-10-23T21:05:44.0032861Z test cmd::relax::tests::tet10_relaxes_with_curved_mid_side_nodes_on_the_hole ... ok
+2026-10-23T21:05:44.0033218Z test sample::tests::a_cut_the_kernel_can_only_nudge_off_its_plane_is_refused ... ok
+2026-10-23T21:05:44.0033763Z test sample::tests::the_crank_half_divides_where_its_mirror_does ... ok
+2026-10-23T21:05:44.0034095Z test cmd::file::tests::every_migrated_journal_replays_to_its_migrated_model ... ok
+2026-10-23T21:05:44.0034393Z test tests::hostile_params_never_panic ... ok
+2026-10-23T21:05:44.0034560Z 
+2026-10-23T21:05:44.0034678Z failures:
+2026-10-23T21:05:44.0034804Z 
+2026-10-23T21:05:44.0034911Z ---- cancel_tests::explicit_stops_between_time_steps stdout ----
+2026-10-23T21:05:44.0035059Z 
+2026-10-23T21:05:44.0035245Z thread 'cancel_tests::explicit_stops_between_time_steps' (7112) panicked at crates/engine/src/cancel_tests.rs:59:5:
+2026-10-23T21:05:44.0035543Z solve.explicit: stopped 5.792319807s after the cancel
+2026-10-23T21:05:44.0036143Z note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+2026-10-23T21:05:44.0036381Z 
+2026-10-23T21:05:44.0036383Z 
+2026-10-23T21:05:44.0036432Z failures:
+2026-10-23T21:05:44.0036590Z     cancel_tests::explicit_stops_between_time_steps
+2026-10-23T21:05:44.0036709Z 
+2026-10-23T21:05:44.0036850Z test result: FAILED. 369 passed; 1 failed; 15 ignored; 0 measured; 0 filtered out; finished in 99.18s
+2026-10-23T21:05:44.0037036Z 
+2026-10-23T21:05:44.0037040Z 
+2026-10-23T21:05:44.0037100Z (exit status: 101)
+2026-10-23T21:05:44.0037234Z test: 22 binaries in 99.3s
+2026-10-23T21:05:44.0049581Z ##[error]Process completed with exit code 1.
+2026-10-23T21:05:44.0149888Z Post job cleanup.
+2026-10-23T21:05:44.0992170Z [command]/usr/local/bin/git version
+2026-10-23T21:05:44.1044586Z git version 2.55.0
+2026-10-23T21:05:44.1070485Z Temporarily overriding HOME='/home/runner/_work/_temp/41272f00-e6a2-452b-b64f-6973de7b899f' before making global git config changes
+2026-10-23T21:05:44.1071145Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-23T21:05:44.1075437Z [command]/usr/local/bin/git config --global --add safe.directory /home/runner/_work/fieldcraft/fieldcraft
+2026-10-23T21:05:44.1109149Z Removing SSH command configuration
+2026-10-23T21:05:44.1112758Z [command]/usr/local/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-23T21:05:44.1142384Z [command]/usr/local/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-23T21:05:44.1293212Z Removing HTTP extra header
+2026-10-23T21:05:44.1298486Z [command]/usr/local/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-23T21:05:44.1330999Z [command]/usr/local/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-23T21:05:44.1491227Z Removing includeIf entries pointing to credentials config files
+2026-10-23T21:05:44.1500781Z [command]/usr/local/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-23T21:05:44.1535966Z includeif.gitdir:/home/runner/_work/fieldcraft/fieldcraft/.git.path
+2026-10-23T21:05:44.1536261Z includeif.gitdir:/home/runner/_work/fieldcraft/fieldcraft/.git/worktrees/*.path
+2026-10-23T21:05:44.1536497Z includeif.gitdir:/github/workspace/.git.path
+2026-10-23T21:05:44.1536702Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-23T21:05:44.1544549Z [command]/usr/local/bin/git config --local --get-all includeif.gitdir:/home/runner/_work/fieldcraft/fieldcraft/.git.path
+2026-10-23T21:05:44.1578571Z /home/runner/_work/_temp/git-credentials-6eebcc3c-1123-42ef-af3d-bbfeebd09405.config
+2026-10-23T21:05:44.1587953Z [command]/usr/local/bin/git config --local --unset includeif.gitdir:/home/runner/_work/fieldcraft/fieldcraft/.git.path \/home\/runner\/_work\/_temp\/git\-credentials\-6eebcc3c\-1123\-42ef\-af3d\-bbfeebd09405\.config
+2026-10-23T21:05:44.1621295Z [command]/usr/local/bin/git config --local --get-all includeif.gitdir:/home/runner/_work/fieldcraft/fieldcraft/.git/worktrees/*.path
+2026-10-23T21:05:44.1650078Z /home/runner/_work/_temp/git-credentials-6eebcc3c-1123-42ef-af3d-bbfeebd09405.config
+2026-10-23T21:05:44.1659334Z [command]/usr/local/bin/git config --local --unset includeif.gitdir:/home/runner/_work/fieldcraft/fieldcraft/.git/worktrees/*.path \/home\/runner\/_work\/_temp\/git\-credentials\-6eebcc3c\-1123\-42ef\-af3d\-bbfeebd09405\.config
+2026-10-23T21:05:44.1702680Z [command]/usr/local/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-10-23T21:05:44.1729552Z /github/runner_temp/git-credentials-6eebcc3c-1123-42ef-af3d-bbfeebd09405.config
+2026-10-23T21:05:44.1741280Z [command]/usr/local/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-6eebcc3c\-1123\-42ef\-af3d\-bbfeebd09405\.config
+2026-10-23T21:05:44.1793228Z [command]/usr/local/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-23T21:05:44.1828074Z /github/runner_temp/git-credentials-6eebcc3c-1123-42ef-af3d-bbfeebd09405.config
+2026-10-23T21:05:44.1840780Z [command]/usr/local/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-6eebcc3c\-1123\-42ef\-af3d\-bbfeebd09405\.config
+2026-10-23T21:05:44.1890325Z [command]/usr/local/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-23T21:05:44.2059500Z Removing credentials config '/home/runner/_work/_temp/git-credentials-6eebcc3c-1123-42ef-af3d-bbfeebd09405.config'
+2026-10-23T21:05:44.2158261Z A job completed hook has been configured by the self-hosted runner administrator
+2026-10-23T21:05:44.2182865Z ##[group]Run '/job_completed.sh'
+2026-10-23T21:05:44.2192599Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-23T21:05:44.2192805Z env:
+2026-10-23T21:05:44.2192934Z   BLACKSMITH_RUNNER_MESSAGE_WAIT_MS: 740
+2026-10-23T21:05:44.2193142Z   BLACKSMITH_RUNNER_ACQUIRE_JOB_MS: 960
+2026-10-23T21:05:44.2193350Z   BLACKSMITH_CHECK_RUN_ID: 120654123187
+2026-10-23T21:05:44.2193764Z   BLACKSMITH_JOB_DISPLAY_NAME: cargo xtask ci
+2026-10-23T21:05:44.2193951Z   GITHUB_ACTIONS_CACHE_MODE: write
+2026-10-23T21:05:44.2194104Z ##[endgroup]
+2026-10-23T21:05:44.2308419Z Docker container cache not activated, skipping hash computation.
+2026-10-23T21:05:44.2708887Z No active SSH sessions detected. Proceeding with shutdown immediately.
+2026-10-23T21:05:44.2792056Z Cleaning up orphan processes
