@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "agent": "backup-maintainer",
+  "branch": "gpu-fan-porous",
+  "head_sha": "bcf4b016f05e68892e9194e524f8eb369195e0a5",
+  "name": "gpu-fan-porous.mp4",
+  "bytes": 1056089,
+  "sha256": "79ea53c5abc8c6bc29ec5408531ca275c2bdcdb802f9899b58b9c4e19261d900",
+  "description": "",
+  "submitted_at": "2026-10-23T23:09:48.342406+00:00",
+  "status": "received",
+  "artifact_commit": "baa6defd1f1d156b56ea178036979eb023739fce",
+  "manifest": "manifests/gpu-fan-porous/bcf4b016f05e68892e9194e524f8eb369195e0a5/gpu-fan-porous.mp4.json",
+  "manifest_blob": "e97b5c59214636f4a78fc81574cf16ee23311411",
+  "object": "objects/gpu-fan-porous/bcf4b016f05e68892e9194e524f8eb369195e0a5/gpu-fan-porous.mp4",
+  "verified_sha256": "79ea53c5abc8c6bc29ec5408531ca275c2bdcdb802f9899b58b9c4e19261d900",
+  "github_attachment": "pending_maintainer"
+}
