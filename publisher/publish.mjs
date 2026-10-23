@@ -19,7 +19,7 @@ export function parseRequest(path, text) {
   const branch = path.slice(prefix.length, -3);
   if (!/^[A-Za-z0-9][A-Za-z0-9._/-]{0,179}$/.test(branch) || branch.includes('..') ||
       branch.includes('//') || /[/.]$|\.lock(?:\/|$)/.test(branch) ||
-      ['main', 'develop', QUEUE].includes(branch)) throw Error('Invalid feature branch name.');
+      ['main', 'develop', QUEUE, 'artifact-queue', 'upstream-develop'].includes(branch)) throw Error('Invalid feature branch name.');
   if (r.schema !== 1 || r.kind !== kind || r.branch !== branch) throw Error('Schema, kind or branch does not match the request path.');
   if (!/^[A-Za-z0-9][A-Za-z0-9_.-]{0,79}$/.test(r.agent || '')) throw Error('Give a stable agent identifier.');
   if (!/^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$/.test(r.request_id || '')) throw Error('Give a unique request_id.');
@@ -239,6 +239,17 @@ export class Publisher {
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  try { new Publisher(ghApi, process.argv.includes('--dry-run')).run(); }
+  try {
+    const dry = process.argv.includes('--dry-run');
+    const p = new Publisher(ghApi, dry);
+    const {syncBase, relayFeedback} = await import('./relay.mjs');
+    if (!dry) syncBase(ghApi);
+    p.run();
+    if (!dry) {
+      relayFeedback(p);
+      const {syncArtifacts} = await import('./artifact-inbox.mjs');
+      syncArtifacts(ghApi);
+    }
+  }
   catch (e) { console.error(e.message); process.exitCode = 1; }
 }

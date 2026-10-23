@@ -20,7 +20,9 @@ Closes #698. Describe the final change. Use Refs for unfinished parent issues.
 
 ## Demonstration
 
-Describe the real UI behavior and its assumptions. Attach videos/stills to GitHub, never git.
+Describe real UI behavior and assumptions. Hand recordings/stills to the maintainer through
+artifact-queue using Git LFS; the maintainer handles PR attachments. Keep media out of feature
+commits. Do not log into GitHub. Keep media pending until the maintainer provides attachment URLs.
 
 ## Validation
 
