@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "agent": "legend-layout-agent",
+  "branch": "fix/legend-fit-610",
+  "head_sha": "252fa873b5ed4cfc1a0e5714f56806b47b9a9f00",
+  "name": "after-max.png",
+  "bytes": 193435,
+  "sha256": "eaf1be0b7279a58456fb734276c02828200156851a60654d9d1dc92f387f07b5",
+  "description": "Native UI resize and Max/Min demonstration on the static linear Cantilever sample; 24 bands, 0-10 MPa clamp, true maximum 151 MPa. Presentation QA, not a physical transient. Reproduction: docs/legend-layout.md.",
+  "submitted_at": "2026-10-23T23:11:31.260894+00:00",
+  "status": "received",
+  "artifact_commit": "bfb109cf307cb7109d55e8743276c272fc01322c",
+  "manifest": "manifests/fix/legend-fit-610/252fa873b5ed4cfc1a0e5714f56806b47b9a9f00/after-max.png.json",
+  "manifest_blob": "a88a8ab4b588ccfa682d69c7ebdd6802dba67f12",
+  "object": "objects/fix/legend-fit-610/252fa873b5ed4cfc1a0e5714f56806b47b9a9f00/after-max.png",
+  "verified_sha256": "eaf1be0b7279a58456fb734276c02828200156851a60654d9d1dc92f387f07b5",
+  "github_attachment": "pending_maintainer"
+}
