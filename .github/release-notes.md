@@ -16,6 +16,9 @@ modal problems with its own solver. AI agents can drive it over MCP (`fieldcraft
   command-line tool).
 - **Windows 10+** (x64): unzip `fieldcraft-{version}-windows-x64.zip` and run `fieldcraft.exe`
   (`fieldcraft-cli.exe` is the command-line tool).
+  If the status bar shows **Dx12**, see the
+  [optional manual DXC setup](https://github.com/tangency-labs/fieldcraft/blob/main/docs/windows-dxc.md)
+  for faster shader compilation. Vulkan users need no setup; the zip does not include DXC.
 - `SHA256SUMS.txt`: `sha256sum -c SHA256SUMS.txt --ignore-missing` (macOS:
   `shasum -a 256 -c SHA256SUMS.txt --ignore-missing`).
 

@@ -1,5 +1,9 @@
 # GPU lattice Boltzmann: streaming layout and performance
 
+On Windows, the status bar identifies the graphics backend. Vulkan needs no compiler setup;
+DX12 users can optionally [install Microsoft's DXC manually](windows-dxc.md) to reduce shader
+compilation overhead. FieldCraft's Windows zip does not include the DLL.
+
 The momentum populations stream in one of two layouts, chosen per flow with
 `fieldcraft_lbm_gpu::Options::streaming`:
 
