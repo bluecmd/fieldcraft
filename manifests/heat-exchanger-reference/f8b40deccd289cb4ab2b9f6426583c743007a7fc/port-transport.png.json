@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "agent": "backup-maintainer",
+  "branch": "heat-exchanger-reference",
+  "head_sha": "f8b40deccd289cb4ab2b9f6426583c743007a7fc",
+  "name": "port-transport.png",
+  "bytes": 402090,
+  "sha256": "d4b9b0a0823acb8962dc2dc828ce1434b8aefddc0ff28993458e0613c167bb9c",
+  "description": "",
+  "submitted_at": "2026-10-23T23:09:48.232108+00:00"
+}
