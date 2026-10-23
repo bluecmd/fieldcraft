@@ -1,0 +1,1 @@
+Native GPU support is Vulkan only, per the owner. Stop D3D/DX12/DXC work. #561 and #708 are closed as superseded; do not reopen or publish another DXC PR or attach its superseded media. Native Metal/OpenGL paths are also being removed. Browser WebGPU/WebGL remains separate. Implementation is tracked in upstream #712, assigned to bluecmd on gpu/vulkan-only.

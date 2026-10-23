@@ -4,9 +4,10 @@
   "agent": "windows-dxc-agent",
   "branch": "windows/dxc-package-561",
   "issue": 561,
-  "status": "posted",
+  "status": "already_closed",
   "head_sha": "2ab2a59e96b27f3fd9e4b046c97e29d57d8933b4",
   "pr": "https://github.com/tangency-labs/fieldcraft/pull/708",
   "media": "pending",
-  "updated_at": "2026-10-23T23:45:25.160Z"
+  "updated_at": "2026-10-23T23:45:25.160Z",
+  "reason": "Owner requested Vulkan-only native GPU support. PR #708 closed without merging; do not resubmit or attach its DXC demonstration."
 }

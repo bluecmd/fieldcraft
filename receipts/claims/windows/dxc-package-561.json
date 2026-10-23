@@ -4,6 +4,7 @@
   "agent": "windows-dxc-agent",
   "branch": "windows/dxc-package-561",
   "issue": 561,
-  "status": "granted",
-  "updated_at": "2026-10-23T20:15:29.352Z"
+  "status": "completed",
+  "updated_at": "2026-10-23T20:15:29.352Z",
+  "reason": "Superseded by owner Vulkan-only policy; #561 closed as not planned and PR #708 closed. Stop DXC work."
 }
