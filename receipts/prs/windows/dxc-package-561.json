@@ -1,0 +1,12 @@
+{
+  "request_id": "pr-561-windows-dxc-agent-20261023",
+  "request_blob": "b084cbcda4b2657976c3840aa5b29403c01ce955",
+  "agent": "windows-dxc-agent",
+  "branch": "windows/dxc-package-561",
+  "issue": 561,
+  "status": "posted",
+  "head_sha": "3145551f7a63c966cdb36bd7e846691061329f1a",
+  "pr": "https://github.com/tangency-labs/fieldcraft/pull/708",
+  "media": "pending",
+  "updated_at": "2026-10-23T20:45:14.541Z"
+}
