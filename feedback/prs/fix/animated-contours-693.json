@@ -7,60 +7,160 @@
   "draft": false,
   "title": "Results: animate proportional contour colours and explain missing increment fields",
   "body": "## What and why\n\nRefs #693 and #205. Linear static animations now change stress and displacement colours with the displayed proportional load, using one fixed full-load colour scale rather than rescaling each frame. Signed modal components reverse with the mode; magnitudes stay nonnegative. Absolute temperatures remain unchanged. Contours also animate with Deformed unticked, and stopping playback restores solved values. The legend and its Auto controls show the same fixed bounds while Max/Min track the current displayed values.\n\nThe legend explicitly calls linear/modal playback display interpolation: it does not create additional solved increments or a physical transient. Node probes retain actual solve data, labelled Solved final state or Unscaled mode shape; supplemental interpolated contour values are prefixed Displayed.\n\nNonlinear implicit increments currently save displacement/reaction only. Earlier stress/contact fields now return an explicit contour_unavailable reason and a visible warning rather than showing final stress on an earlier shape. Complete final-state contours remain available; a truncated history's last saved frame is not mistaken for the final solve. Recording nonlinear stress/contact history remains #205, so these issue references intentionally stay open. Explicit/fluid frame fields are not proportionally scaled.\n\n## Demonstration\n\nA real native-app recording is ready for the fork-only artifact-queue Git LFS handoff: animated-contours-693.mp4, 29.5 seconds, 1440 x 948, H.264 at 12 fps, 857495 bytes. The maintainer retrieves verified LFS bytes and handles GitHub PR attachments; agents require no GitHub sign-in, token or UI upload. Media status is pending; no transfer receipt or attachment has been claimed. The video shows the load cycle, colours on an undeformed mesh, signed mode playback, labelled solved-state probes and the missing nonlinear history explanation. The original analytic cantilever has 315 nodes and 160 hex8 elements; all solves use the CPU with 3 threads. This is presentation QA, not a physical transient or a solver validation study.\n\nA retained quarter-load native still shows a displayed maximum of 37.74 MPa, fixed legend/Auto bounds of 0 to 151.0 MPa, and a separately labelled final-state probe of 151.0 MPa. Recipe, source pin, numerical observations, recording hash and provenance are in docs/results-animation.md and tools/demo-video/animated-contours-693-report.json. Videos, stills and solved binary projects are outside git, absent from every unmerged commit.\n\nThe shared artifact batch is locally staged as c49122a (three recordings and six QA stills, including this recording and two stills). Its attempted LFS uploads returned HTTP 502 before any of nine objects transferred; the artifact-queue remote did not advance from 8536cb1 and no received receipt exists. Originals are preserved. The documented public-fork root LFS bootstrap remains a maintainer prerequisite; a pointer commit or failed upload is not a successful transfer. The maintainer should complete that bootstrap, verify actual bytes and publish received receipts before handling GitHub attachments. No further upload is being retried without an external-state change.\n\n## Validation\n\nWindows; AMD Ryzen 9 7950X; NVIDIA RTX 4090 Vulkan viewport. No GPU solver changes or GPU compute benchmark.\n\n- cargo test -p fieldcraft-engine -p fieldcraft-ui-egui with the three known Windows exclusions below: engine 368 passed, 15 heavy tests ignored; UI 189 passed plus 3 doctests. After the final Auto-widget correction, the complete UI suite and doctests passed again.\n- Regressions cover zero/half/full static colour values, fixed bands and actual rendered colours, cached solved values, undeformed playback, signed modal components/nonnegative magnitudes, unchanged absolute temperatures, exact saved explicit stress, unavailable nonlinear increment fields, capped-history refusal and full-state probe labels.\n- cargo check -p fieldcraft-engine -p fieldcraft-ui-egui: passed.\n- cargo clippy -p fieldcraft-engine -p fieldcraft-ui-egui --all-targets -- -D warnings: passed.\n- cargo fmt --all -- --check and git diff --check: passed.\n- docs/features.md regenerated with the built CLI; unchanged.\n- Native app/CLI built and real presented-window recording visually reviewed. Source commit 6e1747d8ef0445ee1638d0ce8223f2cd40a1fb6e; the final commit adds only the reproduction/QA report. Feature head rebased on current develop 7d9c027d71b2c1ea3395e2552e95f0455a7244db.\n\n## Relayed CI failure and maintainer follow-up\n\nThe maintainer's git-only feedback for exact head 2df672d5120891ee7c112c57cc6be6ce15eb320b reports engine 371 passed, UI 189 passed, wasm check passed, and successful heavy/oracle jobs. The main ci job remains failed at the existing MCP tests::screenshot_takes_a_camera_orientation assertion (crates/mcp/src/tests.rs:229, PNG bytes differ). Relayed job log: feedback/logs/fix/animated-contours-693/2df672d5120891ee7c112c57cc6be6ce15eb320b/40025402728-120660488949.txt. This failure is not excluded or treated as green.\n\nA bounded strict-hardware diagnostic reproduces a pre-existing shared-capture concurrency defect on both the unchanged feature head and the exact mirrored upstream baseline 7d9c027d71b2c1ea3395e2552e95f0455a7244db. Two independent in-process MCP servers draw unsolved cantilevers concurrently, 300 pictures per camera, compared byte-for-byte with isolated reference pictures; camera JSON is checked independently. One camera uses the failing test's yaw 30, pitch 1e9 and distance 1e300; the second uses yaw -45, pitch 35 and distance 180. FIELDCRAFT_GPU=hardware and FIELDCRAFT_REQUIRE_GPU=1 select the RTX 4090 Vulkan device with MSAA 4, so no CPU fallback is accepted.\n\n- Exact head: 13 and 24 PNG mismatches out of 300 pictures each; zero reported-camera changes.\n- Exact baseline, rebuilt with the same normal app/CLI feature set: 12 and 20 PNG mismatches out of 300 each; zero reported-camera changes.\n- Baseline control, serialising only the diagnostic picture calls: zero mismatches in 600 pictures, with unchanged reported cameras.\n\nThe unchanged shared Capturer owns one Pipelines camera uniform, written before queue.submit; overlapping calls can overwrite that uniform. The observations are consistent with this pre-existing interleaving, not a contour-animation path (the diagnostic sample is unsolved). The bounded Rust recipe, JSON results and source pins are preserved locally for a separate handoff. This is diagnostic evidence, not a claim that the full MCP test suite passed. A fresh MCP dev/testkit-feature build was cancelled in favour of this bounded diagnostic; no test assertion was weakened and no production renderer was patched.\n\nMaintainer request: rerun the failed ci job on exact unchanged head 2df672d5120891ee7c112c57cc6be6ce15eb320b and relay the result through this queue. Separately track/claim the shared-renderer concurrency defect with its own concurrent regression and production fix; do not silently fold an unclaimed global renderer change into #693. The current PR is not CI-green until that rerun succeeds or the maintainer reconciles the baseline failure explicitly.\n\n## Known limitations\n\nThe existing Windows tests excluded explicitly were bug_report::tests::a_long_session_and_the_model_are_attachments (escaped home path, #554), cmd::file::tests::every_migrated_journal_replays_to_its_migrated_model (imperial density last bit), and cmd::render::tests::labels_and_command_lines_read_well (Windows path separator). No new failure was excluded.\n\nNonlinear stress/contact history remains unavailable (#205); probes remain actual solved final-state data. Proportional interpolation assumes one scaled linear loading path, not independent load histories or nonlinear response. Heavy/ignored tests, the full workspace gate and wasm were not run locally, per repository workflow. The oracle was not run locally because solver numerics did not change; the relayed CI heavy/oracle jobs passed. The MCP concurrency failure and artifact transfer/attachment remain unresolved as described above.\n",
-  "updated_at": "2026-10-23T22:00:15Z",
+  "updated_at": "2026-10-23T23:14:56Z",
   "url": "https://github.com/tangency-labs/fieldcraft/pull/710",
   "comments": [],
-  "reviews": [],
-  "inline_comments": [],
+  "reviews": [
+    {
+      "author": "jyviko",
+      "body": "Love this one, @bluecmd: contours that breathe with the load make the animation actually mean something! 🎉 The physics checks out: only linear static (0.5(1−cos), always in [0, 1]) and modal (sin, with |·| for magnitudes) steps are scaled; nonlinear, explicit and fluid steps play their recorded frames; temperatures and heat flux stay as solved; and the legend keeps one fixed full-load scale. The engine side is right too: stress at a nonlinear frame is refused unless it's the complete final frame, and the check on converged count and final displacement means a capped history doesn't pass. ui-egui (189) and engine results tests pass, clippy and fmt clean.\n\nThe red `xtask ci` isn't yours: `mcp tests::screenshot_takes_a_camera_orientation` is flaky on develop too (fieldcraft-mcp doesn't depend on ui-egui). I've re-run the job and we'll fix that test separately.\n\nNotes:\n- On a nonlinear step with a stress contour, the contour now shows only on the last frame, with a warning. I think that's right: develop drew the final stress on every intermediate shape, which was wrong.\n- Small one: `frame()` now plays whenever a contour is set, so a heat step with Animate on rebuilds the plot every frame with nothing changing. Could it skip steps where nothing animates?\n- Housekeeping: ROADMAP.md (inline), and `docs/results-animation.md` plus `tools/demo-video/animated-contours-693{,-report}.json` look like one run's QA evidence. Could they live in the PR description instead?",
+      "url": "https://github.com/tangency-labs/fieldcraft/pull/710#pullrequestreview-5635418156",
+      "state": "COMMENTED",
+      "submitted_at": "2026-10-23T23:14:56Z",
+      "commit_id": "2df672d5120891ee7c112c57cc6be6ce15eb320b"
+    }
+  ],
+  "inline_comments": [
+    {
+      "author": "jyviko",
+      "body": "Could we leave ROADMAP.md out? I keep the roadmap myself.",
+      "created_at": "2026-10-23T23:14:56Z",
+      "updated_at": "2026-10-23T23:14:56Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/pull/710#discussion_r4364996285",
+      "path": "ROADMAP.md",
+      "line": 96,
+      "original_line": 96,
+      "side": "RIGHT",
+      "commit_id": "2df672d5120891ee7c112c57cc6be6ce15eb320b"
+    }
+  ],
   "checks": [
     {
-      "id": 120660488978,
+      "id": 120703882754,
+      "name": "Plan (affected crates)",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-23T21:15:26Z",
+      "completed_at": "2026-10-23T21:15:57Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40025402728/job/120703882754",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120703882754/annotations"
+      }
+    },
+    {
+      "id": 120703856864,
+      "name": "Windows app tests",
+      "status": "completed",
+      "conclusion": "skipped",
+      "started_at": "2026-10-23T23:14:38Z",
+      "completed_at": "2026-10-23T21:15:18Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40025402728/job/120703856864",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120703856864/annotations"
+      }
+    },
+    {
+      "id": 120703856863,
       "name": "cargo xtask test --heavy",
       "status": "completed",
       "conclusion": "success",
       "started_at": "2026-10-23T21:16:07Z",
       "completed_at": "2026-10-23T21:37:39Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40025402728/job/120660488978",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40025402728/job/120703856863",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120660488978/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120703856863/annotations"
       }
     },
     {
-      "id": 120660488949,
-      "name": "cargo xtask ci",
+      "id": 120703856805,
+      "name": "cargo xtask oracle (macOS)",
       "status": "completed",
-      "conclusion": "failure",
-      "started_at": "2026-10-23T21:16:07Z",
-      "completed_at": "2026-10-23T21:21:45Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40025402728/job/120660488949",
+      "conclusion": "skipped",
+      "started_at": "2026-10-23T23:14:38Z",
+      "completed_at": "2026-10-23T21:15:18Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40025402728/job/120703856805",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
-        "annotations_count": 1,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120660488949/annotations"
-      },
-      "log_truncated": false,
-      "log": "feedback/logs/fix/animated-contours-693/2df672d5120891ee7c112c57cc6be6ce15eb320b/40025402728-120660488949.txt"
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120703856805/annotations"
+      }
     },
     {
-      "id": 120660488841,
+      "id": 120703856632,
+      "name": "Claim and triage bot tests",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-23T21:15:27Z",
+      "completed_at": "2026-10-23T21:15:35Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40025402728/job/120703856632",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120703856632/annotations"
+      }
+    },
+    {
+      "id": 120703856594,
       "name": "cargo xtask oracle",
       "status": "completed",
       "conclusion": "success",
       "started_at": "2026-10-23T21:16:07Z",
       "completed_at": "2026-10-23T21:20:05Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40025402728/job/120660488841",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40025402728/job/120703856594",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120660488841/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120703856594/annotations"
+      }
+    },
+    {
+      "id": 120703855971,
+      "name": "Dependency licences, advisories and sources",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-23T21:15:27Z",
+      "completed_at": "2026-10-23T21:18:04Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40025402728/job/120703855971",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120703855971/annotations"
+      }
+    },
+    {
+      "id": 120703855063,
+      "name": "cargo xtask ci",
+      "status": "in_progress",
+      "conclusion": null,
+      "started_at": "2026-10-23T23:14:46Z",
+      "completed_at": null,
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40025402728/job/120703855063",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120703855063/annotations"
       }
     },
     {
@@ -93,86 +193,6 @@
         "text": null,
         "annotations_count": 0,
         "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120660214492/annotations"
-      }
-    },
-    {
-      "id": 120660213605,
-      "name": "cargo xtask oracle (macOS)",
-      "status": "completed",
-      "conclusion": "skipped",
-      "started_at": "2026-10-23T21:15:18Z",
-      "completed_at": "2026-10-23T21:15:18Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40025402728/job/120660213605",
-      "output": {
-        "title": null,
-        "summary": null,
-        "text": null,
-        "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120660213605/annotations"
-      }
-    },
-    {
-      "id": 120660212955,
-      "name": "Windows app tests",
-      "status": "completed",
-      "conclusion": "skipped",
-      "started_at": "2026-10-23T21:15:18Z",
-      "completed_at": "2026-10-23T21:15:18Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40025402728/job/120660212955",
-      "output": {
-        "title": null,
-        "summary": null,
-        "text": null,
-        "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120660212955/annotations"
-      }
-    },
-    {
-      "id": 120660211586,
-      "name": "Claim and triage bot tests",
-      "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-10-23T21:15:27Z",
-      "completed_at": "2026-10-23T21:15:35Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40025402728/job/120660211586",
-      "output": {
-        "title": null,
-        "summary": null,
-        "text": null,
-        "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120660211586/annotations"
-      }
-    },
-    {
-      "id": 120660211529,
-      "name": "Dependency licences, advisories and sources",
-      "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-10-23T21:15:27Z",
-      "completed_at": "2026-10-23T21:18:04Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40025402728/job/120660211529",
-      "output": {
-        "title": null,
-        "summary": null,
-        "text": null,
-        "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120660211529/annotations"
-      }
-    },
-    {
-      "id": 120660211207,
-      "name": "Plan (affected crates)",
-      "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-10-23T21:15:26Z",
-      "completed_at": "2026-10-23T21:15:57Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40025402728/job/120660211207",
-      "output": {
-        "title": null,
-        "summary": null,
-        "text": null,
-        "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120660211207/annotations"
       }
     }
   ]
