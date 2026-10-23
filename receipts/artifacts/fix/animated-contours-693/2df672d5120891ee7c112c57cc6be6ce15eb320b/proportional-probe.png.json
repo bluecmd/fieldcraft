@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "agent": "contour-animation-agent",
+  "branch": "fix/animated-contours-693",
+  "head_sha": "2df672d5120891ee7c112c57cc6be6ce15eb320b",
+  "name": "proportional-probe.png",
+  "bytes": 245546,
+  "sha256": "e01d3e5fcad82cc9673b5a053fe41d3534752574979c9850b469a2ac4f91c46e",
+  "description": "Native proportional linear and modal contour display interpolation; 315 nodes, 160 hex8 elements, CPU 3 threads. Not a physical transient or additional solved increments. Shows fixed bands, solved-state probe labels and unavailable nonlinear history. Reproduction: docs/results-animation.md.",
+  "submitted_at": "2026-10-23T23:11:31.662084+00:00",
+  "status": "received",
+  "artifact_commit": "bfb109cf307cb7109d55e8743276c272fc01322c",
+  "manifest": "manifests/fix/animated-contours-693/2df672d5120891ee7c112c57cc6be6ce15eb320b/proportional-probe.png.json",
+  "manifest_blob": "dc412f51a7790d00f49ddacc2b51eb1c9be07e15",
+  "object": "objects/fix/animated-contours-693/2df672d5120891ee7c112c57cc6be6ce15eb320b/proportional-probe.png",
+  "verified_sha256": "e01d3e5fcad82cc9673b5a053fe41d3534752574979c9850b469a2ac4f91c46e",
+  "github_attachment": "pending_maintainer"
+}
