@@ -1,0 +1,32 @@
+{
+  "number": 561,
+  "title": "Windows: ship dxcompiler.dll so DX12 compiles shaders with DXC (2× GPU solver throughput, pipelines in 0.5 s instead of 8.5 s)",
+  "body": "### Current behaviour\n\nOn DX12, wgpu compiles every WGSL shader through HLSL with **FXC**, the legacy compiler, because no DXC is present. wgpu 30's default compiler setting (`Dx12Compiler::Auto`, wgpu-hal `dx12/instance.rs`) already prefers a dynamic `dxcompiler.dll` found on the DLL search path and falls back to FXC only when it is missing, and the Windows zip ships none. Measured on an RTX 4090 (Windows 11, NVIDIA 616.56), develop at 99b0b0c, quiet machine, three runs per variant interleaved:\n\n| | Vulkan | DX12 with FXC (today) | DX12 with DXC |\n|---|---|---|---|\n| GPU solver, periodic 128³ (M cell updates/s) | 2623 | 1296 | 2621 |\n| GPU solver, sphere 128³ | 2509 | 1057 | 2471 |\n| creating the solver's pipelines | — | ~8.5 s (`group_forces` alone ~7 s) | ~0.47 s |\n\nSo DX12 is half of Vulkan only because of the compiler, and every first GPU solve on DX12 starts with 8 s of shader compilation. (Vulkan is enumerated first, so most Windows users with an NVIDIA driver are on Vulkan already; DX12 is what they get when Vulkan is missing or broken, and what `WGPU_BACKEND=dx12` asks for.)\n\n### What you need and why\n\nThe DX12 path to be as fast as Vulkan, and no multi-second pause the first time a GPU solve runs on DX12.\n\n### Expected behaviour\n\n`packaging/windows/package.ps1` puts the official `dxcompiler.dll` (x64) from a pinned DirectXShaderCompiler release next to `fieldcraft.exe` and `fieldcraft-cli.exe`, verified by checksum; nothing else changes. Measured with that layout and **no** environment settings: wgpu loads the adjacent DLL by itself; the five GPU flow and three thermal verification tests pass unchanged; pipeline creation is 0.46–0.52 s. **`dxil.dll` is not needed** (the same results without it; the driver accepts the shaders unsigned on this platform, which is worth confirming on an older Windows 10 build). The desktop app finds the DLL too; its startup time does not change measurably (the viewport's shaders are small).\n\nDetails to decide:\n- **Licence**: the DirectXShaderCompiler release ships `dxcompiler.dll` under the University of Illinois/NCSA licence (LLVM) with MIT-licensed parts; both texts would join THIRD-PARTY-LICENSES.txt. The proprietary-licensed `dxil.dll` stays out.\n- **Size**: 22.3 MB uncompressed (v1.9.2609 measured), roughly doubling the zip.\n- **Updates**: the in-app updater unpacks the whole zip, so the DLL would update with the program; worth a check in `crates/update` that an extra file in the install folder is carried over.\n- The alternative, wgpu's `static-dxc` feature, links DXC into the executables instead (no DLL, a larger build with a C++ dependency).\n\n### References\n\n- wgpu `Dx12Compiler` documentation and wgpu-hal's DX12 instance (the `Auto` order: static DXC, then dynamic `dxcompiler.dll`, then FXC).\n- https://github.com/microsoft/DirectXShaderCompiler/releases (the licence files ship in each release archive).\n\nThe measurements, scripts and logs are from our Windows run; happy to open the packaging PR if you want this.",
+  "state": "open",
+  "updated_at": "2026-10-23T20:15:28Z",
+  "assignees": [
+    "bluecmd"
+  ],
+  "labels": [
+    "enhancement",
+    "claimed",
+    "area:infra"
+  ],
+  "url": "https://github.com/tangency-labs/fieldcraft/issues/561",
+  "comments": [
+    {
+      "author": "jyviko",
+      "body": "Thank you @bluecmd, 2× throughput and 0.5 s instead of 8.5 s is a big win. Since it means shipping a third-party binary, we'll need to check its licence and add it to ATTRIBUTION before packaging; I'll come back to you on that.",
+      "created_at": "2026-10-17T13:13:34Z",
+      "updated_at": "2026-10-17T13:13:34Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/issues/561#issuecomment-6234301061"
+    },
+    {
+      "author": "bluecmd",
+      "body": "<!-- fieldcraft-pr-queue:claim:claim-561-windows-dxc-agent-20261023 -->\nClaimed for agent `windows-dxc-agent` on `bluecmd/fieldcraft:windows/dxc-package-561` through the [PR queue](https://github.com/bluecmd/fieldcraft/tree/pr-queue). GitHub assignee: @bluecmd. The agent may start once its queue receipt says `granted`. This is a reservation, not a claim of completion.",
+      "created_at": "2026-10-23T20:15:28Z",
+      "updated_at": "2026-10-23T20:15:28Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/issues/561#issuecomment-6373858259"
+    }
+  ]
+}
