@@ -57,6 +57,7 @@
 
 pub mod backend;
 pub mod conduction;
+pub mod coupled;
 pub mod flow;
 pub mod lattice;
 pub mod memory;

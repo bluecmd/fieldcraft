@@ -250,6 +250,10 @@ pub struct ThermalState {
     heat: Vec<f64>,
     /// The obstacles that conduct heat; `None` without any.
     solid: Option<SolidHeat>,
+    /// Display/probe cell lists when a coupled orchestrator owns the wall state.
+    shared_cells: Vec<Vec<u32>>,
+    /// Net scalar energy inserted by the open boundary resets in the last step.
+    open_energy: f64,
     /// Per group: whether it is a face of a conducting obstacle, whose links the interface
     /// handles (empty without conducting obstacles).
     conjugate: Vec<bool>,
@@ -722,6 +726,8 @@ impl Flow {
                     reset,
                     heat: vec![0.0; groups.len()],
                     solid,
+                    shared_cells: Vec::new(),
+                    open_energy: 0.0,
                     conjugate,
                     solid_finite: true,
                 };
@@ -1064,6 +1070,12 @@ impl Flow {
     /// One time step. Fails with [`Error::Unstable`] when a density stops being a positive
     /// number or a lattice speed exceeds [`MAX_LATTICE_SPEED`].
     pub fn step(&mut self) -> Result<()> {
+        self.begin_step(false)?;
+        self.finish_step()
+    }
+
+    /// Advance to the CHT interface; a coupled solve resolves its one wall before finishing.
+    pub(crate) fn begin_step(&mut self, shared: bool) -> Result<()> {
         self.targets()?;
         self.refresh_buoyancy();
         self.refresh_fans();
@@ -1080,7 +1092,13 @@ impl Flow {
         std::mem::swap(&mut self.f, &mut self.g);
         if self.thermal.is_some() {
             self.collide_thermal();
-            self.stream_thermal();
+            self.stream_thermal(!shared);
+        }
+        Ok(())
+    }
+
+    pub(crate) fn finish_step(&mut self) -> Result<()> {
+        if self.thermal.is_some() {
             self.open_boundaries_thermal();
             if let Some(t) = &mut self.thermal {
                 std::mem::swap(&mut t.g, &mut t.g2);
@@ -1169,7 +1187,7 @@ impl Flow {
 
     /// Pull streaming of the scalar lattice into `g2` with the wall rules of the links (the
     /// first seven directions), then the heat received per group.
-    fn stream_thermal(&mut self) {
+    fn stream_thermal(&mut self, conduct: bool) {
         let block = self.block;
         let n = self.n;
         let s = self.stride;
@@ -1225,7 +1243,9 @@ impl Flow {
         // The heat a link takes, `out − back` with `back = −out + 2 w T_i`, is affine in the
         // solid's temperature: `a − b T_s`. The solid steps with it implicit, then each link
         // takes its heat at the solid's mean temperature over the step.
-        if let Some(sh) = &mut t.solid {
+        if let Some(sh) = &mut t.solid
+            && conduct
+        {
             let link = |i: &Interface| {
                 let (cell, q) = (i.cell as usize, i.q as usize);
                 let w2 = 2.0 * WT.get(q).copied().unwrap_or(0.0);
@@ -1261,8 +1281,10 @@ impl Flow {
         let s = self.stride;
         let (open, offset, cell_u) = (&self.open, &self.offset, &self.cell_u);
         let Some(t) = &mut self.thermal else { return };
+        t.open_energy = 0.0;
         for (oc, held) in open.iter().zip(&t.open) {
             let cell = oc.cell as usize;
+            let before: f64 = (0..QT).filter_map(|q| t.g2.get(q * s + cell)).sum();
             match held {
                 Some(value) => {
                     let u = cell_u.get(cell).copied().unwrap_or([0.0; 3]);
@@ -1286,7 +1308,64 @@ impl Flow {
                     }
                 }
             }
+            let after: f64 = (0..QT).filter_map(|q| t.g2.get(q * s + cell)).sum();
+            t.open_energy += after - before;
         }
+    }
+
+    pub(crate) fn take_wall(&mut self) -> Result<SolidHeat> {
+        let thermal = self.thermal.as_mut().ok_or_else(|| Error::Invalid("coupled flow needs heat".into()))?;
+        let mut wall = thermal.solid.take().ok_or_else(|| Error::Invalid("coupled flow needs a conducting wall".into()))?;
+        thermal.shared_cells = std::mem::take(&mut wall.by_solid);
+        Ok(wall)
+    }
+
+    /// A link's outgoing population and affine heat a-bT, in this circuit's own lattice units.
+    pub(crate) fn shared_link(&self, link: &Interface) -> Result<[f64; 3]> {
+        let thermal = self.thermal.as_ref().ok_or_else(|| Error::Invalid("missing coupled temperature lattice".into()))?;
+        let cell = link.cell as usize;
+        let q = link.q as usize;
+        let out = thermal.g.get(opposite(q) * self.stride + cell).copied().ok_or_else(|| Error::Invalid("missing coupled link population".into()))?;
+        let tf = thermal.temperature.get(cell).copied().ok_or_else(|| Error::Invalid("missing coupled link temperature".into()))?;
+        let weight = 2.0 * WT.get(q).copied().ok_or_else(|| Error::Invalid("invalid coupled link direction".into()))?;
+        Ok([out, 2.0 * out - weight * (1.0 - link.weight) * tf, weight * link.weight])
+    }
+
+    pub(crate) fn apply_shared_link(&mut self, link: &Interface, out: f64, heat: f64) -> Result<()> {
+        let thermal = self.thermal.as_mut().ok_or_else(|| Error::Invalid("missing coupled temperature lattice".into()))?;
+        let incoming = thermal
+            .g2
+            .get_mut(link.q as usize * self.stride + link.cell as usize)
+            .ok_or_else(|| Error::Invalid("missing coupled incoming population".into()))?;
+        *incoming = out - heat;
+        let group = thermal.heat.get_mut(link.group as usize).ok_or_else(|| Error::Invalid("missing coupled heat group".into()))?;
+        *group += heat;
+        Ok(())
+    }
+
+    pub(crate) fn set_shared_temperature(&mut self, cells: &[u32], temperature: &[f64], shift: f64) -> Result<()> {
+        let thermal = self.thermal.as_mut().ok_or_else(|| Error::Invalid("missing coupled temperature lattice".into()))?;
+        if cells.len() != temperature.len() {
+            return Err(Error::Invalid("coupled wall temperature length mismatch".into()));
+        }
+        for (cell, value) in cells.iter().zip(temperature) {
+            if !(value + shift).is_finite() {
+                return Err(Error::Unstable("shared wall temperature is not finite".into()));
+            }
+            let slot = thermal.temperature.get_mut(*cell as usize).ok_or_else(|| Error::Invalid("coupled wall cell outside grid".into()))?;
+            *slot = value + shift;
+        }
+        Ok(())
+    }
+
+    pub(crate) fn scalar_content(&self) -> f64 {
+        self.thermal.as_ref().map_or(0.0, |t| {
+            (0..self.n).filter(|cell| self.is_fluid(*cell)).map(|cell| (0..QT).filter_map(|q| t.g.get(q * self.stride + cell)).sum::<f64>()).sum()
+        })
+    }
+
+    pub(crate) fn open_energy(&self) -> f64 {
+        self.thermal.as_ref().map_or(0.0, |t| t.open_energy)
     }
 
     /// The solids' temperatures (stepped with the scalar lattice's streaming, through their
@@ -1737,6 +1816,6 @@ impl crate::backend::Backend for Flow {
     }
 
     fn conducting(&self) -> &[Vec<u32>] {
-        self.thermal.as_ref().and_then(|t| t.solid.as_ref()).map_or(&[], |s| &s.by_solid)
+        self.thermal.as_ref().map_or(&[], |t| t.solid.as_ref().map_or(t.shared_cells.as_slice(), |s| &s.by_solid))
     }
 }
