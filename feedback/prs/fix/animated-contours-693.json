@@ -1,13 +1,13 @@
 {
   "number": 710,
   "branch": "fix/animated-contours-693",
-  "head_sha": "2df672d5120891ee7c112c57cc6be6ce15eb320b",
+  "head_sha": "f79299f7791e69e6f01cd4094acc00749bbcb48f",
   "state": "open",
   "merged": false,
   "draft": false,
   "title": "Results: animate proportional contour colours and explain missing increment fields",
-  "body": "## What and why\n\nRefs #693 and #205. Linear static animations now change stress and displacement colours with the displayed proportional load, using one fixed full-load colour scale rather than rescaling each frame. Signed modal components reverse with the mode; magnitudes stay nonnegative. Absolute temperatures remain unchanged. Contours also animate with Deformed unticked, and stopping playback restores solved values. The legend and its Auto controls show the same fixed bounds while Max/Min track the current displayed values.\n\nThe legend explicitly calls linear/modal playback display interpolation: it does not create additional solved increments or a physical transient. Node probes retain actual solve data, labelled Solved final state or Unscaled mode shape; supplemental interpolated contour values are prefixed Displayed.\n\nNonlinear implicit increments currently save displacement/reaction only. Earlier stress/contact fields now return an explicit contour_unavailable reason and a visible warning rather than showing final stress on an earlier shape. Complete final-state contours remain available; a truncated history's last saved frame is not mistaken for the final solve. Recording nonlinear stress/contact history remains #205, so these issue references intentionally stay open. Explicit/fluid frame fields are not proportionally scaled.\n\n## Demonstration\n\nA real native-app recording has been pushed through the fork-only artifact-queue ordinary Git handoff: animated-contours-693.mp4, 29.5 seconds, 1440 x 948, H.264 at 12 fps, 857495 bytes. The maintainer retrieves verified Git blobs and handles GitHub PR attachments; agents require no GitHub sign-in, token or UI upload. Media status remains pending until real GitHub attachment URLs exist. The video shows the load cycle, colours on an undeformed mesh, signed mode playback, labelled solved-state probes and the missing nonlinear history explanation. The original analytic cantilever has 315 nodes and 160 hex8 elements; all solves use the CPU with 3 threads. This is presentation QA, not a physical transient or a solver validation study.\n\nA retained quarter-load native still shows a displayed maximum of 37.74 MPa, fixed legend/Auto bounds of 0 to 151.0 MPa, and a separately labelled final-state probe of 151.0 MPa. Recipe, source pin, numerical observations, recording hash and provenance are in docs/results-animation.md and tools/demo-video/animated-contours-693-report.json. The recording and QA stills are confined to the separate artifact inbox; the solved binary project remains outside git. All are absent from every unmerged feature commit.\n\nThe shared ordinary Git artifact batch was pushed successfully as bfb109cf307cb7109d55e8743276c272fc01322c (three recordings and six QA stills). The remote SHA was verified, and the staging helper verified actual byte hashes and sizes for all nine files. This PR's manifests cover animated-contours-693.mp4, proportional-probe.png and nonlinear-unavailable.png under fix/animated-contours-693/2df672d5120891ee7c112c57cc6be6ce15eb320b. All three corresponding receipts under receipts/artifacts/ say received with github_attachment=pending_maintainer; their SHA-256 and byte counts match the manifests. Actual bytes are received, while GitHub PR attachments remain pending. The current protocol requires neither LFS nor an upstream bootstrap; the earlier failed LFS attempt is superseded. Originals remain preserved outside feature history.\n\n## Validation\n\nWindows; AMD Ryzen 9 7950X; NVIDIA RTX 4090 Vulkan viewport. No GPU solver changes or GPU compute benchmark.\n\n- cargo test -p fieldcraft-engine -p fieldcraft-ui-egui with the three known Windows exclusions below: engine 368 passed, 15 heavy tests ignored; UI 189 passed plus 3 doctests. After the final Auto-widget correction, the complete UI suite and doctests passed again.\n- Regressions cover zero/half/full static colour values, fixed bands and actual rendered colours, cached solved values, undeformed playback, signed modal components/nonnegative magnitudes, unchanged absolute temperatures, exact saved explicit stress, unavailable nonlinear increment fields, capped-history refusal and full-state probe labels.\n- cargo check -p fieldcraft-engine -p fieldcraft-ui-egui: passed.\n- cargo clippy -p fieldcraft-engine -p fieldcraft-ui-egui --all-targets -- -D warnings: passed.\n- cargo fmt --all -- --check and git diff --check: passed.\n- docs/features.md regenerated with the built CLI; unchanged.\n- Native app/CLI built and real presented-window recording visually reviewed. Source commit 6e1747d8ef0445ee1638d0ce8223f2cd40a1fb6e; the final commit adds only the reproduction/QA report. Feature head rebased on current develop 7d9c027d71b2c1ea3395e2552e95f0455a7244db.\n\n## Relayed CI failure and maintainer follow-up\n\nThe maintainer's git-only feedback for exact head 2df672d5120891ee7c112c57cc6be6ce15eb320b reports engine 371 passed, UI 189 passed, wasm check passed, and successful heavy/oracle jobs. The main ci job remains failed at the existing MCP tests::screenshot_takes_a_camera_orientation assertion (crates/mcp/src/tests.rs:229, PNG bytes differ). Relayed job log: feedback/logs/fix/animated-contours-693/2df672d5120891ee7c112c57cc6be6ce15eb320b/40025402728-120660488949.txt. This failure is not excluded or treated as green.\n\nA bounded strict-hardware diagnostic reproduces a pre-existing shared-capture concurrency defect on both the unchanged feature head and the exact mirrored upstream baseline 7d9c027d71b2c1ea3395e2552e95f0455a7244db. Two independent in-process MCP servers draw unsolved cantilevers concurrently, 300 pictures per camera, compared byte-for-byte with isolated reference pictures; camera JSON is checked independently. One camera uses the failing test's yaw 30, pitch 1e9 and distance 1e300; the second uses yaw -45, pitch 35 and distance 180. FIELDCRAFT_GPU=hardware and FIELDCRAFT_REQUIRE_GPU=1 select the RTX 4090 Vulkan device with MSAA 4, so no CPU fallback is accepted.\n\n- Exact head: 13 and 24 PNG mismatches out of 300 pictures each; zero reported-camera changes.\n- Exact baseline, rebuilt with the same normal app/CLI feature set: 12 and 20 PNG mismatches out of 300 each; zero reported-camera changes.\n- Baseline control, serialising only the diagnostic picture calls: zero mismatches in 600 pictures, with unchanged reported cameras.\n\nThe unchanged shared Capturer owns one Pipelines camera uniform, written before queue.submit; overlapping calls can overwrite that uniform. The observations are consistent with this pre-existing interleaving, not a contour-animation path (the diagnostic sample is unsolved). The bounded Rust recipe, JSON results and source pins are preserved locally for a separate handoff. This is diagnostic evidence, not a claim that the full MCP test suite passed. A fresh MCP dev/testkit-feature build was cancelled in favour of this bounded diagnostic; no test assertion was weakened and no production renderer was patched.\n\nMaintainer request: rerun the failed ci job on exact unchanged head 2df672d5120891ee7c112c57cc6be6ce15eb320b and relay the result through this queue. Separately track/claim the shared-renderer concurrency defect with its own concurrent regression and production fix; do not silently fold an unclaimed global renderer change into #693. The current PR is not CI-green until that rerun succeeds or the maintainer reconciles the baseline failure explicitly.\n\n## Known limitations\n\nThe existing Windows tests excluded explicitly were bug_report::tests::a_long_session_and_the_model_are_attachments (escaped home path, #554), cmd::file::tests::every_migrated_journal_replays_to_its_migrated_model (imperial density last bit), and cmd::render::tests::labels_and_command_lines_read_well (Windows path separator). No new failure was excluded.\n\nNonlinear stress/contact history remains unavailable (#205); probes remain actual solved final-state data. Proportional interpolation assumes one scaled linear loading path, not independent load histories or nonlinear response. Heavy/ignored tests, the full workspace gate and wasm were not run locally, per repository workflow. The oracle was not run locally because solver numerics did not change; the relayed CI heavy/oracle jobs passed. The MCP concurrency failure and maintainer GitHub attachment upload remain unresolved as described above; artifact retrieval is complete.\n",
-  "updated_at": "2026-10-23T23:30:16Z",
+  "body": "## What and why\n\nRefs #693 and #205. Linear static animations now change stress and displacement colours with the displayed proportional load, using one fixed full-load colour scale rather than rescaling each frame. Signed modal components reverse with the mode; magnitudes stay nonnegative. Absolute temperatures remain unchanged. Contours also animate with Deformed unticked, and stopping playback restores solved values. The legend and its Auto controls show the same fixed bounds while Max/Min track the current displayed values.\n\nThe legend explicitly calls linear/modal playback display interpolation: it does not create additional solved increments or a physical transient. Node probes retain actual solve data, labelled Solved final state or Unscaled mode shape; supplemental interpolated contour values are prefixed Displayed.\n\nNonlinear implicit increments currently save displacement/reaction only. Earlier stress/contact fields now return an explicit contour_unavailable reason and a visible warning rather than showing final stress on an earlier shape. Complete final-state contours remain available; a truncated history's last saved frame is not mistaken for the final solve. Recording nonlinear stress/contact history remains #205, so these issue references intentionally stay open. Explicit/fluid frame fields are not proportionally scaled.\n\nReview follow-up: idle heat-only plots and undeformed invariant thermal contours reuse their cached plot while Animate is on. Static/modal geometry still animates under an invariant contour, and saved nonlinear/explicit/fluid histories keep playing. Standalone heat histories do not gain automatic playback in this change. The maintainer-owned ROADMAP.md is unchanged; run-specific reproduction and QA evidence have moved from source files into this description.\n\n## Demonstration\n\nA real native-app recording has been pushed through the fork-only artifact-queue ordinary Git handoff: animated-contours-693.mp4, 29.5 seconds, 1440 x 948, H.264 at 12 fps, 857495 bytes. The maintainer retrieves verified Git blobs and handles GitHub PR attachments; agents require no GitHub sign-in, token or UI upload. Media status remains pending until real GitHub attachment URLs exist. The video shows the load cycle, colours on an undeformed mesh, signed mode playback, labelled solved-state probes and the missing nonlinear history explanation. The original analytic cantilever has 315 nodes and 160 hex8 elements; all solves use the CPU with 3 threads. This is presentation QA, not a physical transient or a solver validation study.\n\nA retained quarter-load native still shows a displayed maximum of 37.74 MPa, fixed legend/Auto bounds of 0 to 151.0 MPa, and a separately labelled final-state probe of 151.0 MPa. The original capture was made from source commit 6e1747d8ef0445ee1638d0ce8223f2cd40a1fb6e, preserved in prior head 2df672d5120891ee7c112c57cc6be6ce15eb320b; it demonstrates the unchanged static/modal/probe behavior. It is not a recording of the revised head or the idle-heat cache guard, which has separate regressions. The recording and QA stills are confined to the separate artifact inbox; the solved binary project remains outside git. All are absent from every unmerged feature commit.\n\nThe original analytic beam is 100 x 10 x 20 mm, using 315 nodes, 160 hex8 elements, six contour bands and deformation exaggeration 25. Full-load von Mises extrema were 3.9981482484799424 to 150.96411589008667 MPa. The recording SHA-256 is d6fa974768bba6ad995b267759b937f6664e76c14e52ea4f099d16aa5be3516c. Captures are original FieldCraft native-window output and analytic geometry; captions use the repository's SIL OFL 1.1 Inter font. No commercial CAE output or third-party geometry is used. Original notes, recipe and report remain preserved externally with the capture's original source pin.\n\nReproduce the linear/modal display through the same normal session commands:\n\n```json\n[\n  {\"command\": \"file.sample\", \"params\": {\"name\": \"cantilever\"}},\n  {\"command\": \"solve.static\", \"params\": {\"step\": \"Load\", \"threads\": 3}},\n  {\"command\": \"solve.frequency\", \"params\": {\"step\": \"Modes\", \"threads\": 3}},\n  {\"command\": \"results.contour\", \"params\": {\"step\": \"Load\", \"field\": \"von_mises\", \"bands\": 6}},\n  {\"command\": \"results.animate\", \"params\": {\"on\": true}}\n]\n```\n\nKeep the camera still through a load cycle, untick Deformed to see colours continue without mesh motion, then stop playback to restore solved values. Select displacement_z on Modes and animate to see signed normalized mode shapes against one symmetric scale. Intermediate nonlinear stress/contact contours explain that the field was not saved; probes remain labelled Solved final state. Deformation exaggeration scales the drawn shape only, not contour values.\n\nThe shared ordinary Git artifact batch was pushed successfully as bfb109cf307cb7109d55e8743276c272fc01322c (three recordings and six QA stills). The remote SHA was verified, and the staging helper verified actual byte hashes and sizes for all nine files. This PR's manifests cover animated-contours-693.mp4, proportional-probe.png and nonlinear-unavailable.png under fix/animated-contours-693/2df672d5120891ee7c112c57cc6be6ce15eb320b. All three corresponding receipts under receipts/artifacts/ say received with github_attachment=pending_maintainer; their SHA-256 and byte counts match the manifests. Actual bytes are received, while GitHub PR attachments remain pending. The current protocol requires neither LFS nor an upstream bootstrap; the earlier failed LFS attempt is superseded. Originals remain preserved outside feature history.\n\n## Validation\n\nWindows; AMD Ryzen 9 7950X; NVIDIA RTX 4090 Vulkan viewport. No GPU solver changes or GPU compute benchmark.\n\n- cargo test -p fieldcraft-engine -p fieldcraft-ui-egui with the three known Windows exclusions below: engine 368 passed, 15 ignored; UI 190 passed plus 3 doctests on the revised source tree.\n- Regressions cover zero/half/full static colour values, fixed bands and actual rendered colours, cached solved values, undeformed playback, signed modal components/nonnegative magnitudes, unchanged absolute temperatures, exact saved explicit stress, unavailable nonlinear increment fields, capped-history refusal and full-state probe labels. Review regressions additionally prove steady/transient heat plot cache reuse for temperature and heat flux, invalidation on an explicit view-frame change, moving static/modal geometry under invariant thermal contours, and nonlinear recorded playback on an undeformed mesh. Existing thermal-fluid and explicit-frame tests still pass.\n- cargo check -p fieldcraft-engine -p fieldcraft-ui-egui: passed.\n- cargo clippy -p fieldcraft-engine -p fieldcraft-ui-egui --all-targets -- -D warnings: passed.\n- cargo fmt --all -- --check and git diff --check: passed.\n- docs/features.md regenerated with the built CLI; unchanged.\n- Revised tested source head: f79299f7791e69e6f01cd4094acc00749bbcb48f, based on fork upstream-develop mirror 7d9c027d71b2c1ea3395e2552e95f0455a7244db. Review changes were folded into the source commit; ROADMAP.md and run-specific QA files are absent from the final feature diff. Native app/CLI and the reviewed recording belong to the original source pin stated above; no unchanged artifact was uploaded again and no fresh capture is claimed for the revised head.\n\n## Relayed CI and capture follow-up\n\nCI for revised head f79299f7791e69e6f01cd4094acc00749bbcb48f is pending. The maintainer's git-only feedback for the previous head 2df672d5120891ee7c112c57cc6be6ce15eb320b reports a successful cargo xtask ci rerun, started 2026-10-23T23:14:46Z and completed 23:18:28Z. That previous head also had engine 371 passed, UI 189 passed, wasm check passed, and successful heavy/oracle jobs. Windows app tests and the macOS oracle were skipped. These prior-head results are not claims of passing or skipped-as-passing checks on the revised head.\n\nThe first ci attempt on previous head 2df672d5120891ee7c112c57cc6be6ce15eb320b failed at MCP tests::screenshot_takes_a_camera_orientation (crates/mcp/src/tests.rs:229, PNG bytes differ). A bounded strict-hardware diagnostic reproduced a pre-existing shared-capture concurrency defect on that head and mirrored upstream baseline 7d9c027d71b2c1ea3395e2552e95f0455a7244db. Two independent MCP servers draw unsolved cantilevers concurrently, 300 pictures per camera, comparing PNG bytes and camera JSON with isolated references. FIELDCRAFT_GPU=hardware and FIELDCRAFT_REQUIRE_GPU=1 require the RTX 4090 Vulkan device with MSAA 4.\n\n- Previous exact head 2df672d: 13 and 24 PNG mismatches out of 300 pictures each; zero reported-camera changes.\n- Exact baseline, rebuilt with the same normal app/CLI feature set: 12 and 20 PNG mismatches out of 300 each; zero reported-camera changes.\n- Baseline control, serialising only the diagnostic picture calls: zero mismatches in 600 pictures, with unchanged reported cameras.\n\nThe unchanged shared Capturer owns one Pipelines camera uniform, written before queue.submit; overlapping calls can overwrite it. The observations are consistent with this pre-existing interleaving in an unsolved case. The Rust recipe, JSON results and source pins are preserved locally for a separate handoff. This diagnostic is separate from the successful relayed CI rerun; the fresh local MCP dev/testkit-feature build was cancelled. No test assertion was weakened and no production renderer was patched.\n\nThe successful rerun does not repair the baseline concurrency defect. Separately track/claim that shared-renderer follow-up with its own concurrent regression and production fix; it remains outside #693.\n\n## Known limitations\n\nThe existing Windows tests excluded explicitly were bug_report::tests::a_long_session_and_the_model_are_attachments (escaped home path, #554), cmd::file::tests::every_migrated_journal_replays_to_its_migrated_model (imperial density last bit), and cmd::render::tests::labels_and_command_lines_read_well (Windows path separator). No new failure was excluded.\n\nNonlinear stress/contact history remains unavailable (#205); probes remain actual solved final-state data. Proportional interpolation assumes one scaled linear loading path, not independent load histories or nonlinear response. Heavy/ignored tests, the full workspace gate and wasm were not run locally, per repository workflow. The oracle was not run locally because solver numerics did not change. The baseline shared-capture concurrency defect remains a separate follow-up. Revised-head CI and maintainer GitHub attachment upload are pending; artifact retrieval for the unchanged original demonstration is complete.\n",
+  "updated_at": "2026-10-23T23:45:15Z",
   "url": "https://github.com/tangency-labs/fieldcraft/pull/710",
   "comments": [],
   "reviews": [
@@ -28,7 +28,7 @@
       "updated_at": "2026-10-23T23:14:56Z",
       "url": "https://github.com/tangency-labs/fieldcraft/pull/710#discussion_r4364996285",
       "path": "ROADMAP.md",
-      "line": 96,
+      "line": null,
       "original_line": 96,
       "side": "RIGHT",
       "commit_id": "2df672d5120891ee7c112c57cc6be6ce15eb320b"
@@ -36,163 +36,131 @@
   ],
   "checks": [
     {
-      "id": 120703882754,
-      "name": "Plan (affected crates)",
-      "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-10-23T21:15:26Z",
-      "completed_at": "2026-10-23T21:15:57Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40025402728/job/120703882754",
-      "output": {
-        "title": null,
-        "summary": null,
-        "text": null,
-        "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120703882754/annotations"
-      }
-    },
-    {
-      "id": 120703856864,
-      "name": "Windows app tests",
-      "status": "completed",
-      "conclusion": "skipped",
-      "started_at": "2026-10-23T23:14:38Z",
-      "completed_at": "2026-10-23T21:15:18Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40025402728/job/120703856864",
-      "output": {
-        "title": null,
-        "summary": null,
-        "text": null,
-        "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120703856864/annotations"
-      }
-    },
-    {
-      "id": 120703856863,
+      "id": 120711874989,
       "name": "cargo xtask test --heavy",
-      "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-10-23T21:16:07Z",
-      "completed_at": "2026-10-23T21:37:39Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40025402728/job/120703856863",
+      "status": "in_progress",
+      "conclusion": null,
+      "started_at": "2026-10-23T23:41:04Z",
+      "completed_at": null,
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40040964805/job/120711874989",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120703856863/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120711874989/annotations"
       }
     },
     {
-      "id": 120703856805,
-      "name": "cargo xtask oracle (macOS)",
-      "status": "completed",
-      "conclusion": "skipped",
-      "started_at": "2026-10-23T23:14:38Z",
-      "completed_at": "2026-10-23T21:15:18Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40025402728/job/120703856805",
-      "output": {
-        "title": null,
-        "summary": null,
-        "text": null,
-        "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120703856805/annotations"
-      }
-    },
-    {
-      "id": 120703856632,
-      "name": "Claim and triage bot tests",
-      "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-10-23T21:15:27Z",
-      "completed_at": "2026-10-23T21:15:35Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40025402728/job/120703856632",
-      "output": {
-        "title": null,
-        "summary": null,
-        "text": null,
-        "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120703856632/annotations"
-      }
-    },
-    {
-      "id": 120703856594,
+      "id": 120711874987,
       "name": "cargo xtask oracle",
       "status": "completed",
       "conclusion": "success",
-      "started_at": "2026-10-23T21:16:07Z",
-      "completed_at": "2026-10-23T21:20:05Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40025402728/job/120703856594",
+      "started_at": "2026-10-23T23:41:04Z",
+      "completed_at": "2026-10-23T23:44:59Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40040964805/job/120711874987",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120703856594/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120711874987/annotations"
       }
     },
     {
-      "id": 120703855971,
+      "id": 120711874854,
+      "name": "cargo xtask ci",
+      "status": "in_progress",
+      "conclusion": null,
+      "started_at": "2026-10-23T23:41:03Z",
+      "completed_at": null,
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40040964805/job/120711874854",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120711874854/annotations"
+      }
+    },
+    {
+      "id": 120711690214,
+      "name": "cargo xtask oracle (macOS)",
+      "status": "completed",
+      "conclusion": "skipped",
+      "started_at": "2026-10-23T23:40:18Z",
+      "completed_at": "2026-10-23T23:40:18Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40040964805/job/120711690214",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120711690214/annotations"
+      }
+    },
+    {
+      "id": 120711690114,
+      "name": "Windows app tests",
+      "status": "completed",
+      "conclusion": "skipped",
+      "started_at": "2026-10-23T23:40:18Z",
+      "completed_at": "2026-10-23T23:40:18Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40040964805/job/120711690114",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120711690114/annotations"
+      }
+    },
+    {
+      "id": 120711689265,
       "name": "Dependency licences, advisories and sources",
       "status": "completed",
       "conclusion": "success",
-      "started_at": "2026-10-23T21:15:27Z",
-      "completed_at": "2026-10-23T21:18:04Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40025402728/job/120703855971",
+      "started_at": "2026-10-23T23:40:26Z",
+      "completed_at": "2026-10-23T23:43:05Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40040964805/job/120711689265",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120703855971/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120711689265/annotations"
       }
     },
     {
-      "id": 120703855063,
-      "name": "cargo xtask ci",
+      "id": 120711689260,
+      "name": "Plan (affected crates)",
       "status": "completed",
       "conclusion": "success",
-      "started_at": "2026-10-23T23:14:46Z",
-      "completed_at": "2026-10-23T23:18:28Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40025402728/job/120703855063",
+      "started_at": "2026-10-23T23:40:27Z",
+      "completed_at": "2026-10-23T23:40:56Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40040964805/job/120711689260",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120703855063/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120711689260/annotations"
       }
     },
     {
-      "id": 120660214582,
-      "name": "Claim bot",
+      "id": 120711689050,
+      "name": "Claim and triage bot tests",
       "status": "completed",
       "conclusion": "success",
-      "started_at": "2026-10-23T21:15:27Z",
-      "completed_at": "2026-10-23T21:15:36Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40025402774/job/120660214582",
+      "started_at": "2026-10-23T23:40:26Z",
+      "completed_at": "2026-10-23T23:40:34Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40040964805/job/120711689050",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120660214582/annotations"
-      }
-    },
-    {
-      "id": 120660214492,
-      "name": "Triage bot",
-      "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-10-23T21:15:27Z",
-      "completed_at": "2026-10-23T21:15:38Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40025402907/job/120660214492",
-      "output": {
-        "title": null,
-        "summary": null,
-        "text": null,
-        "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120660214492/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120711689050/annotations"
       }
     }
   ]
