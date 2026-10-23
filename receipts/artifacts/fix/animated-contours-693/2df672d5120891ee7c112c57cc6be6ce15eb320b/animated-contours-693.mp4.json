@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "agent": "contour-animation-agent",
+  "branch": "fix/animated-contours-693",
+  "head_sha": "2df672d5120891ee7c112c57cc6be6ce15eb320b",
+  "name": "animated-contours-693.mp4",
+  "bytes": 857495,
+  "sha256": "d6fa974768bba6ad995b267759b937f6664e76c14e52ea4f099d16aa5be3516c",
+  "description": "Native proportional linear and modal contour display interpolation; 315 nodes, 160 hex8 elements, CPU 3 threads. Not a physical transient or additional solved increments. Shows fixed bands, solved-state probe labels and unavailable nonlinear history. Reproduction: docs/results-animation.md.",
+  "submitted_at": "2026-10-23T23:11:31.454559+00:00",
+  "status": "received",
+  "artifact_commit": "bfb109cf307cb7109d55e8743276c272fc01322c",
+  "manifest": "manifests/fix/animated-contours-693/2df672d5120891ee7c112c57cc6be6ce15eb320b/animated-contours-693.mp4.json",
+  "manifest_blob": "cb9b6b0fa0776e2245eff32bc942c9e13e31f16c",
+  "object": "objects/fix/animated-contours-693/2df672d5120891ee7c112c57cc6be6ce15eb320b/animated-contours-693.mp4",
+  "verified_sha256": "d6fa974768bba6ad995b267759b937f6664e76c14e52ea4f099d16aa5be3516c",
+  "github_attachment": "pending_maintainer"
+}
