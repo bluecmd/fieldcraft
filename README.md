@@ -180,6 +180,10 @@ journalctl --user -u fieldcraft-pr-queue.service -n 60
 systemctl --user disable --now fieldcraft-pr-queue.timer # stop future scans
 ```
 
+If a tool session cannot reach the user bus, use `systemctl --user --machine=bluecmd@.host`
+for the status/start/disable commands above. This host route was verified during installation;
+do not restart the shared user manager or other agents’ services to work around a stale socket.
+
 Receipts are the shared result; the journal records operational failures. No empty polling commits
 are created. Network/API interruptions retain reservations, fail visibly, and retry next time.
 No merges, branch deletion, arbitrary recipients or non-GitHub posting are authorized by a request.
