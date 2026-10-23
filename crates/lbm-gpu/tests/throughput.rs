@@ -46,8 +46,11 @@ fn zone_throughput_and_diagnostic_cost() {
         }
         let m = model(1.0, 0.1, d, step(232.0, 1.0, None));
         let (_, flow) = prepare(&m, &[]);
-        let mut device =
-            GpuFlow::with_options(&flow, Policy::from_env().unwrap(), Options { streaming: Streaming::InPlace, profile: false }).unwrap();
+        let policy = Policy::from_env().expect("FIELDCRAFT_GPU names a policy");
+        let Ok(mut device) = GpuFlow::with_options(&flow, policy, Options { streaming: Streaming::InPlace, profile: false }) else {
+            println!("skipping {kind}: no GPU or not enough memory");
+            return;
+        };
         device.advance(32).unwrap();
         let start = std::time::Instant::now();
         device.advance(200).unwrap();
