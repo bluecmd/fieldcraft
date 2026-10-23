@@ -28,6 +28,8 @@ The sample is a single-air-domain physical transient over a held 80 °C bracket:
 
 [Reproduction notes](https://github.com/bluecmd/fieldcraft/blob/3145551f7a63c966cdb36bd7e846691061329f1a/docs/windows-dxc.md) and the linked small JSON report pin the source, package hash, compiler, settings and results.
 
+Artifact handoff status: the coordinated local `artifact/parallel-handoff` staging commit `c49122a` contains nine objects across the three parallel PR handoffs, with every LFS pointer, SHA-256 and size verified. Two normal SSH deploy-key pushes both failed at the LFS batch endpoint with HTTP 502 and `0/9` objects uploaded. The remote `artifact-queue` remains at `8536cb1`; no successful transfer or `received` receipt exists. Please confirm that the upstream-root LFS bootstrap has completed and that the LFS endpoint is available before the next coordinated retry. The originals remain preserved locally, and this PR's media status remains `pending`.
+
 ## Validation
 
 - Built both release-profile x64 executables and ran the production Windows packaging script. Download/checksum, GUI icon/PE checks, CLI version check and extraction of the resulting zip passed. No `dxil.dll` or tools are packaged; complete notices are present.
