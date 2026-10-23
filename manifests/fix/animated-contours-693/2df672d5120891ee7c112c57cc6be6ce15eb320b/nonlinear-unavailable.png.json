@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "agent": "contour-animation-agent",
+  "branch": "fix/animated-contours-693",
+  "head_sha": "2df672d5120891ee7c112c57cc6be6ce15eb320b",
+  "name": "nonlinear-unavailable.png",
+  "bytes": 236319,
+  "sha256": "b6aab2c41ed447155b47eb3107eb672c766f28fa1944737c1ff100fe67abf59a",
+  "description": "Native proportional linear and modal contour display interpolation; 315 nodes, 160 hex8 elements, CPU 3 threads. Not a physical transient or additional solved increments. Shows fixed bands, solved-state probe labels and unavailable nonlinear history. Reproduction: docs/results-animation.md.",
+  "submitted_at": "2026-10-23T23:11:31.858489+00:00"
+}
