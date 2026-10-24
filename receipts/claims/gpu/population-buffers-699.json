@@ -1,0 +1,10 @@
+{
+  "request_id": "claim-699-coupled-exchanger-agent-20261024",
+  "agent": "coupled-exchanger-agent",
+  "issue": 699,
+  "branch": "gpu/population-buffers-699",
+  "request_blob": "51c07a63fc0b974fcdac4d611f3b668c93858380",
+  "status": "blocked",
+  "error": "Another open PR references this issue; coordinate before claiming it.",
+  "updated_at": "2026-10-24T08:45:40.934Z"
+}
