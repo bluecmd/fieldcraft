@@ -1,0 +1,46 @@
+{
+  "number": 631,
+  "title": "Conjugate heat transfer: accuracy at curved conducting interfaces (staircase)",
+  "body": "## Current behaviour\nConjugate heat transfer (#609) couples a conducting solid to the fluid across the lattice's cell faces, so a curved interface is a staircase. On Rayleigh's square array of cylinders (r = 0.3, conduction only, against the Perrins–McKenzie–McPhedran series at the voxelised area fraction), insulating inclusions (k_s/k_f = 0.1) show the staircase as a first-order error: −3.85 / −2.23 / −0.85 % on 16 / 32 / 64 cells. Conducting ones (k_s/k_f = 10) stay within 0.3 %. Curved heat-sink fins with convection have not been measured yet.\n\n## What to build\n1. Measure: a convective case with curved conducting interfaces and a published reference, e.g. a heated or conducting circular cylinder in cross-flow or in an enclosure, with Nusselt numbers from the literature, on three grids.\n2. If the staircase costs accuracy there too, put the interface flux on the true surface: cut cells, or an interpolated (curved) interface treatment for the scalar lattice. #597 found that cut cells fixed the same loss on the Eulerian-solid branch.\n\nThe tests in `crates/lbm/tests/conjugate.rs` (`a_square_array_of_cylinders_conducts_as_rayleigh_s_series`, `insulating_cylinders_converge_at_first_order`) are the starting point.\n\nFollows #157 / #609.\n",
+  "state": "open",
+  "updated_at": "2026-10-24T00:15:16Z",
+  "assignees": [
+    "bluecmd"
+  ],
+  "labels": [
+    "enhancement",
+    "claimed",
+    "area:cfd"
+  ],
+  "url": "https://github.com/tangency-labs/fieldcraft/issues/631",
+  "comments": [
+    {
+      "author": "jyviko",
+      "body": "Thank you @bluecmd, a well-scoped follow-up! Measuring first, on a convective case with curved conducting interfaces against published Nusselt numbers on three grids, is exactly the right order. Only if the staircase shows there too would we move the interface flux onto the true surface, and #597's cut-cell result is a good starting point for that.",
+      "created_at": "2026-10-20T10:43:40Z",
+      "updated_at": "2026-10-20T10:43:40Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/issues/631#issuecomment-6289099661"
+    },
+    {
+      "author": "bluecmd",
+      "body": "Thanks @jyviko, agreed. Once #609 is in, I'll take the measurement: a convective case with curved conducting interfaces and published Nusselt numbers, on three grids. I'll post the numbers here before touching the interface treatment, and the cut cells from #597 come in only if the staircase shows up there too.",
+      "created_at": "2026-10-20T12:47:59Z",
+      "updated_at": "2026-10-20T12:47:59Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/issues/631#issuecomment-6291196683"
+    },
+    {
+      "author": "bluecmd",
+      "body": "First measurement, a convective baseline for the curved interface. I found no conjugate circular-cylinder benchmark with tables I could read: the primary papers, Jami et al. 2007 among them, are not open access. So this is the held-temperature version of the same geometry. The interface is staircased exactly as a conducting body's is, through the same D3Q7 wall links.\n\n**Case:** a circular cylinder, R = 0.2 L, centred in a square cavity. The cylinder is held at 1 and all four walls at 0. Pr 0.71, 2D as a one-cell-thick periodic slab. Nu is the cylinder's mean, Q L / (k ΔT · 2πR) per unit depth. **Reference:** Kim, Lee, Ha and Yoon, IJHMT 51 (2008) 1888–1906, doi:10.1016/j.ijheatmasstransfer.2007.06.033. I could not open the paper, so the values are as tabulated in open secondary sources: 5.093 at Ra 10³ and 7.767 at Ra 10⁵ (Zheng et al., Sci. Prog. 2021, Table 2). A second source gives 5.01 and 7.78, so treat the reference as about ±1 %.\n\n| Ra | 32 cells | 64 cells | 96 cells | reference |\n|---|---|---|---|---|\n| 10³ | 4.9405 (−3.0 %) | 5.0950 (+0.04 %) | — | 5.093 |\n| 10⁵ | 7.9295 (+2.1 %) | 7.9099 (+1.8 %) | 7.8416 (+0.96 %) | 7.767 |\n\nIn every run the heat the cylinder gives equals the heat the walls take, to the printed digits. Fixed runs of one diffusive time, the heat averaged over the last tenth; sc-builder-3, CPU, release; develop afb7543 plus a measurement test that I have not committed.\n\n**What it shows:**\n- The curved held wall converges, but not cleanly. At Ra 10³ the 32-cell grid is 3 % low and 64 cells lands on the reference, a sign of staircase noise rather than a smooth order. At Ra 10⁵ the error falls from 2.1 to 1.8 to 0.96 % over 32, 64 and 96 cells, slower than second order.\n- The Nusselt number uses the true perimeter 2πR, while the staircase's exchange area depends on the grid. Part of the error is that area, as with the insulating rods of Rayleigh's array (first order, −0.85 % on 64 cells).\n\nSo the staircase costs about 1–2 % at practical resolutions in convection too, comparable to the conduction-only array. That is enough to matter for fin-level heat-sink numbers, not enough to block the electronics examples. Before any cut-cell or interpolated-wall work I would add a conducting-cylinder case once a reference with tables is readable. The obvious candidate is Jami et al.'s heat-generating cylinder in a differentially heated cavity, if anyone can get that paper. How would you like to proceed: keep this as the measurement and park the fix, or go for an interpolated (Bouzidi-type) scalar wall on curved obstacles next?\n",
+      "created_at": "2026-10-20T19:13:26Z",
+      "updated_at": "2026-10-20T19:13:26Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/issues/631#issuecomment-6299107972"
+    },
+    {
+      "author": "bluecmd",
+      "body": "<!-- fieldcraft-pr-queue:claim:claim-631-contour-animation-agent-20261024 -->\nClaimed for agent `contour-animation-agent` on `bluecmd/fieldcraft:cfd/curved-cht-631` through the [PR queue](https://github.com/bluecmd/fieldcraft/tree/pr-queue). GitHub assignee: @bluecmd. The agent may start once its queue receipt says `granted`. This is a reservation, not a claim of completion.",
+      "created_at": "2026-10-24T00:15:16Z",
+      "updated_at": "2026-10-24T00:15:16Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/issues/631#issuecomment-6377372880"
+    }
+  ]
+}
