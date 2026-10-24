@@ -887,12 +887,15 @@
     "title": "Contact pressure and normal force skewed at nodes where a contact surface turns a corner",
     "body": "A secondary node's unit normal is the sum of the area vectors of all its secondary faces. Where a general-contact surface turns a corner, those faces point in different directions, for example:\n- an end face meeting a z = const face of a one-layer plane-strain hex model;\n- an outer face meeting an end face.\n\nThe reported nodal `pressure` (−f·n over the support) and the contact's `normal_force` are then projections onto a tilted normal. The forces themselves are unaffected, and so are the displacements.\n\n## Reproduce\n1. Run `c_ring(true, 0.15)` in `crates/solver/tests/contact.rs`: a 3D one-layer hybrid C-ring closing on itself.\n2. Run the same ring in plane strain (`planar_c_ring`).\n3. The displacements agree node for node to 1e-5, and so does the contact force vector (−3.29e-5 in both).\n4. `normal_force` differs: 0.00595 in 3D against 0.00816 in 2D. The nodal pressures at the closed nodes are about 25 % lower in 3D (0.044 against 0.058).\n\n## Expected\nTake each node's normal and normal force from the faces that carry the contact at that node, e.g. weighted by each face pair's support ∫Φ_A. Faces with no overlap at the node should not tilt the normal. The 3D and plane-strain rings should then report the same normal force and pressures.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)",
     "state": "open",
-    "updated_at": "2026-10-14T20:35:57Z",
+    "updated_at": "2026-10-24T10:30:41Z",
     "labels": [
       "bug",
+      "claimed",
       "area:solver"
     ],
-    "assignees": [],
+    "assignees": [
+      "bluecmd"
+    ],
     "url": "https://github.com/tangency-labs/fieldcraft/issues/203"
   },
   {
