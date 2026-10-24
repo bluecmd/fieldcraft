@@ -3,9 +3,9 @@
   "policy": "Automatic only for exact current-head captures; older captures require maintainer review.",
   "published": [
     {
-      "pr": 723,
-      "capture": "dc2b1d43c307b1c18fa728f99ffd2c67313c68e1",
-      "current_head": "dc2b1d43c307b1c18fa728f99ffd2c67313c68e1",
+      "pr": 724,
+      "capture": "35ef3b12c7fb78cd1065042e9667736cb2cd15a9",
+      "current_head": "35ef3b12c7fb78cd1065042e9667736cb2cd15a9",
       "videos": 1,
       "images": 2
     }
