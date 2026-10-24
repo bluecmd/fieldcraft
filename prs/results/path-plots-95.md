@@ -1,0 +1,56 @@
+---
+{
+  "schema": 1,
+  "kind": "pr",
+  "action": "publish",
+  "request_id": "pr-95-windows-dxc-agent-20261024-1",
+  "agent": "windows-dxc-agent",
+  "branch": "results/path-plots-95",
+  "issue": 95,
+  "head_sha": "0b32448242f693680985eb8e67b88bb78490b061",
+  "base": "develop",
+  "draft": false,
+  "title": "Results: interpolate and plot solid fields along picked or typed paths",
+  "media": "pending"
+}
+---
+## What and why
+
+Closes #95. Results > Plots > Path Plot now samples a typed or surface-picked polyline, draws its value-versus-distance graph and viewport station markers, and exports `distance,x,y,z,value` CSV. `results.path` is the same read-only typed session command through the desktop, CLI, scripts and MCP. Outside stations become null values and plot/CSV gaps; there is no nearest-node substitution.
+
+The pure FEM locator supports all six existing solid families: Tet4, Tet10, Wedge6, Pyramid5, Hex8 and Hex20. It uses the actual isoparametric shape functions, bounded inverse solves and conservative outward-rounded Bernstein/control bounds for curved geometry. An exhausted inverse search reports unresolved instead of silently classifying a potentially inside point as outside. Actual-node Jacobians are checked, including a folded Tet10 regression; the Pyramid5 apex has its explicit singular-chart handling. This establishes local query admissibility, not global injectivity of arbitrary folded meshes.
+
+The engine caches a deterministic element BVH per exact current result, with the lowest element label winning shared-face ties. Storage is SI; points, distances, scalar replies and CSV convert once through Quantity. All five display presets and Celsius/Kelvin/Fahrenheit are covered. Categorical contact status is refused; numerical contact quantities interpolate only defined contributing values, ignoring exactly-zero shape coefficients without renormalizing.
+
+Picking uses genuine rendered triangle hits and barycentric natural coordinates, followed by the full FE map to recover reference coordinates even on curved/deformed displays. Draft points retain their SI precision through all display presets and actual widget rendering. Opening the command again preserves an unsampled draft; fresh drafts inherit compatible visible modes/frames. The plot labels retain their own step/field/frame/mode when the active result view changes. Graph decimation preserves interior extrema in station order and conservatively breaks bins containing gaps; graph scaling preserves both multiplicative unit changes and temperature offsets.
+
+Sampling and export run as cancellable background jobs, with index-building and station-loop progress checks. Cancellation, stale results and failed exports preserve the previous successful plot. Programmatic calls never open a dialog. Index storage is capped at 500,000 elements, two million result nodes and 96 MiB; construction has an independent 14-million basis-evaluation budget, queries four million, with bounded candidates and BVH visits. The guide documents the caps, numerical scope, original recipes and public numerical-method sources. Generated feature documentation is updated; ROADMAP is unchanged.
+
+## Demonstration
+
+Fresh Windows native evidence was captured from a dedicated build of the exact tested head `0b32448242f693680985eb8e67b88bb78490b061`. CPU solvers were used with an actual NVIDIA GeForce RTX 4090 Vulkan viewport. The 24-second H.264 video is a captioned sequence of six genuine presented app frames, not reconstructed UI or an offscreen rendering. It shows beam stress, actual deformed curved-surface picking, the sampled endpoint graph, steady conduction temperature and outside gaps. Two stills and a small numerical verification JSON accompany it. Older private `5e3b302` layout captures are superseded and are not part of this handoff.
+
+The coordinator normal-pushed all four immutable originals through ordinary Git in artifact-queue commit `9889db110eaacab5573cabcaecf6219540daa48d`, under `objects/results/path-plots-95/0b32448242f693680985eb8e67b88bb78490b061/`: `solid-path-plots.mp4`, `curved-surface-path.png`, `temperature-path-gaps.png` and `native-verification.json`. Original and staged blob SHA-256 values and byte counts match; the full video decodes successfully. Received receipts and actual GitHub attachment URLs remain pending, so media remains pending. The JSON is numerical evidence in the inbox, not a native attachment. No demonstration media or binaries are in the feature branch. The video is not a timing benchmark, physical transient, coupled two-fluid exchanger demonstration or experimental validation.
+
+## Validation
+
+Dedicated per-worktree target; no cross-worktree cached binary was used for final checks or capture. Three logical source commits cover FEM, engine and UI. No full local CI/oracle/heavy gate was run.
+
+- `cargo test -p fieldcraft-fem`: 96 passed, including linear/nodal patches across all six solids, curved bounds, exact-node/NaN contributor behavior, folded-map refusal, Pyramid5 boundaries, work caps and hostile inputs.
+- `cargo test -p fieldcraft-engine` with the three known Windows baseline exclusions below: 382 passed, 15 existing ignored, three filtered. Path regressions include analytic beam and conduction patches, exact CSV/reply units across all presets, modal normalization, repeated nonlinear load factors, cancellation, Roots confinement, stale state and hostile parameters.
+- `cargo test -p fieldcraft-ui-egui`: 197 passed plus three doctests, explicitly selecting Vulkan and requiring real hardware GPU. Focused strict GPU UI tests also passed 2/2. Path tests cover real curved/deformed pick-to-query under all five presets, precision after widget drawing, visible mode/frame inheritance, draft preservation, graph peaks/gaps/unit invariance and actual context-width bounds.
+- Scoped all-target clippy for FEM, engine and UI; targeted wasm32 checks for those crates; UI clippy/wasm repeated after the final layout correction. Formatting, assets (377), layers (23), unit-factors and diff checks passed. The gate executable was rebuilt in the intended source worktree before its checks.
+- Exact-head native build and presented capture: cantilever top-fibre 101 stations match `1.5 (100-x)` MPa with maximum relative error 0.123340%, below the issue's 10% acceptance bound. The tension side is positive. Actual deformed curved-face endpoint picks are at least 3.5912 mm from every mesh node and produce finite FE-interpolated displacements.
+- Original steady conduction recipe: 48 Hex8 elements / 117 nodes, assumed conductivity 15 W/(m K), 20/30 degrees Celsius at the ends of a 120 mm bar, remaining faces insulated. Across 121 stations, maximum temperature error is 6.68e-13 degrees Celsius and the midpoint is 25.000000000000625 degrees Celsius. Signed axial heat flux -1250 W/m2 is checked by the committed analytic regression. Extending the path outside gives 24 nulls among 145 stations and exactly 24 blank CSV values; all exported numbers match the typed reply.
+
+## Known limitations
+
+Only existing 3D solid elements are supported; shell/beam interpolation is refused. Stress sampling interpolates existing nodal averaged results, not a new constitutive recovery scheme. A locally admissible inverse does not certify global mesh injectivity. Bounded unresolved searches report an error, and resource limits can refuse an oversized query.
+
+Stored nonlinear frames expose displacement only; final stress/contact/temperature require omitted/null frame. Equal load factors do not imply equal committed material/contact state, so there is no final-state substitution for a stored nonlinear frame. True stored intermediate fields remain #205. Heat flux is final-only. Frequency fields keep the existing mass-normalized, dimensionless field convention. The baseline `results.frame` command's omission of heat steps is unchanged; the path panel itself can select available heat frames.
+
+A straight chord between points on a concave curved face may leave the solid. The curved native example deliberately checks two picked endpoints; intermediate outside stations remain gaps. The viewport uses existing display deformation while queries retain reference coordinates. Decimated graph/overlay drawing is bounded; full numerical samples remain available in the reply and CSV.
+
+The full engine run excludes these independently known Windows baseline failures: `bug_report::tests::a_long_session_and_the_model_are_attachments` (escaped home path, #554), `cmd::file::tests::every_migrated_journal_replays_to_its_migrated_model` (last-bit imperial density), and `cmd::render::tests::labels_and_command_lines_read_well` (path separators). Their behavior was not changed or blessed. Ignored heavy tests were not run locally.
+
+Native runtime evidence is Windows / RTX 4090 / Vulkan only. Targeted wasm compilation passed; browser runtime, macOS, other GPU hardware and throughput were not measured. The beam and constant-conductivity checks are synthetic implementation verification, not experimental validation or a coupled heat-exchanger design claim. Upstream CI and GitHub attachment publication await the maintainer queue.
