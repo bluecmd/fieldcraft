@@ -26,7 +26,7 @@ Three logical commits separate the pure reader, atomic command/catalogue, and ap
 
 ## Demonstration
 
-Native source/capture: `c5203312e97857665facfcd985d38fd80eaddfd9`. Final files are `abaqus-import-98.mp4` (28 seconds), `import-report.png`, and `imported-beam-result.png`. All three were transferred through ordinary-Git artifact commit `5cfe546e7c2a978c7f9e1ff01d5faf44d9e80624`; original and index blob byte counts/SHA-256 were independently verified. Retrieval receipts and GitHub attachments are pending, so media remains pending. No media or generated project belongs to the feature branch.
+Native source/capture: `c5203312e97857665facfcd985d38fd80eaddfd9`. Final files are `abaqus-import-98.mp4` (28 seconds), `import-report.png`, and `imported-beam-result.png`. All three were transferred through ordinary-Git artifact commit `5cfe546e7c2a978c7f9e1ff01d5faf44d9e80624`; original and index blob byte counts/SHA-256 were independently verified. All three retrieval receipts now say received, and their byte counts/SHA-256 match the immutable originals. GitHub attachment URLs remain pending_maintainer, so media remains pending. No media or generated project belongs to the feature branch.
 
 The movie replays the committed original recipe through the actual app form and command interface: choose consistent mm-t-s-N-MPa units, confirm replacement, review all eight unread history keywords/lines and zero imported steps, deliberately recreate clamp/load/static step, then solve the imported model. Source and reconstructed CPU static peak displacement and von Mises results are exactly equal; displacement is 0.09613877492912645 mm at node 18 and peak stress rounds to 44.67 MPa.
 
@@ -43,7 +43,7 @@ Candidate source: `c5203312e97857665facfcd985d38fd80eaddfd9`, based on mirrored 
 - The exact final app/CLI build passed in the dedicated target; no reused binary from another worktree was used.
 - Targeted wasm32 checks passed for decks, engine and UI. Formatting and individual assets, layers and unit-factor gates passed. The newly built dedicated xtask reported zero changed paths for `affected --base HEAD`, confirming its current worktree.
 
-Remote CI is pending for this new head/PR. No successful run from an earlier lane is attributed to it.
+The relayed PR #729 checks at this exact source head completed successfully: main `cargo xtask ci`, annotated heavy tests, oracle and dependency/plan checks. Windows app tests and the macOS oracle were skipped; they are not counted as passes. No reviews are relayed yet.
 
 New regressions cover canonical writer/read/writer model data, supported element inverse mappings, section/property dimensions, central units, original lines through continuations/history, ranges/references/cycles/budgets, hostile prefixes/numbers, malformed scopes/options and explicit refusals. Atomic-command tests preserve actual result Arcs and usable undo; reapplying the same analysis produces matching static displacement. Cancellation tests cover the lexer, a partially populated range at its periodic check, reporter isolation and whole-session rollback. UI regressions cover frozen input units, replacement/reporting and failed/cancelled/saved imported-document lifecycle.
 
@@ -62,7 +62,7 @@ Three engine tests have already verified Windows baseline failures and remain ex
 - `cmd::file::tests::every_migrated_journal_replays_to_its_migrated_model`
 - `cmd::render::tests::labels_and_command_lines_read_well`.
 
-No source skip/ignore is added. Remote CI will run its normal platform checks. The full local workspace gate, oracle and annotated heavy suites are not run for this reader/UI change.
+No source skip/ignore is added. The separate relayed Linux CI checks passed; the skipped Windows/macOS jobs do not validate these local baseline cases. The full local workspace gate, oracle and annotated heavy suites are not run for this reader/UI change.
 
 </details>
 
