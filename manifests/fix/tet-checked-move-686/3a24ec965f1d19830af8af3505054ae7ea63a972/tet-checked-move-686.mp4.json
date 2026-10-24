@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "agent": "legend-layout-agent",
+  "branch": "fix/tet-checked-move-686",
+  "head_sha": "3a24ec965f1d19830af8af3505054ae7ea63a972",
+  "name": "tet-checked-move-686.mp4",
+  "bytes": 559128,
+  "sha256": "d0f10264d03c365c6c32026fc027c24e9de140a4e4cab0bfb74d70e783c0e0dc",
+  "description": "Actual native Windows RTX4090 Vulkan before d79cabfc (mesh source byte-identical7d9) and exact after3a24ec965f1d19830af8af3505054ae7ea63a972. Original10mm taggedcube,size2.5mm,330validtet4/125nodes; entire quality/stagereplies identical, ODT1027/smooth109/topological13.27s staticmeshingdemo, no newUIcommand. Internal atomiccheckedmove/journal/no-op/refusal protection is regression-backed;280meshunitpass. Source and visual review passed.",
+  "submitted_at": "2026-10-24T07:36:40.722332+00:00"
+}

@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "agent": "legend-layout-agent",
+  "branch": "fix/tet-checked-move-686",
+  "head_sha": "3a24ec965f1d19830af8af3505054ae7ea63a972",
+  "name": "after-wire.png",
+  "bytes": 269456,
+  "sha256": "25ee58a05f19b273ceb21c00af031eff294772bc8a96bcc3d0a2e7c180e4d7d3",
+  "description": "Actual native Windows RTX4090 Vulkan before d79cabfc (mesh source byte-identical7d9) and exact after3a24ec965f1d19830af8af3505054ae7ea63a972. Original10mm taggedcube,size2.5mm,330validtet4/125nodes; entire quality/stagereplies identical, ODT1027/smooth109/topological13.27s staticmeshingdemo, no newUIcommand. Internal atomiccheckedmove/journal/no-op/refusal protection is regression-backed;280meshunitpass. Source and visual review passed.",
+  "submitted_at": "2026-10-24T07:36:41.172053+00:00"
+}
