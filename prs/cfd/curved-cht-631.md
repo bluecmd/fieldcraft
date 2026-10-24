@@ -150,13 +150,14 @@ Tested source c3206593f8ed63d95d54e5aedbaff6e37e4efe5e, rebased onto the latest 
 - New fast regression compares the original tessellated geometry's cell mask to the analytic circle on 20 / 40 / 80 / 160 grids and checks exact slot counts/no cylinder heat source.
 - New startup CPU/device test uses existing thermal tolerances: maximum temperature difference 2e-5 on the 1 K scale; wall heat relative difference 1e-4. Both arrays must be finite before the maximum difference is computed.
 - cargo check -p fieldcraft-lbm -p fieldcraft-lbm-gpu; cargo clippy -p fieldcraft-lbm -p fieldcraft-lbm-gpu --all-targets -- -D warnings; cargo fmt --all --check; git diff --check: passed.
-- Parent read-only review of model/equations, native image and test changes completed. No production numerics or oracle cases changed, so no local oracle regeneration was required. The full workspace gate, all ignored tests, wasm and other OS/device runs were not run locally; new-head remote CI is pending.
+- Parent read-only review of model/equations, native image and test changes completed. No production numerics or oracle cases changed, so no local oracle regeneration was required. The full workspace gate, all ignored tests, wasm and other OS/device runs were not run locally; The maintainer-relayed 01:00 UTC feedback confirms main CI and the existing oracle job passed at exact source c3206593f8ed63d95d54e5aedbaff6e37e4efe5e; heavy tests remain in progress. Windows app and macOS oracle jobs were skipped and are not claimed as passing. The existing oracle success does not validate or freeze the new reference comparison.
 
 ## Known limitations
 
 The 1% default fine-grid comparison is not a validated interface-only acceptance: doubling passages and halving lattice speed exceed that target and exceed the last grid change. Boundary/model form, temporal/collision sensitivity, voxelized geometry and the paper's own grid spread are not isolated from one another. No convergence order, mesh independence or frozen accuracy fixture is claimed. The bulk mean has no reference acceptance gate because the reference integration domain is ambiguous. There is no higher-conductivity/otherRi/three-dimensional validation in this slice.
 
 Steady solid-capacity scaling accelerates convergence; recorded intermediate temperatures are not a physical transient. The video shows only the coarse case, not every grid or a coupled two-circuit heat exchanger. Local diagnostic timings are not performance claims (the n160padding2 and native coarse solves briefly overlapped). Actual GitHub attachments remain maintainer-owned and pending. #631 stays open; the curved-wall production algorithm remains parked, and no renderer or backend-removal work is included.
+
 
 
 
