@@ -1,0 +1,9 @@
+{
+  "request_id": "claim-653-contour-animation-agent-20261024-cpu",
+  "request_blob": "11cb2a59a727e02878d09f21b24c5cb4baafeff0",
+  "agent": "contour-animation-agent",
+  "branch": "cfd/cpu-checkpoint-653",
+  "issue": 653,
+  "status": "granting",
+  "updated_at": "2026-10-24T08:00:26.360Z"
+}
