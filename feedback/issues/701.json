@@ -1,0 +1,32 @@
+{
+  "number": 701,
+  "title": "0.7.5: reproducible heat-exchanger tutorials and release videos",
+  "body": "## Goal\nThe maintainer requests videos that help people use 0.7.5 to model flow and heat transfer in a heat exchanger. Deliver tutorials from reproducible release samples, not only a promotional animation.\n\n## Proposed series\n- [ ] **Your first heat exchanger (8–12 min):** geometry and fluid passages, materials, conducting wall, inlet/outlet and fan/pump or prescribed-flow assumptions, resolution, resource estimate, solve and save. Start from a supplied model/recipe.\n- [ ] **Where does the heat go? (3–5 min):** velocity/temperature sections and streamlines, both outlet temperatures, heat duty, pressure loss and mass/energy budgets from the same solved model.\n- [ ] **Choose a fan and compare fin spacing (5–8 min):** one controlled design change, fan/system operating point, cooling benefit versus pressure drop, and comparable convergence/resolution.\n- [ ] **Can you trust this result? (about 5 min):** validation reference, refinement, convergence of running means for LES, uncertainty and model limits.\n\n## Definition of done\n- Inputs/recipes, exact version/commit, solve settings, hardware/runtime and saved outputs accompany each video; a viewer can reproduce the result.\n- Captions and legends show physical units and distinguish measured numerical results from assumptions.\n- Air-side-only examples are labelled as such. A full exchanger tutorial requires demonstrated coupled coolant/air support.\n- A physical transient is labelled with physical time; accelerated steady-state heat-capacity runs and iteration playback are never presented as physical warm-up.\n- No use of commercial CAE assets or models; original SolidCraft geometry and the repository's capture workflow.\n- Publish gallery links, a thumbnail/hero still and a short release clip only once the final results and commands match the release build.\n\nRelated tooling: `tools/cooling`, `tools/flow-clip`, and `docs/examples.md`. The existing `cooling-aio` airflow clip is a starting point, but its held-temperature/air-side assumptions must remain visible.\n",
+  "state": "open",
+  "updated_at": "2026-10-23T19:16:59Z",
+  "assignees": [],
+  "labels": [
+    "enhancement",
+    "area:cfd",
+    "area:infra",
+    "area:docs",
+    "needs-triage"
+  ],
+  "url": "https://github.com/tangency-labs/fieldcraft/issues/701",
+  "comments": [
+    {
+      "author": "jyviko",
+      "body": "How we make the clips (tools, tactics, pitfalls, and the rule to attach videos to PRs rather than commit them): https://github.com/tangency-labs/fieldcraft/discussions/706 🎬",
+      "created_at": "2026-10-23T19:08:19Z",
+      "updated_at": "2026-10-23T19:08:19Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/issues/701#issuecomment-6372674169"
+    },
+    {
+      "author": "bluecmd",
+      "body": "Media policy from the maintainer’s request on #704: https://github.com/tangency-labs/fieldcraft/pull/704#issuecomment-6372535663\n\nKeep demonstration videos and stills out of git, including unmerged commit history; upload them as GitHub PR attachments. Keep original recipes, small report JSON, settings, hardware and reproduction notes. Docs may link an attachment URL or describe the panel. A later deletion commit does not satisfy this because the binary remains in history. #704/#705 have been cleaned accordingly; attachment upload remains pending. This is now part of the agent PR queue protocol.\n",
+      "created_at": "2026-10-23T19:16:59Z",
+      "updated_at": "2026-10-23T19:16:59Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/issues/701#issuecomment-6372828193"
+    }
+  ]
+}
