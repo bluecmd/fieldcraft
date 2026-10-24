@@ -11,6 +11,11 @@ use serde::{Deserialize, Serialize};
 use crate::units::{DisplaySystem, Quantity};
 use crate::{Directional, Elastic, Error, Material, Result, Thermal};
 
+const MIN_YOUNG: f64 = 1e9; // unit-factors: SI plausibility lower bound in Pa, not a conversion
+const MAX_YOUNG: f64 = 1e12; // unit-factors: SI plausibility upper bound in Pa, not a conversion
+const MAX_EXPANSION: f64 = 1e-3; // unit-factors: SI plausibility upper bound in inverse kelvin, not a conversion
+const MIN_STRENGTH: f64 = 1e6; // unit-factors: SI plausibility lower bound in Pa, not a conversion
+
 /// Stable entry names and labels, also used by command forms.
 pub const CHOICES: &[(&str, &str)] = &[
     ("EN10025-S235", "S235 structural steel"),
@@ -145,13 +150,13 @@ fn validate(values: &[Entry]) -> Result<()> {
                 return Err(Error::Invalid(format!("material library entry {} has an uncited or non-SI property", e.id)));
             }
             let plausible = match p {
-                Property::Young => (1e9..=1e12).contains(&d.value),
+                Property::Young => (MIN_YOUNG..=MAX_YOUNG).contains(&d.value),
                 Property::Poisson => (0.0..0.5).contains(&d.value),
                 Property::Density => (100.0..=30_000.0).contains(&d.value),
                 Property::Conductivity => (0.01..=2000.0).contains(&d.value),
                 Property::SpecificHeat => (1.0..=10_000.0).contains(&d.value),
-                Property::Expansion => (0.0..=1e-3).contains(&d.value),
-                Property::Yield | Property::Tensile => (1e6..=1e10).contains(&d.value),
+                Property::Expansion => (0.0..=MAX_EXPANSION).contains(&d.value),
+                Property::Yield | Property::Tensile => (MIN_STRENGTH..=1e10).contains(&d.value),
             };
             if !plausible {
                 return Err(Error::Invalid(format!("material library entry {} has an implausible property", e.id)));
