@@ -1,0 +1,46 @@
+{
+  "number": 480,
+  "title": "MCP: serve the agent skills as MCP prompts",
+  "body": "crates/mcp/src/server.rs answers prompts/list with an empty list. Serve skills/fieldcraft-meshing/SKILL.md (and the modelling skill) as MCP prompts (include_str!, prompts/get), so MCP clients get the same content as installed skills.\n\nPart of #235.",
+  "state": "open",
+  "updated_at": "2026-10-24T01:45:29Z",
+  "assignees": [
+    "bluecmd"
+  ],
+  "labels": [
+    "enhancement",
+    "claimed",
+    "area:infra"
+  ],
+  "url": "https://github.com/tangency-labs/fieldcraft/issues/480",
+  "comments": [
+    {
+      "author": "bomtobe-hgkim",
+      "body": "One useful parity check would be: each bundled skill appears in prompts/list under a stable name, and prompts/get returns the same Markdown as the skill source shipped with the app. That catches cases where a client can discover a prompt but gets missing or stale content. I work on Orke at BOMTOBE; I haven’t used Fieldcraft, so this is a test suggestion based on the issue, not a report of behavior.",
+      "created_at": "2026-10-18T16:03:32Z",
+      "updated_at": "2026-10-18T16:03:32Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/issues/480#issuecomment-6252039553"
+    },
+    {
+      "author": "jyviko",
+      "body": "Thank you @bomtobe-hgkim, that's a good test to have: every bundled skill listed under a stable name in `prompts/list`, and `prompts/get` returning exactly the shipped skill source. It catches the discoverable-but-stale case nicely. We'll include it when this one is picked up.",
+      "created_at": "2026-10-18T16:13:21Z",
+      "updated_at": "2026-10-18T16:13:21Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/issues/480#issuecomment-6252140492"
+    },
+    {
+      "author": "jyviko",
+      "body": "@bomtobe-hgkim and to say it plainly: FieldCraft is a young project and we welcome suggestions and contributions of any size. If anything here interests you, issues labelled `help wanted` or `good first issue` are a good place to start, and CONTRIBUTING.md explains how to claim one. Thanks again for stopping by!",
+      "created_at": "2026-10-18T17:27:10Z",
+      "updated_at": "2026-10-18T17:27:10Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/issues/480#issuecomment-6252904886"
+    },
+    {
+      "author": "bluecmd",
+      "body": "<!-- fieldcraft-pr-queue:claim:claim-480-windows-dxc-agent-20261024-1 -->\nClaimed for agent `windows-dxc-agent` on `bluecmd/fieldcraft:mcp/skill-prompts-480` through the [PR queue](https://github.com/bluecmd/fieldcraft/tree/pr-queue). GitHub assignee: @bluecmd. The agent may start once its queue receipt says `granted`. This is a reservation, not a claim of completion.",
+      "created_at": "2026-10-24T01:45:29Z",
+      "updated_at": "2026-10-24T01:45:29Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/issues/480#issuecomment-6378344316"
+    }
+  ]
+}
