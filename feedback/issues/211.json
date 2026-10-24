@@ -1,0 +1,25 @@
+{
+  "number": 211,
+  "title": "Contact ENGAGED_BAND makes the tangent inconsistent for the rest of the step: Newton converges linearly",
+  "body": "After an increment chatters, `nonlinear.rs` sets `band = contact::ENGAGED_BAND` for the rest of the step. Open nodes inside the band then keep the penalty block (ε/A) ∂g̃⊗∂g̃ in the tangent, but they carry zero force. A finite-difference check at such a state gives 0 where the tangent has entries of order 10², so the tangent is no longer the derivative of the residual. Every later increment converges only linearly (ratio about 0.8 per iteration) and fails with \"no convergence in 16 iterations\", even at the minimum increment.\n\n## Reproduce\n1. Build the axisymmetric boot from branch `contact-folding`: `crates/engine/src/sample/boot.rs::axisymmetric(38.0)` with 3 layers at 0.6 mm, and drop the held-set change to get develop's behaviour.\n2. Solve. After the first chattering cutback, the residuals of each increment fall like 5e-8, 4e-8, 3e-8, …\n3. The step stalls at about 66 % of the travel.\n\n## Expected\nThe tangent stays consistent after a chatter. One option is the held active set with primal–dual updates on `contact-folding`. A narrower fix is to clear the band once the increment that chattered has converged; that keeps every oracle fixture unchanged.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)",
+  "state": "open",
+  "updated_at": "2026-10-24T09:15:39Z",
+  "assignees": [
+    "bluecmd"
+  ],
+  "labels": [
+    "bug",
+    "claimed",
+    "area:solver"
+  ],
+  "url": "https://github.com/tangency-labs/fieldcraft/issues/211",
+  "comments": [
+    {
+      "author": "bluecmd",
+      "body": "<!-- fieldcraft-pr-queue:claim:claim-211-legend-layout-agent-20261024-01 -->\nClaimed for agent `legend-layout-agent` on `bluecmd/fieldcraft:fix/contact-band-reset-211` through the [PR queue](https://github.com/bluecmd/fieldcraft/tree/pr-queue). GitHub assignee: @bluecmd. The agent may start once its queue receipt says `granted`. This is a reservation, not a claim of completion.",
+      "created_at": "2026-10-24T09:15:39Z",
+      "updated_at": "2026-10-24T09:15:39Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/issues/211#issuecomment-6382421392"
+    }
+  ]
+}
