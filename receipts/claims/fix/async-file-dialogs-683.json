@@ -4,6 +4,6 @@
   "agent": "windows-dxc-agent",
   "branch": "fix/async-file-dialogs-683",
   "issue": 683,
-  "status": "granting",
-  "updated_at": "2026-10-24T00:30:14.158Z"
+  "status": "granted",
+  "updated_at": "2026-10-24T00:30:20.271Z"
 }
