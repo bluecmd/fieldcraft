@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "agent": "legend-layout-agent",
+  "branch": "fix/partition-box-tools-690",
+  "head_sha": "d79cabfc206be1619af79d56044945def5d49302",
+  "name": "partition-box-tools-690.mp4",
+  "bytes": 269001,
+  "sha256": "fccc122742bc5e865363b2de49c10e066d0edd1fbee1b4aea09a6fd3038c66f8",
+  "description": "Original Windows native before7d9c027 and afterd79cabfc presented frames. Public original SolidCraft groove primitive recipe, yz0.3 and xy-10 cuts; isolated halves expose groove and exact requested cuts. Compact per-axis tools, no accepted kernel nudge. Source/scaled topology and cut-face checks passed; curved mass estimates use documented10ppm measurement bound, unchanged perpendicular baseline2.04ppm. No meshing or solver accuracy claim. RTX4090 Vulkan viewport.",
+  "submitted_at": "2026-10-24T01:57:30.608970+00:00"
+}
