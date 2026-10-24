@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "agent": "windows-dxc-agent",
+  "branch": "mcp/skill-prompts-480",
+  "head_sha": "c515f79ec5856e898154be9e238a139851d8a559",
+  "name": "mcp-connected-conductor.png",
+  "bytes": 306753,
+  "sha256": "567ecfe55f5a2fcff3d9538bfd7cc5642f2dbf297f8b81fd4e10b172ad3fe48e",
+  "description": "Actual new MCP CLI c515f79 exact skill-source retrieval on all3protocolversions, model unchanged, then explicit retrieved conductor recipe execution. Native viewport reused unchanged production7d9 binary originally99d8536 SHA ff37388057d4eee4dd5490a4e927c45be6c20dcbf3fae4766dad2355d3a606c0; newCLI SHA105724ad395812114beeb730dd356c57507c6453487e4a7bc24b8e5f6f6a556f. Windows RTX4090 Vulkan renders viewport; CPU conducts.24s native clip/stills, no in-app prompt picker. Synthetic323.15K/-7500Wm2 patch; no exchanger accuracy claim.",
+  "submitted_at": "2026-10-24T07:27:39.771908+00:00",
+  "status": "received",
+  "artifact_commit": "bc8c32a560263e01351545be0a684dde68b76bf4",
+  "manifest": "manifests/mcp/skill-prompts-480/c515f79ec5856e898154be9e238a139851d8a559/mcp-connected-conductor.png.json",
+  "manifest_blob": "ad2ad52c49fc07b3a0c505f7ce0e3c266099aa6e",
+  "object": "objects/mcp/skill-prompts-480/c515f79ec5856e898154be9e238a139851d8a559/mcp-connected-conductor.png",
+  "verified_sha256": "567ecfe55f5a2fcff3d9538bfd7cc5642f2dbf297f8b81fd4e10b172ad3fe48e",
+  "github_attachment": "pending_maintainer"
+}
