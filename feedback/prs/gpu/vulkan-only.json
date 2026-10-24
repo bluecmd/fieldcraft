@@ -1,0 +1,193 @@
+{
+  "number": 713,
+  "branch": "gpu/vulkan-only",
+  "head_sha": "337ee655330a251c60e0e4fe6155e800f7c7561f",
+  "state": "open",
+  "merged": false,
+  "draft": false,
+  "title": "GPU: require Vulkan for native rendering and compute",
+  "body": "Closes #712. Native rendering and GPU compute now use Vulkan exclusively, following the owner decision to retire D3D support. #561 and #708 are closed as superseded.\n\nThe desktop viewport, headless pictures, fluid solver and mesh GPU device share the Vulkan-only selection policy. `WGPU_BACKEND=dx12`, `metal` or `gl` returns an actionable Vulkan error; mixed backend lists can only select Vulkan. Headless automatic rendering retains its CPU fallback, and strict hardware/software requests still require the requested Vulkan tier. The shared Vulkan instance and solver device/pipeline reuse remain intact.\n\nRemove native DX12/Metal/GL features, DXC/FXC compiler handling and the GL fallback. Disable egui-wgpu defaults and use eframe's `wgpu_no_default_features` so dependency feature unification cannot silently restore those native backends. Browser dependencies explicitly retain WebGPU/WebGL and wasm handle support. Apple targets explicitly enable Vulkan portability. Linux package metadata now requires the Vulkan loader rather than accepting EGL as an alternative. Update support docs, contributor/agent guidance and the roadmap; preserve historical Metal measurements labelled as historical.\n\n**Platform impact:** the native viewport requires Vulkan. The macOS package does not bundle a Vulkan portability implementation; stock macOS without a separate installation cannot open the native viewport. CPU CLI solves and CPU snapshots remain available. This path needs macOS runtime verification before release.\n\nWGSL instructions and solver numerics are unchanged; the shader edit is a comment cleanup. This does not implement fan/porous zones, buffer splitting or two-fluid coupling.\n\n## Validation\n\n- `cargo check -p fieldcraft -p fieldcraft-gpu -p fieldcraft-lbm-gpu`; native app/CLI builds: pass.\n- Normal `fieldcraft`, `fieldcraft-gpu`, `fieldcraft-lbm-gpu`, `fieldcraft-mesh-gpu` and `fieldcraft-ui-egui` suites on software Vulkan with `FIELDCRAFT_REQUIRE_GPU=1`: pass, including 22 fluid verification cases, mesh CPU/GPU agreement, 186 UI tests and doc tests. CLI tests: 3 pass (selected with the native app packages to keep the same unified dependency features).\n- Added policy regressions: compiled native backends are exactly Vulkan; overrides cannot enable another backend; instance reuse remains intact. All five policy tests pass with obsolete `WGPU_DX12_COMPILER=staticdxc` set.\n- Targeted `cargo clippy --all-targets -- -D warnings` for all six touched crates/packages: pass (`fieldcraft`, `fieldcraft-cli`, `fieldcraft-web`, `fieldcraft-gpu`, `fieldcraft-lbm-gpu`, `fieldcraft-ui-egui`).\n- Targeted wasm check for the web app, GPU, fluid GPU and UI crates: pass. Windows MSVC cross-check for GPU/fluid GPU: pass. Linux/Windows/macOS feature graphs show only Vulkan (plus explicit Apple Vulkan portability); the web graph retains WebGPU/WebGL.\n- Native Xvfb window: reports Vulkan, completes the heated-flow GPU solve and captures the results view with the obsolete DXC override set. DX12-only desktop startup is refused; CLI CPU/auto snapshots still work under that override, while a strict software-GPU snapshot refuses it. The Xvfb run uses process-local library paths for this host's Homebrew runtime.\n- `cargo fmt --all --check`, `git diff --check`, `cargo xtask assets` (377 attributed files), `layers` (23 crates) and `unit-factors`: pass.\n\n## Known limitations\n\n- No hardware GPU is available on this host. The native window and GPU solve smoke checks use Mesa lavapipe/llvmpipe, LLVM 21.1.8, through Vulkan. Windows validation is cross-compilation and feature-graph inspection; no Windows runtime or hardware performance claim is made.\n- macOS Vulkan portability is enabled in the feature graph but has not been built or run here. Loader/driver installation is external; no MoltenVK distribution or automatic setup is added.\n- The heated-flow sample is only a path smoke test: a 45 s transient over a held-temperature bracket, not a steady or coupled exchanger validation. Its existing compressibility warning remains visible. No new physical-accuracy or release-completeness claim is made.\n- Ignored heavy benchmarks and the full CI gate are left to upstream CI; no local `cargo xtask ci`, workspace clippy or oracle regeneration was run because numerical behavior is unchanged.\n",
+  "updated_at": "2026-10-24T00:18:24Z",
+  "url": "https://github.com/tangency-labs/fieldcraft/pull/713",
+  "comments": [],
+  "reviews": [],
+  "inline_comments": [],
+  "checks": [
+    {
+      "id": 120722437465,
+      "name": "cargo xtask ci",
+      "status": "in_progress",
+      "conclusion": null,
+      "started_at": "2026-10-24T00:18:45Z",
+      "completed_at": null,
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40044279939/job/120722437465",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120722437465/annotations"
+      }
+    },
+    {
+      "id": 120722437452,
+      "name": "cargo xtask oracle",
+      "status": "in_progress",
+      "conclusion": null,
+      "started_at": "2026-10-24T00:18:45Z",
+      "completed_at": null,
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40044279939/job/120722437452",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120722437452/annotations"
+      }
+    },
+    {
+      "id": 120722437292,
+      "name": "cargo xtask test --heavy",
+      "status": "in_progress",
+      "conclusion": null,
+      "started_at": "2026-10-24T00:18:45Z",
+      "completed_at": null,
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40044279939/job/120722437292",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120722437292/annotations"
+      }
+    },
+    {
+      "id": 120722277976,
+      "name": "Windows app tests",
+      "status": "completed",
+      "conclusion": "skipped",
+      "started_at": "2026-10-24T00:18:01Z",
+      "completed_at": "2026-10-24T00:18:01Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40044279939/job/120722277976",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120722277976/annotations"
+      }
+    },
+    {
+      "id": 120722277832,
+      "name": "Claim bot",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-24T00:18:08Z",
+      "completed_at": "2026-10-24T00:18:17Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40044279916/job/120722277832",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120722277832/annotations"
+      }
+    },
+    {
+      "id": 120722277635,
+      "name": "cargo xtask oracle (macOS)",
+      "status": "completed",
+      "conclusion": "skipped",
+      "started_at": "2026-10-24T00:18:01Z",
+      "completed_at": "2026-10-24T00:18:01Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40044279939/job/120722277635",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120722277635/annotations"
+      }
+    },
+    {
+      "id": 120722277121,
+      "name": "Triage bot",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-24T00:18:15Z",
+      "completed_at": "2026-10-24T00:18:28Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40044279862/job/120722277121",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120722277121/annotations"
+      }
+    },
+    {
+      "id": 120722277022,
+      "name": "Dependency licences, advisories and sources",
+      "status": "in_progress",
+      "conclusion": null,
+      "started_at": "2026-10-24T00:18:09Z",
+      "completed_at": null,
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40044279939/job/120722277022",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120722277022/annotations"
+      }
+    },
+    {
+      "id": 120722276970,
+      "name": "Claim and triage bot tests",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-24T00:18:09Z",
+      "completed_at": "2026-10-24T00:18:16Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40044279939/job/120722276970",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120722276970/annotations"
+      }
+    },
+    {
+      "id": 120722276722,
+      "name": "Plan (affected crates)",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-24T00:18:08Z",
+      "completed_at": "2026-10-24T00:18:37Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40044279939/job/120722276722",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120722276722/annotations"
+      }
+    },
+    {
+      "id": 120722276327,
+      "name": "Packaging lint",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-24T00:18:08Z",
+      "completed_at": "2026-10-24T00:18:26Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40044279903/job/120722276327",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120722276327/annotations"
+      }
+    }
+  ]
+}
