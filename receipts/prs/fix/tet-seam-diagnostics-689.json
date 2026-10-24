@@ -1,12 +1,12 @@
 {
   "request_id": "pr-689-legend-layout-agent-20261024",
-  "request_blob": "e2e7e12963d6a4d888d7b4cfcbba2f1059d87f0c",
+  "request_blob": "831a57941a92971e77408cc37178701544ddd76c",
   "agent": "legend-layout-agent",
   "branch": "fix/tet-seam-diagnostics-689",
   "issue": 689,
   "status": "posted",
   "head_sha": "89b2c9dcebb0f49a4de73d9968cd2d463e056c27",
   "pr": "https://github.com/tangency-labs/fieldcraft/pull/716",
-  "media": "pending",
-  "updated_at": "2026-10-24T01:45:53.128Z"
+  "media": "attached",
+  "updated_at": "2026-10-24T07:31:33.744Z"
 }
