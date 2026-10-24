@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "agent": "windows-dxc-agent",
+  "branch": "fix/windows-fixture-lf-555",
+  "head_sha": "20a9e0fd58119bbdec9c602f93dd87b9dcc1c5c8",
+  "name": "nastran-export.png",
+  "bytes": 242270,
+  "sha256": "a73f72a52b6bbcb54bc0ba5b9a6d54f7131b5266eaa98d924d6f5176abcb9c76",
+  "description": "Original native FieldCraft Vulkan Nastran export dialog, analytic Cantilever sample. Unchanged runtime7d9c027; issue555 attributes fix20a9e0f preserves byte-exact checkout fixtures. No commercial CAE outputs used.",
+  "submitted_at": "2026-10-24T00:20:06.438216+00:00"
+}

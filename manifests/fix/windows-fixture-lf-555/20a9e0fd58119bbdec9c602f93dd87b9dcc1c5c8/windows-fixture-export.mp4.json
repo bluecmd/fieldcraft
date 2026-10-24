@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "agent": "windows-dxc-agent",
+  "branch": "fix/windows-fixture-lf-555",
+  "head_sha": "20a9e0fd58119bbdec9c602f93dd87b9dcc1c5c8",
+  "name": "windows-fixture-export.mp4",
+  "bytes": 303793,
+  "sha256": "e1980237caf374f1242ad75e535eff9d43131eed7c9d358882b009fdb6ccb603",
+  "description": "Original native FieldCraft Vulkan recording, 25.9 s. Cantilever LS-DYNA, Nastran and Abaqus exports show unchanged runtime. Issue555 fixes checkout fixture bytes only. Runtime source7d9c027; final attributes source20a9e0f. No physical transient or solver validation claimed; original analytic geometry; captions Inter SIL OFL1.1.",
+  "submitted_at": "2026-10-24T00:20:05.596044+00:00"
+}

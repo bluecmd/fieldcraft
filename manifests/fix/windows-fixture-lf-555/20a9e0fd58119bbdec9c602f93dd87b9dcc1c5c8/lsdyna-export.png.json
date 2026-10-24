@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "agent": "windows-dxc-agent",
+  "branch": "fix/windows-fixture-lf-555",
+  "head_sha": "20a9e0fd58119bbdec9c602f93dd87b9dcc1c5c8",
+  "name": "lsdyna-export.png",
+  "bytes": 228239,
+  "sha256": "5170d0777335d7b30ec1f227e8522732ca339e2953acd1e605bc86d69e7c4cea",
+  "description": "Original native FieldCraft Vulkan LS-DYNA export dialog, analytic Cantilever sample. Unchanged runtime7d9c027; issue555 attributes fix20a9e0f preserves byte-exact checkout fixtures. No commercial CAE outputs used.",
+  "submitted_at": "2026-10-24T00:20:06.028938+00:00"
+}
