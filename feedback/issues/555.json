@@ -1,0 +1,32 @@
+{
+  "number": 555,
+  "title": "Golden decks and the signed SHA256SUMS get CRLF on a Windows checkout (core.autocrlf), failing the LS-DYNA and Nastran golden tests",
+  "body": "### Observed failure\n\nOn a Windows checkout with Git's default `core.autocrlf=true`, `cargo xtask ci` fails in `decks test lsdyna` and `decks test nastran`:\n\n```\nthread 'golden_cantilever_modes_in_cases' panicked at crates\\decks\\tests\\lsdyna.rs:207:5:\ncantilever_modes.k differs from the golden file (FIELDCRAFT_BLESS=1 rewrites it)\n```\n\nand the same for `cantilever.k`, `solids.k`, `plate.k`, with the Nastran goldens alike. The writers emit LF; the checked-out golden files are CRLF (`git ls-files --eol` reports `i/lf w/crlf`), so the byte comparison fails although the text is identical. `crates/update/tests/data/SHA256SUMS.txt` and its `.minisig` are converted the same way, which the signature check cannot survive once a test reads them from the tree.\n\n### Reproduction\n\n1. On Windows with `git config --global core.autocrlf true` (the Git for Windows default): `git clone`, `cargo test -p fieldcraft-decks`.\n2. `git ls-files --eol crates/decks/tests/lsdyna/*.k` shows `i/lf w/crlf`.\n\n### Evidence\n\nThe full `cargo xtask ci` output from our Windows run of develop (one `FAIL` per deck format, all four LS-DYNA golden tests, every other test of the crate passing). Normalising the fixtures back to LF makes the tests pass without any change to their text.\n\n### Expected behaviour\n\nThe golden tests compare what the writer produces with the committed bytes, independent of the checkout's line-ending setting; CI's nightly Windows job presumably passes because the runner's Git is configured with `autocrlf=false` (actions/checkout) — a contributor's clone is not.\n\n### Investigation\n\nThe repository has no `.gitattributes`, so Git applies the user's `autocrlf`. Pinning the byte-exact fixtures fixes it:\n\n```\n# Golden decks and signed manifests must keep their committed bytes on Windows.\ncrates/decks/tests/abaqus/*.inp text eol=lf\ncrates/decks/tests/lsdyna/*.k text eol=lf\ncrates/decks/tests/golden/nastran/*.bdf text eol=lf\ncrates/update/tests/data/SHA256SUMS.txt text eol=lf\ncrates/update/tests/data/SHA256SUMS.txt.minisig text eol=lf\n```\n\n(`* text=auto eol=lf` for the whole tree would be the stricter form; the file list above is the minimum that makes the tests pass.) Alternatively the golden comparison could normalise `\\r\\n` to `\\n` before comparing, but the signed manifest needs its exact bytes either way. Happy to open the PR.\n\n### Version and platform\n\ndevelop at 417c0c8, Windows 11 Pro 10.0.26200 x86_64, Git for Windows with `core.autocrlf=true`, rustc 1.99.1.",
+  "state": "open",
+  "updated_at": "2026-10-24T00:15:27Z",
+  "assignees": [
+    "bluecmd"
+  ],
+  "labels": [
+    "bug",
+    "claimed",
+    "area:io"
+  ],
+  "url": "https://github.com/tangency-labs/fieldcraft/issues/555",
+  "comments": [
+    {
+      "author": "jyviko",
+      "body": "Thank you @bluecmd, clear report and an easy one to miss without a Windows box. Much appreciated!",
+      "created_at": "2026-10-17T11:13:46Z",
+      "updated_at": "2026-10-17T11:13:46Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/issues/555#issuecomment-6233227383"
+    },
+    {
+      "author": "bluecmd",
+      "body": "<!-- fieldcraft-pr-queue:claim:claim-555-windows-dxc-agent-20261024-1 -->\nClaimed for agent `windows-dxc-agent` on `bluecmd/fieldcraft:fix/windows-fixture-lf-555` through the [PR queue](https://github.com/bluecmd/fieldcraft/tree/pr-queue). GitHub assignee: @bluecmd. The agent may start once its queue receipt says `granted`. This is a reservation, not a claim of completion.",
+      "created_at": "2026-10-24T00:15:27Z",
+      "updated_at": "2026-10-24T00:15:27Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/issues/555#issuecomment-6377375338"
+    }
+  ]
+}
