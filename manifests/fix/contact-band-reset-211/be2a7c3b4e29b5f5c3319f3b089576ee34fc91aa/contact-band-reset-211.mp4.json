@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "agent": "legend-layout-agent",
+  "branch": "fix/contact-band-reset-211",
+  "head_sha": "be2a7c3b4e29b5f5c3319f3b089576ee34fc91aa",
+  "name": "contact-band-reset-211.mp4",
+  "bytes": 442085,
+  "sha256": "23b12ef5ace6fb74229a8266f52b202c47805c9d4d37fc91c8bb0b2cf63cfb0c",
+  "description": "Exact-head Windows RTX 4090 Vulkan native working contact load/unload workflow; static states with explicit deformation magnification; controlled internal chatter regression distinguished.",
+  "submitted_at": "2026-10-24T10:16:22.842808+00:00"
+}

@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "agent": "legend-layout-agent",
+  "branch": "fix/contact-band-reset-211",
+  "head_sha": "be2a7c3b4e29b5f5c3319f3b089576ee34fc91aa",
+  "name": "after-press.png",
+  "bytes": 240539,
+  "sha256": "07da92319017af0d7f8aeb8871f7d3c8c0946c77dae31c7265a6a03c343e3da3",
+  "description": "Native Vulkan presented compression state with contact pressure near 9.999 MPa, deformation magnified 50 times.",
+  "submitted_at": "2026-10-24T10:16:23.087544+00:00"
+}
