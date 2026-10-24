@@ -207,13 +207,16 @@
     "title": "mesh.tet.generate rejects a SolidCraft body with \"open edge\" along a 1e-5 mm seam that a SolidCraft boolean retry left; it meshes with `weld: 1e-5`",
     "body": "### Observed failure\n\nA SolidCraft body made by an intersect that fell back to SolidCraft's tool nudge (\"Boolean retry: tool displacement 1.026462e-4 mm, rotation 2.000000e-6 rad\") will not tet-mesh with the default options:\n\n```\nerror: step 2 (mesh.tet.generate): invalid boundary surface: 3 defects;\nopen edge 2–13 at (6.11988e-5, -24.5, 9.99999) mm (only triangle 4 uses it);\nopen edge 2–26 at (7.34372e-5, -12.0001, 9.99999) mm (only triangle 10 uses it);\nopen edge 13–26 at (7.29477e-5, -12.5, 10) mm (only triangle 8 uses it)\n```\n\nThe defects lie on the top face. That face comes from two coplanar faces at z = 10, the disc's and the box's. The nudge left one of them about 1e-5 mm lower (z = 9.99999), so the top is two pieces that meet along a seam whose sides are 1e-5 mm apart.\n\nSolidCraft reports the body as fine: one shell, no error. Its own STL export of the same body is closed: every edge has exactly one opposite twin.\n\nWith `\"weld\": 1e-5` (or `\"weld_distance\": 0.001`) the same body meshes: 7 153 tet4.\n\n### Reproduction\n\nFiles (primitives only):\n- `intersect.json`: a Ø50 × 10 mm disc with a 1 mm bottom chamfer, intersected with a 30 × 30 × 10 mm box from z = 0.\n- `mesh_intersect.json` and `mesh_intersect_weld.json` (both below).\n\n1. `solidcraft-cli run intersect.json --save intersect.solidcraft` (SolidCraft 0.18.2). The Box1 feature warns \"Boolean retry: tool displacement 1.026462e-4 mm, rotation 2.000000e-6 rad\".\n2. `fieldcraft-cli run mesh_intersect.json`:\n   ```json\n   [{\"command\": \"geometry.open\", \"params\": {\"path\": \"intersect.solidcraft\"}},\n    {\"command\": \"mesh.tet.generate\", \"params\": {\"body\": \"Disc\", \"tolerance\": 0.01}}]\n   ```\n   The result is the error above.\n3. `fieldcraft-cli run mesh_intersect_weld.json` (the same with `\"weld\": 1e-5`): 7 153 tet4.\n\n### Evidence\n\n| Script | Result |\n|---|---|\n| `mesh_intersect.json` (default weld) | invalid boundary surface: 3 defects, open edges at z = 9.99999 / 10 |\n| `mesh_intersect_weld.json` (`weld: 1e-5`) | 7 153 tet4 |\n| the same with `weld: 1e-3` or `weld_distance: 0.001` | 7 153 tet4 |\n\n### Expected behaviour\n\nSolidCraft's boolean retries move faces by up to about 1e-4 mm. A body that SolidCraft builds without error, and exports closed, should either:\n- mesh with the default options, with the default weld covering that displacement (the documented default is \"twice SolidCraft's linear tolerance for a tessellated body\"); or\n- fail with a message that names the fix, for example \"open edges along a seam 1e-5 mm wide: try weld_distance ≥ 2e-5\".\n\nToday the message only lists the defects. `weld` is documented under `mesh.surface.check`, so the fix is hard to find from the error.\n\n### Investigation\n\n- The seam comes from SolidCraft's tool nudge: the tool is turned 2e-6 rad and moved 2e-6 of the size, and the result keeps that. Faces that should be coplanar end up 1e-5 to 1e-4 mm apart. In the original (private) model, the bottom face came out in pieces at z = 0 and z = 5.5e-6, with 81 open edges along the seam.\n- Related: #384 (sliver faces from a coincident partition give open edges, closed) and #507 (`geometry.stitch` for imported surfaces).\n- A second case, `join.json` / `mesh_join.json`: the same disc with a 20 × 12 × 4 mm box joined from z = 0, also nudged. It fails with 30 \"oriented inconsistently\" defects near z = 4.6e-5 to 9e-5, and `weld` does not help. SolidCraft's own STL export of that body already has 21 edges used twice in the same direction, so that case is a SolidCraft tessellation defect (the family of tangency-labs/solidcraft#2356), not FieldCraft's. It is included for completeness: `mesh_join.json`, `mesh_join_weld.json`.\n\n### Version and platform\n\n- FieldCraft develop 8b1a01e (fieldcraft-cli 0.7.0, built from source), Linux x86_64.\n- The designs were saved by SolidCraft 0.18.2 on Windows 11.\n\n<details><summary><code>intersect.json</code> and <code>mesh_intersect_weld.json</code></summary>\n\n```json\n[\n  {\"command\": \"solid.cylinder\", \"params\": {\"diameter\": 50, \"height\": 10, \"body_name\": \"Disc\"}},\n  {\"command\": \"solid.chamfer\", \"params\": {\"edges\": [[25, 0, 0]], \"distance\": 1}},\n  {\"command\": \"solid.box\", \"params\": {\"length\": 30, \"width\": 30, \"height\": 10, \"corner\": [0, -30, 0], \"operation\": \"intersect\", \"targets\": [\"Disc\"]}}\n]\n```\n\n```json\n[\n  {\"command\": \"geometry.open\", \"params\": {\"path\": \"intersect.solidcraft\"}},\n  {\"command\": \"mesh.tet.generate\", \"params\": {\"body\": \"Disc\", \"tolerance\": 0.01, \"weld\": 1e-05}}\n]\n```\n</details>\n",
     "state": "open",
-    "updated_at": "2026-10-22T13:50:04Z",
+    "updated_at": "2026-10-24T00:30:28Z",
     "labels": [
       "bug",
+      "claimed",
       "area:mesh",
       "needs-triage"
     ],
-    "assignees": [],
+    "assignees": [
+      "bluecmd"
+    ],
     "url": "https://github.com/tangency-labs/fieldcraft/issues/689"
   },
   {
@@ -275,13 +278,16 @@
     "title": "Desktop: file dialogs block the UI thread, so Wayland compositors flag FieldCraft as not responding",
     "body": "### Observed failure\nOn Hyprland (Wayland), pressing Ctrl+S opens the save chooser (`xdg-desktop-portal-gtk`) and the compositor shows an **Application Not Responding** warning for FieldCraft on top of it. Reported by @MayberryDT in a partial Omarchy / Hyprland pass on the v0.7.0 Linux tarball (#100, Intel HD Graphics 500, Vulkan).\n\n### Cause (from the code)\nThe desktop app opens its file dialogs with `rfd::FileDialog` (`apps/fieldcraft/src/main.rs`, the `dialog(...).save_file()` and open calls), which is synchronous: the call blocks the UI thread, and so the event loop, until the chooser closes. While the portal's chooser is open the window stops answering the compositor's pings, and Hyprland (like GNOME's mutter) flags the app as not responding. The web build already uses `rfd::AsyncFileDialog`.\n\n### Expected behaviour\nThe event loop keeps running while a file chooser is open: no \"not responding\" warning, the window keeps repainting, and the dialog's result is applied when it arrives. Use `rfd::AsyncFileDialog` (or run the blocking dialog off the UI thread) for open, save, save-as, import and export, with the result delivered back to the app; the dialogs stay UI-only (programmatic commands never open dialogs).\n\n### Reproduction\nLinux on Wayland (Hyprland 0.56.2 here; GNOME should show the same), `fieldcraft --sample cantilever`, press Ctrl+S, leave the chooser open for a few seconds.\n",
     "state": "open",
-    "updated_at": "2026-10-22T06:22:41Z",
+    "updated_at": "2026-10-24T00:30:19Z",
     "labels": [
       "bug",
+      "claimed",
       "area:ui",
       "needs-triage"
     ],
-    "assignees": [],
+    "assignees": [
+      "bluecmd"
+    ],
     "url": "https://github.com/tangency-labs/fieldcraft/issues/683"
   },
   {
