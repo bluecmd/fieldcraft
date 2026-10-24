@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "agent": "windows-dxc-agent",
+  "branch": "docs/modelling-skill-481",
+  "head_sha": "443160e0bbc3c6a8f8310c1366bb6e593eb6eda6",
+  "name": "heated-flow-check.png",
+  "bytes": 477786,
+  "sha256": "063fdc785a62c2c453edf2f47b86e3c709301acc47ae48975e64681c5ae37710",
+  "description": "Original native FieldCraft presented frames demonstrating four text/JSON-only skill files. Reused executable built at99d8536, production code equivalent to7d9c027; not rebuilt at docs head. Synthetic steady conductor midpoint323.15K/end rates4.5W. CPU heated-flow 5824cells, physical45s, held-wall single-fluid, density warnings15.9percent and3.5percent with half dt. Smoke/sensitivity only, no coupled or design-accuracy claim. Windows RTX4090 Vulkan viewport.",
+  "submitted_at": "2026-10-24T01:41:54.610816+00:00",
+  "status": "received",
+  "artifact_commit": "1f57cdd54b986accdcbe4b2340775abcbce77512",
+  "manifest": "manifests/docs/modelling-skill-481/443160e0bbc3c6a8f8310c1366bb6e593eb6eda6/heated-flow-check.png.json",
+  "manifest_blob": "305bee54a5e4b3a163bbdd8fecbc074d87036dc3",
+  "object": "objects/docs/modelling-skill-481/443160e0bbc3c6a8f8310c1366bb6e593eb6eda6/heated-flow-check.png",
+  "verified_sha256": "063fdc785a62c2c453edf2f47b86e3c709301acc47ae48975e64681c5ae37710",
+  "github_attachment": "pending_maintainer"
+}
