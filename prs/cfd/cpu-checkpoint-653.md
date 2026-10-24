@@ -11,7 +11,7 @@
   "base": "develop",
   "draft": false,
   "title": "CFD: checkpoint and resume complete CPU fluid state",
-  "media": "pending"
+  "media": "attached"
 }
 ---
 ## What and why
@@ -26,7 +26,28 @@ Replies report `last_checkpoint`, `resumed_from`, cadence and the checked `check
 
 ## Demonstration
 
-Native media from exact source `c3867d6cd1647171a01a84cb30c5d68af30f2fb8`: `cpu-checkpoint-653.mp4` (25 seconds), `cpu-restart-form.png`, and `cpu-restart-flow.png`. All three were transferred through ordinary-Git artifact commit `1959c0156ae59f1c1dd100ebb9cbe7d0920dbdda`; original/index byte counts and SHA-256 were verified, and the full video decoded successfully. All three retrieval receipts now say `received`, and each verified byte count/SHA-256 matches its original. GitHub attachments remain `pending_maintainer`. No media belongs to the feature branch.
+<!-- fieldcraft-attachments:start -->
+### Attached files
+
+These uploads are complete; earlier pending-upload wording below describes the original handoff.
+
+Capture/source revision: `c3867d6cd1647171a01a84cb30c5d68af30f2fb8`.
+
+**cpu-checkpoint-653.mp4**
+
+https://github.com/user-attachments/assets/cfd45ff2-1691-4d62-b4ba-6c3ed7064c9c
+
+**cpu-restart-flow.png**
+
+![cpu-restart-flow.png](https://github.com/user-attachments/assets/4ae0e3ce-cbc4-4211-be31-489ec2f1d476)
+
+**cpu-restart-form.png**
+
+![cpu-restart-form.png](https://github.com/user-attachments/assets/4ce20a3b-af85-4838-82a1-2c9b561fee45)
+
+<!-- fieldcraft-attachments:end -->
+
+Native media from exact source `c3867d6cd1647171a01a84cb30c5d68af30f2fb8`: `cpu-checkpoint-653.mp4` (25 seconds), `cpu-restart-form.png`, and `cpu-restart-flow.png`. All three were transferred through ordinary-Git artifact commit `1959c0156ae59f1c1dd100ebb9cbe7d0920dbdda`; original/index byte counts and SHA-256 were verified, and the full video decoded successfully. All three retrieval receipts now say `received`, and each verified byte count/SHA-256 matches its original. All three native GitHub attachments are verified and included below. No media belongs to the feature branch.
 
 The clip shows the actual CPU restart form, a native cancellation after checkpoint step 20,018, changed storage cadence on resume, and the completed flow with saved physical frames. This is an edited sequence of held presented app frames and accelerated playback, not a real-time solve recording. Captions quote the actual returned summary retained with the original QA record; they do not represent a separate native report panel.
 
@@ -68,7 +89,7 @@ Tested source `c3867d6cd1647171a01a84cb30c5d68af30f2fb8`, based on current mirro
 - Fresh-process CLI interruption/resume: original 64-cell case, 100,003 steps, stopped after checkpoint 1,009, then resumed with changed cadence. All 1,387,944 bytes of `results.bin` exactly match uninterrupted execution; SHA-256 `d4d05bd9410e620826b1e9350b38b8401313284e31870b09d8ec21260c033064`. Corrupted state was refused. Confined headless MCP returned a completed checkpoint without advancing and refused changed thread identity.
 - Exact-head native app: actual cancellation retained step 20,018; resume completed 1,000,003 steps, CPU 64 fluid cells, no solids, physical-end success. Forms and unobscured saved flow frames were visually reviewed. No GPU solver was exercised for this CPU-only feature.
 
-PR #725 is posted at this exact source. Latest relayed main CI, oracle and heavy jobs are in progress; Windows app and macOS oracle jobs are skipped, not passed. The full local workspace gate, oracle and annotated heavy suites were not run. An initial build encountered a transient IO doc-test API mismatch while implementation was still changing; the frozen combined suite subsequently passed. No existing renderer-race code or test was changed.
+PR #725 is posted at this exact source. Latest relayed main CI, oracle and heavy jobs all completed successfully; Windows app and macOS oracle jobs are skipped, not passed. The full local workspace gate, oracle and annotated heavy suites were not run. An initial build encountered a transient IO doc-test API mismatch while implementation was still changing; the frozen combined suite subsequently passed. No existing renderer-race code or test was changed.
 
 ## Known limitations
 
