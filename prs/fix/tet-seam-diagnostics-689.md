@@ -11,7 +11,7 @@
   "base": "develop",
   "draft": false,
   "title": "mesh: explain explicit welding for tiny tetrahedral boundary seams",
-  "media": "pending"
+  "media": "attached"
 }
 ---
 ## What and why
@@ -21,6 +21,27 @@ Closes #689. When tet meshing refuses an open boundary, its error now preserves 
 The tet command reference and weld form help explain the two controls and their combined distance. The existing default remains twice the kernel linear tolerance for a tessellated design body; a boolean retry can displace faces farther than that. Boundary validation, meshing algorithms, and default tolerances are unchanged.
 
 ## Demonstration
+
+<!-- fieldcraft-attachments:start -->
+### Attached files
+
+These uploads are complete; earlier pending-upload wording below describes the original handoff.
+
+Capture/source revision: `89b2c9dcebb0f49a4de73d9968cd2d463e056c27`.
+
+**tet-seam-diagnostics-689.mp4**
+
+https://github.com/user-attachments/assets/3f08c3b1-72fa-4597-98e9-7a9846d4caf6
+
+**after-seam-refused.png**
+
+![after-seam-refused.png](https://github.com/user-attachments/assets/9ee76875-79de-49db-82f4-c392e7e27b3c)
+
+**after-weld-meshed.png**
+
+![after-weld-meshed.png](https://github.com/user-attachments/assets/d0289c2d-c0d4-4759-888a-1d5df917d397)
+
+<!-- fieldcraft-attachments:end -->
 
 A 34.0-second captioned recording uses real native presented frames on Windows, NVIDIA RTX 4090, Vulkan. It shows the old open-edge-only error, readable new guidance in the full form, the visible numeric Weld distance entry, the successful mesh, and refusal of a separate surface with a reversed face. No offscreen frames or private CAD model were used.
 
@@ -44,11 +65,11 @@ The first and last mesh commands intentionally fail; execute them separately to 
 | Case | Observed result |
 |---|---|
 | Default, 0.00001 mm seam | 8 open-edge defects, 0 nodes/elements; new inspection/weld guidance visible in form |
-| Explicit 0.00002 mm weld distance | 219 tet4, 74 nodes, all 219 certified valid; volume 1000.0003293172924 mm³ |
+| Explicit 0.00002 mm weld distance | 219 tet4, 74 nodes, all 219 certified valid; volume 1000.0003293172924 mmÂ³ |
 | Same explicit retry on unchanged baseline | Identical counts and volume |
 | Reversed-face control, explicit weld | 4 orientation defects; existing 219-element mesh retained |
 
-Recording: `tet-seam-diagnostics-689.mp4` (H.264, 1280×1098, 10 fps, 511306 bytes). Stills: `after-seam-refused.png`, `after-weld-meshed.png`. The before frame comes from base `7d9c027d71b2c1ea3395e2552e95f0455a7244db`; all after frames come from tested head `89b2c9dcebb0f49a4de73d9968cd2d463e056c27`. Original captures, recipes, and run reports remain outside feature history. All three files were transferred through ordinary Git in artifact commit `efdb77ce57b303400dbbc3a652d57afa0d9c74ec`. Their receipts under `receipts/artifacts/fix/tet-seam-diagnostics-689/89b2c9dcebb0f49a4de73d9968cd2d463e056c27/` are `received`, with verified byte counts and SHA-256 values matching the originals. Each still says `github_attachment: pending_maintainer`; actual GitHub attachments are pending and `media=pending` is intentional.
+Recording: `tet-seam-diagnostics-689.mp4` (H.264, 1280Ã—1098, 10 fps, 511306 bytes). Stills: `after-seam-refused.png`, `after-weld-meshed.png`. The before frame comes from base `7d9c027d71b2c1ea3395e2552e95f0455a7244db`; all after frames come from tested head `89b2c9dcebb0f49a4de73d9968cd2d463e056c27`. Original captures, recipes, and run reports remain outside feature history. All three files were transferred through ordinary Git in artifact commit `efdb77ce57b303400dbbc3a652d57afa0d9c74ec`. Their receipts under `receipts/artifacts/fix/tet-seam-diagnostics-689/89b2c9dcebb0f49a4de73d9968cd2d463e056c27/` are `received`, with verified byte counts and SHA-256 values matching the originals. All three receipts now say `github_attachment: attached`; their verified native GitHub URLs are preserved above and `media=attached` records the completed handoff.
 
 ## Validation
 
@@ -67,4 +88,4 @@ Relayed upstream results for this exact head: `cargo xtask ci`, `cargo xtask ora
 
 This improves actionable refusal and option discoverability. It does not measure a safe weld distance, automatically heal an input, enlarge the default tolerance, or repair inconsistent face orientation. The original issue's SolidCraft boolean-nudge design and reported 7153-tet mesh were not rerun; the independently generated seam exercises the failure/retry class without private geometry.
 
-Three pre-existing Windows failures on unchanged base were excluded from the broad local engine run: `bug_report::tests::a_long_session_and_the_model_are_attachments` (JSON-escaped home redaction), `cmd::file::tests::every_migrated_journal_replays_to_its_migrated_model` (imperial-density last bit), and `cmd::render::tests::labels_and_command_lines_read_well` (path separator). They are not addressed by this change. Heavy/wasm/oracle execution remains with upstream CI as applicable. The media still requires maintainer attachment URLs.
+Three pre-existing Windows failures on unchanged base were excluded from the broad local engine run: `bug_report::tests::a_long_session_and_the_model_are_attachments` (JSON-escaped home redaction), `cmd::file::tests::every_migrated_journal_replays_to_its_migrated_model` (imperial-density last bit), and `cmd::render::tests::labels_and_command_lines_read_well` (path separator). They are not addressed by this change. Heavy/wasm/oracle execution remains with upstream CI as applicable. The video and stills are attached at the verified native GitHub URLs above.

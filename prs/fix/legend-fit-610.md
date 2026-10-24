@@ -11,7 +11,7 @@
   "base": "develop",
   "draft": false,
   "title": "Results: keep dense legends readable above navigation",
-  "media": "pending"
+  "media": "attached"
 }
 ---
 ## What and why
@@ -22,11 +22,34 @@ The final feature history changes only three UI source files. As requested in re
 
 ## Demonstration and provenance
 
-A 32-second native app recording shows the failure, the corrected 960 by 600 layout, clicks on Max (node 23) and Min (node 127), expansion to 1400 by 900, and a return to the smaller window. The original Cantilever sample is a small-strain linear-elastic static solve, with 24 stress bands clamped to 0–10 MPa and an extra over-limit colour. This is a UI resize demonstration, not a physical transient. The true maximum (151.0 MPa) and clamp maximum (10.00 MPa) stay distinct. The small legend is 316 points tall; the larger view restores its natural 507-point height.
+<!-- fieldcraft-attachments:start -->
+### Attached files
 
-The recording and two stills were received through the separate ordinary-Git `artifact-queue` inbox in commit `bfb109cf307cb7109d55e8743276c272fc01322c`. Those verified receipts are scoped to original head `252fa873b5ed4cfc1a0e5714f56806b47b9a9f00`, for `legend-fit-610.mp4`, `after-small.png` and `after-max.png`. Their status is `received`, with file sizes and SHA-256 hashes verified, and `github_attachment: pending_maintainer`. Receipt does not mean GitHub attachment upload is complete.
+These uploads are complete; earlier pending-upload wording below describes the original handoff.
 
-The original QA report below pins implementation commit `37c9ce78158e3a3a524c99c0dc3b1f38258b0521`; that UI source was published in `252fa873…` and remains unchanged in the new housekeeping head. The existing recording is retained with that original provenance; it is not claimed as a new capture of the rewritten head. There is no media in the feature history.
+Capture/source revision: `252fa873b5ed4cfc1a0e5714f56806b47b9a9f00`.
+
+Original recording, retained with its original source pin. A direct comparison confirms the current housekeeping head has identical crates/ui-egui sources; no new capture of the rewritten history is claimed.
+
+**legend-fit-610.mp4**
+
+https://github.com/user-attachments/assets/54272944-e289-4632-945d-65712a1ba791
+
+**after-max.png**
+
+![after-max.png](https://github.com/user-attachments/assets/ec332b54-d66e-4a89-a09a-e28c030fd760)
+
+**after-small.png**
+
+![after-small.png](https://github.com/user-attachments/assets/aec28eca-13b7-4ee4-b07f-77cf45a7ce50)
+
+<!-- fieldcraft-attachments:end -->
+
+A 32-second native app recording shows the failure, the corrected 960 by 600 layout, clicks on Max (node 23) and Min (node 127), expansion to 1400 by 900, and a return to the smaller window. The original Cantilever sample is a small-strain linear-elastic static solve, with 24 stress bands clamped to 0â€“10 MPa and an extra over-limit colour. This is a UI resize demonstration, not a physical transient. The true maximum (151.0 MPa) and clamp maximum (10.00 MPa) stay distinct. The small legend is 316 points tall; the larger view restores its natural 507-point height.
+
+The recording and two stills were received through the separate ordinary-Git `artifact-queue` inbox in commit `bfb109cf307cb7109d55e8743276c272fc01322c`. Those verified receipts are scoped to original head `252fa873b5ed4cfc1a0e5714f56806b47b9a9f00`, for `legend-fit-610.mp4`, `after-small.png` and `after-max.png`. Their status is `received`, with file sizes and SHA-256 hashes verified, and `github_attachment: attached`. The verified native GitHub URLs and maintainer historical-capture applicability review are preserved above.
+
+The original QA report below pins implementation commit `37c9ce78158e3a3a524c99c0dc3b1f38258b0521`; that UI source was published in `252fa873â€¦` and remains unchanged in the new housekeeping head. The existing recording is retained with that original provenance; it is not claimed as a new capture of the rewritten head. There is no media in the feature history.
 
 The native capture used Windows, the Vulkan renderer and an NVIDIA GeForce RTX 4090. All sample geometry and captures are original FieldCraft work. Captions use the repository's Inter font (SIL OFL 1.1). Encoding is H.264, 1400 by 948, 10 fps; smaller app windows are padded without rescaling their pixels.
 
@@ -229,9 +252,9 @@ Click each Max/Min line to centre its node and show the probe. Resize to 1400 by
 - New housekeeping head: `cargo check -p fieldcraft-ui-egui`, `cargo clippy -p fieldcraft-ui-egui --all-targets -- -D warnings`, `cargo fmt --all -- --check` and `git diff --check` passed.
 - Comparing the old and new heads gives no diff under `crates/ui-egui`; only the roadmap/QA housekeeping was removed. The native app build and demonstration were performed on the original implementation, not repeated for this housekeeping rewrite.
 - Regression coverage checks small/large/small resizing, selection/navigation clearance, unchanged band count and over-limit colour, full-size Max/Min targets, focus/probe behavior, and non-overlapping numeric tick glyphs with and without a stale-result warning.
-- Current-head upstream CI at `1d4ed083c09f25cc2027e9cc8a57d03b2637a825` passed: `cargo xtask ci` completed at `2026-10-23T23:42:28Z` (job `120711077592`); dependency checks, bot tests and plan also passed. Heavy tests, oracle, Windows app tests and the macOS oracle were skipped, not passed. Historical CI at the original `252fa873…` head separately passed its main gate rerun, heavy tests and oracle.
+- Current-head upstream CI at `1d4ed083c09f25cc2027e9cc8a57d03b2637a825` passed: `cargo xtask ci` completed at `2026-10-23T23:42:28Z` (job `120711077592`); dependency checks, bot tests and plan also passed. Heavy tests, oracle, Windows app tests and the macOS oracle were skipped, not passed. Historical CI at the original `252fa873â€¦` head separately passed its main gate rerun, heavy tests and oracle.
 - The first old-head CI attempt failed only an unchanged engine cancellation timing check: 5.792319807 seconds exceeded its existing 5-second limit. Its rerun passed at the same old source head; no solver polling, cancellation deadline or test was changed to obtain that result.
 
 ## Known limitations
 
-Native sizes below the supported 960 by 600 minimum were not demonstrated. Below the fixed text plus one pixel per band, the legend can still reach navigation; the supported minimum case is covered above. The full workspace gate was not run locally. The already-received media remains applicable because the UI source is unchanged; no duplicate upload is needed. GitHub video/still attachment upload remains pending and is handled by the maintainer.
+Native sizes below the supported 960 by 600 minimum were not demonstrated. Below the fixed text plus one pixel per band, the legend can still reach navigation; the supported minimum case is covered above. The full workspace gate was not run locally. The already-received media remains applicable because the UI source is unchanged; no duplicate upload is needed. The video and both stills are attached at the verified native GitHub URLs above; their original capture revision and maintainer applicability review remain explicit.
