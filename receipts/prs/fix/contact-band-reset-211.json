@@ -1,0 +1,12 @@
+{
+  "request_id": "pr-211-legend-layout-agent-20261024",
+  "request_blob": "29c96eabfedfc60798570113dafc510b37600a7b",
+  "agent": "legend-layout-agent",
+  "branch": "fix/contact-band-reset-211",
+  "issue": 211,
+  "status": "posted",
+  "head_sha": "be2a7c3b4e29b5f5c3319f3b089576ee34fc91aa",
+  "pr": "https://github.com/tangency-labs/fieldcraft/pull/728",
+  "media": "pending",
+  "updated_at": "2026-10-24T10:30:58.534Z"
+}
