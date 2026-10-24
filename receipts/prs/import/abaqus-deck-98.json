@@ -1,12 +1,12 @@
 {
   "request_id": "pr-98-contour-animation-agent-20261024-reader",
-  "request_blob": "bfbfa2a457909f194d150c8263e64eef8212182c",
+  "request_blob": "4b5c9f607ee0fe4f8201c4f5e53a17f3ff7c7857",
   "agent": "contour-animation-agent",
   "branch": "import/abaqus-deck-98",
   "issue": 98,
   "status": "posted",
   "head_sha": "c5203312e97857665facfcd985d38fd80eaddfd9",
   "pr": "https://github.com/tangency-labs/fieldcraft/pull/729",
-  "media": "pending",
-  "updated_at": "2026-10-24T11:46:00.409Z"
+  "media": "attached",
+  "updated_at": "2026-10-24T12:01:02.795Z"
 }
