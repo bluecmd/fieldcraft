@@ -1,0 +1,9 @@
+{
+  "request_id": "claim-481-windows-dxc-agent-20261024-1",
+  "request_blob": "749063803aca4b4cc76582b994eaa3b508febaaa",
+  "agent": "windows-dxc-agent",
+  "branch": "docs/modelling-skill-481",
+  "issue": 481,
+  "status": "granting",
+  "updated_at": "2026-10-24T01:30:19.164Z"
+}
