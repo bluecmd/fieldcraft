@@ -1,14 +1,46 @@
 {
- "title": "Cook's membrane, nearly incompressible neo-Hookean, large load (plane strain)",
+ "title": "Cook’s membrane: finite-strain nearly incompressible neo-Hookean, prescribed hybrid hex8 meshes",
  "kind": "benchmark",
- "source": "R. D. Cook, Improved two-dimensional finite element, J. Struct. Div. ASCE 100(ST9):1851–1863, 1974 (the tapered panel (0, 0), (48, 44), (48, 60), (0, 44), clamped on x = 0, shear on x = 48); finite-strain versions with a neo-Hookean material are published by J. C. Simo, F. Armero, IJNME 33:1413–1449, 1992; the values to compare with are to be transcribed from the paper",
- "status": "pending",
- "requires": "the published finite-strain reference value, transcribed from the paper with its load and material constants",
+ "source": "C. D. Foster and T. Mohammad Nejad, Trilinear Hexahedra with Integral-Averaged Volumes for Nearly Incompressible Nonlinear Deformation, Engineering 7:765–788 (2015), DOI 10.4236/eng.2015.711067, https://content.scirp.org/pdf/eng_2015113016463684.pdf: pp. 773 Eqs. (57)–(59), 775 §5.2, 778 Fig. 8 and Table 4 (authors’ J averaged in reference configuration column), 779 Fig. 9. Plane strain, thickness 1 mm; μ₀ = 0.8 and K = 4000 N/mm²; total upward dead force 1 N. Each value belongs to its stated regular mapped trilinear mesh, not a continuum limit.",
  "quantities": [
   {
-   "id": "vC",
-   "quantity": "vertical displacement of the top corner C (48, 60)",
-   "value": null
+   "id": "vC4",
+   "quantity": "vertical displacement of C (48, 60, 0), mm, 4 × 4 × 1 hybrid hex8",
+   "measure": {
+    "from": "tip4",
+    "pointer": "/nodes/0/displacement/1"
+   },
+   "value": 6.032,
+   "tolerance": {
+    "relative": 0.005
+   },
+   "reason": "0.5% is the comparison policy proposed in issue #83 for independent implementations, retained without fitting; it is not the paper’s uncertainty or a rounding bound. Four printed decimal places imply only ±0.00005 mm rounding. This compares the prescribed mesh and reference-volume mean-dilatation formulation; the README separates mesh refinement, our solver sensitivity and the source’s unreported numerical settings."
+  },
+  {
+   "id": "vC8",
+   "quantity": "vertical displacement of C (48, 60, 0), mm, 8 × 8 × 1 hybrid hex8",
+   "measure": {
+    "from": "tip8",
+    "pointer": "/nodes/0/displacement/1"
+   },
+   "value": 6.6318,
+   "tolerance": {
+    "relative": 0.005
+   },
+   "reason": "0.5% is the comparison policy proposed in issue #83 for independent implementations, retained without fitting; it is not the paper’s uncertainty or a rounding bound. Four printed decimal places imply only ±0.00005 mm rounding. This compares the prescribed mesh and reference-volume mean-dilatation formulation; the README separates mesh refinement, our solver sensitivity and the source’s unreported numerical settings."
+  },
+  {
+   "id": "vC16",
+   "quantity": "vertical displacement of C (48, 60, 0), mm, 16 × 16 × 1 hybrid hex8",
+   "measure": {
+    "from": "tip16",
+    "pointer": "/nodes/0/displacement/1"
+   },
+   "value": 6.8279,
+   "tolerance": {
+    "relative": 0.005
+   },
+   "reason": "0.5% is the comparison policy proposed in issue #83 for independent implementations, retained without fitting; it is not the paper’s uncertainty or a rounding bound. Four printed decimal places imply only ±0.00005 mm rounding. This compares the prescribed mesh and reference-volume mean-dilatation formulation; the README separates mesh refinement, our solver sensitivity and the source’s unreported numerical settings."
   }
  ]
 }

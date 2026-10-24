@@ -1208,7 +1208,9 @@ update are written from (cited again in the module docs):
 - Verification (`crates/solver/tests/hybrid.rs`, analytic): a block in uniaxial strain at
   ν = 0.4999 (exact), Lamé's thick cylinder in plane strain at ν = 0.4999 (hex20 1e-5,
   tet10 1e-3, hex8 3e-3 relative error in the bore displacement, where the displacement hex8
-  is 80 % too stiff). Cook's membrane is a published benchmark, not part of the analytic gate.
+  is 80 % too stiff). Cook's membrane is checked separately against the authors' reference-volume
+  mean-dilatation hex8 column in Foster and Mohammad Nejad (2015), Table 4, p. 778 (see Part M).
+  These are prescribed-mesh benchmark results, not an analytic or continuum-limit gate.
 
 ## Part M: Nonlinear static analysis (finite strain), as implemented
 
@@ -1233,9 +1235,16 @@ update are written from (cited again in the module docs):
 - Symmetric eigen-decomposition for the logarithmic strain: G. H. Golub, C. F. Van Loan,
   *Matrix Computations*, 4th ed., Johns Hopkins 2013, §8.5 (cyclic Jacobi).
 - Verification references: the elastica, K. E. Bisshopp, D. C. Drucker, Q. Appl. Math.
-  3(3):272–275, 1945, with K. Mattiasson, IJNME 17(1):145–153, 1981; Cook's membrane (pending its
-  transcribed finite-strain values), R. D. Cook, J. Struct. Div. ASCE 100(ST9):1851–1863, 1974,
-  and J. C. Simo, F. Armero, IJNME 33:1413–1449, 1992; tube inflation, R. S. Rivlin, Phil. Trans. R. Soc. A
+  3(3):272–275, 1945, with K. Mattiasson, IJNME 17(1):145–153, 1981; Cook's membrane geometry,
+  R. D. Cook, J. Struct. Div. ASCE 100(ST9):1851–1863, 1974, with the finite-strain benchmark of
+  C. D. Foster and T. Mohammad Nejad, *Trilinear Hexahedra with Integral-Averaged Volumes for
+  Nearly Incompressible Nonlinear Deformation*, Engineering 7:765–788, 2015,
+  DOI [10.4236/eng.2015.711067](https://doi.org/10.4236/eng.2015.711067), Eqs. (57)–(59), §5.2,
+  Figs. 8–9 and Table 4. Its decoupled isochoric neo-Hookean plus quadratic `(J−1)²` energy
+  matches ours; the oracle compares the authors' reference-volume J-averaged 4×4, 8×8 and
+  16×16 trilinear meshes, excluding the commercial-code column. The 0.5% independent-code
+  comparison policy is not the source's rounding uncertainty; the case README records the
+  continuing mesh dependence and solver sensitivity. Tube inflation: R. S. Rivlin, Phil. Trans. R. Soc. A
   242:173–195, 1949, and R. W. Ogden, *Non-Linear Elastic Deformations*, Dover 1997.
 
 ## Part N: Implicit plasticity (finite and small strain), as implemented

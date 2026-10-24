@@ -1,0 +1,17 @@
+{
+  "note": "FieldCraft's accepted results for this case, written by `cargo xtask oracle --bless`. A result outside its band fails CI.",
+  "values": {
+    "vC16": {
+      "band": 6.828483038210331e-9,
+      "value": 6.828483038210331
+    },
+    "vC4": {
+      "band": 6.032603352817066e-9,
+      "value": 6.032603352817065
+    },
+    "vC8": {
+      "band": 6.63233893484945e-9,
+      "value": 6.632338934849449
+    }
+  }
+}

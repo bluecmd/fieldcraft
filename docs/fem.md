@@ -420,8 +420,10 @@ differences); uniaxial stretch to λ = 2 of a neo-Hookean block in every element
 strain and axisymmetric (closed form); St Venant–Kirchhoff uniaxial stretch; the nonlinear patch
 test on a distorted mesh (all solids, hybrid ones included); a 90° rigid rotation (zero stress);
 the elastica (Bisshopp–Drucker) at P L²/(E I) = 1, 2, 5, 10 with hex20 (0.2–0.5 %); the inflation of a thick neo-Hookean tube by a follower pressure (Rivlin's closed form);
-Newton's quadratic convergence; the linear limit; a finite-strain Cook's membrane is pending
-its transcribed reference; and the failures (an element inverted by
+Newton's quadratic convergence; the linear limit; finite-strain Cook's membrane against Foster
+and Mohammad Nejad's (2015) prescribed 4×4, 8×8 and 16×16 reference-volume mean-dilatation
+hex8 results (a 0.5% comparison policy, not a continuum or printed-precision claim; see the
+case README for the five-mesh study and tighter-Newton control); and the failures (an element inverted by
 crushing stops at the minimum increment, naming it; the caps; what is refused). Plasticity
 (`crates/solver/tests/plasticity.rs`, `crates/fem/src/elastoplastic.rs`, `tests/oracle/`
 `nl-j2-uniaxial`, `j2-bauschinger`, `plastic-thick-cylinder`, `plastic-hinge-cantilever`): the
