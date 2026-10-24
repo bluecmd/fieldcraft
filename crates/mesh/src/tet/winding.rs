@@ -28,7 +28,7 @@ use crate::{Error, Result};
 
 // The same order as measure::{dihedral_sines, dihedral_cosines}.
 const EDGES: [(usize, usize); 6] = [(0, 1), (0, 2), (0, 3), (1, 2), (1, 3), (2, 3)];
-const ANGULAR_BUDGET: f64 = 1e-8; // unit-factors: radians per incident tetrahedron
+const ANGULAR_BUDGET: f64 = 1e-8; // radians per incident tetrahedron
 
 #[derive(Default)]
 struct Coverage {
