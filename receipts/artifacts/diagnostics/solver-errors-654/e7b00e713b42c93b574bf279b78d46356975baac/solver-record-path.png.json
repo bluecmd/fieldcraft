@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "agent": "contour-animation-agent",
+  "branch": "diagnostics/solver-errors-654",
+  "head_sha": "e7b00e713b42c93b574bf279b78d46356975baac",
+  "name": "solver-record-path.png",
+  "bytes": 288326,
+  "sha256": "38cbe94f2337af865159c9ab952ab2b316cbe9d1b9b1c9e1424e6acfed618816",
+  "description": "Actual native exact e7b00e713b42c93b574bf279b78d46356975baac Windows RTX4090 Vulkan.23s clip/stills show64fluidcells, steady minimum20s deliberately exceeds0.01s cap, two stops updateone reportcount2, path/buildSHA, real NVIDIA driver616.56/device_reused/scoped device+instance1/1; then ordinary0.01s physical transient adds no diagnostic. CADbox isvisualreferenceonly; obstacles[]/solids[] verified. Device limits verified inJSON, not all legible inpanel. Held frames and cut toactual native scrollstate; no realtime/flowaccuracy/exchanger claim.",
+  "submitted_at": "2026-10-24T07:36:41.618397+00:00",
+  "status": "received",
+  "artifact_commit": "a19b6203948a942649a21d5f6ea131da55d49238",
+  "manifest": "manifests/diagnostics/solver-errors-654/e7b00e713b42c93b574bf279b78d46356975baac/solver-record-path.png.json",
+  "manifest_blob": "c43db8185709ff585d49837926cb71d1dfc9394a",
+  "object": "objects/diagnostics/solver-errors-654/e7b00e713b42c93b574bf279b78d46356975baac/solver-record-path.png",
+  "verified_sha256": "38cbe94f2337af865159c9ab952ab2b316cbe9d1b9b1c9e1424e6acfed618816",
+  "github_attachment": "pending_maintainer"
+}
