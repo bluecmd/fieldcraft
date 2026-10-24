@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "agent": "contour-animation-agent",
+  "branch": "cfd/curved-cht-631",
+  "head_sha": "c3206593f8ed63d95d54e5aedbaff6e37e4efe5e",
+  "name": "curved-conjugate-631.mp4",
+  "bytes": 499982,
+  "sha256": "d4ce99bdc342ee829c0176932771ef21574580de4cd1768c696115a3c001cebc",
+  "description": "Original 23s presented native FieldCraft Vulkan clip of dimensionless Rahman-style passive conducting cylinder cavity: Re100 Pr0.71 Ri1 K5 D/L0.2, 40x40 cavity one periodic cell deep, steady iteration not a physical transient or two-fluid exchanger. App runtime7d9c027 unchanged by measurement-only headc3206593; original SolidCraftCLI0.14 geometry. Body colours sample adjacent fluid; component report gives solved solid temperatures. Sensitivity controls prevent an interface-convergence or 1percent validation claim. Captions Inter SIL OFL1.1.",
+  "submitted_at": "2026-10-24T00:37:43.722574+00:00",
+  "status": "received",
+  "artifact_commit": "7e1fc52ee20b0a9873cbb33265581d8a8bbebc26",
+  "manifest": "manifests/cfd/curved-cht-631/c3206593f8ed63d95d54e5aedbaff6e37e4efe5e/curved-conjugate-631.mp4.json",
+  "manifest_blob": "9097cb95149e06aa48cf8cae4c1939dec5e767da",
+  "object": "objects/cfd/curved-cht-631/c3206593f8ed63d95d54e5aedbaff6e37e4efe5e/curved-conjugate-631.mp4",
+  "verified_sha256": "d4ce99bdc342ee829c0176932771ef21574580de4cd1768c696115a3c001cebc",
+  "github_attachment": "pending_maintainer"
+}
