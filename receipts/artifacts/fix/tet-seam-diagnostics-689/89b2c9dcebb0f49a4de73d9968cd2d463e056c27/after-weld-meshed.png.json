@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "agent": "legend-layout-agent",
+  "branch": "fix/tet-seam-diagnostics-689",
+  "head_sha": "89b2c9dcebb0f49a4de73d9968cd2d463e056c27",
+  "name": "after-weld-meshed.png",
+  "bytes": 193150,
+  "sha256": "1751e4eecdcdbb88d7bebee84ef1fb66b4e5c823edffc0017e2a1a49cc053c3d",
+  "description": "Original presented native Vulkan frame at tested89b2c9dc. Confirmed synthetic cube seam closed by explicit0.00002mm weld distance,219validtet4 and74nodes, same geometry/counts as unchanged baseline explicit-weld result. No automatic tolerance inflation or orientation repair. Original analytic3MF geometry.",
+  "submitted_at": "2026-10-24T00:58:29.245375+00:00",
+  "status": "received",
+  "artifact_commit": "efdb77ce57b303400dbbc3a652d57afa0d9c74ec",
+  "manifest": "manifests/fix/tet-seam-diagnostics-689/89b2c9dcebb0f49a4de73d9968cd2d463e056c27/after-weld-meshed.png.json",
+  "manifest_blob": "13f75b7ff9e7e4357d39caa91624a1afdcc52f88",
+  "object": "objects/fix/tet-seam-diagnostics-689/89b2c9dcebb0f49a4de73d9968cd2d463e056c27/after-weld-meshed.png",
+  "verified_sha256": "1751e4eecdcdbb88d7bebee84ef1fb66b4e5c823edffc0017e2a1a49cc053c3d",
+  "github_attachment": "pending_maintainer"
+}
