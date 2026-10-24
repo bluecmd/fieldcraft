@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "agent": "contour-animation-agent",
+  "branch": "import/abaqus-deck-98",
+  "head_sha": "c5203312e97857665facfcd985d38fd80eaddfd9",
+  "name": "imported-beam-result.png",
+  "bytes": 224480,
+  "sha256": "e63d853e38ad8d698fa9751dc5305a46d912422df3c4ef990d81dc74ef763638",
+  "description": "Native Vulkan presented solved imported beam: explicit reconstructed CPU static analysis and von Mises contour,undeformed geometry; source/reimport peak results exactly equal.",
+  "submitted_at": "2026-10-24T11:06:13.074478+00:00"
+}

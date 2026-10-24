@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "agent": "contour-animation-agent",
+  "branch": "import/abaqus-deck-98",
+  "head_sha": "c5203312e97857665facfcd985d38fd80eaddfd9",
+  "name": "abaqus-import-98.mp4",
+  "bytes": 385743,
+  "sha256": "bbf6c0fb5fe1964176fc9c7fdb0737c23fffb6fecf46a1ab73b5a00ceaaa38bb",
+  "description": "Exact-head native Windows RTX 4090 Vulkan model-data import, unread-history report and reconstructed CPU static beam solve; 28-second edited sequence of presented frames with explicit units and captions.",
+  "submitted_at": "2026-10-24T11:06:12.282194+00:00"
+}
