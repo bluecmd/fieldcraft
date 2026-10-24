@@ -1,0 +1,9 @@
+{
+  "request_id": "claim-683-windows-dxc-agent-20261024-1",
+  "request_blob": "8335a0030ed5b961319823b82ac1707c22583fa9",
+  "agent": "windows-dxc-agent",
+  "branch": "fix/async-file-dialogs-683",
+  "issue": 683,
+  "status": "granting",
+  "updated_at": "2026-10-24T00:30:14.158Z"
+}
