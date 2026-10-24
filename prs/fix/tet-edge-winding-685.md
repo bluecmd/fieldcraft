@@ -72,4 +72,3 @@ This is the local per-edge winding certificate requested by the issue. It does n
 The declared floating-point budget is not an all-conditioning error proof. An otherwise geometrically valid boundary gap inside the budget conservatively refuses rather than being treated as a distinguishable gap. Nonfinite/zero fallback dihedral measurements also refuse. Existing exact/adaptive admissibility checks run first and keep their original failure report.
 
 No solver numerics or oracle fixtures changed. The native evidence is an original analytic cube, not a new complete corpus or performance study. Run-specific QA and binary media stay outside the feature branch; native GitHub uploads are complete at the original capture revision. Historical applicability review for the comment-only follow-up is pending; there is no raw-repository-video fallback.
-
