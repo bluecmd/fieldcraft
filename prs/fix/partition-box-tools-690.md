@@ -18,7 +18,7 @@
 
 Closes #690. The original 60 × 30 × 60 mm counterbored block with a revolved relief groove now partitions on `yz = 0.3 mm` and `xy = -10 mm`, preserving linked source geometry and named half-cells. Previously both cuts needed a kernel tool nudge and were refused.
 
-Exact coordinate-axis planes now use the kernel box primitive, with bounds derived separately from each body dimension: twice the bounding-box size, giving half an extent of clearance per side. This avoids unnecessarily oversized tools on the thinner axes. Almost-axis and arbitrary planes retain the existing extrusion path; both other normal components must be exactly zero to select the box. Constructor domain limits retain the existing fallback. Every boolean still rejects any diagnostic retry; no plane is moved, no tolerance is enlarged, and the SolidCraft pin is unchanged.
+Exact coordinate-axis planes now use the kernel box primitive, with bounds derived separately from each body dimension: twice the bounding-box size, giving half an extent of clearance per side. This avoids unnecessarily oversized tools on the thinner axes. Almost-axis and arbitrary planes retain the existing extrusion path; both other normal components must be exactly zero to select the box. Constructor domain limits retain the existing fallback. Every boolean still rejects result-altering warnings, including tool nudges and unverified shortcuts; exact retries permitted by the existing diagnostic gate remain permitted. The requested cut plane, tolerances, and SolidCraft pin are unchanged.
 
 ## Demonstration
 
@@ -41,7 +41,7 @@ The source design is generated from the issue's eight public SolidCraft primitiv
 | xy = -10 mm, parallel to groove axis | Same refusal | 2 named cells, clean cut |
 | zx = 20 mm, perpendicular control | 2 cells | 2 cells |
 
-Video: `partition-box-tools-690.mp4` (H.264, 1280×1098, 10 fps, 269001 bytes). Stills: `after-yz-cut.png` and `after-xy-cut.png`. Ordinary-Git artifact transfer and received receipts are pending; actual GitHub attachment URLs are pending maintainer handling. `media=pending` is intentional.
+Video: `partition-box-tools-690.mp4` (H.264, 1280×1098, 10 fps, 269001 bytes). Stills: `after-yz-cut.png` and `after-xy-cut.png`. The three originals were transferred through ordinary Git in artifact commit `df6854d574f614fb1fe0976dc79cb8ad2a6f22e5`, with verified byte counts and SHA-256 values. Received receipts and actual GitHub attachment URLs are pending maintainer handling. `media=pending` is intentional.
 
 ## Validation
 
@@ -59,8 +59,8 @@ Source review and native visual review found no blocker. Upstream CI is pending;
 
 ## Known limitations
 
-This fixes the reproduced coordinate-axis groove cuts; other kernel boolean failures and actual retry diagnostics remain refusals. A successful kernel return alone is insufficient: the private bounded investigation observed retries on oversized 2000/20000 mm tools even when they returned bodies, so those results were not accepted as clean cuts.
+This fixes the reproduced coordinate-axis groove cuts; other kernel boolean failures and result-altering warnings remain refusals. A successful kernel return alone is insufficient: the private bounded investigation observed tool nudges on oversized 2000/20000 mm tools even when they returned bodies, so those results were not accepted as clean cuts.
 
-Volume checks use the kernel's tessellation-based mass estimates, not exact integrals. The unchanged perpendicular control already differs from the original whole by 2.04 ppm; the groove regression allows 10 ppm measurement variation, while exact cut-plane, no-retry, validity, and fast analytic-box checks remain strict. The private old/new plate-tool comparison agreed within 3e-12 mm³ measured and 3e-11 mm³ at a common chord tolerance; its ordinary oblique refusal and very-near-axis result were identical. No runtime volume acceptance or mass-measurement algorithm changed.
+Volume checks use the kernel's tessellation-based mass estimates, not exact integrals. The unchanged perpendicular control already differs from the original whole by 2.04 ppm; the groove regression allows 10 ppm measurement variation, while exact cut-plane, result-altering-warning refusal, validity, and fast analytic-box checks remain strict. The private old/new plate-tool comparison agreed within 3e-12 mm³ measured and 3e-11 mm³ at a common chord tolerance; its ordinary oblique refusal and very-near-axis result were identical. No runtime volume acceptance or mass-measurement algorithm changed.
 
 The Windows persistent-name golden issue is a checkout line-ending mismatch, not renamed geometry, and has no source fix in this PR. Media attachments still require maintainer URLs. ROADMAP and run-specific QA files are unchanged in feature history.
