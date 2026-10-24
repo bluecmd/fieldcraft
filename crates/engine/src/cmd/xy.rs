@@ -126,7 +126,7 @@ pub fn plottable(r: &StepResult) -> Vec<Field> {
     let shapes = [Field::Displacement, Field::DisplacementX, Field::DisplacementY, Field::DisplacementZ];
     match r.kind() {
         // Nonlinear frames hold displacements only; the other fields are the final state's.
-        Kind::Static(_) | Kind::Frequency(_) => shapes.to_vec(),
+        Kind::Static(_) | Kind::Frequency(_) | Kind::Buckling(_) => shapes.to_vec(),
         Kind::Explicit(_) => Field::available(r).collect(),
         Kind::Heat(_) => vec![Field::Temperature],
         Kind::Fluid(_) => Vec::new(),
@@ -145,31 +145,34 @@ fn series<'a>(s: &'a Session, step: &str, r: &'a StepResult, axis: Axis, y: &Val
     let x_shown = || if axis == Axis::Time { shown_as(s, Quantity::Time) } else { plain() };
     let not_explicit = || y_error(format!("step `{step}` is not an explicit dynamic step; it has no histories"));
     if let Some(name) = y.as_str() {
-        let Kind::Frequency(f) = r.kind() else {
-            return Err(y_error(format!("`{name}` needs a frequency or buckling step; `{step}` is not one")));
-        };
-        let buckling = f.buckling.is_some();
-        let (y_label, field): (String, fn(&fieldcraft_solver::Mode) -> f64) = match (name, buckling) {
-            ("frequency", false) => (with_unit("Frequency", unit(Quantity::Frequency).as_deref()), |m| m.frequency),
-            ("load_factor", true) => ("Buckling load factor".into(), |m| m.eigenvalue),
-            ("frequency", true) => return Err(y_error(format!("step `{step}` is a buckling step: its modes are load factors (y: \"load_factor\")"))),
-            ("load_factor", false) => return Err(y_error(format!("step `{step}` is a frequency step: y: \"frequency\""))),
-            _ => {
-                return Err(y_error(format!(
-                    "`{name}` is not a series; use \"frequency\", \"load_factor\" or an object ({{\"field\", \"node\"}}, …)"
-                )));
+        return match (name, r.kind()) {
+            ("frequency", Kind::Frequency(f)) => Ok(Series {
+                x_label,
+                y_label: with_unit("Frequency", unit(Quantity::Frequency).as_deref()),
+                len: f.modes.len(),
+                point: Box::new(move |i| Ok((i as f64 + 1.0, f.modes.get(i).map_or(f64::NAN, |m| m.frequency)))),
+                x_shown: plain(),
+                y_shown: shown_as(s, Quantity::Frequency),
+                frames: false,
+            }),
+            ("load_factor", Kind::Buckling(b)) => Ok(Series {
+                x_label,
+                y_label: "Buckling load factor".into(),
+                len: b.modes.len(),
+                point: Box::new(move |i| Ok((i as f64 + 1.0, b.modes.get(i).map_or(f64::NAN, |m| m.load_factor)))),
+                x_shown: plain(),
+                y_shown: plain(),
+                frames: false,
+            }),
+            ("frequency", Kind::Buckling(_)) => {
+                Err(y_error(format!("step `{step}` is a buckling step: its modes are load factors (y: \"load_factor\")")))
             }
+            ("load_factor", Kind::Frequency(_)) => Err(y_error(format!("step `{step}` is a frequency step: y: \"frequency\""))),
+            ("frequency" | "load_factor", _) => Err(y_error(format!("`{name}` needs a frequency or buckling step; `{step}` is not one"))),
+            _ => Err(y_error(format!("`{name}` is not a series; use \"frequency\", \"load_factor\" or an object ({{\"field\", \"node\"}}, …)"))),
         };
-        return Ok(Series {
-            x_label,
-            y_label,
-            len: f.modes.len(),
-            point: Box::new(move |i| Ok((i as f64 + 1.0, f.modes.get(i).map_or(f64::NAN, field)))),
-            x_shown: plain(),
-            y_shown: if buckling { plain() } else { shown_as(s, Quantity::Frequency) },
-            frames: false,
-        });
     }
+
     if !y.is_object() {
         return Err(y_error(
             "must be an object ({\"field\", \"node\"}, {\"energy\"}, {\"history\"} or {\"history_node\", \"quantity\"}) or \"frequency\"",
@@ -200,6 +203,7 @@ fn series<'a>(s: &'a Session, step: &str, r: &'a StepResult, axis: Axis, y: &Val
             Kind::Explicit(e) => (e.frames.len(), true, Box::new(move |i| e.frames.get(i).map_or(f64::NAN, |f| f.time))),
             Kind::Heat(h) => (h.frames.len(), true, Box::new(move |i| h.times.get(i).copied().unwrap_or(f64::NAN))),
             Kind::Frequency(f) => (f.modes.len(), false, Box::new(|i| i as f64 + 1.0)),
+            Kind::Buckling(b) => (b.modes.len(), false, Box::new(|i| i as f64 + 1.0)),
             Kind::Fluid(_) => return Err(y_error(format!("step `{step}` is a fluid step: its fields are per cell (solve.probe)"))),
         };
         let point = move |i: usize| -> Result<(f64, f64)> {
@@ -410,7 +414,7 @@ fn natural(step: &str, r: &StepResult) -> Result<Axis> {
             "step `{step}` is a linear static step: one state, nothing to plot against (a nonlinear static step keeps a frame per increment)"
         ))),
         Kind::Explicit(_) | Kind::Heat(_) => Ok(Axis::Time),
-        Kind::Frequency(_) => Ok(Axis::Mode),
+        Kind::Frequency(_) | Kind::Buckling(_) => Ok(Axis::Mode),
         Kind::Fluid(_) => Err(EngineError::Params(format!("step `{step}` is a fluid step: it has no series to plot yet"))),
     }
 }

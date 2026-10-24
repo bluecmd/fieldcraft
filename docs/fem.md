@@ -210,7 +210,9 @@ without a shift on K⁻¹(−K_σ) (θ = 1/λ, Cholesky of K), the lowest positi
 on the buckling transformation (K + σ K_σ)⁻¹ K (θ = λ/(λ − σ), LDLᵀ), the λ above σ, and the
 LDLᵀ inertia counts the load factors between 0 and σ, reported. Negative load factors (the
 reversed load buckles) are reported, not returned. Modes are scaled to a largest component of 1
-and display and probe like frequency modes (their value is λ; `FrequencyResult::buckling`).
+and display and probe as normalized shapes with dimensionless load factors λ
+(`BucklingResult`/`BucklingMode`, separate from natural frequencies). See
+[buckling-results.md](buckling-results.md) for the original recipe and saved-file compatibility.
 Boundary conditions hold their directions at zero in the eigenproblem; pressures are dead loads
 (no load stiffness); trusses, shells and beams are refused (no K_σ yet). Decks: Abaqus
 `*BUCKLE, EIGENSOLVER=LANCZOS` (refused after a general step, whose loaded state Abaqus would

@@ -1,0 +1,222 @@
+[
+  {
+    "command": "file.new",
+    "params": {}
+  },
+  {
+    "command": "model.units",
+    "params": {
+      "system": "mm-t-s-N-MPa"
+    }
+  },
+  {
+    "command": "mesh.block",
+    "params": {
+      "body": "Column",
+      "kind": "hex20",
+      "corners": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          80,
+          0,
+          0
+        ],
+        [
+          80,
+          4,
+          0
+        ],
+        [
+          0,
+          4,
+          0
+        ],
+        [
+          0,
+          0,
+          4
+        ],
+        [
+          80,
+          0,
+          4
+        ],
+        [
+          80,
+          4,
+          4
+        ],
+        [
+          0,
+          4,
+          4
+        ]
+      ],
+      "divisions": [
+        8,
+        2,
+        2
+      ],
+      "faces": {
+        "6": "x0",
+        "4": "x1"
+      }
+    }
+  },
+  {
+    "command": "model.set.create",
+    "params": {
+      "name": "all",
+      "geometry": [
+        {
+          "body": "Column"
+        }
+      ]
+    }
+  },
+  {
+    "command": "model.set.create",
+    "params": {
+      "name": "x0",
+      "geometry": [
+        {
+          "body": "Column",
+          "face": "x0"
+        }
+      ]
+    }
+  },
+  {
+    "command": "model.set.create",
+    "params": {
+      "name": "x1",
+      "geometry": [
+        {
+          "body": "Column",
+          "face": "x1"
+        }
+      ]
+    }
+  },
+  {
+    "command": "model.material.create",
+    "params": {
+      "name": "Mat",
+      "elastic": {
+        "type": "isotropic",
+        "young": 210000,
+        "poisson": 0.3
+      },
+      "density": 7.85e-09
+    }
+  },
+  {
+    "command": "model.section.create",
+    "params": {
+      "name": "col",
+      "set": "all",
+      "material": "Mat",
+      "kind": {
+        "type": "solid"
+      }
+    }
+  },
+  {
+    "command": "model.boundary_condition.create",
+    "params": {
+      "name": "base",
+      "type": "fixed",
+      "target": {
+        "set": "x0"
+      }
+    }
+  },
+  {
+    "command": "model.load.create",
+    "params": {
+      "name": "press",
+      "type": "pressure",
+      "set": "x1",
+      "magnitude": 1.0
+    }
+  },
+  {
+    "command": "model.step.create",
+    "params": {
+      "name": "Buckle",
+      "procedure": {
+        "type": "buckle",
+        "modes": 2
+      },
+      "boundary_conditions": [
+        "base"
+      ],
+      "loads": [
+        "press"
+      ]
+    }
+  },
+  {
+    "command": "solve.buckle",
+    "params": {
+      "step": "Buckle"
+    },
+    "id": "solve"
+  },
+  {
+    "command": "model.step.create",
+    "params": {
+      "name": "Modes",
+      "procedure": {
+        "type": "frequency",
+        "modes": 3
+      },
+      "boundary_conditions": [
+        "base"
+      ],
+      "loads": []
+    }
+  },
+  {
+    "command": "solve.frequency",
+    "params": {
+      "step": "Modes"
+    }
+  },
+  {
+    "command": "results.contour",
+    "params": {
+      "step": "Buckle",
+      "field": "displacement"
+    }
+  },
+  {
+    "command": "results.modes",
+    "params": {
+      "mode": 1
+    }
+  },
+  {
+    "command": "results.deformed",
+    "params": {
+      "scale": "auto"
+    }
+  },
+  {
+    "command": "view.save",
+    "params": {
+      "name": "Buckling"
+    }
+  },
+  {
+    "command": "file.save_as",
+    "params": {
+      "path": "buckling-column.fieldcraft",
+      "results": true
+    }
+  }
+]

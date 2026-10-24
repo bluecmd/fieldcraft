@@ -2580,7 +2580,9 @@ fn probe_rows(reply: &Value, plot: Option<&results::Plot>, units: &DisplaySystem
     // distinction beside the numbers, including when an earlier nonlinear shape is drawn.
     match plot.map(|p| p.result.kind()) {
         Some(fieldcraft_engine::results::Kind::Static(_)) => rows.push(("Probe values".into(), "Solved final state".into())),
-        Some(fieldcraft_engine::results::Kind::Frequency(_)) => rows.push(("Probe values".into(), "Unscaled mode shape".into())),
+        Some(fieldcraft_engine::results::Kind::Frequency(_) | fieldcraft_engine::results::Kind::Buckling(_)) => {
+            rows.push(("Probe values".into(), "Unscaled mode shape".into()));
+        }
         _ => {}
     }
     let vector_row = |rows: &mut Vec<(String, String)>, name: &str, v: [f64; 3], q: Quantity, scale: f64| {

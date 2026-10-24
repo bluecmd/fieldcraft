@@ -385,16 +385,23 @@ fn run_buckle(s: &mut Session, p: &Value) -> Result<Value> {
     let step = opt::<String>(p, "step")?;
     let model = &s.model;
     let r = with_threads(threads(s, p)?, || solve_buckle(model, step.as_deref(), &limits))?;
+    let mut spectrum = json!({"negative": r.negative});
+    if let Some(shift) = r.shift {
+        spectrum["shift"] = json!(shift);
+    }
+    if let Some(below) = r.below_shift {
+        spectrum["below_shift"] = json!(below);
+    }
     let summary = json!({
         "step": r.step,
         "dofs": r.stats.dofs,
         "equations": r.stats.equations,
         "lanczos_vectors": r.stats.lanczos_vectors,
-        "modes": r.modes.iter().enumerate().map(|(i, m)| json!({"mode": i + 1, "load_factor": m.eigenvalue})).collect::<Vec<_>>(),
-        "buckling": r.buckling,
+        "modes": r.modes.iter().enumerate().map(|(i, m)| json!({"mode": i + 1, "load_factor": m.load_factor})).collect::<Vec<_>>(),
+        "buckling": spectrum,
         "warnings": r.warnings,
     });
-    s.store_result(StepResult::Implicit(ImplicitResult::Frequency(r)));
+    s.store_result(StepResult::Implicit(ImplicitResult::Buckling(r)));
     Ok(summary)
 }
 
@@ -1218,7 +1225,9 @@ fn probe_quantity(r: &StepResult, display: &fieldcraft_model::DisplaySystem, key
     let q = match key {
         // A natural mode, mass-normalised: translations (and a reference point's rotations).
         "shape" => return Some(Show::Factor(if index < 3 { translation } else { rotation })),
-        "rotation" if matches!(r.kind(), crate::results::Kind::Frequency(_)) => return Some(Show::Factor(rotation)),
+        "rotation" if matches!(r.kind(), crate::results::Kind::Frequency(_) | crate::results::Kind::Buckling(_)) => {
+            return Some(Show::Factor(rotation));
+        }
         "displacement" if len == 6 && index >= 3 => Q::Angle,
         "displacement" | "xyz" | "distance" | "gap" | "slip" | "point" | "at" | "max_penetration" => Q::Length,
         "rotation" => Q::Angle,
@@ -1328,6 +1337,27 @@ fn probe_implicit(result: &ImplicitResult, step: &str, nodes: &[u32], p: &Value)
             })
             .collect::<Result<_>>()?,
         ImplicitResult::Frequency(r) => {
+            if !elements.is_empty() {
+                return Err(EngineError::Params("element results are kept for static and explicit steps".into()));
+            }
+            let mode = opt::<usize>(p, "mode")?.unwrap_or(1);
+            let m = mode
+                .checked_sub(1)
+                .and_then(|k| r.modes.get(k))
+                .ok_or_else(|| EngineError::Params(format!("`mode` must be from 1 to {}", r.modes.len())))?;
+            nodes
+                .iter()
+                .map(|&l| {
+                    Ok(match locate(l)? {
+                        Location::Point(k) => {
+                            json!({"node": l, "reference_point": r.reference_points.get(k).map(|p| &p.0), "shape": m.point_shape.get(k)})
+                        }
+                        Location::Node(i) => json!({"node": l, "shape": m.shape.get(i), "rotation": m.rotation.get(i)}),
+                    })
+                })
+                .collect::<Result<_>>()?
+        }
+        ImplicitResult::Buckling(r) => {
             if !elements.is_empty() {
                 return Err(EngineError::Params("element results are kept for static and explicit steps".into()));
             }

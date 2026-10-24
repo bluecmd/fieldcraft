@@ -12,7 +12,7 @@ use fieldcraft_explicit::{ExplicitResult, Frame};
 use fieldcraft_model::Model;
 use fieldcraft_model::units::DisplaySystem;
 pub use fieldcraft_model::units::Quantity;
-use fieldcraft_solver::{FrequencyResult, HeatResult, StaticResult};
+use fieldcraft_solver::{BucklingResult, FrequencyResult, HeatResult, StaticResult};
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 
@@ -29,6 +29,7 @@ pub const MAX_DEFORMATION_SCALE: f64 = 1e12; // unit-factors: a cap on a scale f
 pub enum Kind<'a> {
     Static(&'a StaticResult),
     Frequency(&'a FrequencyResult),
+    Buckling(&'a BucklingResult),
     Explicit(&'a ExplicitResult),
     /// Per cell, not per node: drawn by [`crate::flow`].
     Fluid(&'a fieldcraft_lbm::FluidResult),
@@ -40,6 +41,7 @@ impl StepResult {
         match self {
             StepResult::Implicit(fieldcraft_solver::StepResult::Static(r)) => Kind::Static(r),
             StepResult::Implicit(fieldcraft_solver::StepResult::Frequency(r)) => Kind::Frequency(r),
+            StepResult::Implicit(fieldcraft_solver::StepResult::Buckling(r)) => Kind::Buckling(r),
             StepResult::Implicit(fieldcraft_solver::StepResult::Heat(r)) => Kind::Heat(r),
             StepResult::Explicit(r) => Kind::Explicit(r),
             StepResult::Fluid(r) => Kind::Fluid(r),
@@ -230,7 +232,7 @@ impl Field {
 
     /// Whether `r` holds it as a mode shape: normalised, with no unit.
     pub fn is_mode_shape(self, r: &StepResult) -> bool {
-        matches!(r.kind(), Kind::Frequency(_)) && self.quantity() == Some(Quantity::Length)
+        matches!(r.kind(), Kind::Frequency(_) | Kind::Buckling(_)) && self.quantity() == Some(Quantity::Length)
     }
 
     /// Its unit for result `r` in `display`: none for a mode shape (it is normalised).
@@ -309,7 +311,7 @@ impl Field {
         let contact = matches!(r.kind(), Kind::Static(s) if !s.contacts.is_empty());
         let (stress, velocity, temperature, flux) = match r.kind() {
             Kind::Static(s) => (true, false, s.temperature.is_some(), false),
-            Kind::Frequency(_) => (false, false, false, false),
+            Kind::Frequency(_) | Kind::Buckling(_) => (false, false, false, false),
             Kind::Explicit(e) => {
                 e.frames.last().map_or((false, false, false, false), |f| (!f.stress.is_empty(), !f.velocity.is_empty(), false, false))
             }
@@ -365,7 +367,7 @@ pub fn shown_all<const N: usize>(q: Quantity, si: [f64; N], display: &DisplaySys
 /// buckling mode is scaled to a largest component of 1 and needs neither.
 pub fn mode_scale(r: &StepResult, display: &DisplaySystem) -> (f64, f64) {
     match r.kind() {
-        Kind::Frequency(f) if f.buckling.is_none() => {
+        Kind::Frequency(_) => {
             let mass = display.unit_ref(Quantity::Mass).factor().sqrt();
             (mass, display.unit_ref(Quantity::Length).factor() * mass)
         }
@@ -380,8 +382,8 @@ pub fn mode_scale(r: &StepResult, display: &DisplaySystem) -> (f64, f64) {
 /// length unit), so a scale of 5 draws it as large in every system as before SI storage.
 pub fn deformation_unit(r: &StepResult, display: &DisplaySystem) -> f64 {
     match r.kind() {
-        Kind::Frequency(f) if f.buckling.is_none() => mode_scale(r, display).1,
-        Kind::Frequency(_) => display.unit_ref(Quantity::Length).factor(),
+        Kind::Frequency(_) => mode_scale(r, display).1,
+        Kind::Buckling(_) => display.unit_ref(Quantity::Length).factor(),
         Kind::Static(_) | Kind::Explicit(_) | Kind::Fluid(_) | Kind::Heat(_) => 1.0,
     }
 }
@@ -468,7 +470,7 @@ impl ResultsView {
         let true_scale = true_scale(r);
         ResultsView {
             step: r.step().to_string(),
-            deformed: true_scale || matches!(r.kind(), Kind::Frequency(_)),
+            deformed: true_scale || matches!(r.kind(), Kind::Frequency(_) | Kind::Buckling(_)),
             scale: true_scale.then_some(1.0),
             contour: Some(contour),
             bands: DEFAULT_BANDS,
@@ -503,7 +505,7 @@ pub fn true_scale(r: &StepResult) -> bool {
     match r.kind() {
         Kind::Explicit(_) => true,
         Kind::Static(s) => s.nonlinear.is_some(),
-        Kind::Frequency(_) | Kind::Fluid(_) | Kind::Heat(_) => false,
+        Kind::Frequency(_) | Kind::Buckling(_) | Kind::Fluid(_) | Kind::Heat(_) => false,
     }
 }
 
@@ -529,6 +531,12 @@ pub fn displacements(r: &StepResult, pick: Pick) -> Result<&[[f64; 3]]> {
             _ => Ok(&s.displacement),
         },
         Kind::Frequency(f) => pick
+            .mode
+            .checked_sub(1)
+            .and_then(|k| f.modes.get(k))
+            .map(|m| m.shape.as_slice())
+            .ok_or_else(|| EngineError::Params(format!("step `{}` has modes 1 to {}; there is no mode {}", f.step, f.modes.len(), pick.mode))),
+        Kind::Buckling(f) => pick
             .mode
             .checked_sub(1)
             .and_then(|k| f.modes.get(k))
@@ -572,7 +580,7 @@ pub fn field_values(model: &Model, r: &StepResult, field: Field, pick: Pick) -> 
     let stresses = || -> Result<std::borrow::Cow<'_, [[f64; 6]]>> {
         match r.kind() {
             Kind::Static(s) => Ok(std::borrow::Cow::Borrowed(s.stress.as_slice())),
-            Kind::Frequency(_) | Kind::Fluid(_) | Kind::Heat(_) => Err(unavailable()),
+            Kind::Frequency(_) | Kind::Buckling(_) | Kind::Fluid(_) | Kind::Heat(_) => Err(unavailable()),
             Kind::Explicit(e) => {
                 let f = frame(e, pick)?;
                 if f.stress.is_empty() {
@@ -594,7 +602,7 @@ pub fn field_values(model: &Model, r: &StepResult, field: Field, pick: Pick) -> 
                 let f = frame(e, pick)?;
                 if f.velocity.is_empty() { Err(unavailable()) } else { Ok(f.velocity.iter().map(|v| magnitude(*v)).collect()) }
             }
-            Kind::Static(_) | Kind::Frequency(_) | Kind::Fluid(_) | Kind::Heat(_) => Err(unavailable()),
+            Kind::Static(_) | Kind::Frequency(_) | Kind::Buckling(_) | Kind::Fluid(_) | Kind::Heat(_) => Err(unavailable()),
         },
         // Per cell (crate::flow::cell_values), not per node.
         Field::Pressure | Field::WallHeatFlux => Err(unavailable()),
@@ -747,6 +755,9 @@ impl Session {
                     .enumerate()
                     .map(|(i, m)| json!({"mode": i + 1, "frequency": shown(Quantity::Frequency, m.frequency, display)}))
                     .collect();
+            }
+            Kind::Buckling(b) => {
+                out["modes"] = b.modes.iter().enumerate().map(|(i, m)| json!({"mode": i + 1, "load_factor": m.load_factor})).collect();
             }
             Kind::Explicit(e) => {
                 out["frames"] = e.frames.iter().map(|f| time(f.time)).collect();

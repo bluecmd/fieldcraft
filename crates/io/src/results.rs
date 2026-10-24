@@ -9,7 +9,7 @@
 //! u32 steps
 //! steps × { u64 length, step name (UTF-8),
 //!           32 bytes: SHA-256 of the definition it was solved from ([`definition_hash`]),
-//!           u8 kind (0 static, 1 frequency, 2 heat transfer, 3 explicit dynamic, 4 fluid),
+//!           u8 kind (0 static, 1 frequency/buckling, 2 heat transfer, 3 explicit dynamic, 4 fluid),
 //!           u64 length, the result in the [`crate::codec`] encoding }   names ascending
 //! ```
 //!
@@ -21,10 +21,14 @@
 //! (origin, spacing, cells), cell fields per frame (velocity, pressure, temperature), wall
 //! forces, heat and zone histories, statistics and steady-state monitors.
 //!
-//! The payload follows the field and variant order of the solvers' result types, so the
-//! encoding's version changes with any change to them ([`MAGIC`]). A file whose results are of
+//! The payload follows the field and variant order of its encoded representation (normally
+//! the solver's result type); changes to that wire layout need version handling ([`MAGIC`]).
+//! A file whose results are of
 //! another version opens without them ([`Decoded::OtherVersion`]): results are what solving
 //! gives again, unlike the definition.
+//! Kind 1 retains its original combined frequency/buckling payload through a private wire
+//! representation. Reading translates its optional buckling metadata to the dedicated
+//! runtime result; writing translates back without changing bytes, kind codes or magic.
 //!
 //! Reading treats the part as hostile, as `mesh.bin`: the number of steps is capped, every length
 //! is checked against the bytes present before anything is read for it, nothing may be left
@@ -37,6 +41,8 @@ use fieldcraft_model::Model;
 use sha2::{Digest, Sha256};
 
 use crate::{Error, Geometry, MAX_FILE_BYTES, Result, codec, invalid};
+
+mod modes;
 
 /// The magic bytes the part starts with (the `01` is the results encoding's version).
 pub const MAGIC: &[u8; 8] = b"MCRSLT02";
@@ -98,6 +104,7 @@ impl<'a> SolvedRef<'a> {
         match self {
             SolvedRef::Implicit(fieldcraft_solver::StepResult::Static(_)) => 0,
             SolvedRef::Implicit(fieldcraft_solver::StepResult::Frequency(_)) => 1,
+            SolvedRef::Implicit(fieldcraft_solver::StepResult::Buckling(_)) => 1,
             SolvedRef::Implicit(fieldcraft_solver::StepResult::Heat(_)) => 2,
             SolvedRef::Explicit(_) => 3,
             SolvedRef::Fluid(_) => 4,
@@ -107,7 +114,8 @@ impl<'a> SolvedRef<'a> {
     fn encode_into(&self, out: &mut Vec<u8>) -> std::result::Result<(), codec::CodecError> {
         match self {
             SolvedRef::Implicit(fieldcraft_solver::StepResult::Static(r)) => codec::encode_into(r, out),
-            SolvedRef::Implicit(fieldcraft_solver::StepResult::Frequency(r)) => codec::encode_into(r, out),
+            SolvedRef::Implicit(fieldcraft_solver::StepResult::Frequency(r)) => modes::encode_frequency(r, out),
+            SolvedRef::Implicit(fieldcraft_solver::StepResult::Buckling(r)) => modes::encode_buckling(r, out),
             SolvedRef::Implicit(fieldcraft_solver::StepResult::Heat(r)) => codec::encode_into(r, out),
             SolvedRef::Explicit(r) => codec::encode_into(r, out),
             SolvedRef::Fluid(r) => codec::encode_into(r, out),
@@ -261,7 +269,7 @@ pub fn decode(bytes: &[u8]) -> Result<Decoded> {
         let damaged = |e: codec::CodecError| Error::Invalid(format!("{PART}: the result of step `{name}` is damaged: {e}"));
         let result = match kind {
             0 => Solved::Implicit(fieldcraft_solver::StepResult::Static(codec::decode(payload).map_err(damaged)?)),
-            1 => Solved::Implicit(fieldcraft_solver::StepResult::Frequency(codec::decode(payload).map_err(damaged)?)),
+            1 => Solved::Implicit(modes::decode(payload).map_err(damaged)?),
             2 => Solved::Implicit(fieldcraft_solver::StepResult::Heat(codec::decode(payload).map_err(damaged)?)),
             3 => Solved::Explicit(codec::decode(payload).map_err(damaged)?),
             4 => Solved::Fluid(codec::decode(payload).map_err(damaged)?),
@@ -351,6 +359,24 @@ pub fn check(r: &Solved) -> std::result::Result<(), String> {
             }
             for m in &f.modes {
                 lengths(f.nodes.len(), &[("a mode's shape", m.shape.len(), false), ("a mode's rotation", m.rotation.len(), true)])?;
+            }
+            Ok(())
+        }
+        Solved::Implicit(S::Buckling(b)) => {
+            if !ascending(&b.nodes) {
+                return Err("its nodes do not ascend".into());
+            }
+            if b.negative.iter().any(|v| !v.is_finite()) || b.shift.is_some_and(|v| !v.is_finite()) {
+                return Err("its buckling spectrum is not finite".into());
+            }
+            for m in &b.modes {
+                lengths(b.nodes.len(), &[("a mode's shape", m.shape.len(), false), ("a mode's rotation", m.rotation.len(), true)])?;
+                lengths(b.reference_points.len(), &[("a mode's reference-point shape", m.point_shape.len(), false)])?;
+                if !m.load_factor.is_finite()
+                    || m.shape.iter().flatten().chain(m.rotation.iter().flatten()).chain(m.point_shape.iter().flatten()).any(|v| !v.is_finite())
+                {
+                    return Err("a buckling mode is not finite".into());
+                }
             }
             Ok(())
         }

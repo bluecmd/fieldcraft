@@ -34,7 +34,7 @@ pub const CONTOUR: CommandSpec = CommandSpec {
 pub const MODES: CommandSpec = CommandSpec {
     id: "results.modes",
     label: "Mode Shapes",
-    params: r#"{"step": "Modes", "mode": 1} — shows a mode shape of a solved frequency step (from 1) and lists every mode's frequency"#,
+    params: r#"{"step": "Modes", "mode": 1} — shows a mode shape of a solved frequency or buckling step (from 1) and lists every mode's frequency or dimensionless buckling load factor"#,
     form: Some(super::forms::MODES),
     kind: CommandKind::Session,
     requires: &[Requirement::Result],
@@ -74,7 +74,7 @@ pub const REACTIONS: CommandSpec = CommandSpec {
 pub const EXPORT_VTU: CommandSpec = CommandSpec {
     id: "results.export.vtu",
     label: "Export VTU",
-    params: r#"{"step": "Load", "path": "out.vtu" | "out.pvd", "mode": 1, "frames": "all|last", "encoding": "ascii|binary"} — writes a solved step as VTK XML unstructured grids for ParaView: the mesh (points in node label order, cells in element label order, arrays `node_label` and `element_label`), the step's nodal fields as point data and per-element fields as cell data. Static: displacement, rotation (with shells or beams), reaction, stress (6 components in VTK order XX, YY, ZZ, XY, YZ, XZ), von_mises, temperature (coupled steps); nonlinear static: displacement per frame, the final fields on the last; frequency: mode_shape, with mode, frequency and eigenvalue as field data; explicit: displacement and velocity per frame, cell stress, plastic_strain, damage, eroded; heat: temperature per frame, heat_flux on the last. Point array `has_result` is 0 at nodes the step has no values for (written as 0, as are values that are not finite). A `.vtu` path writes one state (the last frame, or `mode`, default 1); a `.pvd` path writes every frame or mode (`frames: "last"` only the last) as `out_0000.vtu`, … beside it and the collection listing each with its time (load factor, mode number). `encoding` ascii (default) or binary (inline base64). Fluid steps are not supported yet. Replies {files, bytes, points, cells}"#,
+    params: r#"{"step": "Load", "path": "out.vtu" | "out.pvd", "mode": 1, "frames": "all|last", "encoding": "ascii|binary"} — writes a solved step as VTK XML unstructured grids for ParaView: the mesh (points in node label order, cells in element label order, arrays `node_label` and `element_label`), the step's nodal fields as point data and per-element fields as cell data. Static: displacement, rotation (with shells or beams), reaction, stress (6 components in VTK order XX, YY, ZZ, XY, YZ, XZ), von_mises, temperature (coupled steps); nonlinear static: displacement per frame, the final fields on the last; frequency: mode_shape, with mode, frequency and eigenvalue as field data; buckling: normalized mode_shape, with mode and dimensionless load_factor as field data; explicit: displacement and velocity per frame, cell stress, plastic_strain, damage, eroded; heat: temperature per frame, heat_flux on the last. Point array `has_result` is 0 at nodes the step has no values for (written as 0, as are values that are not finite). A `.vtu` path writes one state (the last frame, or `mode`, default 1); a `.pvd` path writes every frame or mode (`frames: "last"` only the last) as `out_0000.vtu`, … beside it and the collection listing each with its time (load factor, mode number). `encoding` ascii (default) or binary (inline base64). Fluid steps are not supported yet. Replies {files, bytes, points, cells}"#,
     form: Some(super::forms::EXPORT_VTU),
     kind: CommandKind::Session,
     requires: &[Requirement::Result],
@@ -138,14 +138,18 @@ const MAX_SCALE: f64 = crate::results::MAX_DEFORMATION_SCALE;
 
 fn solved_list(s: &Session) -> String {
     let names: Vec<&str> = s.result_steps().map(|(n, _)| n).collect();
-    if names.is_empty() { "no step is solved yet (solve.static, solve.frequency)".into() } else { format!("solved steps: {}", names.join(", ")) }
+    if names.is_empty() {
+        "no step is solved yet (solve.static, solve.frequency, solve.buckle)".into()
+    } else {
+        format!("solved steps: {}", names.join(", "))
+    }
 }
 
 /// The steps a command works on.
 #[derive(Clone, Copy, PartialEq)]
 pub(super) enum Want {
     Any,
-    Frequency,
+    Modes,
     /// Steps with frames: explicit dynamics, fluid and nonlinear static (one per converged
     /// increment).
     Frames,
@@ -155,16 +159,16 @@ pub(super) enum Want {
 impl Want {
     fn fits(self, s: &Session, step: &str) -> bool {
         s.latest_result(step).is_some_and(|(r, _)| match (self, r.kind()) {
-            (Want::Any, _) | (Want::Frequency, Kind::Frequency(_)) | (Want::Frames | Want::Fluid, Kind::Fluid(_)) => true,
+            (Want::Any, _) | (Want::Modes, Kind::Frequency(_) | Kind::Buckling(_)) | (Want::Frames | Want::Fluid, Kind::Fluid(_)) => true,
             (Want::Frames, Kind::Explicit(_)) => true,
             (Want::Frames, Kind::Static(r)) => r.nonlinear.is_some(),
-            (Want::Frequency | Want::Frames | Want::Fluid, _) => false,
+            (Want::Modes | Want::Frames | Want::Fluid, _) => false,
         })
     }
     fn name(self) -> &'static str {
         match self {
             Want::Any => "solved",
-            Want::Frequency => "frequency",
+            Want::Modes => "frequency or buckling",
             Want::Frames => "explicit, fluid or nonlinear static",
             Want::Fluid => "fluid",
         }
@@ -322,9 +326,10 @@ fn legend_range(r: &Value, value: &dyn Fn(&str, &Value) -> Option<Result<f64>>) 
 }
 
 fn modes(s: &mut Session, p: &Value) -> Result<Value> {
-    let step = step_for(s, p, Want::Frequency)?;
+    let step = step_for(s, p, Want::Modes)?;
     let count = match s.latest_result(&step).map(|(r, _)| r.kind()) {
         Some(Kind::Frequency(f)) => f.modes.len(),
+        Some(Kind::Buckling(b)) => b.modes.len(),
         _ => 0,
     };
     let mode = match p.get("mode") {
@@ -768,7 +773,7 @@ fn export_vtu(s: &mut Session, p: &Value) -> Result<Value> {
         let last = n.checked_sub(1).ok_or_else(|| EngineError::Params(format!("step `{step}` has no {what}")))?;
         Ok(if series && !last_only { (0..n).map(State::Frame).collect() } else { vec![State::Frame(last)] })
     };
-    if mode.is_some() && !matches!(r.kind(), Kind::Frequency(_)) {
+    if mode.is_some() && !matches!(r.kind(), Kind::Frequency(_) | Kind::Buckling(_)) {
         return Err(EngineError::invalid("mode", "is for frequency and buckling steps"));
     }
     let states: Vec<State> = match r.kind() {
@@ -778,6 +783,15 @@ fn export_vtu(s: &mut Session, p: &Value) -> Result<Value> {
             _ => vec![State::Final],
         },
         Kind::Frequency(f) => match mode {
+            Some(m) if m == 0 || m > f.modes.len() => {
+                return Err(EngineError::invalid("mode", format!("step `{step}` has modes 1 to {}", f.modes.len())));
+            }
+            Some(m) => vec![State::Mode(m)],
+            None if series && !last_only => (1..=f.modes.len()).map(State::Mode).collect(),
+            None if f.modes.is_empty() => return Err(EngineError::Params(format!("step `{step}` has no modes"))),
+            None => vec![State::Mode(1)],
+        },
+        Kind::Buckling(f) => match mode {
             Some(m) if m == 0 || m > f.modes.len() => {
                 return Err(EngineError::invalid("mode", format!("step `{step}` has modes 1 to {}", f.modes.len())));
             }
@@ -967,6 +981,13 @@ fn vtu_fields(
                     ("frequency", crate::results::shown(Q::Frequency, mode.frequency, display)),
                     ("eigenvalue", crate::results::shown(Q::Eigenvalue, mode.eigenvalue, display)),
                 ]);
+            }
+            m as f64
+        }
+        (Kind::Buckling(b), State::Mode(m)) => {
+            if let Some(mode) = m.checked_sub(1).and_then(|k| b.modes.get(k)) {
+                add("mode_shape", point, 3, spread(nodes, &b.nodes, &mode.shape), false);
+                data.extend([("mode", m as f64), ("load_factor", mode.load_factor)]);
             }
             m as f64
         }
@@ -1791,5 +1812,62 @@ mod tests {
             let e = empty.execute(id, &json!({"field": "displacement"})).unwrap_err().to_string();
             assert!(e.contains("solve"), "{id}: {e}");
         }
+    }
+    /// Original Euler-column recipe solves natural modes beside the buckling modes.
+    #[test]
+    fn buckling_results_keep_their_kind_load_factors_units_and_saved_shapes() {
+        let mut recipe: Value = serde_json::from_str(include_str!("../../../../tools/buckling-results/column.json")).unwrap();
+        recipe.as_array_mut().unwrap().retain(|x| x["command"] != "file.save_as");
+        let mut s = Session::default();
+        s.run_script(&recipe).unwrap();
+        let r = s.latest_result("Buckle").unwrap().0.clone();
+        let Kind::Buckling(b) = r.kind() else { panic!("dedicated buckling result") };
+        let factor = b.modes[0].load_factor;
+        let at =
+            b.modes[0].shape.iter().enumerate().max_by(|a, b| crate::results::magnitude(*a.1).total_cmp(&crate::results::magnitude(*b.1))).unwrap().0;
+        let shape = b.modes[0].shape[at];
+        let node = b.nodes[at];
+        assert!(crate::results::magnitude(shape) > 0.0);
+        assert!(factor > 0.0);
+        let view = s.execute("results.modes", &json!({"step":"Buckle","mode":1})).unwrap();
+        assert_eq!(view["modes"][0]["load_factor"], factor);
+        assert!(view["modes"][0].get("frequency").is_none());
+        let xy = s.execute("results.xy", &json!({"step":"Buckle","y":"load_factor"})).unwrap();
+        assert_eq!(xy["y"]["values"][0], factor);
+        assert!(s.execute("results.xy", &json!({"step":"Buckle","y":"frequency"})).is_err());
+        assert!(s.execute("results.xy", &json!({"step":"Modes","y":"load_factor"})).is_err());
+        for preset in ["mm-t-s-N-MPa", "m-kg-s-N-Pa", "in-lbf-s-psi"] {
+            s.execute("model.units", &json!({"system":preset})).unwrap();
+            let view = s.execute("results.modes", &json!({"step":"Buckle","mode":1})).unwrap();
+            assert_eq!(view["modes"][0]["load_factor"], factor);
+            let probe = s.execute("solve.probe", &json!({"step":"Buckle","mode":1,"nodes":[node]})).unwrap();
+            assert_eq!(probe["nodes"][0]["shape"], json!(shape));
+            assert!(probe["units"]["shape"].is_null());
+            let f = s.latest_result("Modes").unwrap().0.clone();
+            let Kind::Frequency(fr) = f.kind() else { panic!("a natural frequency result") };
+            let raw = fr.modes[0].shape[fr.nodes.binary_search(&node).unwrap()];
+            let scale = s.units().unit_ref(crate::results::Quantity::Mass).factor().sqrt();
+            let probe = s.execute("solve.probe", &json!({"step":"Modes","mode":1,"nodes":[node]})).unwrap();
+            assert_eq!(probe["nodes"][0]["shape"], json!(raw.map(|v| v * scale)));
+        }
+        let dir = scratch("buckling-kind");
+        let model = dir.join("column.fieldcraft");
+        let vtu = dir.join("column.vtu");
+        s.execute("results.modes", &json!({"step":"Buckle","mode":2})).unwrap();
+        s.execute("view.save", &json!({"name":"Buckling"})).unwrap();
+        s.execute("file.save_as", &json!({"path":model,"results":true})).unwrap();
+        let mut opened = Session::default();
+        opened.execute("file.open", &json!({"path":model})).unwrap();
+        assert_eq!(opened.latest_result("Buckle").unwrap().0.as_ref(), r.as_ref());
+        assert_eq!(opened.results_view.as_ref().unwrap().mode, 2);
+        opened.execute("results.export.vtu", &json!({"step":"Buckle","mode":1,"path":vtu})).unwrap();
+        let xml = std::fs::read_to_string(&vtu).unwrap();
+        assert_eq!(vtu_array(&xml, "load_factor"), vec![factor]);
+        assert!(!xml.contains("Name=\"frequency\"") && !xml.contains("Name=\"eigenvalue\""));
+        for mode in [0, 3, usize::MAX] {
+            assert!(opened.execute("results.modes", &json!({"step":"Buckle","mode":mode})).is_err());
+            assert!(opened.execute("solve.probe", &json!({"step":"Buckle","mode":mode,"nodes":[node]})).is_err());
+        }
+        std::fs::remove_dir_all(dir).unwrap();
     }
 }

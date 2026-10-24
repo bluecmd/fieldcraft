@@ -1220,7 +1220,7 @@ fn imperfect(model: &Model, imperfection: &Imperfection, limits: &Limits) -> Res
     }
     let note = format!(
         "solved on an imperfect geometry: mode {mode} of buckling step `{step}` (load factor {:.6e}) scaled to {scale} added to the node coordinates",
-        shape.eigenvalue
+        shape.load_factor
     );
     Ok((out, note))
 }

@@ -83,24 +83,23 @@ pub struct Prepared {
     pub unavailable: bool,
 }
 
-/// A mode's value as the results show it: its frequency, or a buckling mode's load factor.
-pub fn mode_value(buckling: bool, eigenvalue: f64, frequency: f64, units: &fieldcraft_model::DisplaySystem) -> String {
+/// A natural mode's frequency in the display system.
+pub fn frequency_value(frequency: f64, units: &fieldcraft_model::DisplaySystem) -> String {
     use fieldcraft_engine::results::{Quantity, shown, unit_of};
-    if buckling {
-        format!("λ = {}", number(eigenvalue))
-    } else {
-        with_unit(number(shown(Quantity::Frequency, frequency, units)), unit_of(Quantity::Frequency, units).as_deref())
-    }
+    with_unit(number(shown(Quantity::Frequency, frequency, units)), unit_of(Quantity::Frequency, units).as_deref())
+}
+
+/// A buckling mode's dimensionless preload multiplier.
+pub fn buckling_value(load_factor: f64) -> String {
+    format!("λ = {}", number(load_factor))
 }
 
 impl Plot {
     /// A frequency or buckling step's mode shown, and its frequency (Hz) or load factor.
     pub fn mode(&self) -> Option<(usize, String)> {
         match self.result.kind() {
-            Kind::Frequency(f) => f
-                .modes
-                .get(self.pick.mode.checked_sub(1)?)
-                .map(|m| (self.pick.mode, mode_value(f.buckling.is_some(), m.eigenvalue, m.frequency, &self.units))),
+            Kind::Frequency(f) => f.modes.get(self.pick.mode.checked_sub(1)?).map(|m| (self.pick.mode, frequency_value(m.frequency, &self.units))),
+            Kind::Buckling(b) => b.modes.get(self.pick.mode.checked_sub(1)?).map(|m| (self.pick.mode, buckling_value(m.load_factor))),
             Kind::Static(_) | Kind::Explicit(_) | Kind::Fluid(_) | Kind::Heat(_) => None,
         }
     }
@@ -173,7 +172,7 @@ pub fn frame(view: &ResultsView, result: &StepResult, now: f64) -> Option<u64> {
         Kind::Fluid(_) => true,
         Kind::Explicit(_) => view.deformed || view.contour.is_some(),
         Kind::Static(r) if r.nonlinear.is_some() => view.deformed || view.contour.is_some(),
-        Kind::Static(_) | Kind::Frequency(_) => view.deformed || view.contour.is_some_and(|f| !f.is_thermal()),
+        Kind::Static(_) | Kind::Frequency(_) | Kind::Buckling(_) => view.deformed || view.contour.is_some_and(|f| !f.is_thermal()),
     };
     (view.animate && plays && now.is_finite()).then(|| ((now.max(0.0) / PERIOD * FRAMES as f64).floor() as u64) % FRAMES)
 }
@@ -184,7 +183,7 @@ pub fn swing(result: &StepResult, frame: Option<u64>) -> f64 {
     let Some(k) = frame else { return 1.0 };
     let a = std::f64::consts::TAU * k as f64 / FRAMES as f64;
     match result.kind() {
-        Kind::Frequency(_) => a.sin(),
+        Kind::Frequency(_) | Kind::Buckling(_) => a.sin(),
         // A nonlinear step plays its increments' frames.
         Kind::Static(r) if r.nonlinear.is_some() => 1.0,
         Kind::Static(_) => 0.5 * (1.0 - a.cos()),
@@ -198,7 +197,7 @@ fn amplitude(result: &StepResult, frame: Option<u64>) -> Option<f64> {
     frame?;
     match result.kind() {
         Kind::Static(r) if r.nonlinear.is_none() => Some(swing(result, frame)),
-        Kind::Frequency(_) => Some(swing(result, frame)),
+        Kind::Frequency(_) | Kind::Buckling(_) => Some(swing(result, frame)),
         _ => None,
     }
 }
@@ -268,7 +267,7 @@ pub fn prepare(session: &Session, base: &DisplayMesh, pick: Pick, bodies: &[&str
         // Keep one colour scale throughout a proportional animation. Rescaling each frame
         // to its current extremes would make a growing stress field look constant again.
         let (lo, hi) = if view.animate && !field.is_thermal() && amplitude(result, Some(0)).is_some() {
-            if matches!(result.kind(), Kind::Frequency(_)) && !matches!(field, Field::Displacement | Field::VonMises) {
+            if matches!(result.kind(), Kind::Frequency(_) | Kind::Buckling(_)) && !matches!(field, Field::Displacement | Field::VonMises) {
                 let peak = min.1.abs().max(max.1.abs());
                 (-peak, peak)
             } else {
@@ -739,5 +738,48 @@ pub(crate) mod tests {
         assert_eq!(number_in(0.5, 1000.0), "0.5000");
         assert_eq!(components(&[9.497e-17, -3.463e-14, -0.2415], 0.0), "0, 0, -0.2415");
         assert_eq!(with_unit(number(0.1048), Some("mm")), "0.1048 mm");
+    }
+    #[test]
+    fn dedicated_buckling_modes_have_load_factor_labels_and_signed_animation() {
+        let mut recipe: serde_json::Value = serde_json::from_str(include_str!("../../../tools/buckling-results/column.json")).unwrap();
+        recipe.as_array_mut().unwrap().retain(|x| x["command"] != "file.save_as");
+        let mut s = Session::default();
+        s.run_script(&recipe).unwrap();
+        let base = DisplayMesh::from_model(&s.model);
+        let p = plot_at(&s, &base, None).unwrap();
+        assert!(matches!(p.result.kind(), Kind::Buckling(_)));
+        let (mode, label) = p.mode().unwrap();
+        assert_eq!(mode, 1);
+        assert!(label.starts_with("λ = ") && !label.contains("Hz"), "{label}");
+        let choices = crate::results_panel::xy_options(&s, &p.result);
+        assert!(choices.iter().any(|(_, y, _)| *y == json!("load_factor")));
+        assert!(!choices.iter().any(|(_, y, _)| *y == json!("frequency")));
+        assert_eq!(swing(&p.result, Some(FRAMES / 4)), 1.0);
+        assert_eq!(swing(&p.result, Some(3 * FRAMES / 4)), -1.0);
+        s.execute("results.animate", &json!({})).unwrap();
+        let (view, result, _) = shown(&s).unwrap();
+        assert_eq!(frame(view, result, PERIOD * 0.25), Some(FRAMES / 4));
+        for field in ["displacement", "displacement_z"] {
+            s.execute("results.contour", &json!({"field":field})).unwrap();
+            let positive = plot_at(&s, &base, Some(FRAMES / 4)).unwrap();
+            let negative = plot_at(&s, &base, Some(3 * FRAMES / 4)).unwrap();
+            assert_eq!(positive.amplitude, Some(1.0));
+            assert_eq!(negative.amplitude, Some(-1.0));
+            let (a, b) = (positive.contour.unwrap(), negative.contour.unwrap());
+            assert_eq!(a.bands, b.bands, "buckling uses one signed-mode colour scale");
+            for (a, b) in a.values.iter().zip(&b.values) {
+                assert_eq!(*a, if field == "displacement" { *b } else { -*b });
+            }
+        }
+        let p = plot_at(&s, &base, Some(FRAMES / 4)).unwrap();
+        let probe = s.execute("solve.probe", &json!({"step":"Buckle","nodes":[261]})).unwrap();
+        let rows = crate::probe_rows(&probe, Some(&p), &p.units, 261, 1);
+        assert!(rows.iter().any(|(name, value)| name == "Probe values" && value == "Unscaled mode shape"));
+        s.execute("results.modes", &json!({"step":"Buckle","mode":2})).unwrap();
+        assert_eq!(plot_at(&s, &base, None).unwrap().mode().unwrap().0, 2);
+        s.execute("results.modes", &json!({"step":"Modes","mode":1})).unwrap();
+        let p = plot_at(&s, &base, None).unwrap();
+        assert!(matches!(p.result.kind(), Kind::Frequency(_)));
+        assert!(p.mode().unwrap().1.contains("Hz"));
     }
 }

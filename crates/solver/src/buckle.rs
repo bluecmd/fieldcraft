@@ -32,8 +32,7 @@ use fieldcraft_model::{Model, Procedure};
 use serde::Serialize;
 
 use crate::analysis::{
-    BLOCK, FrequencyResult, Mode, Setup, Stats, TOLERANCE, assemble, budget, factor_error, factor_symmetric, lanczos_basis, pattern, reduction,
-    split, static_on,
+    BLOCK, Setup, Stats, TOLERANCE, assemble, budget, factor_error, factor_symmetric, lanczos_basis, pattern, reduction, split, static_on,
 };
 use crate::eigen::{Operator, Wanted, lanczos};
 use crate::ldlt::{Kind, Symmetric};
@@ -42,15 +41,12 @@ use crate::system::Mesh;
 use crate::{Error, Limits, Result};
 
 /// What a buckling eigenproblem found besides its modes.
-#[derive(Debug, Clone, Default, PartialEq, Serialize, serde::Deserialize)]
-pub struct Buckling {
+struct Spectrum {
     /// Converged negative load factors (the load reversed buckles at |λ|), nearest to zero
     /// first; found without a shift only.
     pub negative: Vec<f64>,
     /// The shift, and the number of load factors between 0 and it (the inertia of K + σ K_σ).
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub shift: Option<f64>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub below_shift: Option<usize>,
 }
 
@@ -136,35 +132,8 @@ impl Operator for Shifted<'_> {
     }
 }
 
-/// Solve a buckling step (the step named `step`, or the model's only buckling step).
-pub fn solve_buckle(model: &Model, step: Option<&str>, limits: &Limits) -> Result<FrequencyResult> {
-    let r = solve_buckling(model, step, limits)?;
-    Ok(FrequencyResult {
-        step: r.step,
-        nodes: r.nodes,
-        reference_points: r.reference_points,
-        modes: r
-            .modes
-            .into_iter()
-            .map(|m| Mode {
-                eigenvalue: m.load_factor,
-                frequency: 0.0,
-                shape: m.shape,
-                rotation: m.rotation,
-                participation: [0.0; 3],
-                effective_mass: [0.0; 3],
-                point_shape: m.point_shape,
-            })
-            .collect(),
-        total_mass: 0.0,
-        stats: r.stats,
-        warnings: r.warnings,
-        buckling: Some(Buckling { negative: r.negative, shift: r.shift, below_shift: r.below_shift }),
-    })
-}
-
 /// Solve a buckling step into its own load-factor result, without frequency-only fields.
-pub fn solve_buckling(model: &Model, step: Option<&str>, limits: &Limits) -> Result<BucklingResult> {
+pub fn solve_buckle(model: &Model, step: Option<&str>, limits: &Limits) -> Result<BucklingResult> {
     // A job cancelled before it starts stops here, before any setup work.
     fieldcraft_model::progress::check()?;
     let step = model.select_step(step, |p| matches!(p, Procedure::Buckle { .. }), "buckling")?;
@@ -224,7 +193,7 @@ pub fn solve_buckling(model: &Model, step: Option<&str>, limits: &Limits) -> Res
         let minus = Csr { val: gff.val.iter().map(|v| -v).collect(), ..gff.clone() };
         let op = Plain { k: &kff, g: &minus, factor: &factor };
         let pairs = lanczos(&op, 0.0, Wanted { count, min: 0.0, max: f64::INFINITY }, BLOCK, max_basis, TOLERANCE)?;
-        let buckling = Buckling { negative: pairs.negative.clone(), shift: None, below_shift: None };
+        let buckling = Spectrum { negative: pairs.negative.clone(), shift: None, below_shift: None };
         (pairs, factor.entries(), buckling)
     } else {
         let shifted = kff.add_scaled(sigma, &gff)?;
@@ -241,7 +210,7 @@ pub fn solve_buckling(model: &Model, step: Option<&str>, limits: &Limits) -> Res
         let op = Shifted { k: &kff, shifted: &shifted, factor: &factor };
         let (min, max) = if sigma > 0.0 { (sigma, f64::INFINITY) } else { (f64::NEG_INFINITY, f64::INFINITY) };
         let pairs = lanczos(&op, sigma, Wanted { count, min, max }, BLOCK, max_basis, TOLERANCE)?;
-        (pairs, factor.entries(), Buckling { negative: Vec::new(), shift: Some(sigma), below_shift: Some(below) })
+        (pairs, factor.entries(), Spectrum { negative: Vec::new(), shift: Some(sigma), below_shift: Some(below) })
     };
     if let Some(first) = buckling.negative.first() {
         warnings.push(format!("the reversed load buckles too: negative load factor {first:.6e} (and {} more found)", buckling.negative.len() - 1));

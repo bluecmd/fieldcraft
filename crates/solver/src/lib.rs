@@ -46,7 +46,7 @@ pub use analysis::{
     ElementStress, FrequencyOptions, FrequencyResult, Location, MassKind, Mode, PointResult, StaticResult, Stats, StepResult, solve_frequency,
     solve_static,
 };
-pub use buckle::{Buckling, BucklingMode, BucklingResult, solve_buckle, solve_buckling};
+pub use buckle::{BucklingMode, BucklingResult, solve_buckle};
 pub use heat::{HeatResult, solve_heat};
 pub use nonlinear::solve_nonlinear;
 

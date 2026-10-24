@@ -158,7 +158,7 @@ fn legend_layout(plot: &Plot, painter: &egui::Painter, rect: Rect, bar: Option<R
         step.push_str(&frame_text(increments, k, n, at, unit_of(Quantity::Time, &plot.units).as_deref()));
     }
     if let Some(a) = plot.amplitude {
-        let what = if matches!(plot.result.kind(), Kind::Frequency(_)) { "Mode amplitude" } else { "Proportional load" };
+        let what = if matches!(plot.result.kind(), Kind::Frequency(_) | Kind::Buckling(_)) { "Mode amplitude" } else { "Proportional load" };
         lines.push((format!("{what} × {} (display interpolation)", number(a)), t.text_dim));
     }
     lines.push((step, t.overlay_text));
@@ -438,19 +438,18 @@ pub fn controls(app: &mut ModelApp, plot: &Plot, ui: &mut egui::Ui, t: &Tokens) 
             }
         });
         ui.label(RichText::new(format!("load factor {}", number(factor))).color(t.text_dim));
-    } else if let Kind::Frequency(f) = plot.result.kind() {
+    } else if matches!(plot.result.kind(), Kind::Frequency(_) | Kind::Buckling(_)) {
         ui.separator();
         ui.label(RichText::new("Modes").color(t.text_dim));
         egui::ScrollArea::vertical().id_salt("fc_results_modes").max_height(150.0).show(ui, |ui| {
-            for (i, m) in f.modes.iter().enumerate() {
+            let labels: Box<dyn Iterator<Item = String> + '_> = match plot.result.kind() {
+                Kind::Frequency(f) => Box::new(f.modes.iter().map(|m| crate::results::frequency_value(m.frequency, &plot.units))),
+                Kind::Buckling(b) => Box::new(b.modes.iter().map(|m| crate::results::buckling_value(m.load_factor))),
+                _ => Box::new(std::iter::empty()),
+            };
+            for (i, label) in labels.enumerate() {
                 let mode = i + 1;
-                if ui
-                    .selectable_label(
-                        plot.view.mode == mode,
-                        format!("{mode}   {}", crate::results::mode_value(f.buckling.is_some(), m.eigenvalue, m.frequency, &plot.units)),
-                    )
-                    .clicked()
-                {
+                if ui.selectable_label(plot.view.mode == mode, format!("{mode}   {label}")).clicked() {
                     run.push(("results.modes", json!({"mode": mode})));
                 }
             }
@@ -669,7 +668,7 @@ fn probed(app: &ModelApp, plot: &Plot, ui: &mut egui::Ui, t: &Tokens) -> Option<
     });
     ui.button("Export CSV…").on_hover_text("Write the node's results to a CSV file (results.export.csv)").clicked().then(|| {
         let mut params = json!({"what": "probe", "step": p.step, "nodes": [p.node]});
-        if matches!(plot.result.kind(), Kind::Frequency(_)) {
+        if matches!(plot.result.kind(), Kind::Frequency(_) | Kind::Buckling(_)) {
             params["mode"] = json!(p.mode);
         }
         if let Some(f) = p.frame {
@@ -835,12 +834,10 @@ fn line_plot(ui: &mut egui::Ui, lines: &[Line], x_name: &str, x_unit: Option<&st
 pub fn xy_options(s: &fieldcraft_engine::Session, r: &fieldcraft_engine::StepResult) -> Vec<(String, Value, Option<Value>)> {
     use fieldcraft_engine::cmd::xy;
     let mut out = Vec::new();
-    if let Kind::Frequency(f) = r.kind() {
-        out.push(if f.buckling.is_some() {
-            ("Buckling load factor".to_string(), json!("load_factor"), None)
-        } else {
-            ("Frequency".to_string(), json!("frequency"), None)
-        });
+    match r.kind() {
+        Kind::Frequency(_) => out.push(("Frequency".to_string(), json!("frequency"), None)),
+        Kind::Buckling(_) => out.push(("Buckling load factor".to_string(), json!("load_factor"), None)),
+        _ => {}
     }
     if let Kind::Explicit(e) = r.kind() {
         out.extend(xy::ENERGIES.iter().map(|n| (format!("Energy: {}", n.replace('_', " ")), json!({"energy": n}), None)));

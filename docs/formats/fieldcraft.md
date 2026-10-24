@@ -151,7 +151,7 @@ results without solving again (`results.contour`, `results.frame`, `results.slic
 u32 steps
 steps × { u64 length, step name (UTF-8),
           32 bytes: SHA-256 of the definition it was solved from,
-          u8 kind (0 static, 1 frequency, 2 heat transfer, 3 explicit dynamic, 4 fluid),
+          u8 kind (0 static, 1 frequency/buckling, 2 heat transfer, 3 explicit dynamic, 4 fluid),
           u64 length, the result }                                     names ascending
 ```
 
@@ -165,8 +165,11 @@ eroded elements; a fluid step's lattice (origin, spacing and cells), its cell fi
 statistics and steady-state monitors. It is written in a compact binary encoding
 (`fieldcraft_io::codec`): fixed-width numbers, a `u64` count before a list or text, one byte before
 an optional value and before each field of a structure, a `u32` before a variant. The encoding
-follows the order of the solvers' result types, so it has a version of its own in the magic: a
-change to those types is a new version. A file whose results are of another version opens without
+follows the order of its wire representation, normally the solver's result type. Kind 1 keeps
+the original combined frequency/buckling record privately at the IO boundary; dedicated runtime
+types translate to and from that unchanged encoding. No kind code or magic changes for that
+type distinction. The encoding has a version of its own in the magic: changes to an existing
+wire layout need version handling. A file whose results are of another version opens without
 them, with a warning to solve again: results are what solving gives again, the definition is not.
 
 The definition hash is the SHA-256 of what solving the step reads (the mesh, the definitions the

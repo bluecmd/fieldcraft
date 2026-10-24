@@ -8,7 +8,7 @@ mod common;
 
 use common::*;
 use fieldcraft_model::*;
-use fieldcraft_solver::{Limits, solve_buckling as solve_buckle};
+use fieldcraft_solver::{Limits, solve_buckle};
 
 const E: f64 = 1000.0;
 const B: f64 = 1.0;

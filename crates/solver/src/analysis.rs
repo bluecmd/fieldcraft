@@ -149,9 +149,6 @@ pub struct FrequencyResult {
     pub total_mass: f64,
     pub stats: Stats,
     pub warnings: Vec<String>,
-    /// For a buckling step: its modes' eigenvalues are load factors (`frequency`, participation
-    /// and total mass are zero) and this says what else the eigenproblem found.
-    pub buckling: Option<crate::buckle::Buckling>,
 }
 
 /// Mass matrix choice for a frequency analysis.
@@ -696,7 +693,6 @@ pub fn solve_frequency(model: &Model, step: Option<&str>, options: &FrequencyOpt
         total_mass,
         stats: Stats { dofs: mesh.dofs(), equations: neq, factor_entries: chol.entries(), lanczos_vectors: pairs.basis },
         warnings,
-        buckling: None,
     })
 }
 
@@ -715,6 +711,7 @@ pub enum StepResult {
     Static(StaticResult),
     Frequency(FrequencyResult),
     Heat(crate::heat::HeatResult),
+    Buckling(crate::buckle::BucklingResult),
 }
 
 impl StepResult {
@@ -723,6 +720,7 @@ impl StepResult {
             StepResult::Static(r) => &r.step,
             StepResult::Frequency(r) => &r.step,
             StepResult::Heat(r) => &r.step,
+            StepResult::Buckling(r) => &r.step,
         }
     }
 
@@ -731,6 +729,7 @@ impl StepResult {
             StepResult::Static(r) => &r.nodes,
             StepResult::Frequency(r) => &r.nodes,
             StepResult::Heat(r) => &r.nodes,
+            StepResult::Buckling(r) => &r.nodes,
         }
     }
 
@@ -744,6 +743,7 @@ impl StepResult {
             StepResult::Static(r) => r.reference_points.iter().position(|p| p.label == label),
             StepResult::Frequency(r) => r.reference_points.iter().position(|p| p.1 == label),
             StepResult::Heat(_) => None,
+            StepResult::Buckling(r) => r.reference_points.iter().position(|p| p.1 == label),
         }
         .map(Location::Point)
     }
