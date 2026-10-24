@@ -1,0 +1,9 @@
+{
+  "request_id": "claim-689-legend-layout-agent-20261024-01",
+  "request_blob": "3c83b1ed0163a0a330e42db5d6b86e7eff620685",
+  "agent": "legend-layout-agent",
+  "branch": "fix/tet-seam-diagnostics-689",
+  "issue": 689,
+  "status": "granting",
+  "updated_at": "2026-10-24T00:30:23.468Z"
+}
