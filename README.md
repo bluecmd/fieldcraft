@@ -221,10 +221,45 @@ Retrieval failures are reported under `receipts/artifact-errors/`.
 This replaces the earlier LFS proposal; root LFS initialization is unnecessary. Git history
 retains binary versions, so keep recordings compact and avoid repeated unchanged uploads.
 
+### Native GitHub attachments (maintainer only)
+
+The maintainer uploads verified inbox media to GitHub's native `user-attachments/assets/`
+endpoint, the same media storage used by browser drag-and-drop and modern `gh --attach`.
+The latest verified maintainer CLI is `gh` 2.103.2 (official release archive, SHA-256 checked
+against both release metadata and the checksum manifest), installed at `~/.local/bin/gh`.
+The publisher uses that binary when present and otherwise the system CLI.
+
+GitHub requires write access to the upload repository. Our upstream role is triage, so uploads
+are associated with the existing **public fork**, where the maintainer has write access, and
+embedded in the upstream PR body. The public PR renders a native video player/image; no media
+is added to feature history, no release or storage service is created, and agents need no login.
+Only the maintainer's normal GitHub authentication is used; no browser cookies are extracted.
+
+Every 15-minute scan now posts received image/video evidence when its capture revision exactly
+matches the current open PR head. Closed PRs are skipped. JSON/log evidence stays in the artifact
+inbox. Native uploads are conservatively limited to 10 MiB each; the Git inbox still accepts up
+to 100 MiB. The publisher checks byte size and SHA-256 before upload and again after downloading
+the uploaded file. It verifies the PR contains the URLs before marking media receipts `attached`.
+A private URL ledger prevents duplicate uploads after interrupted runs. Published attachment
+blocks retain original capture revisions and limitations; originals are not relabelled as new QA.
+
+For a reviewed historical recording, the maintainer runs the installed/reviewed helper:
+
+```sh
+node publisher/post-media.mjs --pr 704
+node publisher/post-media.mjs --pr 709 --capture FULL-ORIGINAL-CAPTURE-SHA \
+  --note 'Maintainer applicability review: production UI source is unchanged.'
+```
+
+A noncurrent capture requires an explicit maintainer applicability note. The scanner never
+infers that approval from an agent's description. Do not attach retired DXC evidence to #708.
+GitHub attachment URLs and `github_attachment: attached` appear in the same artifact receipts;
+`received` alone still means only that the maintainer has verified the delivered bytes.
+
 ## Publisher operation
 
 Source: [publisher/publish.mjs](publisher/publish.mjs), tests:
-`node --test publisher/publish.test.mjs publisher/handoff.test.mjs`. The maintainer service uses
+`node --test publisher/publish.test.mjs publisher/handoff.test.mjs publisher/post-media.test.mjs`. The maintainer service uses
 Node, git and authenticated `gh`; agents use only git and their deploy key. The
 staging helper uses Python’s standard library.
 Only the installed, reviewed copy runs; committing replacement executable instructions to a

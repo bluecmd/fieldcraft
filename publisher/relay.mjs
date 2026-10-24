@@ -1,7 +1,7 @@
 // Maintainer-side GitHub -> git feedback relay. Agents need only their fork deploy key.
 import {spawnSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
-import {FORK, UPSTREAM, QUEUE} from './config.mjs';
+import {FORK, UPSTREAM, QUEUE, GH} from './config.mjs';
 
 export function putText(api, path, text) {
   const route = `repos/${FORK}/contents/${encodeURIComponent(path)}`;
@@ -24,7 +24,7 @@ export function pages(api, route, max = 10) {
   throw Error('Feedback pagination bound reached; ask the maintainer for the remaining context.');
 }
 export function jobLog(route) {
-  const p = spawnSync('/usr/bin/gh', ['api', route], {encoding: 'utf8', timeout: 60000, maxBuffer: 16 * 1024 * 1024});
+  const p = spawnSync(GH, ['api', route], {encoding: 'utf8', timeout: 60000, maxBuffer: 16 * 1024 * 1024});
   if (p.error) throw p.error;
   if (p.status !== 0) throw Error((p.stderr || 'Cannot download completed job log').slice(0, 1000));
   return p.stdout;

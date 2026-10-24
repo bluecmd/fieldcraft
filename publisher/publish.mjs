@@ -3,7 +3,7 @@
 import {spawnSync} from 'node:child_process';
 import {pathToFileURL} from 'node:url';
 
-import {FORK, UPSTREAM, QUEUE} from './config.mjs';
+import {FORK, UPSTREAM, QUEUE, GH} from './config.mjs';
 export {FORK, UPSTREAM, QUEUE} from './config.mjs';
 const ACTIVE = new Set(['granting', 'granted', 'release_failed', 'suspended']);
 const stamp = () => new Date().toISOString();
@@ -39,7 +39,7 @@ export function parseRequest(path, text) {
 export function ghApi(route, method = 'GET', data) {
   const args = ['api', route, '--method', method];
   if (data !== undefined) args.push('--input', '-');
-  const p = spawnSync('/usr/bin/gh', args, {input: data === undefined ? undefined : JSON.stringify(data), encoding: 'utf8', timeout: 60000, maxBuffer: 8 * 1024 * 1024});
+  const p = spawnSync(GH, args, {input: data === undefined ? undefined : JSON.stringify(data), encoding: 'utf8', timeout: 60000, maxBuffer: 8 * 1024 * 1024});
   if (p.error) throw p.error;
   if (p.status !== 0) {
     const e = Error((p.stderr || p.stdout || 'GitHub API failed').slice(0, 1800));
@@ -248,6 +248,8 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
       relayFeedback(p);
       const {syncArtifacts} = await import('./artifact-inbox.mjs');
       syncArtifacts(ghApi);
+      const {postReadyMedia} = await import('./post-media.mjs');
+      console.log(JSON.stringify({attachments: postReadyMedia(ghApi, p.pulls)}));
     }
   }
   catch (e) { console.error(e.message); process.exitCode = 1; }

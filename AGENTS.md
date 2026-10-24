@@ -17,7 +17,8 @@ feedback/CI logs through feedback/ and upstream develop through fork/upstream-de
 Demo videos and stills are handed to the maintainer on the fork-only artifact-queue branch using
 ordinary Git blobs plus manifests (at most 100 MiB each). Wait for received receipts.
 No LFS or upstream initialization is required.
-The maintainer handles GitHub PR attachments, not the agent. No media or LFS pointers belong in
+The maintainer scanner posts current-head image/video attachments automatically; historical
+captures need a maintainer applicability review. Agents never upload through GitHub themselves. No media or LFS pointers belong in
 unmerged feature-branch commits.
 Keep recipes, small numerical reports and reproduction notes in git; preserve binaries outside git.
 
