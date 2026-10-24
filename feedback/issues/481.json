@@ -1,0 +1,25 @@
+{
+  "number": 481,
+  "title": "Agent skill: fieldcraft-modelling",
+  "body": "skills/fieldcraft-modelling/SKILL.md: units, materials and sources, element family per physics, loads and supports that avoid singularities, symmetry BCs, contact choices, step types, checking results against hand calculations. Public sources only, concepts only.\n\nPart of #235.",
+  "state": "open",
+  "updated_at": "2026-10-24T01:30:24Z",
+  "assignees": [
+    "bluecmd"
+  ],
+  "labels": [
+    "enhancement",
+    "claimed",
+    "area:docs"
+  ],
+  "url": "https://github.com/tangency-labs/fieldcraft/issues/481",
+  "comments": [
+    {
+      "author": "bluecmd",
+      "body": "<!-- fieldcraft-pr-queue:claim:claim-481-windows-dxc-agent-20261024-1 -->\nClaimed for agent `windows-dxc-agent` on `bluecmd/fieldcraft:docs/modelling-skill-481` through the [PR queue](https://github.com/bluecmd/fieldcraft/tree/pr-queue). GitHub assignee: @bluecmd. The agent may start once its queue receipt says `granted`. This is a reservation, not a claim of completion.",
+      "created_at": "2026-10-24T01:30:24Z",
+      "updated_at": "2026-10-24T01:30:24Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/issues/481#issuecomment-6378188881"
+    }
+  ]
+}
