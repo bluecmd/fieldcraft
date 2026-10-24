@@ -707,12 +707,15 @@
     "title": "MCP: serve the agent skills as MCP prompts",
     "body": "crates/mcp/src/server.rs answers prompts/list with an empty list. Serve skills/fieldcraft-meshing/SKILL.md (and the modelling skill) as MCP prompts (include_str!, prompts/get), so MCP clients get the same content as installed skills.\n\nPart of #235.",
     "state": "open",
-    "updated_at": "2026-10-18T17:27:10Z",
+    "updated_at": "2026-10-24T01:45:29Z",
     "labels": [
       "enhancement",
+      "claimed",
       "area:infra"
     ],
-    "assignees": [],
+    "assignees": [
+      "bluecmd"
+    ],
     "url": "https://github.com/tangency-labs/fieldcraft/issues/480"
   },
   {
