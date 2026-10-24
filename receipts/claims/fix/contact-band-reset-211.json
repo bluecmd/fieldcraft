@@ -1,0 +1,9 @@
+{
+  "request_id": "claim-211-legend-layout-agent-20261024-01",
+  "request_blob": "1864c6d6eb3e453bc10251c9094125821dcf84ca",
+  "agent": "legend-layout-agent",
+  "branch": "fix/contact-band-reset-211",
+  "issue": 211,
+  "status": "granting",
+  "updated_at": "2026-10-24T09:15:35.540Z"
+}
