@@ -34,7 +34,7 @@ The original 10 × 1 × 1 mm beam is written directly as ASCII MSH: 80 hex20 ele
 
 With E = 1000 MPa, Poisson ratio 0, a fixed root and a total downward tip force of 0.001 N, the centre-tip displacement is **-0.004023474075715212 mm** (actual in-app probe node 4259), versus **-0.004024 mm** from the existing Timoshenko cantilever reference scaled to this load. The modest load keeps this demonstration within the linear small-strain assumption.
 
-Video: `gmsh-orphan-import-91.mp4` (H.264, 1280×1080, 10 fps, 32.0 s). Native stills: `after-import.png` and `after-results.png`. Original captures, generated mesh/model, recipe and numeric report remain outside feature history. The three exact files were verified and transferred through ordinary Git in artifact commit `73e82f656bfdbd7c31ff773a46b27da707910a22`, under `objects/feature/gmsh-orphan-import-91/dc2b1d43c307b1c18fa728f99ffd2c67313c68e1/`. Received receipts and native GitHub attachment URLs are pending; `media=pending` until attachment completion is verified.
+Video: `gmsh-orphan-import-91.mp4` (H.264, 1280×1080, 10 fps, 32.0 s). Native stills: `after-import.png` and `after-results.png`. Original captures, generated mesh/model, recipe and numeric report remain outside feature history. The three exact files were verified and transferred through ordinary Git in artifact commit `73e82f656bfdbd7c31ff773a46b27da707910a22`, under `objects/feature/gmsh-orphan-import-91/dc2b1d43c307b1c18fa728f99ffd2c67313c68e1/`. All three artifact receipts now say `received`, with original SHA-256 values and byte counts verified. Native GitHub attachment URLs remain `pending_maintainer`; `media=pending` until attachment completion is verified.
 
 <details>
 <summary>Original mesh generator and reproducible command recipe</summary>
@@ -112,7 +112,7 @@ At tested head `dc2b1d43c307b1c18fa728f99ffd2c67313c68e1`, rebased without sourc
 - `cargo clippy -p fieldcraft-io -p fieldcraft-engine -p fieldcraft-ui-egui --all-targets -- -D warnings`, `cargo fmt --all --check`, and `git diff --check`: passed. The final added I/O-only regression also passed its touched-crate clippy/test rerun.
 - `cargo build -p fieldcraft`: passed. The external original ASCII fixture/recipe also imported and solved through the CLI. Native screenshots are presented GPU frames, renderer/backend checked; the in-app clicked probe matches the engine probe's node. The app exited cleanly after capture.
 
-Parent source and visual review are completed before publication. Upstream CI is pending. No local full workspace gate, heavy suite, wasm gate or oracle regeneration is claimed.
+Parent source and visual review passed before publication. Relayed CI at this exact head passed `cargo xtask ci`, `cargo xtask test --heavy`, `cargo xtask oracle`, and all other enabled checks. The Windows app and macOS oracle jobs were explicitly skipped. No local full workspace gate, heavy suite, wasm gate or oracle regeneration is claimed.
 
 ## Known limitations
 
