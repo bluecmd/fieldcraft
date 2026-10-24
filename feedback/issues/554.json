@@ -1,0 +1,22 @@
+{
+  "number": 554,
+  "title": "Bug report drafts keep the user's home folder on Windows: without_home misses the JSON-escaped path",
+  "body": "### Observed failure\n\nOn Windows the bug-report draft still names the user's folder. `bug_report::tests::a_long_session_and_the_model_are_attachments` fails on develop (`crates/engine/src/bug_report.rs:375`): the generated issue URL and the `Command:` line carry\n\n```\nCommand: `mesh.tet.generate` {\"body\":\"Plate\",\"path\":\"C:\\\\Users\\\\User/secret/plate.step\"}\n```\n\nwhere the test expects the home folder replaced by `~`. The message and location lines are redacted correctly.\n\n### Reproduction\n\n1. On Windows, `cargo test -p fieldcraft-engine --lib bug_report::tests::a_long_session_and_the_model_are_attachments`.\n2. Or in the app: a crash report whose command parameters hold a path under `%USERPROFILE%`, then the bug-report draft.\n\n### Evidence\n\nFull test output on the handoff branch of our verification run (Windows 11, rustc 1.99.1): the assertion above, the other bug-report tests pass. Linux and CI pass.\n\n### Expected behaviour\n\nNo user folder in reports and drafts, as `crash::without_home` promises (\"reports and drafts name no user folders\"), on every platform.\n\n### Investigation\n\n`without_home` replaces the raw home path only. `bug_report::crash_evidence` passes the command's parameters as serialised JSON, where every backslash of a Windows path is doubled (`C:\\\\Users\\\\User`), so the raw spelling never matches. Replacing the escaped spelling first fixes it and the test passes on Windows:\n\n```rust\npub fn without_home(s: &str) -> String {\n    let home = std::env::var(\"HOME\").or_else(|_| std::env::var(\"USERPROFILE\")).unwrap_or_default();\n    if home.len() > 1 {\n        // Command parameters are JSON, which escapes Windows path separators.\n        s.replace(&home.replace('\\\\', \"\\\\\\\\\"), \"~\").replace(&home, \"~\")\n    } else {\n        s.to_string()\n    }\n}\n```\n\n(A path with mixed separators, as in the test, still matches because only the home prefix is compared.) Happy to open the PR with this and a test that feeds a JSON-escaped path if you want it.\n\n### Version and platform\n\ndevelop at 417c0c8, Windows 11 Pro 10.0.26200 x86_64, rustc 1.99.1.",
+  "state": "open",
+  "updated_at": "2026-10-17T11:13:45Z",
+  "assignees": [],
+  "labels": [
+    "bug",
+    "area:infra"
+  ],
+  "url": "https://github.com/tangency-labs/fieldcraft/issues/554",
+  "comments": [
+    {
+      "author": "jyviko",
+      "body": "Thank you @bluecmd, clear report and an easy one to miss without a Windows box. Much appreciated!",
+      "created_at": "2026-10-17T11:13:45Z",
+      "updated_at": "2026-10-17T11:13:45Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/issues/554#issuecomment-6233227210"
+    }
+  ]
+}
