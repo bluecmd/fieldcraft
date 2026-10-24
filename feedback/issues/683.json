@@ -1,0 +1,26 @@
+{
+  "number": 683,
+  "title": "Desktop: file dialogs block the UI thread, so Wayland compositors flag FieldCraft as not responding",
+  "body": "### Observed failure\nOn Hyprland (Wayland), pressing Ctrl+S opens the save chooser (`xdg-desktop-portal-gtk`) and the compositor shows an **Application Not Responding** warning for FieldCraft on top of it. Reported by @MayberryDT in a partial Omarchy / Hyprland pass on the v0.7.0 Linux tarball (#100, Intel HD Graphics 500, Vulkan).\n\n### Cause (from the code)\nThe desktop app opens its file dialogs with `rfd::FileDialog` (`apps/fieldcraft/src/main.rs`, the `dialog(...).save_file()` and open calls), which is synchronous: the call blocks the UI thread, and so the event loop, until the chooser closes. While the portal's chooser is open the window stops answering the compositor's pings, and Hyprland (like GNOME's mutter) flags the app as not responding. The web build already uses `rfd::AsyncFileDialog`.\n\n### Expected behaviour\nThe event loop keeps running while a file chooser is open: no \"not responding\" warning, the window keeps repainting, and the dialog's result is applied when it arrives. Use `rfd::AsyncFileDialog` (or run the blocking dialog off the UI thread) for open, save, save-as, import and export, with the result delivered back to the app; the dialogs stay UI-only (programmatic commands never open dialogs).\n\n### Reproduction\nLinux on Wayland (Hyprland 0.56.2 here; GNOME should show the same), `fieldcraft --sample cantilever`, press Ctrl+S, leave the chooser open for a few seconds.\n",
+  "state": "open",
+  "updated_at": "2026-10-24T00:30:19Z",
+  "assignees": [
+    "bluecmd"
+  ],
+  "labels": [
+    "bug",
+    "claimed",
+    "area:ui",
+    "needs-triage"
+  ],
+  "url": "https://github.com/tangency-labs/fieldcraft/issues/683",
+  "comments": [
+    {
+      "author": "bluecmd",
+      "body": "<!-- fieldcraft-pr-queue:claim:claim-683-windows-dxc-agent-20261024-1 -->\nClaimed for agent `windows-dxc-agent` on `bluecmd/fieldcraft:fix/async-file-dialogs-683` through the [PR queue](https://github.com/bluecmd/fieldcraft/tree/pr-queue). GitHub assignee: @bluecmd. The agent may start once its queue receipt says `granted`. This is a reservation, not a claim of completion.",
+      "created_at": "2026-10-24T00:30:19Z",
+      "updated_at": "2026-10-24T00:30:19Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/issues/683#issuecomment-6377542059"
+    }
+  ]
+}
