@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "agent": "legend-layout-agent",
+  "branch": "fix/contact-corner-reports-203",
+  "head_sha": "7f6528611943fef617c18a641cfd1d1f6368655f",
+  "name": "after-pressure.png",
+  "bytes": 257742,
+  "sha256": "0c1acaa4cddb6246f6e846a6c3db7f5fad7af91d5f3d2ded4c4021796c7272e0",
+  "description": "Original native Vulkan contact reporting review evidence. Eight frozen Hertz reports await maintainer reconciliation; oracle remains red, with unchanged theory tolerances.",
+  "submitted_at": "2026-10-24T11:20:18.886127+00:00"
+}
