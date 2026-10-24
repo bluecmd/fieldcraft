@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "agent": "legend-layout-agent",
+  "branch": "fix/tet-edge-winding-685",
+  "head_sha": "d031a93e6fc024e09ee424c7ccf0c15cf2f30ce7",
+  "name": "after-wire.png",
+  "bytes": 262444,
+  "sha256": "7ad8020ef238c8642fd76db118e95a0fb0e0694722471a4f163b7c55c85b7786",
+  "description": "Exact-head native Windows RTX4090 Vulkan successful original 10mm cube mesh: 330 tet4,125 nodes,1000mm3. Static geometry; winding refusal demonstrated by regressions. Parent source, visual and media integrity review passed.",
+  "submitted_at": "2026-10-24T09:10:52.632159+00:00"
+}
