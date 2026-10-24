@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "agent": "contour-animation-agent",
+  "branch": "import/abaqus-deck-98",
+  "head_sha": "c5203312e97857665facfcd985d38fd80eaddfd9",
+  "name": "import-report.png",
+  "bytes": 219708,
+  "sha256": "3b51f89bf87f82ad6bbe1fe8aaf0242f26eaa5c93f44a29159c7a430328bd0c4",
+  "description": "Native Vulkan presented import report:81 nodes,32 hex8,8 unread history keywords with source lines,zero imported analysis steps,consistent mm input units.",
+  "submitted_at": "2026-10-24T11:06:12.803864+00:00",
+  "status": "received",
+  "artifact_commit": "9889db110eaacab5573cabcaecf6219540daa48d",
+  "manifest": "manifests/import/abaqus-deck-98/c5203312e97857665facfcd985d38fd80eaddfd9/import-report.png.json",
+  "manifest_blob": "e0d2d849fea006aab1894ccb49086b3dea5453d0",
+  "object": "objects/import/abaqus-deck-98/c5203312e97857665facfcd985d38fd80eaddfd9/import-report.png",
+  "verified_sha256": "3b51f89bf87f82ad6bbe1fe8aaf0242f26eaa5c93f44a29159c7a430328bd0c4",
+  "github_attachment": "pending_maintainer"
+}
