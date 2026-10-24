@@ -1,0 +1,74 @@
+{
+  "verified_at": "2026-10-24T06:55:42.603Z",
+  "videos": 10,
+  "images": 20,
+  "verification": "Native video/image elements on anonymous public PR pages; uploaded bytes separately verified by SHA-256.",
+  "prs": [
+    {
+      "pr": 704,
+      "videos": 1,
+      "images": 1,
+      "public_render_verified": true
+    },
+    {
+      "pr": 705,
+      "videos": 1,
+      "images": 1,
+      "public_render_verified": true
+    },
+    {
+      "pr": 709,
+      "videos": 1,
+      "images": 2,
+      "public_render_verified": true
+    },
+    {
+      "pr": 710,
+      "videos": 1,
+      "images": 2,
+      "public_render_verified": true
+    },
+    {
+      "pr": 713,
+      "videos": 0,
+      "images": 2,
+      "public_render_verified": true
+    },
+    {
+      "pr": 714,
+      "videos": 1,
+      "images": 2,
+      "public_render_verified": true
+    },
+    {
+      "pr": 715,
+      "videos": 1,
+      "images": 2,
+      "public_render_verified": true
+    },
+    {
+      "pr": 716,
+      "videos": 1,
+      "images": 2,
+      "public_render_verified": true
+    },
+    {
+      "pr": 717,
+      "videos": 1,
+      "images": 2,
+      "public_render_verified": true
+    },
+    {
+      "pr": 718,
+      "videos": 1,
+      "images": 2,
+      "public_render_verified": true
+    },
+    {
+      "pr": 719,
+      "videos": 1,
+      "images": 2,
+      "public_render_verified": true
+    }
+  ]
+}
