@@ -3,8 +3,8 @@
   "agent": "legend-layout-agent",
   "issue": 554,
   "branch": "fix/windows-home-redaction-554",
-  "request_blob": "19e53820237bc8fabcf446847ca8d1856ed18f66",
+  "request_blob": "d1e9f690d7ac5129e5fb024251debece5bbc86b5",
   "status": "blocked",
   "error": "Another open PR references this issue; coordinate before claiming it.",
-  "updated_at": "2026-10-24T00:15:32.450Z"
+  "updated_at": "2026-10-24T01:00:21.992Z"
 }
