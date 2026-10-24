@@ -1,177 +1,144 @@
 {
   "number": 724,
   "branch": "model/material-library-99",
-  "head_sha": "35ef3b12c7fb78cd1065042e9667736cb2cd15a9",
+  "head_sha": "ab7b824677db010012db7c6886d6d97636d83bf1",
   "state": "open",
   "merged": false,
   "draft": false,
   "title": "Materials: add a cited library of nine structural metals",
-  "body": "## What and why\n\nCloses #99. The Material menu now offers a fixed, cited library: browse all nine structural metals or filter by family, then add one as an ordinary editable material. Both actions are typed commands (`model.material.library.list` and `model.material.library`) available through the desktop, CLI, scripts and MCP. There is no runtime download or arbitrary external database importer.\n\nThe nine entries cover S235, S355, 304/1.4301, 316/1.4401, 6061-T6, 6082-T6, 7075-T6, 2024-T3 and annealed Ti-6Al-4V. Each of the 54 individually selected public facts carries its SI unit, design/minimum/typical basis, exact document/edition/table or clause/page/link, and its product/temperature applicability. This is original curation and annotations, not a copied handbook layout or commercial material library. The data attribution and a source/usage guide are included.\n\nThe model already stores SI and has a public Quantity/display boundary. This implements the issue against that current architecture: all five presets and temperature overrides work, including imperial/Fahrenheit; the older unspecified alias follows the existing mm-tonne-second behavior and default follows user settings. No duplicate conversion factors or obsolete imperial-thermal refusal is introduced. The reply explicitly labels `material_si` separately from displayed values and their units. Missing properties stay absent. Yield/tensile information appears only in `not_applied`; no plasticity, damage, erosion, safety factor or failure criterion is selected. Adding refuses duplicate/invalid names and unknown/malformed input atomically.\n\nThe stress-free reference temperature is an explicit modelling choice, defaulting to 20 degrees Celsius in every display system. It is reported separately from cited handbook facts, including whether expansion exists to use it. The library provides constant isotropic approximations, not temperature-dependent curves.\n\nSource specifics: the 2024-T3 bare-sheet entry explicitly identifies MIL-HDBK-5H (1998), Table 3.2.3.0(b1), reproduced with Change Notice 1 (2001). Its accessible link is a reproduction of the original handbook text; the official DLA index identifies later 5J, but these values are not relabelled as that edition. Other primary sources include the cited EN 1993/1999 editions, NASA's public 1972 alloy handbooks and manufacturer Hydro, Outokumpu and TIMET sheets. Every selected value was checked individually. The Ti isotropic approximation explicitly combines NASA's design modulus with TIMET physical values rather than pretending they describe one tested lot.\n\n## Demonstration\n\nThe 28-second native workflow montage shows the actual new Add Library Material form, the ordinary material inspector and the solved temperature field/probe. Every source frame is a presented screenshot of the current-head app, without an offscreen fallback. The CPU solver and NVIDIA RTX 4090 Vulkan viewport are distinguished; this is a guided feature demonstration, not an elapsed-time performance claim.\n\nBoth executables were built after frozen tested head `35ef3b12c7fb78cd1065042e9667736cb2cd15a9`. Native executable SHA-256: `f6a141336ef485c7ae1aaeb517f266d78f804651c986366045069a94851a5542`; CLI SHA-256: `98be90a58502311e43f761b5708dbb5a3e2d6e73d9d48fca4f700bf0aab6952f`. The owned demo app was closed after capture.\n\nThe original runnable `docs/materials/conduction.json` recipe builds a 20 x 30 x 120 mm bar from library 304 stainless, uses its cited 15 W/(m K) constant conductivity at 20 C, holds the ends at 293.15 K and 303.15 K and leaves the other faces insulated. The CPU solution with 36 hex8 cells / 84 nodes gives midpoint 298.15 K, axial heat flux -1250 W/m2 and opposite endpoint heat rates 0.75 W. This is a synthetic implementation check of the material/units/solver path, not experimental material validation, a transient result or coupled-exchanger design accuracy.\n\n## Validation\n\n- `cargo test -p fieldcraft-model`: 87 unit + 9 definition + 10 units tests pass. Catalogue completeness/citations/plausibility, all-five-preset unit round trips, original non-SI parser conversions, missing citation/constant/duplicate/hostile IDs and no applied inelastic laws are checked.\n- `cargo test -p fieldcraft-engine` with only the three previously confirmed Windows baseline failures excluded: 372 passed, 15 existing heavy tests ignored, 3 filtered out, 0 failures; 0 doctests. This includes the five new regressions, command/form/catalogue contracts and global hostile-parameter suite.\n- All 9 entries x 5 presets x 3 temperature scales are the same SI materials; displayed values round-trip through Quantity. Library steel gives bit-identical cantilever displacement to the sample. The cited 304 conductor matches its exact linear patch and signed endpoint heat balance.\n- `cargo clippy -p fieldcraft-model -p fieldcraft-engine --all-targets -- -D warnings` and `cargo check -p fieldcraft-model -p fieldcraft-engine --target wasm32-unknown-unknown` pass.\n- `cargo test -p fieldcraft-ui-egui form::`: all 8 generic form drawing/labels/required-field/units tests pass. `cargo fmt --all -- --check` and `git diff --check` pass. `cargo build -p fieldcraft -p fieldcraft-cli` passes at the frozen head. Actual CLI commands --json advertises both typed commands, its features output exactly matches committed `docs/features.md`, and the original conductor recipe runs successfully. Actual native form submission/material inspection/CPU solve/probe match the expected properties and numerical result.\n- Fresh fetch/rebase on the fork upstream-develop mirror was a no-op. Feature history is text-only; no new numerical solver, unit conversion rule, dependency or golden fixture changed.\n\n## Known limitations\n\nThis is a small room-temperature constant-property library. Missing conductivity/specific heat/expansion must be independently supplied before analyses that need them. Mean expansion coefficients over reported intervals remain constant approximations. Strengths are source/product/condition-specific information, not current procurement/design allowables or an automatically selected failure model. Material lots, texture and temperature can differ from these nominal values.\n\nThe engine test command excludes the previously reproduced Windows baseline failures `bug_report::tests::a_long_session_and_the_model_are_attachments` (#554 escaped home path), `cmd::file::tests::every_migrated_journal_replays_to_its_migrated_model` (imperial-density last-bit comparison) and `cmd::render::tests::labels_and_command_lines_read_well` (path separator). Existing heavy tests remain ignored. No broad local CI gate/oracle, non-Windows native runtime, browser runtime or sustained GPU solver benchmark is claimed. ROADMAP remains unchanged.\n\nThe coordinator normal-pushed the immutable `cited-material-library.mp4`, `library-form.png`, `library-conduction.png` and small safe `verification.json` through ordinary Git in artifact-queue commit `88ca45c8c162cacdafe834e1277b3504f22e22af`, under `objects/model/material-library-99/35ef3b12c7fb78cd1065042e9667736cb2cd15a9/`. Index SHA-256 values and byte counts matched all four originals, and the full video decoded successfully. Maintainer receipts confirm all four files received, with SHA-256 values and byte counts matching their immutable originals/manifests. Actual GitHub video/image attachment URLs are still pending. The JSON is inbox numerical/provenance evidence, not a native attachment. Media remains pending until real attachment URLs exist. Raw native logs, source-PDF research and original capture/encoding recipes remain private; there are no video, still, project or binary files in feature history.\n",
-  "updated_at": "2026-10-24T09:16:19Z",
+  "body": "## What and why\n\nCloses #99. The Material menu now offers a fixed, cited library: browse all nine structural metals or filter by family, then add one as an ordinary editable material. Both actions are typed commands (`model.material.library.list` and `model.material.library`) available through the desktop, CLI, scripts and MCP. There is no runtime download or arbitrary external database importer.\n\nThe nine entries cover S235, S355, 304/1.4301, 316/1.4401, 6061-T6, 6082-T6, 7075-T6, 2024-T3 and annealed Ti-6Al-4V. Each of the 54 individually selected public facts carries its SI unit, design/minimum/typical basis, exact document/edition/table or clause/page/link, and its product/temperature applicability. This is original curation and annotations, not a copied handbook layout or commercial material library. The data attribution and a source/usage guide are included.\n\nThe model already stores SI and has a public Quantity/display boundary. This implements the issue against that current architecture: all five presets and temperature overrides work, including imperial/Fahrenheit; the older unspecified alias follows the existing mm-tonne-second behavior and default follows user settings. No duplicate conversion factors or obsolete imperial-thermal refusal is introduced. The reply explicitly labels `material_si` separately from displayed values and their units. Missing properties stay absent. Yield/tensile information appears only in `not_applied`; no plasticity, damage, erosion, safety factor or failure criterion is selected. Adding refuses duplicate/invalid names and unknown/malformed input atomically.\n\nThe stress-free reference temperature is an explicit modelling choice, defaulting to 20 degrees Celsius in every display system. It is reported separately from cited handbook facts, including whether expansion exists to use it. The library provides constant isotropic approximations, not temperature-dependent curves.\n\nSource specifics: the 2024-T3 bare-sheet entry explicitly identifies MIL-HDBK-5H (1998), Table 3.2.3.0(b1), reproduced with Change Notice 1 (2001). Its accessible link is a reproduction of the original handbook text; the official DLA index identifies later 5J, but these values are not relabelled as that edition. Other primary sources include the cited EN 1993/1999 editions, NASA's public 1972 alloy handbooks and manufacturer Hydro, Outokumpu and TIMET sheets. Every selected value was checked individually. The Ti isotropic approximation explicitly combines NASA's design modulus with TIMET physical values rather than pretending they describe one tested lot.\n\n## Demonstration\n\nThe 28-second native workflow montage shows the actual new Add Library Material form, the ordinary material inspector and the solved temperature field/probe. Every source frame is a presented screenshot of the original capture app at `35ef3b12c7fb78cd1065042e9667736cb2cd15a9`, without an offscreen fallback. The CPU solver and NVIDIA RTX 4090 Vulkan viewport are distinguished; this is a guided feature demonstration, not an elapsed-time performance claim.\n\nThe original capture executables were built at `35ef3b12c7fb78cd1065042e9667736cb2cd15a9`, before the follow-up that names four unchanged SI plausibility bounds. This is historical footage, not a new-head recording. The material data, commands, UI and numerical behavior remain unchanged at current tested head `ab7b824677db010012db7c6886d6d97636d83bf1`. Please review applicability of the original recording and stills to this head; keep their original capture revision and limitations. Native executable SHA-256: `f6a141336ef485c7ae1aaeb517f266d78f804651c986366045069a94851a5542`; CLI SHA-256: `98be90a58502311e43f761b5708dbb5a3e2d6e73d9d48fca4f700bf0aab6952f`. The owned demo app was closed after capture.\n\nThe original runnable `docs/materials/conduction.json` recipe builds a 20 x 30 x 120 mm bar from library 304 stainless, uses its cited 15 W/(m K) constant conductivity at 20 C, holds the ends at 293.15 K and 303.15 K and leaves the other faces insulated. The CPU solution with 36 hex8 cells / 84 nodes gives midpoint 298.15 K, axial heat flux -1250 W/m2 and opposite endpoint heat rates 0.75 W. This is a synthetic implementation check of the material/units/solver path, not experimental material validation, a transient result or coupled-exchanger design accuracy.\n\n## Validation\n\n- Follow-up at `ab7b824677db010012db7c6886d6d97636d83bf1`: the initial main CI failure is reproduced by `cargo xtask unit-factors` (four SI plausibility literals). The identical values now have names and explanatory per-line markers. Targeted `cargo fmt --all -- --check`, `cargo xtask assets` (377 attributed files), `cargo xtask layers` (23 crates), `cargo xtask unit-factors`, all 106 model tests and model all-target clippy pass. The model/engine/UI numerical and command checks below were performed at original `35ef3b12c7fb78cd1065042e9667736cb2cd15a9`; unchanged behavior is preserved by this constant-only follow-up. No new broad suite or native recording is claimed.\n\n- `cargo test -p fieldcraft-model`: 87 unit + 9 definition + 10 units tests pass. Catalogue completeness/citations/plausibility, all-five-preset unit round trips, original non-SI parser conversions, missing citation/constant/duplicate/hostile IDs and no applied inelastic laws are checked.\n- `cargo test -p fieldcraft-engine` with only the three previously confirmed Windows baseline failures excluded: 372 passed, 15 existing heavy tests ignored, 3 filtered out, 0 failures; 0 doctests. This includes the five new regressions, command/form/catalogue contracts and global hostile-parameter suite.\n- All 9 entries x 5 presets x 3 temperature scales are the same SI materials; displayed values round-trip through Quantity. Library steel gives bit-identical cantilever displacement to the sample. The cited 304 conductor matches its exact linear patch and signed endpoint heat balance.\n- `cargo clippy -p fieldcraft-model -p fieldcraft-engine --all-targets -- -D warnings` and `cargo check -p fieldcraft-model -p fieldcraft-engine --target wasm32-unknown-unknown` pass.\n- `cargo test -p fieldcraft-ui-egui form::`: all 8 generic form drawing/labels/required-field/units tests pass. `cargo fmt --all -- --check` and `git diff --check` pass. `cargo build -p fieldcraft -p fieldcraft-cli` passes at the frozen head. Actual CLI commands --json advertises both typed commands, its features output exactly matches committed `docs/features.md`, and the original conductor recipe runs successfully. Actual native form submission/material inspection/CPU solve/probe match the expected properties and numerical result.\n- Fresh fetch/rebase on the fork upstream-develop mirror was a no-op. Feature history is text-only; no new numerical solver, unit conversion rule, dependency or golden fixture changed.\n\n## Known limitations\n\nRelayed main CI failed at original `35ef3b12c7fb78cd1065042e9667736cb2cd15a9`; its full log was unavailable because the relay rejected terminal escape sequences. Please relay a sanitized failure log if additional failures remain. The local targeted unit-factor gate reproduced and now passes the four reported literals. Oracle CI succeeded at that original head; heavy CI was still in progress in the observed feedback. These are historical statuses, not green CI claims for the new head.\n\nThis is a small room-temperature constant-property library. Missing conductivity/specific heat/expansion must be independently supplied before analyses that need them. Mean expansion coefficients over reported intervals remain constant approximations. Strengths are source/product/condition-specific information, not current procurement/design allowables or an automatically selected failure model. Material lots, texture and temperature can differ from these nominal values.\n\nThe engine test command excludes the previously reproduced Windows baseline failures `bug_report::tests::a_long_session_and_the_model_are_attachments` (#554 escaped home path), `cmd::file::tests::every_migrated_journal_replays_to_its_migrated_model` (imperial-density last-bit comparison) and `cmd::render::tests::labels_and_command_lines_read_well` (path separator). Existing heavy tests remain ignored. No broad local CI gate/oracle, non-Windows native runtime, browser runtime or sustained GPU solver benchmark is claimed. ROADMAP remains unchanged.\n\nThe coordinator normal-pushed the immutable `cited-material-library.mp4`, `library-form.png`, `library-conduction.png` and small safe `verification.json` through ordinary Git in artifact-queue commit `88ca45c8c162cacdafe834e1277b3504f22e22af`, under `objects/model/material-library-99/35ef3b12c7fb78cd1065042e9667736cb2cd15a9/`. Index SHA-256 values and byte counts matched all four originals, and the full video decoded successfully. Maintainer receipts confirm all four files received, with SHA-256 values and byte counts matching their immutable originals/manifests. Actual GitHub video/image attachment URLs are still pending, and the original capture now additionally requires the maintainer applicability review requested above. The immutable artifacts retain original `35ef3b12c7fb78cd1065042e9667736cb2cd15a9` provenance; no new-head QA or relabelled evidence is claimed. The JSON is inbox numerical/provenance evidence, not a native attachment. Media remains pending until real attachment URLs exist. Raw native logs, source-PDF research and original capture/encoding recipes remain private; there are no video, still, project or binary files in feature history.\n",
+  "updated_at": "2026-10-24T09:31:15Z",
   "url": "https://github.com/tangency-labs/fieldcraft/pull/724",
   "comments": [],
   "reviews": [],
   "inline_comments": [],
   "checks": [
     {
-      "id": 120832384542,
-      "name": "cargo xtask test --heavy",
-      "status": "in_progress",
-      "conclusion": null,
-      "started_at": "2026-10-24T09:02:02Z",
-      "completed_at": null,
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40080277571/job/120832384542",
-      "output": {
-        "title": null,
-        "summary": null,
-        "text": null,
-        "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120832384542/annotations"
-      }
-    },
-    {
-      "id": 120832384503,
-      "name": "cargo xtask ci",
-      "status": "completed",
-      "conclusion": "failure",
-      "started_at": "2026-10-24T09:02:02Z",
-      "completed_at": "2026-10-24T09:02:40Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40080277571/job/120832384503",
-      "output": {
-        "title": null,
-        "summary": null,
-        "text": null,
-        "annotations_count": 1,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120832384503/annotations"
-      },
-      "log_error": "the response contains terminal escape sequences; pass --allow-escape-sequences to output it anyway\n"
-    },
-    {
-      "id": 120832384468,
+      "id": 120836656160,
       "name": "cargo xtask oracle",
       "status": "completed",
       "conclusion": "success",
-      "started_at": "2026-10-24T09:02:01Z",
-      "completed_at": "2026-10-24T09:05:01Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40080277571/job/120832384468",
+      "started_at": "2026-10-24T09:23:54Z",
+      "completed_at": "2026-10-24T09:27:06Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40081752482/job/120836656160",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120832384468/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120836656160/annotations"
       }
     },
     {
-      "id": 120832203397,
-      "name": "Windows app tests",
+      "id": 120836656107,
+      "name": "cargo xtask ci",
       "status": "completed",
-      "conclusion": "skipped",
-      "started_at": "2026-10-24T09:01:01Z",
-      "completed_at": "2026-10-24T09:01:00Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40080277571/job/120832203397",
+      "conclusion": "success",
+      "started_at": "2026-10-24T09:23:55Z",
+      "completed_at": "2026-10-24T09:27:16Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40081752482/job/120836656107",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120832203397/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120836656107/annotations"
       }
     },
     {
-      "id": 120832203144,
+      "id": 120836656060,
+      "name": "cargo xtask test --heavy",
+      "status": "in_progress",
+      "conclusion": null,
+      "started_at": "2026-10-24T09:23:54Z",
+      "completed_at": null,
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40081752482/job/120836656060",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120836656060/annotations"
+      }
+    },
+    {
+      "id": 120836570466,
       "name": "cargo xtask oracle (macOS)",
       "status": "completed",
       "conclusion": "skipped",
-      "started_at": "2026-10-24T09:01:01Z",
-      "completed_at": "2026-10-24T09:01:00Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40080277571/job/120832203144",
+      "started_at": "2026-10-24T09:23:21Z",
+      "completed_at": "2026-10-24T09:23:21Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40081752482/job/120836570466",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120832203144/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120836570466/annotations"
       }
     },
     {
-      "id": 120832202529,
+      "id": 120836570390,
+      "name": "Windows app tests",
+      "status": "completed",
+      "conclusion": "skipped",
+      "started_at": "2026-10-24T09:23:21Z",
+      "completed_at": "2026-10-24T09:23:21Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40081752482/job/120836570390",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120836570390/annotations"
+      }
+    },
+    {
+      "id": 120836569881,
       "name": "Plan (affected crates)",
       "status": "completed",
       "conclusion": "success",
-      "started_at": "2026-10-24T09:01:10Z",
-      "completed_at": "2026-10-24T09:01:55Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40080277571/job/120832202529",
+      "started_at": "2026-10-24T09:23:27Z",
+      "completed_at": "2026-10-24T09:23:48Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40081752482/job/120836569881",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120832202529/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120836569881/annotations"
       }
     },
     {
-      "id": 120832202463,
-      "name": "Claim and triage bot tests",
-      "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-10-24T09:01:08Z",
-      "completed_at": "2026-10-24T09:01:15Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40080277571/job/120832202463",
-      "output": {
-        "title": null,
-        "summary": null,
-        "text": null,
-        "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120832202463/annotations"
-      }
-    },
-    {
-      "id": 120832202243,
+      "id": 120836569864,
       "name": "Dependency licences, advisories and sources",
       "status": "completed",
       "conclusion": "success",
-      "started_at": "2026-10-24T09:01:08Z",
-      "completed_at": "2026-10-24T09:02:58Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40080277571/job/120832202243",
+      "started_at": "2026-10-24T09:23:27Z",
+      "completed_at": "2026-10-24T09:25:04Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40081752482/job/120836569864",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120832202243/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120836569864/annotations"
       }
     },
     {
-      "id": 120832202060,
-      "name": "Triage bot",
+      "id": 120836569816,
+      "name": "Claim and triage bot tests",
       "status": "completed",
       "conclusion": "success",
-      "started_at": "2026-10-24T09:01:08Z",
-      "completed_at": "2026-10-24T09:01:18Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40080277222/job/120832202060",
+      "started_at": "2026-10-24T09:23:27Z",
+      "completed_at": "2026-10-24T09:23:34Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40081752482/job/120836569816",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120832202060/annotations"
-      }
-    },
-    {
-      "id": 120832201794,
-      "name": "Claim bot",
-      "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-10-24T09:01:08Z",
-      "completed_at": "2026-10-24T09:01:16Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40080277223/job/120832201794",
-      "output": {
-        "title": null,
-        "summary": null,
-        "text": null,
-        "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120832201794/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120836569816/annotations"
       }
     }
   ]
