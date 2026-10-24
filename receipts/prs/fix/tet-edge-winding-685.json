@@ -1,12 +1,12 @@
 {
   "request_id": "pr-685-legend-layout-agent-20261024",
-  "request_blob": "7c4df86ee575bbf803df573796c7600322d23453",
+  "request_blob": "2b217ec8108564bdde6d751eae8144112a64b0cf",
   "agent": "legend-layout-agent",
   "branch": "fix/tet-edge-winding-685",
   "issue": 685,
   "status": "posted",
-  "head_sha": "d031a93e6fc024e09ee424c7ccf0c15cf2f30ce7",
+  "head_sha": "bd50b6233f88414de371afff0b5568b4d1133f02",
   "pr": "https://github.com/tangency-labs/fieldcraft/pull/726",
-  "media": "pending",
-  "updated_at": "2026-10-24T09:16:11.205Z"
+  "media": "attached",
+  "updated_at": "2026-10-24T09:45:54.403Z"
 }
