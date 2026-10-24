@@ -11,7 +11,7 @@
   "base": "develop",
   "draft": false,
   "title": "mesh: import ASCII Gmsh meshes with physical boundary sets",
-  "media": "pending"
+  "media": "attached"
 }
 ---
 ## What and why
@@ -28,13 +28,34 @@ Every count is bounded against model/session caps and remaining input before inp
 
 ## Demonstration
 
+<!-- fieldcraft-attachments:start -->
+### Attached files
+
+These uploads are complete; earlier pending-upload wording below describes the original handoff.
+
+Capture/source revision: `dc2b1d43c307b1c18fa728f99ffd2c67313c68e1`.
+
+**gmsh-orphan-import-91.mp4**
+
+https://github.com/user-attachments/assets/d7abd98b-8296-4c07-8228-0ccc40827103
+
+**after-import.png**
+
+![after-import.png](https://github.com/user-attachments/assets/2601d048-faf6-4c1b-967e-36d12b83a798)
+
+**after-results.png**
+
+![after-results.png](https://github.com/user-attachments/assets/af590c96-2baa-4aac-a41f-15037fd41600)
+
+<!-- fieldcraft-attachments:end -->
+
 A 32.0-second captioned video uses actual native presented frames at exact tested head `dc2b1d43c307b1c18fa728f99ffd2c67313c68e1`, Windows / NVIDIA GeForce RTX 4090 / Vulkan. It shows the import form, the readable quality report, the physical root-face selection, a force applied through the tip set, and a solved result with an actual viewport node probe. All frames show a working workflow. This is a static analysis demonstration; displayed deformation is magnified 250 times and is not a physical transient.
 
 The original 10 × 1 × 1 mm beam is written directly as ASCII MSH: 80 hex20 elements, 621 sparse node labels, and eight boundary quad8 records. The boundary records become four root faces and four tip faces, with 21 nodes at each end; the imported mesh remains 80 solids, with no extra shells. `mesh.quality` certifies all 80 valid, minimum scaled Jacobian 1, volume 10 mm³.
 
 With E = 1000 MPa, Poisson ratio 0, a fixed root and a total downward tip force of 0.001 N, the centre-tip displacement is **-0.004023474075715212 mm** (actual in-app probe node 4259), versus **-0.004024 mm** from the existing Timoshenko cantilever reference scaled to this load. The modest load keeps this demonstration within the linear small-strain assumption.
 
-Video: `gmsh-orphan-import-91.mp4` (H.264, 1280×1080, 10 fps, 32.0 s). Native stills: `after-import.png` and `after-results.png`. Original captures, generated mesh/model, recipe and numeric report remain outside feature history. The three exact files were verified and transferred through ordinary Git in artifact commit `73e82f656bfdbd7c31ff773a46b27da707910a22`, under `objects/feature/gmsh-orphan-import-91/dc2b1d43c307b1c18fa728f99ffd2c67313c68e1/`. All three artifact receipts now say `received`, with original SHA-256 values and byte counts verified. Native GitHub attachment URLs remain `pending_maintainer`; `media=pending` until attachment completion is verified.
+Video: `gmsh-orphan-import-91.mp4` (H.264, 1280×1080, 10 fps, 32.0 s). Native stills: `after-import.png` and `after-results.png`. Original captures, generated mesh/model, recipe and numeric report remain outside feature history. The three exact files were verified and transferred through ordinary Git in artifact commit `73e82f656bfdbd7c31ff773a46b27da707910a22`, under `objects/feature/gmsh-orphan-import-91/dc2b1d43c307b1c18fa728f99ffd2c67313c68e1/`. All three artifact receipts now say `received`, with original SHA-256 values and byte counts verified. All three are now attached at the verified native GitHub URLs below; `media=attached`.
 
 <details>
 <summary>Original mesh generator and reproducible command recipe</summary>
@@ -122,4 +143,4 @@ Replacement intentionally refuses existing mesh-dependent selections rather than
 
 The three filtered Windows baseline failures are `bug_report::tests::a_long_session_and_the_model_are_attachments` (JSON-escaped home redaction), `cmd::file::tests::every_migrated_journal_replays_to_its_migrated_model` (imperial density last bit), and `cmd::render::tests::labels_and_command_lines_read_well` (path separator). They are not hidden or fixed here. Existing ignored tests remain ignored.
 
-The native case is an original analytical beam, not a new full corpus or commercial-tool comparison. Run-specific QA/media stay outside feature history. Native GitHub attachment completion remains pending; no raw-repository media fallback is used.
+The native case is an original analytical beam, not a new full corpus or commercial-tool comparison. Run-specific QA/media stay outside feature history. The native GitHub attachments are complete and identify this exact capture revision; no raw-repository media fallback is used.
