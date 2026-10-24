@@ -14,5 +14,6 @@
   "manifest_blob": "143e4d16db374e3c05142fe5e48489a71802a295",
   "object": "objects/gpu/vulkan-only/337ee655330a251c60e0e4fe6155e800f7c7561f/windows-4090-viewport.png",
   "verified_sha256": "be6c71c7a6f7449aa7e1d5e33263582ab3ec4c8dcadcc55fd8e1e5dda3d7aae5",
-  "github_attachment": "pending_maintainer"
+  "github_attachment": "attached",
+  "github_url": "https://github.com/user-attachments/assets/d509da64-394b-4da5-b5bd-90f05b3dc6ad"
 }
