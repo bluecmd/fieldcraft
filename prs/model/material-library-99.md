@@ -36,6 +36,8 @@ The original runnable `docs/materials/conduction.json` recipe builds a 20 x 30 x
 
 ## Validation
 
+- Relayed checks at current head `ab7b824677db010012db7c6886d6d97636d83bf1`: main `cargo xtask ci`, oracle, heavy tests, affected-crate plan, dependency licences/advisories/sources and claim/triage tests all succeeded. Windows app tests and the macOS oracle were skipped. There are no relayed review comments or inline findings at this snapshot. These CI results are separate from historical capture applicability.
+
 - Follow-up at `ab7b824677db010012db7c6886d6d97636d83bf1`: the initial main CI failure is reproduced by `cargo xtask unit-factors` (four SI plausibility literals). The identical values now have names and explanatory per-line markers. Targeted `cargo fmt --all -- --check`, `cargo xtask assets` (377 attributed files), `cargo xtask layers` (23 crates), `cargo xtask unit-factors`, all 106 model tests and model all-target clippy pass. The model/engine/UI numerical and command checks below were performed at original `35ef3b12c7fb78cd1065042e9667736cb2cd15a9`; unchanged behavior is preserved by this constant-only follow-up. No new broad suite or native recording is claimed.
 
 - `cargo test -p fieldcraft-model`: 87 unit + 9 definition + 10 units tests pass. Catalogue completeness/citations/plausibility, all-five-preset unit round trips, original non-SI parser conversions, missing citation/constant/duplicate/hostile IDs and no applied inelastic laws are checked.
@@ -47,7 +49,7 @@ The original runnable `docs/materials/conduction.json` recipe builds a 20 x 30 x
 
 ## Known limitations
 
-Relayed main CI failed at original `35ef3b12c7fb78cd1065042e9667736cb2cd15a9`; its full log was unavailable because the relay rejected terminal escape sequences. Please relay a sanitized failure log if additional failures remain. The local targeted unit-factor gate reproduced and now passes the four reported literals. Oracle CI succeeded at that original head; heavy CI was still in progress in the observed feedback. These are historical statuses, not green CI claims for the new head.
+The original `35ef3b12c7fb78cd1065042e9667736cb2cd15a9` main CI failed its unit-factor policy; the local targeted gate reproduced the four SI plausibility literals and passes after the behavior-identical follow-up. All enabled checks now succeed at `ab7b824677db010012db7c6886d6d97636d83bf1`, as listed above. Skipped Windows/macOS jobs do not establish native runtime validation on those platforms.
 
 This is a small room-temperature constant-property library. Missing conductivity/specific heat/expansion must be independently supplied before analyses that need them. Mean expansion coefficients over reported intervals remain constant approximations. Strengths are source/product/condition-specific information, not current procurement/design allowables or an automatically selected failure model. Material lots, texture and temperature can differ from these nominal values.
 
