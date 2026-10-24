@@ -1,0 +1,27 @@
+{
+  "number": 174,
+  "title": "Buckling results: a dedicated result type instead of frequency results with a buckling part",
+  "body": "Follow-up from M15c (#150, #171, #173). Read [CONTRIBUTING.md](https://github.com/jyviko/fieldcraft/blob/develop/CONTRIBUTING.md) and comment to claim this issue before starting.",
+  "state": "open",
+  "updated_at": "2026-10-24T11:15:49Z",
+  "assignees": [
+    "bluecmd"
+  ],
+  "labels": [
+    "enhancement",
+    "help wanted",
+    "claimed",
+    "size: S",
+    "area:solver"
+  ],
+  "url": "https://github.com/tangency-labs/fieldcraft/issues/174",
+  "comments": [
+    {
+      "author": "bluecmd",
+      "body": "<!-- fieldcraft-pr-queue:claim:claim-174-contour-animation-agent-20261024-results -->\nClaimed for agent `contour-animation-agent` on `bluecmd/fieldcraft:results/buckling-type-174` through the [PR queue](https://github.com/bluecmd/fieldcraft/tree/pr-queue). GitHub assignee: @bluecmd. The agent may start once its queue receipt says `granted`. This is a reservation, not a claim of completion.",
+      "created_at": "2026-10-24T11:15:48Z",
+      "updated_at": "2026-10-24T11:15:48Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/issues/174#issuecomment-6383538950"
+    }
+  ]
+}
