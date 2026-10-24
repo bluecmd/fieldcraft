@@ -28,23 +28,6 @@
     "url": "https://github.com/tangency-labs/fieldcraft/issues/707"
   },
   {
-    "number": 702,
-    "title": "Claim bot: PR comment on a fork pull request fails with HTTP 403 (#692)",
-    "body": "## Failure\nPR #692's Claim workflow fails while posting its core-work warning:\n\n`POST /repos/tangency-labs/fieldcraft/issues/692/comments` → HTTP 403, “Resource not accessible by integration”.\n\nEvidence: https://github.com/tangency-labs/fieldcraft/actions/runs/39945192511/job/120386024868. The run is `pull_request_target`; its permission log reports Contents read, Issues write, PullRequests read. The failing call is `handlePull` in `scripts/claim/claim.js` when #665 is labelled `in progress`. The contributor was explicitly offered the work on #665; a bot warning must not be confused with a failed solver check.\n\n## Proposed repair\nGive the base-branch Claim workflow the pull-request write permission required for its PR-comment/label operations, alongside its existing issue-write permission. Keep contents read-only, retain `pull_request_target` and the base-branch sparse checkout, and execute no contributor code with the write token. Review the resulting workflow diff before merge.\n\n## Verification\n- Existing claim/triage bot tests pass.\n- Inspect the workflow's triggers, permissions and checkout so the token change does not introduce a fork-code execution path.\n- Once the fix is on the default branch, a core maintainer reruns/retriggers the Claim check for #692 and confirms its comment is posted without HTTP 403. A fork-local test cannot establish upstream token readiness.\n\nRelated release tracker: #697. This infra repair is separate from the LES code review.\n",
-    "state": "open",
-    "updated_at": "2026-10-23T17:00:57Z",
-    "labels": [
-      "bug",
-      "claimed",
-      "area:infra",
-      "priority: high"
-    ],
-    "assignees": [
-      "bluecmd"
-    ],
-    "url": "https://github.com/tangency-labs/fieldcraft/issues/702"
-  },
-  {
     "number": 701,
     "title": "0.7.5: reproducible heat-exchanger tutorials and release videos",
     "body": "## Goal\nThe maintainer requests videos that help people use 0.7.5 to model flow and heat transfer in a heat exchanger. Deliver tutorials from reproducible release samples, not only a promotional animation.\n\n## Proposed series\n- [ ] **Your first heat exchanger (8–12 min):** geometry and fluid passages, materials, conducting wall, inlet/outlet and fan/pump or prescribed-flow assumptions, resolution, resource estimate, solve and save. Start from a supplied model/recipe.\n- [ ] **Where does the heat go? (3–5 min):** velocity/temperature sections and streamlines, both outlet temperatures, heat duty, pressure loss and mass/energy budgets from the same solved model.\n- [ ] **Choose a fan and compare fin spacing (5–8 min):** one controlled design change, fan/system operating point, cooling benefit versus pressure drop, and comparable convergence/resolution.\n- [ ] **Can you trust this result? (about 5 min):** validation reference, refinement, convergence of running means for LES, uncertainty and model limits.\n\n## Definition of done\n- Inputs/recipes, exact version/commit, solve settings, hardware/runtime and saved outputs accompany each video; a viewer can reproduce the result.\n- Captions and legends show physical units and distinguish measured numerical results from assumptions.\n- Air-side-only examples are labelled as such. A full exchanger tutorial requires demonstrated coupled coolant/air support.\n- A physical transient is labelled with physical time; accelerated steady-state heat-capacity runs and iteration playback are never presented as physical warm-up.\n- No use of commercial CAE assets or models; original SolidCraft geometry and the repository's capture workflow.\n- Publish gallery links, a thumbnail/hero still and a short release clip only once the final results and commands match the release build.\n\nRelated tooling: `tools/cooling`, `tools/flow-clip`, and `docs/examples.md`. The existing `cooling-aio` airflow clip is a starting point, but its held-temperature/air-side assumptions must remain visible.\n",
@@ -379,22 +362,6 @@
     "url": "https://github.com/tangency-labs/fieldcraft/issues/664"
   },
   {
-    "number": 663,
-    "title": "lbm: a turbulence model for fan and duct flows (Smagorinsky LES with Van Driest wall damping)",
-    "body": "### Current behaviour\n\nA fluid step's collision is TRT or recursive regularized, with no turbulence model. Fans and ducts at everyday sizes run at Reynolds numbers of 10⁴ and more (a 50 mm duct at 5 m/s is 16 700). On the cells people can afford (about 1 mm), air's viscosity puts τ within 0.001 of ½, so the run either needs far smaller cells or relies on numerical dissipation that changes with the grid.\n\n### What you need and why\n\nDuct, fan and cooling studies at real speeds on a coarse grid, with an eddy viscosity that can be switched off for laminar cases and verified like the rest of the solver.\n\nI built this for SolidCraft's Airflow studies (D3Q19, regularized collision, Smagorinsky, Van Driest damping, wgpu), and it is the part FieldCraft's flow solver doesn't have yet. Measured there on a 50 mm pipe, 300 mm long, 5 m/s, 1 mm cells, against a wall-resolved laminar O-grid solution and Shah & London's developing-flow correlation (which agree to 0.5%):\n\n| | reference | with the model |\n|---|---|---|\n| pressure gradient mid-pipe, Pa per 50 mm | 0.50 | 0.48 (−3%) |\n| inlet pressure, Pa | 3.93 | 4.25 (+8%) |\n\nOne finding worth carrying over: with millimetre cells the first cell sits at y⁺ ≥ 10, and the textbook damping constant A⁺ = 26 leaves too much eddy viscosity there (the gradient read 1.5× high). That is why the damping should be tested on a resolved and an under-resolved grid, not tuned on one case.\n\nI discussed bringing this to FieldCraft with a contributor, who suggested opening it here.\n\n### Expected behaviour\n\nAn opt-in turbulence model on a fluid step, CPU first and then GPU, each as its own commit:\n\n1. `model`: a fluid step's turbulence: none (default) or Smagorinsky with its constant, plus optional Van Driest damping. Stored in SI, with no change to existing models.\n2. `lbm` (CPU): the local relaxation time from the non-equilibrium momentum flux, τ = ½(τ₀ + √(τ₀² + 18√2 (C_s Δ)² |Π⁽¹⁾| / ρ)) (Hou et al. 1996), in both collision operators. TRT keeps its magic parameter by moving τ⁻ with τ⁺. Van Driest damping uses the wall distance on the lattice.\n3. `lbm-gpu`: the same in `lbm.wgsl`, checked against the CPU within the stated f32 tolerance.\n4. Verification (`tests/oracle/`, docs/verification.md):\n   - **theory:** with laminar flow below the model's threshold, Poiseuille and the lid-driven cavity at Re 100 are unchanged;\n   - **experiment and benchmark:** the turbulent channel at Re_τ 180 against Moser, Kim & Mansour (1999), for the mean velocity profile and the friction coefficient;\n   - developing pipe flow against Shah & London (1978).\n\nDoes this fit how you want turbulence in M12? I'd rather match your plan than land a model you'd replace.\n\n### Pictures\n\n_No response_\n\n### References\n\n- Smagorinsky, J. (1963), General circulation experiments with the primitive equations, Monthly Weather Review 91(3).\n- Hou, S., Sterling, J., Chen, S., Doolen, G. (1996), A lattice Boltzmann subgrid model for high Reynolds number flows, Fields Inst. Commun. 6.\n- Van Driest, E. R. (1956), On turbulent flow near a wall, J. Aeronaut. Sci. 23(11).\n- Moser, R. D., Kim, J., Mansour, N. N. (1999), Direct numerical simulation of turbulent channel flow up to Re_τ = 590, Phys. Fluids 11(4).\n- Shah, R. K., London, A. L. (1978), Laminar Flow Forced Convection in Ducts, Academic Press.",
-    "state": "open",
-    "updated_at": "2026-10-23T22:20:19Z",
-    "labels": [
-      "enhancement",
-      "in progress",
-      "area:cfd"
-    ],
-    "assignees": [
-      "jyviko"
-    ],
-    "url": "https://github.com/tangency-labs/fieldcraft/issues/663"
-  },
-  {
     "number": 660,
     "title": "Electromagnetic field and particle beam solver",
     "body": "### Current behaviour\n\nCurrently electromagnetic calculations seem to be unsupported.\n\n### What you need and why\n\nIt were nice to have a solver(s) that is able to calculate:\n* electromagnetic properties of a part (inductance, capacitance),\n* electrical and magnetic fields in given volume,\n* equipotential surfaces and charged particle beams propagation,\n* electromagnetic wave propagation.\n\nMost of them use variants of the same second-grade differential equations already present in the solver.\n\nThank you in advance.\n\n### Expected behaviour\n\n_No response_\n\n### Pictures\n\n_No response_\n\n### References\n\n_No response_",
@@ -552,23 +519,6 @@
     ],
     "assignees": [],
     "url": "https://github.com/tangency-labs/fieldcraft/issues/612"
-  },
-  {
-    "number": 610,
-    "title": "A legend taller than the viewport is cut off, hiding Max/Min",
-    "body": "### Observed failure\nA results legend taller than the viewport is cut off at the bottom, and the navigation bar covers its last bands and the clickable Max/Min lines.\n\n### Reproduction\n1. Open the Cantilever sample, solve it, show von Mises.\n2. Set the legend to 24 bands with a clamped range.\n3. Resize the window to 960 × 600 (`ui.resize`).\n\nThe legend is 507 pt tall in a 406 pt viewport. Since #608 it also starts 35 pt lower (below the selection bar), so 35 pt more is hidden.\n\n### Expected behaviour\nThe whole legend stays readable at any window size, including Max/Min. For example, fewer swatch labels when space is short, two columns, or scrolling.\n\nFound while reviewing #608.\n",
-    "state": "open",
-    "updated_at": "2026-10-23T20:15:19Z",
-    "labels": [
-      "bug",
-      "claimed",
-      "area:ui",
-      "needs-triage"
-    ],
-    "assignees": [
-      "bluecmd"
-    ],
-    "url": "https://github.com/tangency-labs/fieldcraft/issues/610"
   },
   {
     "number": 606,
