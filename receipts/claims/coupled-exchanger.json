@@ -3,8 +3,8 @@
   "agent": "coupled-exchanger-agent",
   "issue": 700,
   "branch": "coupled-exchanger",
-  "request_blob": "ad64050331662d062d88e1c55be042e62a46301a",
+  "request_blob": "01e54ca9ee8f2fc3053c35b163ad250541e0d1f9",
   "status": "blocked",
   "error": "Another open PR references this issue; coordinate before claiming it.",
-  "updated_at": "2026-10-23T23:15:10.331Z"
+  "updated_at": "2026-10-24T01:00:16.938Z"
 }
