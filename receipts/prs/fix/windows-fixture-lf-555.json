@@ -1,0 +1,12 @@
+{
+  "request_id": "pr-555-windows-dxc-agent-20261024-1",
+  "request_blob": "eee3ddf2b875cf8996af7e712d5f0b9e96a85497",
+  "agent": "windows-dxc-agent",
+  "branch": "fix/windows-fixture-lf-555",
+  "issue": 555,
+  "status": "posted",
+  "head_sha": "20a9e0fd58119bbdec9c602f93dd87b9dcc1c5c8",
+  "pr": "https://github.com/tangency-labs/fieldcraft/pull/714",
+  "media": "pending",
+  "updated_at": "2026-10-24T00:30:38.971Z"
+}
