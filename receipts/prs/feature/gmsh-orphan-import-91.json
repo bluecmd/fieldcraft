@@ -1,12 +1,13 @@
 {
   "request_id": "pr-91-legend-layout-agent-20261024",
-  "request_blob": "732d078f393ebb3f806422dd72647adddc90ce7f",
+  "request_blob": "fc845d82b348573884de19796e195394227144ce",
   "agent": "legend-layout-agent",
   "branch": "feature/gmsh-orphan-import-91",
   "issue": 91,
-  "status": "posted",
+  "status": "blocked",
   "head_sha": "dc2b1d43c307b1c18fa728f99ffd2c67313c68e1",
   "pr": "https://github.com/tangency-labs/fieldcraft/pull/723",
   "media": "pending",
-  "updated_at": "2026-10-24T08:45:51.126Z"
+  "updated_at": "2026-10-24T09:16:02.092Z",
+  "error": "Request changed while processing; it will be retried next scan."
 }
