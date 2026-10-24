@@ -256,13 +256,16 @@
     "title": "Tet validity gate: a per-edge winding check",
     "body": "### Current behaviour\nWith the fixes for #666, `tet::linear_gate` refuses tetrahedra joined to the mesh by vertices alone, faces held by more than two tetrahedra, and a listed boundary other than the faces held once. It also compares the mesh's volume with what its boundary encloses. An over-wound edge, where the tetrahedra round an edge cover more than a full turn, overlaps without any face held three times, and for positive tetrahedra the summed volume is the winding-weighted volume the boundary encloses, so the volume test passes it as well.\n\n### What you need and why\nA gate that certifies the mesh does not overlap itself before the solver sees it, whatever operation made the overlap.\n\n### Expected behaviour\nFor every edge, the dihedral angles at that edge of the tetrahedra round it sum to 2π for an interior edge and to less than 2π for a boundary edge, within a stated tolerance; the gate refuses the mesh otherwise and names the first edge and where it is. Floating point is fine in a gate, as the volume test is. This also covers a face held by three tetrahedra.\n\n### References\nNone beyond the geometry: in a mesh that does not overlap itself, the tetrahedra round an interior edge fill exactly one full turn, and those round a boundary edge less than one.\n",
     "state": "open",
-    "updated_at": "2026-10-22T06:56:59Z",
+    "updated_at": "2026-10-24T08:45:35Z",
     "labels": [
       "enhancement",
+      "claimed",
       "area:mesh",
       "needs-triage"
     ],
-    "assignees": [],
+    "assignees": [
+      "bluecmd"
+    ],
     "url": "https://github.com/tangency-labs/fieldcraft/issues/685"
   },
   {
