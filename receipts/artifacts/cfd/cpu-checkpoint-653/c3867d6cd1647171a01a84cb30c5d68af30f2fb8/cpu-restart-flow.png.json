@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "agent": "contour-animation-agent",
+  "branch": "cfd/cpu-checkpoint-653",
+  "head_sha": "c3867d6cd1647171a01a84cb30c5d68af30f2fb8",
+  "name": "cpu-restart-flow.png",
+  "bytes": 224574,
+  "sha256": "d6a8f3631649f3798982d51df8e91df76c3b7196e69036796d8598ee8adf6bd1",
+  "description": "Presented native app frames from exact build, held/edited; CPU solve 64 cells, 3 threads. Vulkan RTX 4090 viewport. Original SolidCraft CLI 0.14 box supplies display bounds only, obstacles/solids empty. Inter caption font SIL OFL 1.1. Actual cancellation retains20018 then resume with changed cadence completes1000003steps/1000.003s physical time. Captions quote real returned summary, not an added report panel. Separate fresh-process100003step QA matches all1387944results.bin bytes SHA d4d05bd9410e620826b1e9350b38b8401313284e31870b09d8ec21260c033064. Parent source/body/native visual review passed.",
+  "submitted_at": "2026-10-24T09:04:13.684954+00:00",
+  "status": "received",
+  "artifact_commit": "7f9c9d9c9e080a3651a501a0a85232d7872266e3",
+  "manifest": "manifests/cfd/cpu-checkpoint-653/c3867d6cd1647171a01a84cb30c5d68af30f2fb8/cpu-restart-flow.png.json",
+  "manifest_blob": "e553dd59dc20b6dc5ad76dffe7fb18f471644ba7",
+  "object": "objects/cfd/cpu-checkpoint-653/c3867d6cd1647171a01a84cb30c5d68af30f2fb8/cpu-restart-flow.png",
+  "verified_sha256": "d6a8f3631649f3798982d51df8e91df76c3b7196e69036796d8598ee8adf6bd1",
+  "github_attachment": "pending_maintainer"
+}
