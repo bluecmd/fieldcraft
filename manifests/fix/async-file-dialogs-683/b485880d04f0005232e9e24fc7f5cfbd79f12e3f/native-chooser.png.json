@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "agent": "windows-dxc-agent",
+  "branch": "fix/async-file-dialogs-683",
+  "head_sha": "b485880d04f0005232e9e24fc7f5cfbd79f12e3f",
+  "name": "native-chooser.png",
+  "bytes": 89253,
+  "sha256": "d6569dca6e4273ec0eed2bb35386d002a06ca15614bc87640d5985f0a63aeed8",
+  "description": "Original Windows native Save As chooser and presented FieldCraft frames at tested head b485880d. Address/search privacy redaction is labelled. Eight pending-chooser queries max 11.1 ms. Save/Cancel completion covered by unit tests; native input helper could not activate chooser. Windows RTX 4090 Vulkan only; no Wayland or macOS runtime claim.",
+  "submitted_at": "2026-10-24T01:22:43.870338+00:00"
+}
