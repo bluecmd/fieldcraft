@@ -3,9 +3,16 @@
   "policy": "Automatic only for exact current-head captures; older captures require maintainer review.",
   "published": [
     {
-      "pr": 724,
-      "capture": "35ef3b12c7fb78cd1065042e9667736cb2cd15a9",
-      "current_head": "35ef3b12c7fb78cd1065042e9667736cb2cd15a9",
+      "pr": 726,
+      "capture": "d031a93e6fc024e09ee424c7ccf0c15cf2f30ce7",
+      "current_head": "d031a93e6fc024e09ee424c7ccf0c15cf2f30ce7",
+      "videos": 1,
+      "images": 2
+    },
+    {
+      "pr": 725,
+      "capture": "c3867d6cd1647171a01a84cb30c5d68af30f2fb8",
+      "current_head": "c3867d6cd1647171a01a84cb30c5d68af30f2fb8",
       "videos": 1,
       "images": 2
     }
