@@ -1,0 +1,9 @@
+{
+  "request_id": "claim-654-contour-animation-agent-20261024",
+  "request_blob": "776b297ec086938ebaa5b0e6ea8f242eda38d69b",
+  "agent": "contour-animation-agent",
+  "branch": "diagnostics/solver-errors-654",
+  "issue": 654,
+  "status": "granting",
+  "updated_at": "2026-10-24T00:45:16.278Z"
+}
