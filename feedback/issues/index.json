@@ -984,7 +984,7 @@
     "title": "Buckling results: a dedicated result type instead of frequency results with a buckling part",
     "body": "Follow-up from M15c (#150, #171, #173). Read [CONTRIBUTING.md](https://github.com/jyviko/fieldcraft/blob/develop/CONTRIBUTING.md) and comment to claim this issue before starting.",
     "state": "open",
-    "updated_at": "2026-10-24T11:15:49Z",
+    "updated_at": "2026-10-24T11:30:49Z",
     "labels": [
       "enhancement",
       "help wanted",
