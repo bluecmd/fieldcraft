@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "agent": "legend-layout-agent",
+  "branch": "fix/tet-seam-diagnostics-689",
+  "head_sha": "89b2c9dcebb0f49a4de73d9968cd2d463e056c27",
+  "name": "after-seam-refused.png",
+  "bytes": 260680,
+  "sha256": "ef9ad284d794ca6c956a45394d42447d2916dc9e462ee96304a7a3786a919c2c",
+  "description": "Original presented native Vulkan frame at tested89b2c9dc. Synthetic10mm cube with1e-5mm seam refused; full actionable guidance in tet form names mesh.surface.check and explicit weld controls with preservation/orientation caveats. Default weld unchanged, no nodes/elements added. Original analytic3MF geometry, not commercial CAE output.",
+  "submitted_at": "2026-10-24T00:58:28.799446+00:00"
+}

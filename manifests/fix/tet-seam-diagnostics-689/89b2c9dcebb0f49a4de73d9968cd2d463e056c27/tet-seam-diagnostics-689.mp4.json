@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "agent": "legend-layout-agent",
+  "branch": "fix/tet-seam-diagnostics-689",
+  "head_sha": "89b2c9dcebb0f49a4de73d9968cd2d463e056c27",
+  "name": "tet-seam-diagnostics-689.mp4",
+  "bytes": 511306,
+  "sha256": "182d4cfdaede7b58ed208c0b37ee30e215d531a9fbbb202942d23ba0cbb3c714",
+  "description": "Original34s presented native FieldCraft Vulkan demonstration. Analytic10mm cube with1e-5mm seam: baseline7d9c027 failure, tested source89b2c9dc readable seam guidance, explicit weld_distance0.00002mm gives219tet4 and74nodes, separate reversed-face refusal preserves valid mesh. No default tolerance, healing algorithm or solver change. Synthetic original3MF geometry; original SolidCraft boolean retry asset not rerun. Captions Inter SIL OFL1.1.",
+  "submitted_at": "2026-10-24T00:58:28.349336+00:00"
+}
