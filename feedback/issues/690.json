@@ -1,0 +1,26 @@
+{
+  "number": 690,
+  "title": "geometry.partition refuses a body with a revolved ring groove for planes parallel to the groove's axis (kernel nudge), though SolidCraft cuts the same half cleanly",
+  "body": "### Observed failure\n\n`geometry.partition` refuses a block that has a revolved ring groove (an undercut at the floor of a counterbore) for every datum plane **parallel** to the groove's axis:\n\n```\npartition `H`: the kernel could not cut `Block` (the operation failed: the cut is only made off the plane (SolidCraft's kernel: Boolean retry: tool displacement 5.435255e-4 mm, rotation 2.000000e-6 rad); the plane runs along a face or edge of the body: move it off (by a fraction of the element size))\n```\n\nThe plane doesn't run along any face or edge, and moving it doesn't help. On a larger body, offsets from 0.0001 mm to 20 mm on either side all failed with the same nudge displacement. A plane **square** to the axis partitions fine. The same block without the groove partitions on every plane.\n\nSolidCraft 0.18.2, the kernel version FieldCraft pins, intersects the same block with a half-space box at x = 0.3 cleanly: no retry, with boxes 100, 2,000 and 20,000 mm across. So the failure looks specific to how the partition builds or applies its cut, not to the geometry.\n\n**Effect:** a half model with symmetry can't be made in FieldCraft from a design that has revolved relief grooves at its bearing seats. The workaround is to cut the half in SolidCraft first, which loses the link to the source design.\n\n### Reproduction\n\n1. Build the design with SolidCraft (0.18.2 here): `solidcraft-cli run groove.json --save groove.solidcraft`. It is a 60 × 30 × 60 block, a Ø30 counterbore 7.8 deep along Y, a Ø14 through hole, and one revolved R1.5 groove at the counterbore's floor corner:\n\n```json\n{\"commands\":[\n {\"command\":\"solid.box\",\"params\":{\"length\":60,\"width\":30,\"height\":60,\"corner\":[-30,0,-30],\"body_name\":\"Block\"}},\n {\"command\":\"solid.cylinder\",\"params\":{\"diameter\":30,\"height\":7.8,\"base\":[0,-0.01,0],\"axis\":[0,1,0],\"operation\":\"cut\",\"targets\":[\"Block\"]}},\n {\"command\":\"solid.cylinder\",\"params\":{\"diameter\":14,\"height\":32,\"base\":[0,-1,0],\"axis\":[0,1,0],\"operation\":\"cut\",\"targets\":[\"Block\"]}},\n {\"command\":\"sketch.create\",\"params\":{\"plane\":\"XY\",\"offset\":\"0\"}},\n {\"command\":\"sketch.line\",\"params\":{\"points\":[[16,7.5],[14.5,7.5],[14.5,9]],\"infer\":false}},\n {\"command\":\"sketch.arc.three_point\",\"params\":{\"start\":[14.5,9],\"end\":[16,7.5],\"through\":[17.060660,10.060660]}},\n {\"command\":\"sketch.finish\",\"params\":{}},\n {\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"angle\":\"360 deg\",\"direction\":\"symmetric\",\"operation\":\"cut\",\"targets\":[\"Block\"]}}\n]}\n```\n\n2. Partition it with FieldCraft: `fieldcraft-cli run plan.json`:\n\n```json\n[\n {\"command\": \"geometry.open\", \"params\": {\"path\": \"groove.solidcraft\"}},\n {\"command\": \"geometry.datum\", \"params\": {\"name\": \"D\", \"by\": {\"type\": \"offset\", \"plane\": \"yz\", \"offset\": 0.3}}},\n {\"command\": \"geometry.partition\", \"params\": {\"name\": \"H\", \"datum\": \"D\", \"bodies\": [\"Block\"]}}\n]\n```\n\n| Datum plane | With the groove | Without the groove (the same script minus the sketch and revolve) |\n|---|---|---|\n| `yz` at 0.3 (parallel to the axis) | refused, as above | partitions |\n| `xy` at −10 (parallel to the axis) | refused, as above | partitions |\n| `zx` at 20 (square to the axis) | partitions | partitions |\n\nA one-sided revolve fails the same way as the symmetric one.\n\n### Investigation\n\n- `partition.rs` `halves()` refuses any cut that needed the kernel's tool nudge (#427), so the refusal itself is deliberate. What isn't expected is that the cut needs the nudge at all.\n- A plain SolidCraft `solid.box … operation: intersect` with the same half-space succeeds without any retry, as described above.\n\n### Version and platform\n\nFieldCraft develop 8b1a01e (`fieldcraft-cli` 0.7.0, built from source) on Windows 11. The same failure was seen on develop b2b3500 on Linux x86_64 with a larger body. The designs were saved by SolidCraft 0.18.2.\n",
+  "state": "open",
+  "updated_at": "2026-10-24T01:15:26Z",
+  "assignees": [
+    "bluecmd"
+  ],
+  "labels": [
+    "bug",
+    "claimed",
+    "area:mesh",
+    "needs-triage"
+  ],
+  "url": "https://github.com/tangency-labs/fieldcraft/issues/690",
+  "comments": [
+    {
+      "author": "bluecmd",
+      "body": "<!-- fieldcraft-pr-queue:claim:claim-690-legend-layout-agent-20261024-01 -->\nClaimed for agent `legend-layout-agent` on `bluecmd/fieldcraft:fix/partition-box-tools-690` through the [PR queue](https://github.com/bluecmd/fieldcraft/tree/pr-queue). GitHub assignee: @bluecmd. The agent may start once its queue receipt says `granted`. This is a reservation, not a claim of completion.",
+      "created_at": "2026-10-24T01:15:26Z",
+      "updated_at": "2026-10-24T01:15:26Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/issues/690#issuecomment-6378032720"
+    }
+  ]
+}
