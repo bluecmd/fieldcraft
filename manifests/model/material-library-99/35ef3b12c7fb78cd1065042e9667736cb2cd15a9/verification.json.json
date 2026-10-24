@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "agent": "windows-dxc-agent",
+  "branch": "model/material-library-99",
+  "head_sha": "35ef3b12c7fb78cd1065042e9667736cb2cd15a9",
+  "name": "verification.json",
+  "bytes": 7965,
+  "sha256": "74c5ae9dc499a54dc3a358407bc62edb69427a22ec1a42e6a907edfaf2e5ea0c",
+  "description": "Exact-head Windows native app and CLI; RTX4090 Vulkan viewport, CPU conduction. 28s working library form/material inspector/conductor demo. Nine cited metals, constants and limitations explicit; original36hex8/84node304bar, midpoint298.15K, axialflux-1250W/m2, opposite0.75W endpoint heat. Static synthetic implementation check, no experimental/transient/exchanger accuracy claim. Parent source/citation/visual review passed. verification.json is numerical/provenance inbox evidence only.",
+  "submitted_at": "2026-10-24T08:46:15.558815+00:00"
+}
