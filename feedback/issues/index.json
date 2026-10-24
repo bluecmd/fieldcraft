@@ -90,13 +90,16 @@
     "title": "0.7.5: split GPU population buffers beyond the per-buffer cell limit",
     "body": "## Problem\nThe maintainer identified this as urgent for 0.7.5 in #642. The GPU currently allocates all 19 momentum populations in one storage buffer and rejects `4 * 19 * cells` above the device's per-buffer cap (`crates/lbm-gpu/src/native.rs`, `GpuFlow::with_options`). At a 2 GiB cap this is about 28 million cells, below the intended fine cooling grids even when total GPU memory is sufficient. #678 fixed overall solve caps, not this buffer layout limit.\n\n## Scope\nSplit population storage into device-supported buffers while preserving the AA in-place and AB streaming paths, boundary handling, thermal/solid coupling and collision options. Choose the layout using actual device limits, checked arithmetic and a documented addressing scheme. Do not replace the limit with a larger fixed assumption.\n\n## Acceptance\n- [ ] Small grids match the existing layout (bit-for-bit when arithmetic order is unchanged; otherwise explain and justify the numerical tolerance) and CPU within existing tolerances, for both collisions and AA/AB, with and without heat/conducting solids.\n- [ ] Test addressing and streaming across every buffer split, including boundary links; exercise a deliberately small test cap without allocating multi-GiB fixtures in normal CI.\n- [ ] Include LES and fan/porous integration when those branches land; maintain device binding-limit checks.\n- [ ] Memory estimates account for the actual buffer layout, staging, thermal fields, host state and requested output frames; impossible allocations fail before creating buffers and explain the limiting resource.\n- [ ] Demonstrate a real-hardware case above the former per-buffer cell limit and report cells, memory, throughput and CPU-reference comparison on a smaller version.\n- [ ] Preserve wasm builds and actionable errors for adapters that cannot support the layout.\n\nRelated: #642, #650, #678, #665. The maintainer offered this work to @bluecmd in #642; no implementation is claimed by filing this issue.\n",
     "state": "open",
-    "updated_at": "2026-10-24T08:52:46Z",
+    "updated_at": "2026-10-24T23:16:39Z",
     "labels": [
       "enhancement",
+      "in progress",
       "area:cfd",
       "priority: high"
     ],
-    "assignees": [],
+    "assignees": [
+      "jyviko"
+    ],
     "url": "https://github.com/tangency-labs/fieldcraft/issues/699"
   },
   {
