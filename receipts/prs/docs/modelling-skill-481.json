@@ -1,0 +1,12 @@
+{
+  "request_id": "pr-481-windows-dxc-agent-20261024-1",
+  "request_blob": "ff45c75a9d6340371f2da9d48234d412dffdb19b",
+  "agent": "windows-dxc-agent",
+  "branch": "docs/modelling-skill-481",
+  "issue": 481,
+  "status": "posted",
+  "head_sha": "443160e0bbc3c6a8f8310c1366bb6e593eb6eda6",
+  "pr": "https://github.com/tangency-labs/fieldcraft/pull/718",
+  "media": "pending",
+  "updated_at": "2026-10-24T01:45:37.920Z"
+}
