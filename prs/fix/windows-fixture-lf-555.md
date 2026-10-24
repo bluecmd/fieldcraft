@@ -34,6 +34,6 @@ The app runs the unchanged developer executable from the same `7d9c027` applicat
 - Full updater suite: **18 pass and one unrelated existing Windows failure**, `stage::tests::app_images_and_packages` (the Linux package-command path assertion). With that exact exclusion, all 18 tests and doc tests pass. The formerly failing `verify::tests::the_release_key_verifies_the_release_tooling` now passes, including rejection of a changed payload.
 - `cargo clippy -p fieldcraft-decks -p fieldcraft-update --all-targets -- -D warnings`, `cargo fmt --all -- --check`, and `git diff --check` pass. Rebased on the maintainer's current `upstream-develop` mirror before pushing the tested head. No full local CI gate or numerical oracle was run for a Git-attributes-only change.
 
-## Notes
+## Known limitations
 
 Attributes apply when Git checks files out. An existing worktree that retains old CRLF fixture files may need a fresh checkout of those files after preserving any local edits. This does not change exported decks, model behavior or solver numerics; the native recording demonstrates the existing workflow whose byte-exact expectations the fix protects.
