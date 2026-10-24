@@ -1,10 +1,10 @@
 [
   {
     "number": 712,
-    "title": "GPU: support Vulkan only on native platforms and remove D3D backends",
+    "title": "GPU: user-selectable backend (Vulkan default on Linux/Windows, Metal on macOS; others 'coming soon')",
     "body": "Native GPU support is Vulkan only, per the owner decision following #708. #561 and #708 are closed as superseded; no DXC packaging or manual DX12 setup is planned.\n\nImplement the policy consistently across the desktop viewport, offscreen rendering, GPU fluid solves and GPU meshing:\n\n- Remove native D3D/DX12, Metal and OpenGL backend selection and DXC/FXC compiler handling.\n- Disable transitive native backend features as well as direct ones; keep the browser's WebGPU/WebGL build working.\n- Keep Vulkan hardware/software adapter selection and process/device reuse. Unsupported backend overrides must never select a different native backend; strict GPU requests should fail actionably and headless auto rendering may retain its CPU fallback.\n- Update diagnostics, platform/support documentation and verification guidance. Do not present historical Metal/DX12 measurements as current support.\n- Validate the touched crates, native Cargo feature graph and supported software/hardware Vulkan paths; record unavailable platform/hardware checks honestly.\n\nThis is backend support cleanup. The fan/porous GPU work (#705 / #698), buffer splitting (#699) and coupled exchanger (#700) remain separate work.\n",
     "state": "open",
-    "updated_at": "2026-10-24T00:05:14Z",
+    "updated_at": "2026-10-24T12:52:34Z",
     "labels": [
       "claimed",
       "needs-triage"
