@@ -3,7 +3,7 @@
   "title": "0.7.5: split GPU population buffers beyond the per-buffer cell limit",
   "body": "## Problem\nThe maintainer identified this as urgent for 0.7.5 in #642. The GPU currently allocates all 19 momentum populations in one storage buffer and rejects `4 * 19 * cells` above the device's per-buffer cap (`crates/lbm-gpu/src/native.rs`, `GpuFlow::with_options`). At a 2 GiB cap this is about 28 million cells, below the intended fine cooling grids even when total GPU memory is sufficient. #678 fixed overall solve caps, not this buffer layout limit.\n\n## Scope\nSplit population storage into device-supported buffers while preserving the AA in-place and AB streaming paths, boundary handling, thermal/solid coupling and collision options. Choose the layout using actual device limits, checked arithmetic and a documented addressing scheme. Do not replace the limit with a larger fixed assumption.\n\n## Acceptance\n- [ ] Small grids match the existing layout (bit-for-bit when arithmetic order is unchanged; otherwise explain and justify the numerical tolerance) and CPU within existing tolerances, for both collisions and AA/AB, with and without heat/conducting solids.\n- [ ] Test addressing and streaming across every buffer split, including boundary links; exercise a deliberately small test cap without allocating multi-GiB fixtures in normal CI.\n- [ ] Include LES and fan/porous integration when those branches land; maintain device binding-limit checks.\n- [ ] Memory estimates account for the actual buffer layout, staging, thermal fields, host state and requested output frames; impossible allocations fail before creating buffers and explain the limiting resource.\n- [ ] Demonstrate a real-hardware case above the former per-buffer cell limit and report cells, memory, throughput and CPU-reference comparison on a smaller version.\n- [ ] Preserve wasm builds and actionable errors for adapters that cannot support the layout.\n\nRelated: #642, #650, #678, #665. The maintainer offered this work to @bluecmd in #642; no implementation is claimed by filing this issue.\n",
   "state": "open",
-  "updated_at": "2026-10-23T16:52:46Z",
+  "updated_at": "2026-10-24T08:52:46Z",
   "assignees": [],
   "labels": [
     "enhancement",
@@ -11,5 +11,13 @@
     "priority: high"
   ],
   "url": "https://github.com/tangency-labs/fieldcraft/issues/699",
-  "comments": []
+  "comments": [
+    {
+      "author": "bluecmd",
+      "body": "@jyviko — coordinating the blocked 0.7.5 buffer-layout claim for `coupled-exchanger-agent`, branch `gpu/population-buffers-699`.\n\nThe queue receipt is blocked because another open PR references #699. The open PR body referencing it is #661, which lists buffer splitting as a dependency; I found no separate buffer-layout implementation PR in that search. Your earlier guidance on #642 was to make splitting its own PR, with this work offered to @bluecmd.\n\nCould you confirm whether this narrowly scoped implementation can proceed separately from #661, and identify any competing owner or branch we should coordinate with? The requested scope preserves both collisions and AA/AB layouts, uses actual device storage/binding limits, tests split boundaries with small caps, accounts for memory, and supplies bounded real-hardware evidence above the former per-buffer limit. Fan/porous and LES work remain with their existing owners.\n\nNo implementation has started under this blocked claim. We will wait for ownership reconciliation and a matching `granted` receipt; this comment does not override the queue or claim completion.",
+      "created_at": "2026-10-24T08:52:46Z",
+      "updated_at": "2026-10-24T08:52:46Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/issues/699#issuecomment-6382218022"
+    }
+  ]
 }
