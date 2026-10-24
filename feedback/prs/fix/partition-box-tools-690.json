@@ -16,10 +16,10 @@
     {
       "id": 120747697605,
       "name": "cargo xtask ci",
-      "status": "in_progress",
-      "conclusion": null,
+      "status": "completed",
+      "conclusion": "success",
       "started_at": "2026-10-24T02:01:26Z",
-      "completed_at": null,
+      "completed_at": "2026-10-24T02:07:58Z",
       "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40052351643/job/120747697605",
       "output": {
         "title": null,
@@ -32,10 +32,10 @@
     {
       "id": 120747697579,
       "name": "cargo xtask oracle",
-      "status": "in_progress",
-      "conclusion": null,
+      "status": "completed",
+      "conclusion": "success",
       "started_at": "2026-10-24T02:01:26Z",
-      "completed_at": null,
+      "completed_at": "2026-10-24T02:06:45Z",
       "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40052351643/job/120747697579",
       "output": {
         "title": null,
@@ -160,10 +160,10 @@
     {
       "id": 120747549557,
       "name": "Dependency licences, advisories and sources",
-      "status": "in_progress",
-      "conclusion": null,
+      "status": "completed",
+      "conclusion": "success",
       "started_at": "2026-10-24T02:00:48Z",
-      "completed_at": null,
+      "completed_at": "2026-10-24T02:02:31Z",
       "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40052351643/job/120747549557",
       "output": {
         "title": null,
