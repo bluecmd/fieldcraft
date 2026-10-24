@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "agent": "legend-layout-agent",
+  "branch": "fix/partition-box-tools-690",
+  "head_sha": "d79cabfc206be1619af79d56044945def5d49302",
+  "name": "after-yz-cut.png",
+  "bytes": 177112,
+  "sha256": "a97b4d7ad95eb9b73fcb3ad696f42000cda4952877d0ed26abc2db8dd653cd9c",
+  "description": "Original Windows native before7d9c027 and afterd79cabfc presented frames. Public original SolidCraft groove primitive recipe, yz0.3 and xy-10 cuts; isolated halves expose groove and exact requested cuts. Compact per-axis tools, no accepted kernel nudge. Source/scaled topology and cut-face checks passed; curved mass estimates use documented10ppm measurement bound, unchanged perpendicular baseline2.04ppm. No meshing or solver accuracy claim. RTX4090 Vulkan viewport.",
+  "submitted_at": "2026-10-24T01:57:30.799936+00:00",
+  "status": "received",
+  "artifact_commit": "df6854d574f614fb1fe0976dc79cb8ad2a6f22e5",
+  "manifest": "manifests/fix/partition-box-tools-690/d79cabfc206be1619af79d56044945def5d49302/after-yz-cut.png.json",
+  "manifest_blob": "7ba94d975a9bcf53573df6a8c8615f4b74327cf5",
+  "object": "objects/fix/partition-box-tools-690/d79cabfc206be1619af79d56044945def5d49302/after-yz-cut.png",
+  "verified_sha256": "a97b4d7ad95eb9b73fcb3ad696f42000cda4952877d0ed26abc2db8dd653cd9c",
+  "github_attachment": "pending_maintainer"
+}
