@@ -1,12 +1,12 @@
 {
   "request_id": "pr-99-windows-dxc-agent-20261024-1",
-  "request_blob": "3f1a571b0cba7b9800778c537037c988f366aabe",
+  "request_blob": "149bba78d0ea31e8b80710d4b3f0719a3d4eb5e3",
   "agent": "windows-dxc-agent",
   "branch": "model/material-library-99",
   "issue": 99,
   "status": "posted",
   "head_sha": "ab7b824677db010012db7c6886d6d97636d83bf1",
   "pr": "https://github.com/tangency-labs/fieldcraft/pull/724",
-  "media": "pending",
-  "updated_at": "2026-10-24T09:31:16.779Z"
+  "media": "attached",
+  "updated_at": "2026-10-24T09:46:03.576Z"
 }
