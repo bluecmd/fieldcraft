@@ -1,13 +1,12 @@
 {
   "request_id": "pr-610-legend-layout-agent-20261023",
-  "request_blob": "b0b596620a1608f47e4d67f0bee158787cb754db",
+  "request_blob": "2554e049906fed109efbe0e295a8881ee5086a28",
   "agent": "legend-layout-agent",
   "branch": "fix/legend-fit-610",
   "issue": 610,
-  "status": "blocked",
-  "head_sha": "252fa873b5ed4cfc1a0e5714f56806b47b9a9f00",
+  "status": "posted",
+  "head_sha": "1d4ed083c09f25cc2027e9cc8a57d03b2637a825",
   "pr": "https://github.com/tangency-labs/fieldcraft/pull/709",
   "media": "pending",
-  "updated_at": "2026-10-23T23:45:18.493Z",
-  "error": "Body needs Validation and Known limitations sections."
+  "updated_at": "2026-10-24T00:00:15.920Z"
 }
