@@ -139,7 +139,7 @@ The native wall's heated persistent face is F2:-x. Material/domain/step values m
 
 </details>
 
-All three final media files were pushed to the separate ordinary-Git artifact inbox in commit 7e1fc52ee20b0a9873cbb33265581d8a8bbebc26, under objects/cfd/curved-cht-631/c3206593f8ed63d95d54e5aedbaff6e37e4efe5e/. The staging helper verified actual bytes and SHA256 values: the MP4 is 499982 bytes; the two stills are 227143 and 267835 bytes. Artifact received receipts are pending the maintainer scan; GitHub attachment upload is also pending. No GitHub sign-in, LFS or raw-repository video link is needed or claimed.
+All three final media files were pushed to the separate ordinary-Git artifact inbox in commit 7e1fc52ee20b0a9873cbb33265581d8a8bbebc26, under objects/cfd/curved-cht-631/c3206593f8ed63d95d54e5aedbaff6e37e4efe5e/. The staging helper verified actual bytes and SHA256 values: the MP4 is 499982 bytes; the two stills are 227143 and 267835 bytes. All three artifact receipts now say received with github_attachment=pending_maintainer; the parent verified each receipt SHA256 and byte count against its manifest. The recording and stills have been received, while actual GitHub attachments remain pending. No GitHub sign-in, LFS or raw-repository video link is needed or claimed.
 
 ## Validation
 
@@ -157,5 +157,6 @@ Tested source c3206593f8ed63d95d54e5aedbaff6e37e4efe5e, rebased onto the latest 
 The 1% default fine-grid comparison is not a validated interface-only acceptance: doubling passages and halving lattice speed exceed that target and exceed the last grid change. Boundary/model form, temporal/collision sensitivity, voxelized geometry and the paper's own grid spread are not isolated from one another. No convergence order, mesh independence or frozen accuracy fixture is claimed. The bulk mean has no reference acceptance gate because the reference integration domain is ambiguous. There is no higher-conductivity/otherRi/three-dimensional validation in this slice.
 
 Steady solid-capacity scaling accelerates convergence; recorded intermediate temperatures are not a physical transient. The video shows only the coarse case, not every grid or a coupled two-circuit heat exchanger. Local diagnostic timings are not performance claims (the n160padding2 and native coarse solves briefly overlapped). Actual GitHub attachments remain maintainer-owned and pending. #631 stays open; the curved-wall production algorithm remains parked, and no renderer or backend-removal work is included.
+
 
 
