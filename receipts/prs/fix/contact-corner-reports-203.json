@@ -1,0 +1,12 @@
+{
+  "request_id": "pr-203-legend-layout-agent-20261024",
+  "request_blob": "97a058fc585a3a6b9b08dcf595089e4000d8f56d",
+  "agent": "legend-layout-agent",
+  "branch": "fix/contact-corner-reports-203",
+  "issue": 203,
+  "status": "posted",
+  "head_sha": "7f6528611943fef617c18a641cfd1d1f6368655f",
+  "pr": "https://github.com/tangency-labs/fieldcraft/pull/731",
+  "media": "pending",
+  "updated_at": "2026-10-24T11:31:02.150Z"
+}
