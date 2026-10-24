@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "agent": "windows-dxc-agent",
+  "branch": "results/path-plots-95",
+  "head_sha": "0b32448242f693680985eb8e67b88bb78490b061",
+  "name": "native-verification.json",
+  "bytes": 2243,
+  "sha256": "62c66c0d7f5fad2fb3497d376d0e682b26a9f829f0fac9b72dcbc957b447ef12",
+  "description": "Safe numerical QA summary for the exact-head native path workflow:beam relative error,curved pick distances,temperature and CSV gap checks. Evidence inbox JSON,no attachment claim.",
+  "submitted_at": "2026-10-24T11:11:25.526914+00:00"
+}

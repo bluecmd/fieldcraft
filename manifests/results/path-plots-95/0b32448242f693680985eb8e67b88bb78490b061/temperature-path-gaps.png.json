@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "agent": "windows-dxc-agent",
+  "branch": "results/path-plots-95",
+  "head_sha": "0b32448242f693680985eb8e67b88bb78490b061",
+  "name": "temperature-path-gaps.png",
+  "bytes": 283208,
+  "sha256": "f965462e77099dbe6b4ec7f0c9688115c9ea428d04fe1bcdbcd4d173a162b087",
+  "description": "Native Vulkan steady conductor path:145 stations,121 defined temperatures,24 outside gaps matching blank CSV;original constant-conductivity analytic check.",
+  "submitted_at": "2026-10-24T11:11:25.268725+00:00"
+}

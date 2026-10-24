@@ -1,0 +1,84 @@
+{
+  "schema": 1,
+  "issue": 95,
+  "source_head": "0b32448242f693680985eb8e67b88bb78490b061",
+  "native_renderer": "gpu",
+  "gpu": "NVIDIA GeForce RTX 4090 (Vulkan)",
+  "solver": "CPU",
+  "capture": "presented native screenshots; no offscreen fallback",
+  "beam": {
+    "samples": 101,
+    "max_relative_euler_bernoulli_error": 0.0012333940913890728,
+    "csv": {
+      "rows": 101,
+      "header": [
+        "distance",
+        "x",
+        "y",
+        "z",
+        "value"
+      ],
+      "sha256": "06d64af0a402acf08ad79cc8c792fce5e4194ed283a2a3937012339896cc15c8"
+    }
+  },
+  "curved_deformed_pick": {
+    "samples": 2,
+    "xyz": [
+      [
+        -3.476043893243622,
+        -14.559497922062837,
+        6.059631198462994
+      ],
+      [
+        2.2150632554351466,
+        -13.139220814346299,
+        7.307540234118078
+      ]
+    ],
+    "values": [
+      -1.2972606418562083e-05,
+      -4.872577781185597e-05
+    ],
+    "reference_configuration": true,
+    "min_distance_to_any_mesh_node_mm": 3.5912094930436087,
+    "selection": "real displayed ray-triangle hits on curved s boundary; no node snapping"
+  },
+  "temperature": {
+    "samples": 121,
+    "max_error_degC": 6.679101716144942e-13,
+    "midpoint_degC": 25.000000000000625,
+    "expected_signed_flux_W_m2": -1250,
+    "flux_validation": "signed vector checked by committed analytic recipe regression",
+    "csv": {
+      "rows": 121,
+      "header": [
+        "distance",
+        "x",
+        "y",
+        "z",
+        "value"
+      ],
+      "sha256": "7389905e74862bf3cbf8b1ea5ef448bea4c7d85c2a924095b188e44800694a52"
+    }
+  },
+  "gaps": {
+    "samples": 145,
+    "undefined": 24,
+    "csv": {
+      "rows": 145,
+      "header": [
+        "distance",
+        "x",
+        "y",
+        "z",
+        "value"
+      ],
+      "sha256": "f680fc3a693ad8deb6939184b897bc7229cf8ee36141683167ead67b2a32f3f5"
+    }
+  },
+  "limits": [
+    "Synthetic implementation checks, not experimental or coupled exchanger design validation.",
+    "Curved surface chord may leave the solid; two samples check the picked endpoints.",
+    "No throughput, browser runtime, macOS or other GPU backend claim."
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "agent": "windows-dxc-agent",
+  "branch": "results/path-plots-95",
+  "head_sha": "0b32448242f693680985eb8e67b88bb78490b061",
+  "name": "solid-path-plots.mp4",
+  "bytes": 653887,
+  "sha256": "9ca22de7ab447653e2994605dafb8a132d5c8cfa77b7cc7c79a06374bde4d5d3",
+  "description": "Exact-head native Windows RTX 4090 Vulkan path plots:beam stress,genuine curved-surface picks,steady conductor and outside gaps.24-second edited presented frames;CPU solves,no experimental/exchanger claim.",
+  "submitted_at": "2026-10-24T11:11:24.796370+00:00"
+}

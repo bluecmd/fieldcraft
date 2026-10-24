@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "agent": "windows-dxc-agent",
+  "branch": "results/path-plots-95",
+  "head_sha": "0b32448242f693680985eb8e67b88bb78490b061",
+  "name": "curved-surface-path.png",
+  "bytes": 322559,
+  "sha256": "87490b2e25ad4523ae3f34ce56e6c3532b1574a448b8b49ce15ed052426fe176",
+  "description": "Native Vulkan presented deformed curved Hex20 with genuine non-node surface picks,reference coordinates and two finite endpoint samples;actual deformation magnification visible.",
+  "submitted_at": "2026-10-24T11:11:25.050874+00:00"
+}
