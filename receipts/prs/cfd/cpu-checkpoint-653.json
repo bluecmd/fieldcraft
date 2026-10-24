@@ -1,0 +1,12 @@
+{
+  "request_id": "pr-653-contour-animation-agent-20261024-cpu",
+  "request_blob": "21356a824b9732c7dce7e5b0c97031f4287ec355",
+  "agent": "contour-animation-agent",
+  "branch": "cfd/cpu-checkpoint-653",
+  "issue": 653,
+  "status": "posted",
+  "head_sha": "c3867d6cd1647171a01a84cb30c5d68af30f2fb8",
+  "pr": "https://github.com/tangency-labs/fieldcraft/pull/725",
+  "media": "pending",
+  "updated_at": "2026-10-24T09:15:55.027Z"
+}
