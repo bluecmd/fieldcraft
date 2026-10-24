@@ -3,7 +3,7 @@
   "title": "0.7.5: specify and verify coupled air/coolant heat-exchanger domains",
   "body": "## Goal for 0.7.5\nModel flow and heat transfer in a heat exchanger with distinct hot/cold fluid passages and a conducting separator. The existing AIO sample solves only the air side with an assumed coolant temperature; neither a drawn tube nor two independent solves represents a coupled liquid-to-air exchanger.\n\n## Source audit (develop 7d9c027d71)\n- `FluidDomain` has one fluid `material` (`crates/model/src/fluids.rs`). Multiple domain definitions are allowed.\n- `Setup::new` selects a single fluid step/domain; `solve_fluid_on` builds one `Flow` and runs its backend (`crates/lbm/src/setup.rs`, `solve.rs`).\n- Conducting obstacles exchange heat with that domain's fluid. I found no orchestration that exchanges the wall state/flux between different fluid solves.\n- CPU/GPU CHT (#609/#651) and thermal contact resistance (#677) therefore provide necessary pieces, but do not establish two-fluid coupling.\n\n## Specify before implementation\n- [ ] Choose the minimal supported exchanger: separate air/coolant circuits, fluid properties, geometry/wall thickness and prescribed flows or fan/pump conditions. Record whether the first accepted case is laminar or turbulent and why.\n- [ ] Document domain ownership/occupancy, shared wall identity, conservative interface transfer, units, coupling iterations, under-relaxation, time stepping and stopping criteria. A shared wall's heat capacity/source must not be counted twice.\n- [ ] Define support for steady vs transient runs and CPU/GPU combinations. Accelerated solid heat capacity may be used only with explicit steady-state semantics.\n- [ ] Specify result/probe/export and save/reopen semantics for both circuits and the shared wall; reject unsupported combinations explicitly.\n\n## Acceptance evidence\n- [ ] A simple two-stream exchanger matches a cited analytical energy-balance/effectiveness reference at stated tolerances, with independently computed hot/cold heat duties and mass-flow-weighted outlet temperatures.\n- [ ] Energy and mass budgets expose imbalance and external losses/sources, rather than hiding disagreement in a single reported duty.\n- [ ] Spatial and coupling-tolerance refinement, pressure-drop checks, a closed/insulated energy test where applicable, and an existing single-domain regression suite.\n- [ ] One reproducible cooling/exchanger model runs through the normal commands and UI and saves/reopens both sides' results. No hidden manual flux handoff.\n\nThe first deliverable is the coupling specification and a minimal reference case; implementation should be split into reviewable changes from that evidence. This is a single-phase two-fluid/domain workflow, not a request for multiphase/free-surface physics.\n",
   "state": "open",
-  "updated_at": "2026-10-23T16:52:48Z",
+  "updated_at": "2026-10-24T08:52:48Z",
   "assignees": [],
   "labels": [
     "enhancement",
@@ -11,5 +11,13 @@
     "priority: high"
   ],
   "url": "https://github.com/tangency-labs/fieldcraft/issues/700",
-  "comments": []
+  "comments": [
+    {
+      "author": "bluecmd",
+      "body": "@jyviko — coordinating the blocked 0.7.5 coupling claim for `coupled-exchanger-agent`, branch `coupled-exchanger`.\n\nThe queue receipt is blocked by existing PR references. #704 supplies port diagnostics and the exchanger specification while explicitly leaving actual shared-wall two-fluid coupling to implement; #705 calls that coupling separate release work, and #661 references the separate exchanger workflow.\n\nCould you confirm ownership and the permitted scope of the prepared `coupled-exchanger` implementation slice relative to those PRs? Its claim describes two CPU fluid lattices sharing one conducting wall, closed energy/source tests, grouped results and save/reopen. That existing slice is frozen; joint steady stopping, effectiveness–NTU/refinement evidence and the remaining #700 acceptance criteria remain open.\n\nPlease also confirm the result-format/dependency sequence with #704 and #711: your #704 comment says whichever lands second needs `MCRSLT03` and its own fixtures. #704 currently remains at `f8b40deccd289cb4ab2b9f6426583c743007a7fc`. We need the agreed persistence contract relayed before rebasing or publishing the coupling slice.\n\nNo new implementation or publication is authorized by the blocked receipt. We will keep the branch frozen until ownership is reconciled and a matching `granted` receipt is issued; #700 remains open.",
+      "created_at": "2026-10-24T08:52:48Z",
+      "updated_at": "2026-10-24T08:52:48Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/issues/700#issuecomment-6382218242"
+    }
+  ]
 }
