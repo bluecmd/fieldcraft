@@ -1,0 +1,162 @@
+{
+  "source_head": "c515f79ec5856e898154be9e238a139851d8a559",
+  "cli_sha256": "105724ad395812114beeb730dd356c57507c6453487e4a7bc24b8e5f6f6a556f",
+  "cases": [
+    {
+      "protocol": "2025-06-18",
+      "prompts": {
+        "fieldcraft-meshing": {
+          "bytes": 10695,
+          "sha256": "67eed2ded9f31c51c14382e55db1f62a23337de836afeebe84e73e6eb32fb899"
+        },
+        "fieldcraft-modelling": {
+          "bytes": 9890,
+          "sha256": "c5ad8557b54734720674ed3124437e5348a8902aada9f05afd46aa3dd16697cc"
+        }
+      },
+      "references": {
+        "checks.md": {
+          "bytes": 4371,
+          "sha256": "ae3a965e5fdde1dbf9b7f167428568e90bf4a15fa023006574856cce380dc087"
+        },
+        "axial-rod.json": {
+          "bytes": 3049,
+          "sha256": "a72b693974718788a84a8c3f6a4bb8f11e5ca4cee4e138c44656f5a7281ee88e"
+        },
+        "steady-conductor.json": {
+          "bytes": 3130,
+          "sha256": "45e37ec7c1b6a607b4178b1a5e4607cde7ba3b9c0808e5c691b75ad15ae06b5c"
+        }
+      },
+      "retrieval_left_model_unchanged": true
+    },
+    {
+      "protocol": "2025-03-26",
+      "prompts": {
+        "fieldcraft-meshing": {
+          "bytes": 10695,
+          "sha256": "67eed2ded9f31c51c14382e55db1f62a23337de836afeebe84e73e6eb32fb899"
+        },
+        "fieldcraft-modelling": {
+          "bytes": 9890,
+          "sha256": "c5ad8557b54734720674ed3124437e5348a8902aada9f05afd46aa3dd16697cc"
+        }
+      },
+      "references": {
+        "checks.md": {
+          "bytes": 4371,
+          "sha256": "ae3a965e5fdde1dbf9b7f167428568e90bf4a15fa023006574856cce380dc087"
+        },
+        "axial-rod.json": {
+          "bytes": 3049,
+          "sha256": "a72b693974718788a84a8c3f6a4bb8f11e5ca4cee4e138c44656f5a7281ee88e"
+        },
+        "steady-conductor.json": {
+          "bytes": 3130,
+          "sha256": "45e37ec7c1b6a607b4178b1a5e4607cde7ba3b9c0808e5c691b75ad15ae06b5c"
+        }
+      },
+      "retrieval_left_model_unchanged": true
+    },
+    {
+      "protocol": "2024-11-05",
+      "prompts": {
+        "fieldcraft-meshing": {
+          "bytes": 10695,
+          "sha256": "67eed2ded9f31c51c14382e55db1f62a23337de836afeebe84e73e6eb32fb899"
+        },
+        "fieldcraft-modelling": {
+          "bytes": 9890,
+          "sha256": "c5ad8557b54734720674ed3124437e5348a8902aada9f05afd46aa3dd16697cc"
+        }
+      },
+      "references": {
+        "checks.md": {
+          "bytes": 4371,
+          "sha256": "ae3a965e5fdde1dbf9b7f167428568e90bf4a15fa023006574856cce380dc087"
+        },
+        "axial-rod.json": {
+          "bytes": 3049,
+          "sha256": "a72b693974718788a84a8c3f6a4bb8f11e5ca4cee4e138c44656f5a7281ee88e"
+        },
+        "steady-conductor.json": {
+          "bytes": 3130,
+          "sha256": "45e37ec7c1b6a607b4178b1a5e4607cde7ba3b9c0808e5c691b75ad15ae06b5c"
+        }
+      },
+      "retrieval_left_model_unchanged": true
+    }
+  ],
+  "connected": {
+    "protocol": "2025-06-18",
+    "prompts": {
+      "fieldcraft-meshing": {
+        "bytes": 10695,
+        "sha256": "67eed2ded9f31c51c14382e55db1f62a23337de836afeebe84e73e6eb32fb899"
+      },
+      "fieldcraft-modelling": {
+        "bytes": 9890,
+        "sha256": "c5ad8557b54734720674ed3124437e5348a8902aada9f05afd46aa3dd16697cc"
+      }
+    },
+    "references": {
+      "checks.md": {
+        "bytes": 4371,
+        "sha256": "ae3a965e5fdde1dbf9b7f167428568e90bf4a15fa023006574856cce380dc087"
+      },
+      "axial-rod.json": {
+        "bytes": 3049,
+        "sha256": "a72b693974718788a84a8c3f6a4bb8f11e5ca4cee4e138c44656f5a7281ee88e"
+      },
+      "steady-conductor.json": {
+        "bytes": 3130,
+        "sha256": "45e37ec7c1b6a607b4178b1a5e4607cde7ba3b9c0808e5c691b75ad15ae06b5c"
+      }
+    },
+    "retrieval_left_model_unchanged": true
+  },
+  "explicit_recipe_execution": {
+    "commands": 15,
+    "midpoint_K": 323.1499999999999,
+    "axial_flux_W_m2": -7500.000000000019,
+    "probe": {
+      "nodes": [
+        {
+          "distance": 2.4532694666933987e-18,
+          "heat_flux": [
+            -9.586725132856576e-12,
+            8.268297182074866e-11,
+            -7500.000000000019
+          ],
+          "node": 41,
+          "reaction": 0.0,
+          "temperature": 323.1499999999999,
+          "xyz": [
+            0.010000000000000002,
+            0.009999999999999998,
+            0.06
+          ]
+        }
+      ],
+      "step": "Heat",
+      "time": 0.0,
+      "units": {
+        "distance": "m",
+        "heat_flux": "W/m\u00b2",
+        "reaction": "W",
+        "temperature": "K",
+        "time": "s",
+        "xyz": "m"
+      }
+    }
+  },
+  "native_viewport": {
+    "platform": "Windows 11",
+    "device": "NVIDIA GeForce RTX 4090 (Vulkan)",
+    "binary_sha256": "ff37388057d4eee4dd5490a4e927c45be6c20dcbf3fae4766dad2355d3a606c0",
+    "original_build_head": "99d8536b6396c06256865f64c6749454210317c6",
+    "production_source_base": "7d9c027d71b2c1ea3395e2552e95f0455a7244db",
+    "rebuilt_for_this_pr": false,
+    "note": "The changed CLI/MCP was built at source_head; the reused native host has unchanged production source. Conductor solve is CPU; Vulkan renders the viewport. No prompt picker is added."
+  }
+}
