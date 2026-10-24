@@ -1,0 +1,177 @@
+{
+  "number": 728,
+  "branch": "fix/contact-band-reset-211",
+  "head_sha": "be2a7c3b4e29b5f5c3319f3b089576ee34fc91aa",
+  "state": "open",
+  "merged": false,
+  "draft": false,
+  "title": "solver: reset the contact chatter band after its increment commits",
+  "body": "## What and why\n\nCloses #211. Once contact active-set chatter enabled the temporary engaged band, it remained active for every later load-control increment. A near-open contact then contributed a penalty tangent while its pressure and residual force were zero, spoiling the next predictor and Newton convergence.\n\nThe band now clears only after the chattered increment has fully converged, completed all contact augmentations and committed its accepted state. Failed retries and augmentations retain it. The existing accepted-state updates are extracted into a private commit helper without changing their order; the sole numerical change is the band reset at that boundary. Contact forces, multipliers, band magnitude, chatter threshold, iteration/resource caps and convergence tolerances are unchanged. An original reusable command recipe and brief reproduction notes live in `docs/recipes/contact-load-unload.{json,md}`. No new command, dependency, physical reference or ROADMAP change is included.\n\n## Demonstration\n\nAn exact-head **29.0-second native Windows / RTX 4090 / Vulkan** workflow, built in a dedicated per-worktree target, shows the committed original two-block recipe and its two independent nonlinear static steps: a compression check and a load path with factors 0 → 0.5 → -0.05, ending at an open 0.005 mm gap and zero contact pressure. Captions distinguish these static states from a physical transient, state deformation magnifications, and explicitly separate the working native workflow from the controlled internal chatter regression. The video does not claim naturally triggered chatter. It shows the readable load-path settings, compression contour near 9.999 MPa, separated interface and actual node 9 viewport probe at 0.005000 mm. The complete committed 40-command recipe also succeeded through the native control channel. Native presented-frame checks, all captions and full H.264 decode passed; the owned app quit cleanly.\n\nImmutable external originals: `contact-band-reset-211.mp4` (1280×1080, 10 fps), `after-press.png` and `after-open.png`. Parent source/body/native visual review and full video decode passed. All three original SHA-256/byte counts were independently verified and transferred in ordinary-Git artifact commit `0b1c62d89a38f085376213f6e51c156370a2a7b5`, under `objects/fix/contact-band-reset-211/be2a7c3b4e29b5f5c3319f3b089576ee34fc91aa/`. Received receipts and GitHub attachment URLs are pending; no attachment completion is claimed.\n\n## Validation\n\nTested source `be2a7c3b4e29b5f5c3319f3b089576ee34fc91aa`, rebased without changes onto the latest mirrored develop `7d9c027d71b2c1ea3395e2552e95f0455a7244db`:\n\n- Meaningful new two-increment regression covers the no-chatter control and controlled entry into exactly the retry state left by chatter. It exercises an actual failed retry, the real contact augmentation loop, the production accepted commit, and the next tangent predictor/Newton solve. No production test hook is added.\n- Before adding the reset, the original accepted-state updates left a near-open tangent/central finite-difference mismatch of 3750 and the next solve cut back at the unchanged 16-iteration cap. After acceptance resets the band, that mismatch is about 6.22e-11 and the next open-state increment converges. The baseline experiment used the extracted but otherwise unchanged accepted-state updates; its logs are preserved externally.\n- Full solver tests: 143 passed, no failures or exclusions; seven existing ignored tests remain ignored. `cargo check -p fieldcraft-solver`, touched-crate all-target clippy with warnings denied, fmt and diff checks passed. The complete suite was repeated in the fresh dedicated target at the final head with the same 143 passes, seven existing ignored tests and no failures or filtered tests.\n- Mandatory full default `cargo xtask oracle` passed without blessing or editing fixtures before the final documentation-only fold; the solver source is byte-identical to that run. All 82 normally executed cases ran; the existing nightly-only cavity case was checked through its frozen fixture. Regenerated `docs/oracle.md` has no content change: its existing nine known-failure quantities and nine pending cases remain explicit. No existing approximation or skip is represented as a new pass.\n- Individually run assets, layers and unit-factors gates passed from the verified current worktree root. No full local workspace gate, workspace clippy or wasm run is claimed. Remote CI is pending publication.\n\n## Known limitations\n\nThis is the narrow per-increment lifetime correction requested by the issue. It does not replace the active-set algorithm or change how chatter is detected. The regression deliberately seeds the existing internal band state for deterministic coverage; the native demonstration is a working contact/loading/unloading example, not a natural-chatter reproduction.\n\nArc-length contact remains refused by the existing supported-procedure guard, covered by the existing contact refusal integration test; no new arc-length contact semantics are introduced.\n\nThe fully unloaded native case can report a relative reaction-balance warning because its absolute residual is about 1.64e-14 N against zero applied load. This is disclosed numerical roundoff; it is not suppressed or addressed by changing tolerances. Run-specific raw QA logs, saved models and media remain outside feature history. GitHub attachments remain pending until actual maintainer URLs are supplied.\n",
+  "updated_at": "2026-10-24T10:31:15Z",
+  "url": "https://github.com/tangency-labs/fieldcraft/pull/728",
+  "comments": [],
+  "reviews": [],
+  "inline_comments": [],
+  "checks": [
+    {
+      "id": 120849696008,
+      "name": "cargo xtask ci",
+      "status": "in_progress",
+      "conclusion": null,
+      "started_at": "2026-10-24T10:31:36Z",
+      "completed_at": null,
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40086222218/job/120849696008",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120849696008/annotations"
+      }
+    },
+    {
+      "id": 120849695995,
+      "name": "cargo xtask test --heavy",
+      "status": "in_progress",
+      "conclusion": null,
+      "started_at": "2026-10-24T10:31:36Z",
+      "completed_at": null,
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40086222218/job/120849695995",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120849695995/annotations"
+      }
+    },
+    {
+      "id": 120849695966,
+      "name": "cargo xtask oracle",
+      "status": "in_progress",
+      "conclusion": null,
+      "started_at": "2026-10-24T10:31:36Z",
+      "completed_at": null,
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40086222218/job/120849695966",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120849695966/annotations"
+      }
+    },
+    {
+      "id": 120849598503,
+      "name": "Triage bot",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-24T10:31:09Z",
+      "completed_at": "2026-10-24T10:31:18Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40086222279/job/120849598503",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120849598503/annotations"
+      }
+    },
+    {
+      "id": 120849598380,
+      "name": "Claim bot",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-24T10:31:08Z",
+      "completed_at": "2026-10-24T10:31:15Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40086222376/job/120849598380",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120849598380/annotations"
+      }
+    },
+    {
+      "id": 120849598228,
+      "name": "Windows app tests",
+      "status": "completed",
+      "conclusion": "skipped",
+      "started_at": "2026-10-24T10:31:01Z",
+      "completed_at": "2026-10-24T10:31:01Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40086222218/job/120849598228",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120849598228/annotations"
+      }
+    },
+    {
+      "id": 120849598199,
+      "name": "cargo xtask oracle (macOS)",
+      "status": "completed",
+      "conclusion": "skipped",
+      "started_at": "2026-10-24T10:31:01Z",
+      "completed_at": "2026-10-24T10:31:01Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40086222218/job/120849598199",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120849598199/annotations"
+      }
+    },
+    {
+      "id": 120849597421,
+      "name": "Dependency licences, advisories and sources",
+      "status": "in_progress",
+      "conclusion": null,
+      "started_at": "2026-10-24T10:31:08Z",
+      "completed_at": null,
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40086222218/job/120849597421",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120849597421/annotations"
+      }
+    },
+    {
+      "id": 120849597305,
+      "name": "Plan (affected crates)",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-24T10:31:08Z",
+      "completed_at": "2026-10-24T10:31:29Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40086222218/job/120849597305",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120849597305/annotations"
+      }
+    },
+    {
+      "id": 120849597178,
+      "name": "Claim and triage bot tests",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-24T10:31:07Z",
+      "completed_at": "2026-10-24T10:31:13Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40086222218/job/120849597178",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120849597178/annotations"
+      }
+    }
+  ]
+}
