@@ -47,7 +47,7 @@ Native GitHub attachments (original capture revision `c515f79ec5856e898154be9e23
 - Actual newly built CLI wire QA runs from an external directory: all three negotiated versions in confined headless sessions, plus a real connected-app session at 2025-06-18. All return source-identical skills/references with equal SHA-256 values; unknown-name/argument/traversal checks pass and retrieval leaves the model unchanged. The connected case asserts it did not fall back headless before explicitly executing the recipe.
 - Rebased on the current fork upstream-develop mirror before the normal feature push; rebase was a no-op. No solver code or numerical fixture changed. No broad local CI gate, numerical oracle, sustained GPU solve or non-Windows runtime check was run for this protocol change.
 
-- Relayed CI on exact `c515f79`: main gate, oracle and dependency/licence/source checks succeeded. Heavy tests remain in progress; Windows app tests and the macOS oracle were skipped. No skipped job is reported as runtime verification.
+- Relayed CI on exact `c515f79`: main gate, heavy tests, oracle and dependency/licence/source checks succeeded; Windows app tests and the macOS oracle were skipped. No skipped job is reported as runtime verification.
 
 ## Known limitations
 
