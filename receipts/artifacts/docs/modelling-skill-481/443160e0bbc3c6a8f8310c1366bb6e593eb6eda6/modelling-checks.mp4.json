@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "agent": "windows-dxc-agent",
+  "branch": "docs/modelling-skill-481",
+  "head_sha": "443160e0bbc3c6a8f8310c1366bb6e593eb6eda6",
+  "name": "modelling-checks.mp4",
+  "bytes": 1583436,
+  "sha256": "cc174251b3ffd0a1ea90229631fc59b661c6d5fe10a292aea52d302edb94d01a",
+  "description": "Original native FieldCraft presented frames demonstrating four text/JSON-only skill files. Reused executable built at99d8536, production code equivalent to7d9c027; not rebuilt at docs head. Synthetic steady conductor midpoint323.15K/end rates4.5W. CPU heated-flow 5824cells, physical45s, held-wall single-fluid, density warnings15.9percent and3.5percent with half dt. Smoke/sensitivity only, no coupled or design-accuracy claim. Windows RTX4090 Vulkan viewport.",
+  "submitted_at": "2026-10-24T01:41:54.099584+00:00",
+  "status": "received",
+  "artifact_commit": "1f57cdd54b986accdcbe4b2340775abcbce77512",
+  "manifest": "manifests/docs/modelling-skill-481/443160e0bbc3c6a8f8310c1366bb6e593eb6eda6/modelling-checks.mp4.json",
+  "manifest_blob": "c37f4bc978a537c6830e868fab9384794c92a8a4",
+  "object": "objects/docs/modelling-skill-481/443160e0bbc3c6a8f8310c1366bb6e593eb6eda6/modelling-checks.mp4",
+  "verified_sha256": "cc174251b3ffd0a1ea90229631fc59b661c6d5fe10a292aea52d302edb94d01a",
+  "github_attachment": "pending_maintainer"
+}
