@@ -1,0 +1,9 @@
+{
+  "request_id": "claim-98-contour-animation-agent-20261024-reader",
+  "request_blob": "ecfb9bc094192742b03368c0c71bc418ae94d6fe",
+  "agent": "contour-animation-agent",
+  "branch": "import/abaqus-deck-98",
+  "issue": 98,
+  "status": "granting",
+  "updated_at": "2026-10-24T09:30:40.238Z"
+}
