@@ -1,6 +1,6 @@
 {
   "request_id": "pr-683-windows-dxc-agent-20261024-1",
-  "request_blob": "0f492ee7a537eef135d935a89ecbd0ef50093976",
+  "request_blob": "18093d6a5c2e239daefa8b753b3133d99cae5055",
   "agent": "windows-dxc-agent",
   "branch": "fix/async-file-dialogs-683",
   "issue": 683,
@@ -8,5 +8,5 @@
   "head_sha": "b485880d04f0005232e9e24fc7f5cfbd79f12e3f",
   "pr": "https://github.com/tangency-labs/fieldcraft/pull/717",
   "media": "pending",
-  "updated_at": "2026-10-24T01:30:44.226Z"
+  "updated_at": "2026-10-24T01:45:45.855Z"
 }
