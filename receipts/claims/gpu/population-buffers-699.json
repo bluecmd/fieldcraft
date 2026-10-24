@@ -5,6 +5,6 @@
   "branch": "gpu/population-buffers-699",
   "request_blob": "b70b7f27ea4c6d4138760285829879dd6afab4a7",
   "status": "blocked",
-  "error": "Another open PR references this issue; coordinate before claiming it.",
-  "updated_at": "2026-10-24T09:00:35.734Z"
+  "error": "Issue belongs to another GitHub assignee.",
+  "updated_at": "2026-10-24T23:30:44.283Z"
 }
