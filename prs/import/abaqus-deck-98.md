@@ -11,7 +11,7 @@
   "base": "develop",
   "draft": false,
   "title": "Read Abaqus model data with explicit units and atomic replacement",
-  "media": "pending"
+  "media": "attached"
 }
 ---
 ## What and why
@@ -26,7 +26,26 @@ Three logical commits separate the pure reader, atomic command/catalogue, and ap
 
 ## Demonstration
 
-Native source/capture: `c5203312e97857665facfcd985d38fd80eaddfd9`. Final files are `abaqus-import-98.mp4` (28 seconds), `import-report.png`, and `imported-beam-result.png`. All three were transferred through ordinary-Git artifact commit `5cfe546e7c2a978c7f9e1ff01d5faf44d9e80624`; original and index blob byte counts/SHA-256 were independently verified. All three retrieval receipts now say received, and their byte counts/SHA-256 match the immutable originals. GitHub attachment URLs remain pending_maintainer, so media remains pending. No media or generated project belongs to the feature branch.
+<!-- fieldcraft-attachments:start -->
+### Attached files
+
+Capture/source revision: `c5203312e97857665facfcd985d38fd80eaddfd9`.
+
+**abaqus-import-98.mp4**
+
+https://github.com/user-attachments/assets/32b12da1-8b56-4df9-802e-118669cad548
+
+**import-report.png**
+
+![import-report.png](https://github.com/user-attachments/assets/2d7c7aad-6aa9-4b10-aadf-24cf844e09f4)
+
+**imported-beam-result.png**
+
+![imported-beam-result.png](https://github.com/user-attachments/assets/5ee9f6e6-4752-4712-8e49-fe452d42e72d)
+
+<!-- fieldcraft-attachments:end -->
+
+Native source/capture: `c5203312e97857665facfcd985d38fd80eaddfd9`. Final files are `abaqus-import-98.mp4` (28 seconds), `import-report.png`, and `imported-beam-result.png`. All three were transferred through ordinary-Git artifact commit `5cfe546e7c2a978c7f9e1ff01d5faf44d9e80624`; original and index blob byte counts/SHA-256 were independently verified. All three retrieval receipts now say received, and their byte counts/SHA-256 match the immutable originals. All three native GitHub attachment URLs are now verified and included below; media is attached. No media or generated project belongs to the feature branch.
 
 The movie replays the committed original recipe through the actual app form and command interface: choose consistent mm-t-s-N-MPa units, confirm replacement, review all eight unread history keywords/lines and zero imported steps, deliberately recreate clamp/load/static step, then solve the imported model. Source and reconstructed CPU static peak displacement and von Mises results are exactly equal; displacement is 0.09613877492912645 mm at node 18 and peak stress rounds to 44.67 MPa.
 
