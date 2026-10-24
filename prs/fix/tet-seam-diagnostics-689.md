@@ -48,7 +48,7 @@ The first and last mesh commands intentionally fail; execute them separately to 
 | Same explicit retry on unchanged baseline | Identical counts and volume |
 | Reversed-face control, explicit weld | 4 orientation defects; existing 219-element mesh retained |
 
-Recording: `tet-seam-diagnostics-689.mp4` (H.264, 1280×1098, 10 fps, 511306 bytes). Stills: `after-seam-refused.png`, `after-weld-meshed.png`. The before frame comes from base `7d9c027d71b2c1ea3395e2552e95f0455a7244db`; all after frames come from tested head `89b2c9dcebb0f49a4de73d9968cd2d463e056c27`. Original captures, recipes, and run reports remain outside feature history. Ordinary-Git artifact handoff is in progress; received receipts and maintainer GitHub attachments are pending. `media=pending` is intentional.
+Recording: `tet-seam-diagnostics-689.mp4` (H.264, 1280×1098, 10 fps, 511306 bytes). Stills: `after-seam-refused.png`, `after-weld-meshed.png`. The before frame comes from base `7d9c027d71b2c1ea3395e2552e95f0455a7244db`; all after frames come from tested head `89b2c9dcebb0f49a4de73d9968cd2d463e056c27`. Original captures, recipes, and run reports remain outside feature history. All three files were transferred through ordinary Git in artifact commit `efdb77ce57b303400dbbc3a652d57afa0d9c74ec`. Their receipts under `receipts/artifacts/fix/tet-seam-diagnostics-689/89b2c9dcebb0f49a4de73d9968cd2d463e056c27/` are `received`, with verified byte counts and SHA-256 values matching the originals. Each still says `github_attachment: pending_maintainer`; actual GitHub attachments are pending and `media=pending` is intentional.
 
 ## Validation
 
@@ -61,7 +61,7 @@ At head `89b2c9dcebb0f49a4de73d9968cd2d463e056c27`, based on the current fork `u
 - `cargo run -p fieldcraft-cli -- features`: regenerated reference is identical; no generated-file diff.
 - `cargo build -p fieldcraft` and the native demonstration/parity/quality checks: passed.
 
-Upstream CI is pending publication. No local full workspace gate, heavy suite, wasm check, or oracle run was requested or claimed.
+Upstream CI started on publication and is pending its relayed result. No local full workspace gate, heavy suite, wasm check, or oracle run was requested or claimed.
 
 ## Known limitations
 
