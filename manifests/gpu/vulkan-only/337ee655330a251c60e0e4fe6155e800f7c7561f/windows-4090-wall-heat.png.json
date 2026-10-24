@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "agent": "windows-dxc-agent",
+  "branch": "gpu/vulkan-only",
+  "head_sha": "337ee655330a251c60e0e4fe6155e800f7c7561f",
+  "name": "windows-4090-wall-heat.png",
+  "bytes": 296942,
+  "sha256": "d3d4830ecb3d1abb6b9ad2a5d5f83854b0de6878b452c1715fe625a992cca210",
+  "description": "Original presented native Windows RTX4090 Vulkan wall-heat view from exact PR713 head337ee655. Built-in heated-flow GPU sample,5824cells,180steps,45s physical transient; runtime smoke only. Raw result and warnings are in windows-4090-qa.json. No performance, accuracy, macOS or two-fluid acceptance claim. Source and owner PR unchanged by QA agent.",
+  "submitted_at": "2026-10-24T00:54:10.269089+00:00"
+}

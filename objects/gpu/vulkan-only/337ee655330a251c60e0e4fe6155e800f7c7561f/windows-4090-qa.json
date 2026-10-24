@@ -1,0 +1,390 @@
+{
+  "head": "337ee655330a251c60e0e4fe6155e800f7c7561f",
+  "platform": "Windows 11 x64",
+  "gpu": "NVIDIA GeForce RTX 4090",
+  "driver": "616.56",
+  "gpu_memory_mib": 24564,
+  "environment": {
+    "WGPU_BACKEND": "vulkan",
+    "WGPU_DX12_COMPILER": "staticdxc",
+    "FIELDCRAFT_GPU": "hardware",
+    "FIELDCRAFT_REQUIRE_GPU": "1"
+  },
+  "build": "cargo test -p fieldcraft-gpu -p fieldcraft-lbm-gpu -p fieldcraft-mesh-gpu --no-run",
+  "invocation": "Each exact compiled test executable, serially, --test-threads=1 --nocapture",
+  "results": [
+    {
+      "ignored": 0,
+      "failed": 0,
+      "suite": "fieldcraft-gpu",
+      "passed": 11
+    },
+    {
+      "ignored": 0,
+      "failed": 0,
+      "suite": "fieldcraft-lbm-gpu unit",
+      "passed": 3
+    },
+    {
+      "ignored": 0,
+      "failed": 0,
+      "suite": "fluid verification",
+      "passed": 22
+    },
+    {
+      "ignored": 0,
+      "failed": 0,
+      "suite": "fieldcraft-mesh-gpu unit",
+      "passed": 0
+    },
+    {
+      "ignored": 1,
+      "failed": 0,
+      "suite": "mesh agreement",
+      "passed": 1
+    }
+  ],
+  "exclusions": [
+    "Ignored mesh throughput benchmark",
+    "Ignored fluid throughput benchmarks",
+    "No macOS runtime verification",
+    "No new performance claim"
+  ],
+  "native_app": {
+    "renderer": "gpu",
+    "adapter": "NVIDIA GeForce RTX 4090 (Vulkan)",
+    "sample": "original built-in heated-flow",
+    "command": {
+      "command": "solve.fluid",
+      "params": {
+        "step": "HeatedFlow",
+        "backend": "gpu",
+        "threads": 3
+      }
+    },
+    "result": {
+      "backend": "gpu: NVIDIA GeForce RTX 4090, in-place streaming",
+      "backend_choice": {
+        "backend": "gpu",
+        "by": "parameter",
+        "notice": null
+      },
+      "cells": 5824,
+      "collision": "trt",
+      "components_ok": null,
+      "end_time": 45.0,
+      "final_max_speed": 0.0023931903312362536,
+      "fluid_cells": 5504,
+      "forces": [
+        {
+          "body": null,
+          "final": [
+            2.578959703445435E-09,
+            -1.4390673304001822E-06,
+            1.7084927139182893E-08
+          ],
+          "mean": [
+            2.8175275643666593E-09,
+            -1.440500375815762E-06,
+            1.7057531839609156E-08
+          ],
+          "name": "y_min"
+        },
+        {
+          "body": null,
+          "final": [
+            2.578959703445435E-09,
+            1.4390673319201004E-06,
+            1.7084927116831152E-08
+          ],
+          "mean": [
+            2.81752755244573E-09,
+            1.4405003754218756E-06,
+            1.7057531842092686E-08
+          ],
+          "name": "y_max"
+        },
+        {
+          "body": null,
+          "final": [
+            1.3580348968505861E-08,
+            0.0,
+            -1.2979144167900368E-06
+          ],
+          "mean": [
+            1.4900049463907875E-08,
+            1.986821492513021E-18,
+            -1.299837870534289E-06
+          ],
+          "name": "z_min"
+        },
+        {
+          "body": null,
+          "final": [
+            4.23825216293335E-09,
+            0.0,
+            1.6281778748830396E-06
+          ],
+          "mean": [
+            4.507242465019227E-09,
+            0.0,
+            1.6294256265481548E-06
+          ],
+          "name": "z_max"
+        },
+        {
+          "body": "Bracket",
+          "final": [
+            1.194724480311076E-09,
+            1.4642438387870753E-07,
+            -7.2731245309114475E-09
+          ],
+          "mean": [
+            1.4277351697285974E-09,
+            1.4651569018761285E-07,
+            -7.213306330641112E-09
+          ],
+          "name": "F2:start"
+        },
+        {
+          "body": "Bracket",
+          "final": [
+            3.3071486473083653E-07,
+            -4.2740354835987104E-09,
+            -1.975529650847117E-09
+          ],
+          "mean": [
+            3.32575736268363E-07,
+            -4.2960635627309495E-09,
+            -1.865877719720205E-09
+          ],
+          "name": "F2:side:l6"
+        },
+        {
+          "body": "Bracket",
+          "final": [
+            -2.805304447809856E-09,
+            -6.197992187614242E-10,
+            -5.5544419010480175E-08
+          ],
+          "mean": [
+            -2.6743481874465948E-09,
+            -6.185046335682273E-10,
+            -5.5523896918694106E-08
+          ],
+          "name": "F2:side:l5"
+        },
+        {
+          "body": "Bracket",
+          "final": [
+            -2.1106876786549877E-07,
+            -4.230466167132061E-09,
+            3.9135392010211983E-10
+          ],
+          "mean": [
+            -2.1054339489936818E-07,
+            -4.197135517994564E-09,
+            4.3505247930685723E-10
+          ],
+          "name": "F2:side:l4"
+        },
+        {
+          "body": "Bracket",
+          "final": [
+            -4.549970229466758E-09,
+            -5.9559336332604295E-09,
+            -2.8288292022546255E-07
+          ],
+          "mean": [
+            -4.069436603784562E-09,
+            -5.949545453519871E-09,
+            -2.826337391535454E-07
+          ],
+          "name": "F2:side:l3"
+        },
+        {
+          "body": "Bracket",
+          "final": [
+            -5.28827212353547E-08,
+            5.587935447692872E-18,
+            6.613579345867372E-12
+          ],
+          "mean": [
+            -5.257915726999439E-08,
+            1.365939776102702E-18,
+            1.3766099015872016E-11
+          ],
+          "name": "F2:side:l2"
+        },
+        {
+          "body": "Bracket",
+          "final": [
+            1.7770646810531618E-09,
+            -1.307182404398915E-07,
+            -6.97391813000043E-10
+          ],
+          "mean": [
+            1.952206885814668E-09,
+            -1.3083104098886218E-07,
+            -6.452562063932416E-10
+          ],
+          "name": "F2:top"
+        },
+        {
+          "body": "Bracket",
+          "final": [
+            -2.531822918355465E-08,
+            -6.259097407261531E-10,
+            -2.470116054018339E-08
+          ],
+          "mean": [
+            -2.5301148428519577E-08,
+            -6.233998050292333E-10,
+            -2.4697124716639527E-08
+          ],
+          "name": "F3:blend:F2:side:l3|F2:side:l4"
+        }
+      ],
+      "frames": [
+        0.0,
+        7.5,
+        15.0,
+        22.5,
+        30.0,
+        37.5,
+        45.0
+      ],
+      "heat": [
+        {
+          "body": "Bracket",
+          "final": -70.53090490722657,
+          "mean": -75.32751011047364,
+          "name": "F2:start"
+        },
+        {
+          "body": "Bracket",
+          "final": -186.51131542968756,
+          "mean": -190.68775576782227,
+          "name": "F2:side:l6"
+        },
+        {
+          "body": "Bracket",
+          "final": -52.605870529174815,
+          "mean": -54.52937033538821,
+          "name": "F2:side:l5"
+        },
+        {
+          "body": "Bracket",
+          "final": -53.28426853179933,
+          "mean": -59.05356997375491,
+          "name": "F2:side:l4"
+        },
+        {
+          "body": "Bracket",
+          "final": -50.09836363220216,
+          "mean": -58.36124209289552,
+          "name": "F2:side:l3"
+        },
+        {
+          "body": "Bracket",
+          "final": -22.641897354125984,
+          "mean": -25.870654558563245,
+          "name": "F2:side:l2"
+        },
+        {
+          "body": "Bracket",
+          "final": -70.53090030670167,
+          "mean": -75.32751103057862,
+          "name": "F2:top"
+        },
+        {
+          "body": "Bracket",
+          "final": -2.8265509986877446,
+          "mean": -3.4318306226730355,
+          "name": "F3:blend:F2:side:l3|F2:side:l4"
+        }
+      ],
+      "lattice_velocity": 0.05,
+      "mach": 0.08660254037844388,
+      "magic": 0.1875,
+      "mass": {
+        "first": 8.256000000000001E-07,
+        "last": 8.274309654235841E-07,
+        "relative_change": 0.0022177391274031495
+      },
+      "max_speed": 2.7807397528801627,
+      "max_speed_time": 30.0,
+      "memory": {
+        "backend": "gpu",
+        "bound_bytes": 33884680192,
+        "ceilings": {
+          "max_cell_updates": 2016945240000000,
+          "max_cells": 201694524,
+          "max_frame_bytes": 33884680192
+        },
+        "cells": 5824,
+        "flow_bytes": 1825088,
+        "frame_bytes": 815360,
+        "frames": 7,
+        "frames_that_fit": 17170,
+        "gpu_buffer": {
+          "limit_bytes": 2147483644,
+          "populations_bytes": 442624
+        },
+        "physical_bytes": 67769360384,
+        "problem": null,
+        "raised": false,
+        "total_bytes": 1825088
+      },
+      "solids": [],
+      "step": "HeatedFlow",
+      "steps": 180,
+      "stop": null,
+      "tau": 0.95,
+      "tau_minus": 0.9166666666666667,
+      "tau_thermal": 1.3623548922056385,
+      "temperature": {
+        "max": 79.80377960205078,
+        "min": 20.0
+      },
+      "time_step": 0.25,
+      "units": {
+        "force": "N",
+        "mass": "t",
+        "power": "mW",
+        "temperature": "°C",
+        "time": "s",
+        "velocity": "mm/s"
+      },
+      "velocity_scale": 1.0,
+      "warnings": [
+        "the density varies by 15.9% at the end: the weakly compressible error is visible; a shorter time step reduces it (quadratically)",
+        "solved on gpu: NVIDIA GeForce RTX 4090, in-place streaming: single precision, deterministic on this device, within the backend's tolerance of the CPU"
+      ],
+      "zones": []
+    },
+    "scope": "45 s physical transient, held-temperature bracket, single air domain; path smoke only, no timing or accuracy claim",
+    "presented_frames": [
+      "windows-4090-viewport.png",
+      "windows-4090-wall-heat.png"
+    ]
+  },
+  "unsupported_backend_startup": [
+    {
+      "stderr": "Error: AppCreation(NoAdapter(\"native GPU support requires Vulkan: unset WGPU_BACKEND or set WGPU_BACKEND=vulkan, and install a Vulkan driver\"))",
+      "exit_code": 1,
+      "WGPU_BACKEND": "dx12"
+    },
+    {
+      "stderr": "Error: AppCreation(NoAdapter(\"native GPU support requires Vulkan: unset WGPU_BACKEND or set WGPU_BACKEND=vulkan, and install a Vulkan driver\"))",
+      "exit_code": 1,
+      "WGPU_BACKEND": "metal"
+    },
+    {
+      "stderr": "Error: AppCreation(NoAdapter(\"native GPU support requires Vulkan: unset WGPU_BACKEND or set WGPU_BACKEND=vulkan, and install a Vulkan driver\"))",
+      "exit_code": 1,
+      "WGPU_BACKEND": "gl"
+    }
+  ],
+  "executable_sha256": "2f8bf762280ce09e5e27e2355cb9cb7214aef08e8988a6c86169eed4bcbc9585"
+}
