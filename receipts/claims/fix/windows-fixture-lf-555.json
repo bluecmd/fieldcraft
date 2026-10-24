@@ -1,0 +1,9 @@
+{
+  "request_id": "claim-555-windows-dxc-agent-20261024-1",
+  "request_blob": "6c236872536476f40c32dfbe77a29698ee21074b",
+  "agent": "windows-dxc-agent",
+  "branch": "fix/windows-fixture-lf-555",
+  "issue": 555,
+  "status": "granting",
+  "updated_at": "2026-10-24T00:15:22.926Z"
+}
