@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "agent": "legend-layout-agent",
+  "branch": "fix/contact-band-reset-211",
+  "head_sha": "be2a7c3b4e29b5f5c3319f3b089576ee34fc91aa",
+  "name": "after-open.png",
+  "bytes": 257760,
+  "sha256": "ab4d606643ef02e59ba4f2d0a7f63a6d7f8eb874a1bc812e49f6bee22b561157",
+  "description": "Native Vulkan presented unloaded static state; actual node 9 probe shows 0.005 mm open gap, zero pressure, deformation magnified 1000 times.",
+  "submitted_at": "2026-10-24T10:16:23.325947+00:00",
+  "status": "received",
+  "artifact_commit": "0b1c62d89a38f085376213f6e51c156370a2a7b5",
+  "manifest": "manifests/fix/contact-band-reset-211/be2a7c3b4e29b5f5c3319f3b089576ee34fc91aa/after-open.png.json",
+  "manifest_blob": "61c90a7cc7dbf213112af167dee7abd77ecf89c8",
+  "object": "objects/fix/contact-band-reset-211/be2a7c3b4e29b5f5c3319f3b089576ee34fc91aa/after-open.png",
+  "verified_sha256": "ab4d606643ef02e59ba4f2d0a7f63a6d7f8eb874a1bc812e49f6bee22b561157",
+  "github_attachment": "pending_maintainer"
+}
