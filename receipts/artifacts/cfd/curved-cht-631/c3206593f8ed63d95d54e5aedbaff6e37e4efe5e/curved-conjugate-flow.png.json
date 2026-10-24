@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "agent": "contour-animation-agent",
+  "branch": "cfd/curved-cht-631",
+  "head_sha": "c3206593f8ed63d95d54e5aedbaff6e37e4efe5e",
+  "name": "curved-conjugate-flow.png",
+  "bytes": 267835,
+  "sha256": "977021fb2620235c77765360ba792a88195aaef3da5545372dd3bc625297139d",
+  "description": "Original native Vulkan flow slice for dimensionless Re100 Pr0.71 Ri1 passive conducting cylinder cavity. Presented app7d9c027 production code unchanged by measurement-only headc3206593. 40x40 cavity with one periodic depth cell; original SolidCraftCLI0.14 geometry and FieldCraft solve. Not a two-fluid exchanger or interface-accuracy closure.",
+  "submitted_at": "2026-10-24T00:37:44.615209+00:00",
+  "status": "received",
+  "artifact_commit": "7e1fc52ee20b0a9873cbb33265581d8a8bbebc26",
+  "manifest": "manifests/cfd/curved-cht-631/c3206593f8ed63d95d54e5aedbaff6e37e4efe5e/curved-conjugate-flow.png.json",
+  "manifest_blob": "5fc8c3ad84c00981df985818c4c077c841361a4e",
+  "object": "objects/cfd/curved-cht-631/c3206593f8ed63d95d54e5aedbaff6e37e4efe5e/curved-conjugate-flow.png",
+  "verified_sha256": "977021fb2620235c77765360ba792a88195aaef3da5545372dd3bc625297139d",
+  "github_attachment": "pending_maintainer"
+}
