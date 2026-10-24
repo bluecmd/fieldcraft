@@ -61,7 +61,7 @@ At head `89b2c9dcebb0f49a4de73d9968cd2d463e056c27`, based on the current fork `u
 - `cargo run -p fieldcraft-cli -- features`: regenerated reference is identical; no generated-file diff.
 - `cargo build -p fieldcraft` and the native demonstration/parity/quality checks: passed.
 
-Relayed upstream results for this exact head: `cargo xtask ci` and `cargo xtask oracle` succeeded. Dependency licences/advisories, claim/triage bot tests, and the affected-crate plan also succeeded. `cargo xtask test --heavy` remains in progress. Windows app tests and macOS oracle were skipped, not passed. No local full workspace gate, heavy suite, wasm check, or oracle run was requested or claimed.
+Relayed upstream results for this exact head: `cargo xtask ci`, `cargo xtask oracle`, and `cargo xtask test --heavy` succeeded. Dependency licences/advisories, claim/triage bot tests, and the affected-crate plan also succeeded. Windows app tests and macOS oracle were skipped, not passed. No local full workspace gate, heavy suite, wasm check, or oracle run was requested or claimed.
 
 ## Known limitations
 
