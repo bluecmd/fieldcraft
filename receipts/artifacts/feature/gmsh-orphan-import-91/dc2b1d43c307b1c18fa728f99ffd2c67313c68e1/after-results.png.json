@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "agent": "legend-layout-agent",
+  "branch": "feature/gmsh-orphan-import-91",
+  "head_sha": "dc2b1d43c307b1c18fa728f99ffd2c67313c68e1",
+  "name": "after-results.png",
+  "bytes": 253637,
+  "sha256": "593e666b3240f78a578ceb6212aca8d62e95240462552e099eaeae376e0fa191",
+  "description": "Exact-head native Windows RTX4090 Vulkan presented frames, original handwritten structured MSH fixture. Static workflow, 250x deformation, not a physical transient. 80 valid hex20,621preservednodes,3physicalsets,4rootfaces+4tipfaces; node4259actualviewportprobe. All working states; no bug showcase. Nativeappquit cleanly; port7112closed. Parent source/visual review passed; native import, quality, root faces and actual probe.",
+  "submitted_at": "2026-10-24T08:39:02.441806+00:00",
+  "status": "received",
+  "artifact_commit": "88ca45c8c162cacdafe834e1277b3504f22e22af",
+  "manifest": "manifests/feature/gmsh-orphan-import-91/dc2b1d43c307b1c18fa728f99ffd2c67313c68e1/after-results.png.json",
+  "manifest_blob": "f5e08de2e3f6a4c2a027c932f8c549ba686aca89",
+  "object": "objects/feature/gmsh-orphan-import-91/dc2b1d43c307b1c18fa728f99ffd2c67313c68e1/after-results.png",
+  "verified_sha256": "593e666b3240f78a578ceb6212aca8d62e95240462552e099eaeae376e0fa191",
+  "github_attachment": "pending_maintainer"
+}
