@@ -55,4 +55,4 @@ A skill improves setup and reporting decisions; it does not add physics or certi
 
 The heated-flow example retains a visible weak-compressibility warning even at the smaller time step. Its spatial grid, mass/energy balance and thermal accuracy have not been established as a design-quality exchanger calculation. The held-temperature solid neither cools nor conducts internally in this example; there is no second fluid circuit. Coupled-exchanger and GPU LES/fan/porous work must be checked against actual available verified capabilities, not inferred from this skill or an open PR. The separately reported fluid reply-unit omission is not fixed here.
 
-The native demonstration was run on Windows only. It is a documentation/recipe change with unchanged production source, and does not claim new UI/backend behavior or platform runtime validation. 
+The native demonstration was run on Windows only. It is a documentation/recipe change with unchanged production source, and does not claim new UI/backend behavior or platform runtime validation.

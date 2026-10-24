@@ -54,5 +54,3 @@ Native GitHub attachments (original capture revision `b485880d04f0005232e9e24fc7
 Windows native pending-dialog responsiveness is verified. Wayland/Hyprland and macOS runtime behavior have not been tested here; this does not claim reproduction or resolution of a compositor-specific warning.
 
 The Windows input helper could capture the genuine chooser but returned `failed to activate captured window` after the permitted fresh-window retry. No unsupported native-input workaround was used. Consequently the new native chooser's Save/Cancel completion was not manually exercised in this run: successful selection, cancellation, failed write and guarded continuations are covered by the deferred-host unit tests, and those are explicitly distinct from native manual validation. The final capture closes the owned app through its control API rather than claiming a native Cancel result.
-
-
