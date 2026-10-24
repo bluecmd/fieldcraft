@@ -1,6 +1,6 @@
 {
   "transport": "fork artifact-queue via ordinary Git",
   "status": "verified_uploads_received",
-  "received": 37,
+  "received": 41,
   "blocked": 0
 }
