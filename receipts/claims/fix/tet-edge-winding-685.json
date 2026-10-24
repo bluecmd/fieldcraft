@@ -1,0 +1,9 @@
+{
+  "request_id": "claim-685-legend-layout-agent-20261024-01",
+  "request_blob": "3925ba7996a0b77a65cb31a0e774fb32df21e044",
+  "agent": "legend-layout-agent",
+  "branch": "fix/tet-edge-winding-685",
+  "issue": 685,
+  "status": "granting",
+  "updated_at": "2026-10-24T08:45:31.338Z"
+}
