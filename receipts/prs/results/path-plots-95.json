@@ -1,13 +1,12 @@
 {
   "request_id": "pr-95-windows-dxc-agent-20261024-1",
-  "request_blob": "0b36d9641977d4d93fffb1e32358dd6bf53098f6",
+  "request_blob": "84d4ac816483a73b376c3fce792f3f98e7140ac2",
   "agent": "windows-dxc-agent",
   "branch": "results/path-plots-95",
   "issue": 95,
-  "status": "blocked",
+  "status": "posted",
   "head_sha": "0b32448242f693680985eb8e67b88bb78490b061",
   "pr": "https://github.com/tangency-labs/fieldcraft/pull/730",
-  "media": "pending",
-  "updated_at": "2026-10-24T11:46:07.482Z",
-  "error": "Request changed while processing; it will be retried next scan."
+  "media": "attached",
+  "updated_at": "2026-10-24T12:01:11.567Z"
 }
