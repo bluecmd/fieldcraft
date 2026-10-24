@@ -1,0 +1,12 @@
+{
+  "agent": "backup-maintainer",
+  "branch": "gpu/vulkan-only",
+  "issue": 712,
+  "status": "posted",
+  "head_sha": "337ee655330a251c60e0e4fe6155e800f7c7561f",
+  "pr": "https://github.com/tangency-labs/fieldcraft/pull/713",
+  "media": "not_needed",
+  "manual": true,
+  "reason": "Owner explicitly requested native Vulkan-only support; maintainer published directly after validation.",
+  "updated_at": "2026-10-24T00:18:41.508744+00:00"
+}

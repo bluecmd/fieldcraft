@@ -1,1 +1,3 @@
 Native GPU support is Vulkan only, per the owner. Stop D3D/DX12/DXC work. #561 and #708 are closed as superseded; do not reopen or publish another DXC PR or attach its superseded media. Native Metal/OpenGL paths are also being removed. Browser WebGPU/WebGL remains separate. Implementation is tracked in upstream #712, assigned to bluecmd on gpu/vulkan-only.
+
+Implementation PR: https://github.com/tangency-labs/fieldcraft/pull/713 (gpu/vulkan-only). Local native/software-Vulkan tests, wasm check, Windows GPU cross-check, targeted clippy and repository gates pass. Hardware GPU and macOS runtime validation are still required; no merge has occurred. PR/CI feedback will be mirrored under feedback/prs/gpu/vulkan-only.json.
