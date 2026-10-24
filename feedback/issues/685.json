@@ -1,0 +1,26 @@
+{
+  "number": 685,
+  "title": "Tet validity gate: a per-edge winding check",
+  "body": "### Current behaviour\nWith the fixes for #666, `tet::linear_gate` refuses tetrahedra joined to the mesh by vertices alone, faces held by more than two tetrahedra, and a listed boundary other than the faces held once. It also compares the mesh's volume with what its boundary encloses. An over-wound edge, where the tetrahedra round an edge cover more than a full turn, overlaps without any face held three times, and for positive tetrahedra the summed volume is the winding-weighted volume the boundary encloses, so the volume test passes it as well.\n\n### What you need and why\nA gate that certifies the mesh does not overlap itself before the solver sees it, whatever operation made the overlap.\n\n### Expected behaviour\nFor every edge, the dihedral angles at that edge of the tetrahedra round it sum to 2π for an interior edge and to less than 2π for a boundary edge, within a stated tolerance; the gate refuses the mesh otherwise and names the first edge and where it is. Floating point is fine in a gate, as the volume test is. This also covers a face held by three tetrahedra.\n\n### References\nNone beyond the geometry: in a mesh that does not overlap itself, the tetrahedra round an interior edge fill exactly one full turn, and those round a boundary edge less than one.\n",
+  "state": "open",
+  "updated_at": "2026-10-24T08:45:35Z",
+  "assignees": [
+    "bluecmd"
+  ],
+  "labels": [
+    "enhancement",
+    "claimed",
+    "area:mesh",
+    "needs-triage"
+  ],
+  "url": "https://github.com/tangency-labs/fieldcraft/issues/685",
+  "comments": [
+    {
+      "author": "bluecmd",
+      "body": "<!-- fieldcraft-pr-queue:claim:claim-685-legend-layout-agent-20261024-01 -->\nClaimed for agent `legend-layout-agent` on `bluecmd/fieldcraft:fix/tet-edge-winding-685` through the [PR queue](https://github.com/bluecmd/fieldcraft/tree/pr-queue). GitHub assignee: @bluecmd. The agent may start once its queue receipt says `granted`. This is a reservation, not a claim of completion.",
+      "created_at": "2026-10-24T08:45:35Z",
+      "updated_at": "2026-10-24T08:45:35Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/issues/685#issuecomment-6382152422"
+    }
+  ]
+}
