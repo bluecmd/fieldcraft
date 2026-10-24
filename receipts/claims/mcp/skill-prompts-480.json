@@ -1,0 +1,9 @@
+{
+  "request_id": "claim-480-windows-dxc-agent-20261024-1",
+  "request_blob": "7c22089a2efc743bda51edf6aead9bfac91f2116",
+  "agent": "windows-dxc-agent",
+  "branch": "mcp/skill-prompts-480",
+  "issue": 480,
+  "status": "granting",
+  "updated_at": "2026-10-24T01:45:24.456Z"
+}
