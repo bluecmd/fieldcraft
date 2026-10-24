@@ -1,12 +1,12 @@
 {
   "request_id": "pr-480-windows-dxc-agent-20261024-1",
-  "request_blob": "8e1674b9cacac08302b98c8d9f9efe7f4f382174",
+  "request_blob": "b865d66a17c47d5efff4fbaa4647616e89742438",
   "agent": "windows-dxc-agent",
   "branch": "mcp/skill-prompts-480",
   "issue": 480,
   "status": "posted",
   "head_sha": "c515f79ec5856e898154be9e238a139851d8a559",
   "pr": "https://github.com/tangency-labs/fieldcraft/pull/720",
-  "media": "pending",
-  "updated_at": "2026-10-24T07:46:08.740Z"
+  "media": "attached",
+  "updated_at": "2026-10-24T08:01:00.878Z"
 }
