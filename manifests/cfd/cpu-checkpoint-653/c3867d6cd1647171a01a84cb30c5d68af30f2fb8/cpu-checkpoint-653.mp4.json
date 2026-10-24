@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "agent": "contour-animation-agent",
+  "branch": "cfd/cpu-checkpoint-653",
+  "head_sha": "c3867d6cd1647171a01a84cb30c5d68af30f2fb8",
+  "name": "cpu-checkpoint-653.mp4",
+  "bytes": 431812,
+  "sha256": "cc2fe96b911d30ef2332130373b87f5f2036db7110608a88e4f0edddaddbf2fe",
+  "description": "Presented native app frames from exact build, held/edited; CPU solve 64 cells, 3 threads. Vulkan RTX 4090 viewport. Original SolidCraft CLI 0.14 box supplies display bounds only, obstacles/solids empty. Inter caption font SIL OFL 1.1. Actual cancellation retains20018 then resume with changed cadence completes1000003steps/1000.003s physical time. Captions quote real returned summary, not an added report panel. Separate fresh-process100003step QA matches all1387944results.bin bytes SHA d4d05bd9410e620826b1e9350b38b8401313284e31870b09d8ec21260c033064. Parent source/body/native visual review passed.",
+  "submitted_at": "2026-10-24T09:04:13.533503+00:00"
+}
