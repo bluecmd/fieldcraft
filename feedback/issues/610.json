@@ -2,8 +2,8 @@
   "number": 610,
   "title": "A legend taller than the viewport is cut off, hiding Max/Min",
   "body": "### Observed failure\nA results legend taller than the viewport is cut off at the bottom, and the navigation bar covers its last bands and the clickable Max/Min lines.\n\n### Reproduction\n1. Open the Cantilever sample, solve it, show von Mises.\n2. Set the legend to 24 bands with a clamped range.\n3. Resize the window to 960 × 600 (`ui.resize`).\n\nThe legend is 507 pt tall in a 406 pt viewport. Since #608 it also starts 35 pt lower (below the selection bar), so 35 pt more is hidden.\n\n### Expected behaviour\nThe whole legend stays readable at any window size, including Max/Min. For example, fewer swatch labels when space is short, two columns, or scrolling.\n\nFound while reviewing #608.\n",
-  "state": "open",
-  "updated_at": "2026-10-23T20:15:19Z",
+  "state": "closed",
+  "updated_at": "2026-10-24T12:12:16Z",
   "assignees": [
     "bluecmd"
   ],
