@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "agent": "legend-layout-agent",
+  "branch": "fix/contact-corner-reports-203",
+  "head_sha": "7f6528611943fef617c18a641cfd1d1f6368655f",
+  "name": "contact-corner-reports-203.mp4",
+  "bytes": 452328,
+  "sha256": "ec4e5870a245caebcb01835c050f6c8b2c28cc20ea6c676898236b78a3b1cb12",
+  "description": "Original native Vulkan contact reporting review evidence. Eight frozen Hertz reports await maintainer reconciliation; oracle remains red, with unchanged theory tolerances.",
+  "submitted_at": "2026-10-24T11:20:18.655458+00:00",
+  "status": "received",
+  "artifact_commit": "0b0f2522a855c5d5418a797d1ad0af426c6ff694",
+  "manifest": "manifests/fix/contact-corner-reports-203/7f6528611943fef617c18a641cfd1d1f6368655f/contact-corner-reports-203.mp4.json",
+  "manifest_blob": "2eaa9a8735fd495951a1eb520faea60bf8904e6c",
+  "object": "objects/fix/contact-corner-reports-203/7f6528611943fef617c18a641cfd1d1f6368655f/contact-corner-reports-203.mp4",
+  "verified_sha256": "ec4e5870a245caebcb01835c050f6c8b2c28cc20ea6c676898236b78a3b1cb12",
+  "github_attachment": "pending_maintainer"
+}
