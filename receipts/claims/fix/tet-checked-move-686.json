@@ -1,0 +1,9 @@
+{
+  "request_id": "claim-686-legend-layout-agent-20261024-01",
+  "request_blob": "ad6c381e8f77f3c3db8fe0c9375c10e179ad0c44",
+  "agent": "legend-layout-agent",
+  "branch": "fix/tet-checked-move-686",
+  "issue": 686,
+  "status": "granting",
+  "updated_at": "2026-10-24T02:15:23.816Z"
+}
