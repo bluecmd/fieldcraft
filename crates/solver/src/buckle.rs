@@ -54,6 +54,37 @@ pub struct Buckling {
     pub below_shift: Option<usize>,
 }
 
+/// One linear buckling mode: a dimensionless load factor and its normalized perturbation.
+#[derive(Debug, Clone, PartialEq, Serialize, serde::Deserialize)]
+pub struct BucklingMode {
+    /// The multiplier λ of the step's preload in (K + λ K_σ) φ = 0.
+    pub load_factor: f64,
+    /// Per-node translations, in [`BucklingResult::nodes`] order. The largest component of
+    /// the reduced mode is one; this is an arbitrary mode normalization, not a displacement.
+    pub shape: Vec<[f64; 3]>,
+    /// Per-node rotations, zero where the node has no rotational degrees of freedom.
+    pub rotation: Vec<[f64; 3]>,
+    /// Translations and rotations at [`BucklingResult::reference_points`], in that order.
+    pub point_shape: Vec<[f64; 6]>,
+}
+
+/// The result of a linear buckling step. It has no frequency, modal mass or participation:
+/// its eigenvalues multiply the preload, and its shapes are maximum-component normalized.
+#[derive(Debug, Clone, PartialEq, Serialize, serde::Deserialize)]
+pub struct BucklingResult {
+    pub step: String,
+    pub nodes: Vec<u32>,
+    pub reference_points: Vec<(String, u32)>,
+    pub modes: Vec<BucklingMode>,
+    pub stats: Stats,
+    pub warnings: Vec<String>,
+    /// Converged negative load factors, nearest zero first (without a shift only).
+    pub negative: Vec<f64>,
+    /// Spectral shift; with a positive shift, `below_shift` counts the skipped load factors.
+    pub shift: Option<f64>,
+    pub below_shift: Option<usize>,
+}
+
 /// K⁻¹(−K_σ) in the K inner product: θ = 1/λ.
 struct Plain<'a> {
     k: &'a Csr,
@@ -107,6 +138,33 @@ impl Operator for Shifted<'_> {
 
 /// Solve a buckling step (the step named `step`, or the model's only buckling step).
 pub fn solve_buckle(model: &Model, step: Option<&str>, limits: &Limits) -> Result<FrequencyResult> {
+    let r = solve_buckling(model, step, limits)?;
+    Ok(FrequencyResult {
+        step: r.step,
+        nodes: r.nodes,
+        reference_points: r.reference_points,
+        modes: r
+            .modes
+            .into_iter()
+            .map(|m| Mode {
+                eigenvalue: m.load_factor,
+                frequency: 0.0,
+                shape: m.shape,
+                rotation: m.rotation,
+                participation: [0.0; 3],
+                effective_mass: [0.0; 3],
+                point_shape: m.point_shape,
+            })
+            .collect(),
+        total_mass: 0.0,
+        stats: r.stats,
+        warnings: r.warnings,
+        buckling: Some(Buckling { negative: r.negative, shift: r.shift, below_shift: r.below_shift }),
+    })
+}
+
+/// Solve a buckling step into its own load-factor result, without frequency-only fields.
+pub fn solve_buckling(model: &Model, step: Option<&str>, limits: &Limits) -> Result<BucklingResult> {
     // A job cancelled before it starts stops here, before any setup work.
     fieldcraft_model::progress::check()?;
     let step = model.select_step(step, |p| matches!(p, Procedure::Buckle { .. }), "buckling")?;
@@ -194,19 +252,20 @@ pub fn solve_buckle(model: &Model, step: Option<&str>, limits: &Limits) -> Resul
         let big = phi.iter().fold(0.0f64, |m, v| m.max(v.abs()));
         let scaled: Vec<f64> = phi.iter().map(|v| if big > 0.0 { v / big } else { *v }).collect();
         let (shape, rotation, point_shape) = split(&red.expand(&scaled, false), &mesh);
-        out.push(Mode { eigenvalue: *lambda, frequency: 0.0, shape, rotation, participation: [0.0; 3], effective_mass: [0.0; 3], point_shape });
+        out.push(BucklingMode { load_factor: *lambda, shape, rotation, point_shape });
     }
     if out.len() < count {
         warnings.push(format!("found {} of the {modes} buckling modes asked for", out.len()));
     }
-    Ok(FrequencyResult {
+    Ok(BucklingResult {
         step: step.name.clone(),
         nodes: mesh.labels.clone(),
         reference_points: mesh.points.iter().map(|p| (p.name.clone(), p.label)).collect(),
         modes: out,
-        total_mass: 0.0,
         stats: Stats { dofs: mesh.dofs(), equations: neq, factor_entries: entries, lanczos_vectors: pairs.basis },
         warnings,
-        buckling: Some(buckling),
+        negative: buckling.negative,
+        shift: buckling.shift,
+        below_shift: buckling.below_shift,
     })
 }

@@ -8,7 +8,7 @@ mod common;
 
 use common::*;
 use fieldcraft_model::*;
-use fieldcraft_solver::{Limits, solve_buckle};
+use fieldcraft_solver::{Limits, solve_buckling as solve_buckle};
 
 const E: f64 = 1000.0;
 const B: f64 = 1.0;
@@ -47,18 +47,18 @@ fn euler_columns() {
     g.symmetry("mid", Symmetry::Z, |x| near(x[2], 1.0));
     let r = solve_buckle(&g.model, Some("Step"), &Limits::default()).unwrap();
     let want = engesser(L) / (B * B);
-    let got = r.modes[0].eigenvalue;
-    eprintln!("pinned: λ = {got:.6} (Engesser {want:.6}, {:+.3} %), second {:.6}", 100.0 * (got / want - 1.0), r.modes[1].eigenvalue);
+    let got = r.modes[0].load_factor;
+    eprintln!("pinned: λ = {got:.6} (Engesser {want:.6}, {:+.3} %), second {:.6}", 100.0 * (got / want - 1.0), r.modes[1].load_factor);
     assert!((got / want - 1.0).abs() < 5e-3);
-    assert!((r.modes[1].eigenvalue / got - 1.0).abs() < 1e-6, "the square section's two planes");
-    assert!(r.buckling.as_ref().unwrap().negative.is_empty() || r.buckling.as_ref().unwrap().negative[0] < -got);
+    assert!((r.modes[1].load_factor / got - 1.0).abs() < 1e-6, "the square section's two planes");
+    assert!(r.negative.is_empty() || r.negative[0] < -got);
 
     // Clamped–free: the base held, the top free: le = 2L.
     let mut g = column(L / 2.0, 10, None);
     g.fixed("base", |x| near(x[2], 0.0));
     let r = solve_buckle(&g.model, Some("Step"), &Limits::default()).unwrap();
     let want = engesser(L) / (B * B);
-    let got = r.modes[0].eigenvalue;
+    let got = r.modes[0].load_factor;
     eprintln!("clamped–free: λ = {got:.6} (Engesser {want:.6}, {:+.3} %)", 100.0 * (got / want - 1.0));
     assert!((got / want - 1.0).abs() < 5e-3);
     // Scaled to a largest component of 1, which is lateral at the free top.
@@ -70,10 +70,10 @@ fn euler_columns() {
     let mut s = column(L / 2.0, 10, Some(2.0 * got));
     s.fixed("base", |x| near(x[2], 0.0));
     let shifted = solve_buckle(&s.model, Some("Step"), &Limits::default()).unwrap();
-    let info = shifted.buckling.as_ref().unwrap();
+    let info = &shifted;
     assert_eq!(info.below_shift, Some(2));
-    let third = r.modes[2].eigenvalue;
-    assert!((shifted.modes[0].eigenvalue / third - 1.0).abs() < 1e-7, "{} vs {third}", shifted.modes[0].eigenvalue);
+    let third = r.modes[2].load_factor;
+    assert!((shifted.modes[0].load_factor / third - 1.0).abs() < 1e-7, "{} vs {third}", shifted.modes[0].load_factor);
 }
 
 #[test]
@@ -99,7 +99,7 @@ fn buckling_steps_refuse_what_they_cannot_do() {
 fn an_imperfection_from_the_buckling_mode() {
     let mut g = column(L / 2.0, 10, None);
     g.fixed("base", |x| near(x[2], 0.0));
-    let critical = solve_buckle(&g.model, Some("Step"), &Limits::default()).unwrap().modes[0].eigenvalue * B * B;
+    let critical = solve_buckle(&g.model, Some("Step"), &Limits::default()).unwrap().modes[0].load_factor * B * B;
     let delta0 = 0.01;
     g.node_set("tip", |x| near(x[2], 1.0));
     g.model
