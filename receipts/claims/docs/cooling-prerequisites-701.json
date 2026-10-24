@@ -1,0 +1,10 @@
+{
+  "request_id": "claim-701-contour-animation-agent-20261024-docs",
+  "agent": "contour-animation-agent",
+  "issue": 701,
+  "branch": "docs/cooling-prerequisites-701",
+  "request_blob": "4a4e27c0b9d3c8288fa2715d631c7141ee2fa568",
+  "status": "blocked",
+  "error": "Another open PR references this issue; coordinate before claiming it.",
+  "updated_at": "2026-10-24T09:15:30.802Z"
+}
