@@ -404,13 +404,16 @@
     "title": "Diagnostics for solver failures that aren't panics, and for headless runs in throwaway environments",
     "body": "### Current behaviour\n\nCrash reports (docs/crash-reports.md) cover panics and unclean exits well: message, backtrace, replay, renderer, GPU and driver. Two kinds of failure leave nothing behind:\n\n1. **Solver failures that aren't panics.** A GPU device lost mid-session (#636: `GPU: Parent device is lost` from the 11th device in one process on one NVIDIA driver, the 26th on another) and a fluid solve stopped by GL's storage-buffer limit (#640) both come back as an ordinary `invalid input` error. No report says which adapter, backend, driver and limits were in use, how many devices the process had opened, or where the step was. The same goes for a diverged solve, a solve stopped by its caps, or an out-of-memory failure.\n2. **Headless runs in throwaway environments.** `fieldcraft-cli mcp` or `run` under automation writes to `fieldcraft-automation/` in the temporary folder. In a container removed after the run, or on a cloud instance (#411), that folder goes with it. `FIELDCRAFT_CRASH_DIR` helps once you know it exists, but nothing points a worker to it, and the CLI prints no path when it writes one.\n\n### What you need and why\n\nTo tell a FieldCraft bug from an environment problem after the fact, especially on remote workers where no one watched the run. #636, #640 and #643 each needed a manual reproduction to recover information the failing run could have recorded itself.\n\n### Expected behaviour\n\n- A solver error that stops a solve writes a small diagnostic record (not a crash report), next to the crash reports or under `FIELDCRAFT_CRASH_DIR`. It holds:\n  - the command and its parameters, the model's size (cells or DOFs), and the step and increment or time reached;\n  - the backend and adapter: name, driver, backend type (Vulkan, GL, Metal, DX12, CPU), and the limits that matter (storage buffers per stage, max buffer size);\n  - for GPU runs, the devices and instances this process has opened;\n  - the error;\n  - and, if a checkpoint exists, its path.\n\n  `diagnostics.crash_reports` could list these too, with `kind: \"solver_error\"`.\n- Headless runs print the path of any report or record they write, on stderr and in the MCP reply.\n- `docs/crash-reports.md` gets a short note for workers: set `FIELDCRAFT_CRASH_DIR` to a persistent folder in containers and on cloud instances.\n\n### Pictures\n\nNone.\n\n### References\n\n#636 and #641 (device loss), #640 (GL limit), #643 (CPU scaling), #411 (remote and cloud workers).\n",
     "state": "open",
-    "updated_at": "2026-10-24T00:01:37Z",
+    "updated_at": "2026-10-24T00:45:21Z",
     "labels": [
       "enhancement",
+      "claimed",
       "area:solver",
       "needs-triage"
     ],
-    "assignees": [],
+    "assignees": [
+      "bluecmd"
+    ],
     "url": "https://github.com/tangency-labs/fieldcraft/issues/654"
   },
   {
