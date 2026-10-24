@@ -11,7 +11,7 @@
   "base": "develop",
   "draft": false,
   "title": "Results: interpolate and plot solid fields along picked or typed paths",
-  "media": "pending"
+  "media": "attached"
 }
 ---
 ## What and why
@@ -30,7 +30,11 @@ Sampling and export run as cancellable background jobs, with index-building and 
 
 Fresh Windows native evidence was captured from a dedicated build of the exact tested head `0b32448242f693680985eb8e67b88bb78490b061`. CPU solvers were used with an actual NVIDIA GeForce RTX 4090 Vulkan viewport. The 24-second H.264 video is a captioned sequence of six genuine presented app frames, not reconstructed UI or an offscreen rendering. It shows beam stress, actual deformed curved-surface picking, the sampled endpoint graph, steady conduction temperature and outside gaps. Two stills and a small numerical verification JSON accompany it. Older private `5e3b302` layout captures are superseded and are not part of this handoff.
 
-The coordinator normal-pushed all four immutable originals through ordinary Git in artifact-queue commit `9889db110eaacab5573cabcaecf6219540daa48d`, under `objects/results/path-plots-95/0b32448242f693680985eb8e67b88bb78490b061/`: `solid-path-plots.mp4`, `curved-surface-path.png`, `temperature-path-gaps.png` and `native-verification.json`. Original and staged blob SHA-256 values and byte counts match; the full video decodes successfully. Maintainer receipts confirm all four artifacts received, with SHA-256 values and byte counts matching the immutable originals. Actual GitHub attachment URLs remain pending_maintainer, so media remains pending. The JSON is numerical evidence in the inbox, not a native attachment. No demonstration media or binaries are in the feature branch. The video is not a timing benchmark, physical transient, coupled two-fluid exchanger demonstration or experimental validation.
+The coordinator normal-pushed all four immutable originals through ordinary Git in artifact-queue commit `9889db110eaacab5573cabcaecf6219540daa48d`, under `objects/results/path-plots-95/0b32448242f693680985eb8e67b88bb78490b061/`: `solid-path-plots.mp4`, `curved-surface-path.png`, `temperature-path-gaps.png` and `native-verification.json`. Original and staged blob SHA-256 values and byte counts match; the full video decodes successfully. Maintainer receipts confirm all four artifacts received, with SHA-256 values and byte counts matching the immutable originals. The maintainer has attached all three native media files at the URLs below. The JSON is numerical evidence in the inbox, not a native attachment. No demonstration media or binaries are in the feature branch. The video is not a timing benchmark, physical transient, coupled two-fluid exchanger demonstration or experimental validation.
+
+- [solid-path-plots.mp4](https://github.com/user-attachments/assets/6dc43c8b-913b-4708-9b00-62c273e7db15)
+- [curved-surface-path.png](https://github.com/user-attachments/assets/e6440082-b4da-46cf-8f49-31167c099cae)
+- [temperature-path-gaps.png](https://github.com/user-attachments/assets/e8454be0-969f-4624-8086-559430c5b7c9)
 
 ## Validation
 
@@ -53,4 +57,4 @@ A straight chord between points on a concave curved face may leave the solid. Th
 
 The full engine run excludes these independently known Windows baseline failures: `bug_report::tests::a_long_session_and_the_model_are_attachments` (escaped home path, #554), `cmd::file::tests::every_migrated_journal_replays_to_its_migrated_model` (last-bit imperial density), and `cmd::render::tests::labels_and_command_lines_read_well` (path separators). Their behavior was not changed or blessed. Ignored heavy tests were not run locally.
 
-Native runtime evidence is Windows / RTX 4090 / Vulkan only. Targeted wasm compilation passed; browser runtime, macOS, other GPU hardware and throughput were not measured. The beam and constant-conductivity checks are synthetic implementation verification, not experimental validation or a coupled heat-exchanger design claim. Upstream CI and GitHub attachment publication await the maintainer queue.
+Native runtime evidence is Windows / RTX 4090 / Vulkan only. Targeted wasm compilation passed; browser runtime, macOS, other GPU hardware and throughput were not measured. The beam and constant-conductivity checks are synthetic implementation verification, not experimental validation or a coupled heat-exchanger design claim. Relayed exact-head CI now reports all enabled checks successful (main gate, oracle and heavy included); Windows app and macOS oracle are skipped. Native GitHub attachments are published at the original exact captured head.
