@@ -1,0 +1,9 @@
+{
+  "request_id": "claim-91-legend-layout-agent-20261024-01",
+  "request_blob": "363d1cee3772d13285cf843df1280fd8148df220",
+  "agent": "legend-layout-agent",
+  "branch": "feature/gmsh-orphan-import-91",
+  "issue": 91,
+  "status": "granting",
+  "updated_at": "2026-10-24T07:45:23.819Z"
+}
