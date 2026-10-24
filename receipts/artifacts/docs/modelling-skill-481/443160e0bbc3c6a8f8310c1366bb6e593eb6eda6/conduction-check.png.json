@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "agent": "windows-dxc-agent",
+  "branch": "docs/modelling-skill-481",
+  "head_sha": "443160e0bbc3c6a8f8310c1366bb6e593eb6eda6",
+  "name": "conduction-check.png",
+  "bytes": 371906,
+  "sha256": "6ea8dc89ac5c3c5117aacc4048fceaacb0c191b1ac600323dfe23e267d7e1006",
+  "description": "Original native FieldCraft presented frames demonstrating four text/JSON-only skill files. Reused executable built at99d8536, production code equivalent to7d9c027; not rebuilt at docs head. Synthetic steady conductor midpoint323.15K/end rates4.5W. CPU heated-flow 5824cells, physical45s, held-wall single-fluid, density warnings15.9percent and3.5percent with half dt. Smoke/sensitivity only, no coupled or design-accuracy claim. Windows RTX4090 Vulkan viewport.",
+  "submitted_at": "2026-10-24T01:41:54.373523+00:00",
+  "status": "received",
+  "artifact_commit": "1f57cdd54b986accdcbe4b2340775abcbce77512",
+  "manifest": "manifests/docs/modelling-skill-481/443160e0bbc3c6a8f8310c1366bb6e593eb6eda6/conduction-check.png.json",
+  "manifest_blob": "f8ac593a9b94f8f41f4d3111e989cf58cd476bf5",
+  "object": "objects/docs/modelling-skill-481/443160e0bbc3c6a8f8310c1366bb6e593eb6eda6/conduction-check.png",
+  "verified_sha256": "6ea8dc89ac5c3c5117aacc4048fceaacb0c191b1ac600323dfe23e267d7e1006",
+  "github_attachment": "pending_maintainer"
+}
