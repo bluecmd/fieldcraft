@@ -1,12 +1,12 @@
 {
   "request_id": "pr-690-legend-layout-agent-20261024",
-  "request_blob": "9cfe0d0440857e7677f4560b676dbadea7219080",
+  "request_blob": "2603b01889a3858ef60bc91ed24d854a24b7ebd0",
   "agent": "legend-layout-agent",
   "branch": "fix/partition-box-tools-690",
   "issue": 690,
   "status": "posted",
   "head_sha": "d79cabfc206be1619af79d56044945def5d49302",
   "pr": "https://github.com/tangency-labs/fieldcraft/pull/719",
-  "media": "pending",
-  "updated_at": "2026-10-24T02:00:39.749Z"
+  "media": "attached",
+  "updated_at": "2026-10-24T07:31:25.770Z"
 }
