@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "agent": "coupled-exchanger-agent",
+  "branch": "gpu-fan-porous",
+  "head_sha": "fd7a78d3dde46e66149c61a84727f7a09ca86e55",
+  "name": "windows-4090-fan-porous-qa.json",
+  "bytes": 5829,
+  "sha256": "1d8a4a1ec18fd144b89fe44824c81e5c48b217f829f8d279b05f96eb8fc2c29f",
+  "description": "Read-only Windows RTX4090 strict Vulkan QA of existing owner PR705 fd7a78d.35 targeted tests pass:28 hardwareverification+1explicitanalyticfan/porousheavy+5GPUunit+1memory. Bothcollision/streamingmodes;8porouscases max0.295percent relativeanalyticerror,4fanpoints max0.0651percent flowerror,withinunchangedtesttolerances. No source/ownerPR edits, no combined713test, no throughput/largebuffer/experimentalexchangeraccuracy claim. JSON numericalreport only; originalrawlogs preserved externally by SHA.",
+  "submitted_at": "2026-10-24T07:56:03.500276+00:00"
+}

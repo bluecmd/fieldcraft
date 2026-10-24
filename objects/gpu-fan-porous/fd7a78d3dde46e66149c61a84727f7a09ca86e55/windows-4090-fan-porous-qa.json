@@ -1,0 +1,173 @@
+{
+  "schema": 1,
+  "kind": "read-only-Windows-hardware-QA",
+  "owner_pr": "https://github.com/tangency-labs/fieldcraft/pull/705",
+  "source_head": "fd7a78d3dde46e66149c61a84727f7a09ca86e55",
+  "source_unchanged": true,
+  "platform": {
+    "Caption": "Microsoft Windows 11 Pro",
+    "Version": "10.0.26200",
+    "OSArchitecture": "64-bit"
+  },
+  "gpu": {
+    "Name": "NVIDIA GeForce RTX 4090",
+    "DriverVersion": "32.0.16.1656"
+  },
+  "rust": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+  "policy": {
+    "FIELDCRAFT_REQUIRE_GPU": "1",
+    "FIELDCRAFT_THREADS": 3,
+    "WGPU_BACKEND": "vulkan",
+    "CARGO_PROFILE_DEV_DEBUG": 0,
+    "FIELDCRAFT_GPU": "hardware",
+    "CARGO_BUILD_JOBS": 3
+  },
+  "tests": {
+    "total_passed": 35,
+    "missing_gpu_skips": 0,
+    "ignored_case_then_explicitly_run_passed": 1,
+    "gpu_unit_passed": 5,
+    "hardware_verification_ignored": 1,
+    "zone_memory_passed": 1,
+    "failed": 0,
+    "hardware_verification_passed": 28
+  },
+  "porous_cases": [
+    {
+      "collision": "Trt",
+      "streaming": "InPlace",
+      "measured": 0.0061611393466591835,
+      "analytic": 0.006143756698495221,
+      "relative_error": 0.0028293190985606447
+    },
+    {
+      "collision": "Trt",
+      "streaming": "InPlace",
+      "measured": 0.001361353206448257,
+      "analytic": 0.0013573965741899361,
+      "relative_error": 0.002914868310082534
+    },
+    {
+      "collision": "Trt",
+      "streaming": "TwoBuffers",
+      "measured": 0.006161160301417112,
+      "analytic": 0.006143765974637702,
+      "relative_error": 0.0028312157154449778
+    },
+    {
+      "collision": "Trt",
+      "streaming": "TwoBuffers",
+      "measured": 0.0013613579794764519,
+      "analytic": 0.0013573977617662564,
+      "relative_error": 0.0029175071756729655
+    },
+    {
+      "collision": "Regularized",
+      "streaming": "InPlace",
+      "measured": 0.006161147262901068,
+      "analytic": 0.006143756770780379,
+      "relative_error": 0.002830595801480569
+    },
+    {
+      "collision": "Regularized",
+      "streaming": "InPlace",
+      "measured": 0.0013614152558147907,
+      "analytic": 0.0013574113396466298,
+      "relative_error": 0.002949670487652791
+    },
+    {
+      "collision": "Regularized",
+      "streaming": "TwoBuffers",
+      "measured": 0.006161147262901068,
+      "analytic": 0.006143756770780379,
+      "relative_error": 0.002830595801480569
+    },
+    {
+      "collision": "Regularized",
+      "streaming": "TwoBuffers",
+      "measured": 0.0013614152558147907,
+      "analytic": 0.0013574113396466298,
+      "relative_error": 0.002949670487652791
+    }
+  ],
+  "fan_cases": [
+    {
+      "collision": "Trt",
+      "streaming": "InPlace",
+      "analytic_flow": 0.07456832294800961,
+      "analytic_pressure": 0.0028814751557798557,
+      "fan_flow": 0.07452031224966049,
+      "porous_pressure": 0.002885215450078249,
+      "fan_rise": 0.00288219703361392,
+      "flow_relative_error": 0.0006438484392707837,
+      "porous_pressure_relative_error": 0.0012980484287330241,
+      "fan_rise_relative_error": 0.0002505237057541623
+    },
+    {
+      "collision": "Trt",
+      "streaming": "TwoBuffers",
+      "analytic_flow": 0.07456832294800961,
+      "analytic_pressure": 0.0028814751557798557,
+      "fan_flow": 0.07452042400836945,
+      "porous_pressure": 0.0028852091636508703,
+      "fan_rise": 0.0028821933083236217,
+      "flow_relative_error": 0.0006423496968485922,
+      "porous_pressure_relative_error": 0.0012958667589150336,
+      "fan_rise_relative_error": 0.0002492308643805383
+    },
+    {
+      "collision": "Regularized",
+      "streaming": "InPlace",
+      "analytic_flow": 0.07456832294800961,
+      "analytic_pressure": 0.0028814751557798557,
+      "fan_flow": 0.0745198130607605,
+      "porous_pressure": 0.0028851861134171486,
+      "fan_rise": 0.0028822014573961496,
+      "flow_relative_error": 0.0006505428220899057,
+      "porous_pressure_relative_error": 0.0012878673029157349,
+      "fan_rise_relative_error": 0.0002520589548853408
+    },
+    {
+      "collision": "Regularized",
+      "streaming": "TwoBuffers",
+      "analytic_flow": 0.07456832294800961,
+      "analytic_pressure": 0.0028814751557798557,
+      "fan_flow": 0.0745198130607605,
+      "porous_pressure": 0.0028851861134171486,
+      "fan_rise": 0.0028822014573961496,
+      "flow_relative_error": 0.0006505428220899057,
+      "porous_pressure_relative_error": 0.0012878673029157349,
+      "fan_rise_relative_error": 0.0002520589548853408
+    }
+  ],
+  "raw_logs": [
+    {
+      "name": "verification.log",
+      "bytes": 41860,
+      "sha256": "b7a9eb620276e00ae100c3204c29cd2244014762c643f9070ef8eab38a1936d3"
+    },
+    {
+      "name": "analytic-operating-point.log",
+      "bytes": 5919,
+      "sha256": "c8335b4a65554bf95a77666272284e6291095e3ac67a30c2cdb1828985157492"
+    },
+    {
+      "name": "gpu-unit.log",
+      "bytes": 827,
+      "sha256": "5a61c03916c4c398c728f9cbf33a0bbad838f9820d478a23821076dbc0cbf4da"
+    },
+    {
+      "name": "zone-memory.log",
+      "bytes": 449,
+      "sha256": "ad64e52a967ac79d44fa454fb513d5e52b363ee86cf4758da18cc3f2aad03324"
+    }
+  ],
+  "limitations": [
+    "Existing original synthetic tests and their unchanged tolerances; no independent experimental exchanger validation.",
+    "Read-only owner branch only; no owner source or PR edits and no new feature PR.",
+    "Vulkan-only PR713 combined with this owner branch was not tested.",
+    "No throughput benchmark or large population-buffer limit test; no Linux/macOS/browser claim.",
+    "No new native UI recording; owner PR705 already has its separate native feature video."
+  ],
+  "tested_at_utc": "2026-10-24T07:55:38.8537655Z"
+}
