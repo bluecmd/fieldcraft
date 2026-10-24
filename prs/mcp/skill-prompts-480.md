@@ -11,7 +11,7 @@
   "base": "develop",
   "draft": false,
   "title": "MCP: serve exact bundled skills as discoverable prompts",
-  "media": "pending"
+  "media": "attached"
 }
 ---
 ## What and why
@@ -30,7 +30,13 @@ The connected original recipe uses 36 hex8 elements/84 nodes and gives midpoint 
 
 The CLI was built after the exact requested commit; its SHA-256 is `105724ad395812114beeb730dd356c57507c6453487e4a7bc24b8e5f6f6a556f`. The native host executable is reused from original build `99d8536`, SHA-256 `ff37388057d4eee4dd5490a4e927c45be6c20dcbf3fae4766dad2355d3a606c0`, with production source equivalent to `7d9c027d71b2c1ea3395e2552e95f0455a7244db`; it was not rebuilt at this MCP head. This change is in the new CLI/MCP server, not the viewport. The owned demo app was closed after capture.
 
-`mcp-skill-prompts.mp4`, `mcp-model-unchanged.png` and `mcp-connected-conductor.png`, plus the small safe wire-qa.json, were normal-pushed as ordinary Git blobs by the coordinator in artifact-queue commit `bc8c32a560263e01351545be0a684dde68b76bf4`, under `objects/mcp/skill-prompts-480/c515f79ec5856e898154be9e238a139851d8a559/`. Index SHA-256 hashes and byte sizes were verified before the push. The maintainer receipts confirm all four artifacts received, with SHA-256 hashes and byte sizes matching their immutable manifests. The three native image/video attachments remain pending_maintainer; wire-qa.json remains report evidence in the inbox. Media remains pending until actual native GitHub attachment URLs are supplied. Private raw protocol/capture logs and original reproduction/encoding scripts are retained externally; no demo binaries, raster images or LFS pointers are in feature history.
+`mcp-skill-prompts.mp4`, `mcp-model-unchanged.png` and `mcp-connected-conductor.png`, plus the small safe wire-qa.json, were normal-pushed as ordinary Git blobs by the coordinator in artifact-queue commit `bc8c32a560263e01351545be0a684dde68b76bf4`, under `objects/mcp/skill-prompts-480/c515f79ec5856e898154be9e238a139851d8a559/`. Index SHA-256 hashes and byte sizes were verified before the push. The maintainer receipts confirm all four artifacts received, with SHA-256 hashes and byte sizes matching their immutable manifests. All three native image/video artifacts are now attached at the verified GitHub URLs below; wire-qa.json remains report evidence in the inbox. Private raw protocol/capture logs and original reproduction/encoding scripts are retained externally; no demo binaries, raster images or LFS pointers are in feature history.
+
+Native GitHub attachments (original capture revision `c515f79ec5856e898154be9e238a139851d8a559`, with the reused viewport/new CLI provenance described above):
+
+- [mcp-skill-prompts.mp4](https://github.com/user-attachments/assets/4594ef85-25ad-40cd-8292-0d355a16fc11)
+- [mcp-model-unchanged.png](https://github.com/user-attachments/assets/2b34560b-7df0-43f5-8171-87c457050d4e)
+- [mcp-connected-conductor.png](https://github.com/user-attachments/assets/b64c6221-e6b6-4ebf-8cb7-a981fd3ebaff)
 
 ## Validation
 
@@ -41,10 +47,12 @@ The CLI was built after the exact requested commit; its SHA-256 is `105724ad3958
 - Actual newly built CLI wire QA runs from an external directory: all three negotiated versions in confined headless sessions, plus a real connected-app session at 2025-06-18. All return source-identical skills/references with equal SHA-256 values; unknown-name/argument/traversal checks pass and retrieval leaves the model unchanged. The connected case asserts it did not fall back headless before explicitly executing the recipe.
 - Rebased on the current fork upstream-develop mirror before the normal feature push; rebase was a no-op. No solver code or numerical fixture changed. No broad local CI gate, numerical oracle, sustained GPU solve or non-Windows runtime check was run for this protocol change.
 
+- Relayed CI on exact `c515f79`: main gate, oracle and dependency/licence/source checks succeeded. Heavy tests remain in progress; Windows app tests and the macOS oracle were skipped. No skipped job is reported as runtime verification.
+
 ## Known limitations
 
 The modelling prompt depends on unmerged PR #718 as declared above. The protocol does not automatically choose or run a skill: clients expose user-selected prompts and explicitly invoke model tools afterward. Clients that do not render embedded resources can retrieve the three fixed URIs separately. Other repository documentation links still refer to the matching checkout; the server does not expose arbitrary repository files.
 
 Native evidence is Windows-only, with the exact reused viewport provenance distinguished from the newly built CLI. It demonstrates actual protocol-driven model work, not a new desktop prompt-picker UI. Source parity is checked against the actual compiler-input checkout bytes, including its line endings. The synthetic conduction example does not establish engineering material properties, mesh convergence for a realistic part, or exchanger/cooling accuracy. Backend support, solver numerics and ROADMAP are unchanged.
 
-Media remains pending until the maintainer provides verified GitHub attachment URLs; an artifact transfer or received receipt alone is not an attachment.
+The three native attachments are verified by maintainer receipts. The separate wire QA JSON remains inbox evidence; it is not a native GitHub video/image attachment.
