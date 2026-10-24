@@ -2,8 +2,8 @@
   "number": 686,
   "title": "TetComplex: a checked `try_move` in place of `move_is_valid` and `move_point`",
   "body": "### Current behaviour\nA vertex move in the tet quality stage is checked and committed in two calls: `move_is_valid` (after #666, `move_keeps_star` and `skin_allows`), then the public `move_point`, which commits whatever it is given. Smoothing, ODT's `try_move` and the final snap each pair them themselves, and the snap moves a vertex and moves it back when the quality falls. A caller that leaves a check out moves a vertex past every guard of the complex.\n\n### What you need and why\nOne place where a move is checked and committed, as `TetComplex::replace` is for changes, so that the complex's invariants hold whichever operation moves a vertex.\n\n### Expected behaviour\n- `TetComplex::try_move(v, p) -> Result<bool>`: the full check (positive and admissible star, boundary faces within their bound, the skin), then the commit and the journal step; `false` and no change otherwise.\n- `move_point` private, for rollback only.\n- Search loops such as smoothing's line search keep a cheap local predicate for their trial steps and commit once through `try_move`; the snap computes its quality floor from coordinates before it calls `try_move`.\n\n### References\nNone: an API change inside `fieldcraft-mesh::tet`.\n",
-  "state": "open",
-  "updated_at": "2026-10-24T02:15:29Z",
+  "state": "closed",
+  "updated_at": "2026-10-24T15:53:51Z",
   "assignees": [
     "bluecmd"
   ],
