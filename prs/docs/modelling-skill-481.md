@@ -11,7 +11,7 @@
   "base": "develop",
   "draft": false,
   "title": "Agent skill: choose and check structural, heat and flow models",
-  "media": "pending"
+  "media": "attached"
 }
 ---
 ## What and why
@@ -30,7 +30,13 @@ Captions identify the conductor as an exactly representable synthetic patch, the
 
 The reused developer executable was originally built at `99d8536` during an earlier owned worktree layer; its SHA-256 is `ff37388057d4eee4dd5490a4e927c45be6c20dcbf3fae4766dad2355d3a606c0`. Its production app/engine/solver source is identical to the `7d9c027d71b2c1ea3395e2552e95f0455a7244db` branch base: the earlier Rust diff is confined to updater test code. It was not rebuilt at this docs commit, and the documentation/recipes introduce no new runtime behavior. No DX12 or DXC operation is part of this demonstration; the actual viewport is Vulkan.
 
-`modelling-checks.mp4`, `conduction-check.png` and `heated-flow-check.png` were normal-pushed as ordinary Git blobs by the coordinator in artifact-queue commit `1f57cdd54b986accdcbe4b2340775abcbce77512`, under `objects/docs/modelling-skill-481/443160e0bbc3c6a8f8310c1366bb6e593eb6eda6/`. Index SHA-256 hashes and byte sizes were verified before the push. The maintainer's receipts confirm all three artifacts received, with SHA-256 hashes and byte counts matching their manifests; `github_attachment` remains `pending_maintainer`. Actual GitHub attachments remain pending. Original capture/encoding recipes, raw command responses, numerical checks and safe provenance are retained externally. No demo media or LFS pointers are in the feature history.
+`modelling-checks.mp4`, `conduction-check.png` and `heated-flow-check.png` were normal-pushed as ordinary Git blobs by the coordinator in artifact-queue commit `1f57cdd54b986accdcbe4b2340775abcbce77512`, under `objects/docs/modelling-skill-481/443160e0bbc3c6a8f8310c1366bb6e593eb6eda6/`. Index SHA-256 hashes and byte sizes were verified before the push. The maintainer's receipts confirm all three artifacts received, with SHA-256 hashes and byte counts matching their manifests; `github_attachment` is now `attached` with the verified native URLs below. Original capture/encoding recipes, raw command responses, numerical checks and safe provenance are retained externally. No demo media or LFS pointers are in the feature history.
+
+Native GitHub attachments (original capture revision `443160e0bbc3c6a8f8310c1366bb6e593eb6eda6`; receipts verify the original SHA-256 and byte sizes):
+
+- [conduction-check.png](https://github.com/user-attachments/assets/89893403-069c-40b4-af5a-46ec8464aa75)
+- [heated-flow-check.png](https://github.com/user-attachments/assets/2597656d-2d5b-4cfe-80a4-61490c66da9f)
+- [modelling-checks.mp4](https://github.com/user-attachments/assets/9b454386-6d65-43c0-b588-7e581ed06b0d)
 
 ## Validation
 
@@ -41,10 +47,12 @@ The reused developer executable was originally built at `99d8536` during an earl
 - Public primary sources checked directly: NIST material-property data evaluation, University of Illinois axial loading, Wood et al. NAFEMS 2015 singularity paper, and NASA verification/validation/spatial-convergence guidance. Only concepts are paraphrased.
 - `git diff --check` passes; fresh fork `upstream-develop` rebase was a no-op before normal feature push. No Rust code changed, so no new Cargo build, broad test/clippy/wasm gate or numerical oracle run was needed. No existing fixture was blessed or tolerance widened.
 
+- Relayed CI on this exact head: main `cargo xtask ci`, heavy tests and oracle succeeded. Windows app and macOS oracle jobs were skipped, not runtime passes.
+
 ## Known limitations
 
 A skill improves setup and reporting decisions; it does not add physics or certify an analysis. The small synthetic examples use assumed material properties and are implementation checks, not experimental validation, material allowables or converged local design stresses. Equal results on an exactly representable patch do not demonstrate convergence order on curved or difficult geometry.
 
 The heated-flow example retains a visible weak-compressibility warning even at the smaller time step. Its spatial grid, mass/energy balance and thermal accuracy have not been established as a design-quality exchanger calculation. The held-temperature solid neither cools nor conducts internally in this example; there is no second fluid circuit. Coupled-exchanger and GPU LES/fan/porous work must be checked against actual available verified capabilities, not inferred from this skill or an open PR. The separately reported fluid reply-unit omission is not fixed here.
 
-The native demonstration was run on Windows only. It is a documentation/recipe change with unchanged production source, and does not claim new UI/backend behavior or platform runtime validation. GitHub attachments remain pending until the maintainer supplies actual attachment URLs; an artifact transfer/received receipt does not mean an attachment exists.
+The native demonstration was run on Windows only. It is a documentation/recipe change with unchanged production source, and does not claim new UI/backend behavior or platform runtime validation. 

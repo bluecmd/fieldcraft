@@ -11,7 +11,7 @@
   "base": "develop",
   "draft": false,
   "title": "Desktop: keep native file choosers off the event loop",
-  "media": "pending"
+  "media": "attached"
 }
 ---
 ## What and why
@@ -30,7 +30,13 @@ On Windows 11 with an NVIDIA GeForce RTX 4090 Vulkan viewport, eight bounded `ui
 
 The executable was built after the exact requested commit. Its SHA-256 is `d4ed882e0b0510135fa8106015b9dd5d779f67bb0a73d4e26ff08274a5398e27`; the original 315-node/160-hex model remained byte-identical after the demonstration. The owned app and chooser were closed through `app.quit` after capture.
 
-`async-native-file-chooser.mp4`, `native-chooser.png` and `responsive-viewport.png` were transferred as ordinary Git blobs by the coordinator in artifact-queue commit `c453484333dd6fecd51ac64396409d69cc647b51`, under `objects/fix/async-file-dialogs-683/b485880d04f0005232e9e24fc7f5cfbd79f12e3f/`. Index SHA-256 hashes and byte sizes were verified before the normal push. The maintainer's receipts confirm all three artifacts received, with SHA-256 hashes and byte counts matching their manifests; `github_attachment` remains `pending_maintainer`. Actual GitHub attachments remain pending. Private logs, unredacted chooser capture and the original capture/encoding recipe are retained externally. No demonstration binaries, raster images or LFS pointers are in the feature history.
+`async-native-file-chooser.mp4`, `native-chooser.png` and `responsive-viewport.png` were transferred as ordinary Git blobs by the coordinator in artifact-queue commit `c453484333dd6fecd51ac64396409d69cc647b51`, under `objects/fix/async-file-dialogs-683/b485880d04f0005232e9e24fc7f5cfbd79f12e3f/`. Index SHA-256 hashes and byte sizes were verified before the normal push. The maintainer's receipts confirm all three artifacts received, with SHA-256 hashes and byte counts matching their manifests; `github_attachment` is now `attached` with the verified native URLs below. Private logs, unredacted chooser capture and the original capture/encoding recipe are retained externally. No demonstration binaries, raster images or LFS pointers are in the feature history.
+
+Native GitHub attachments (original capture revision `b485880d04f0005232e9e24fc7f5cfbd79f12e3f`; receipts verify the original SHA-256 and byte sizes):
+
+- [async-native-file-chooser.mp4](https://github.com/user-attachments/assets/e9ceecf5-edbf-418a-be06-e48faafb73a4)
+- [native-chooser.png](https://github.com/user-attachments/assets/c9382c74-e09f-4dbc-b5a9-3ca993d50e2a)
+- [responsive-viewport.png](https://github.com/user-attachments/assets/ccd8a942-f079-468c-b71c-b055cf0ea471)
 
 ## Validation
 
@@ -41,10 +47,12 @@ The executable was built after the exact requested commit. Its SHA-256 is `d4ed8
 - `cargo fmt --all -- --check` and `git diff --check` pass. Native `cargo build -p fieldcraft` passes at the requested commit. Fresh fork `upstream-develop` fetch/rebase was a no-op before the feature push.
 - Real native Save As pending responsiveness and presented viewport frames were checked as described above. No full local CI gate, numerical oracle, sustained GPU solve or performance study was run for this UI change.
 
+- Relayed CI on this exact head: main `cargo xtask ci`, heavy tests and oracle succeeded. Windows app and macOS oracle jobs were skipped, not runtime passes.
+
 ## Known limitations
 
 Windows native pending-dialog responsiveness is verified. Wayland/Hyprland and macOS runtime behavior have not been tested here; this does not claim reproduction or resolution of a compositor-specific warning.
 
 The Windows input helper could capture the genuine chooser but returned `failed to activate captured window` after the permitted fresh-window retry. No unsupported native-input workaround was used. Consequently the new native chooser's Save/Cancel completion was not manually exercised in this run: successful selection, cancellation, failed write and guarded continuations are covered by the deferred-host unit tests, and those are explicitly distinct from native manual validation. The final capture closes the owned app through its control API rather than claiming a native Cancel result.
 
-Media remains pending until the maintainer provides actual GitHub attachment URLs. An artifact transfer or received receipt is not a GitHub attachment.
+
