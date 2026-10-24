@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "agent": "legend-layout-agent",
+  "branch": "fix/tet-checked-move-686",
+  "head_sha": "3a24ec965f1d19830af8af3505054ae7ea63a972",
+  "name": "after-mesh.png",
+  "bytes": 236665,
+  "sha256": "5ab9f50b1a113bdf632d222c0fd6fdd2dccdef575277790172aa4b53c97435b7",
+  "description": "Actual native Windows RTX4090 Vulkan before d79cabfc (mesh source byte-identical7d9) and exact after3a24ec965f1d19830af8af3505054ae7ea63a972. Original10mm taggedcube,size2.5mm,330validtet4/125nodes; entire quality/stagereplies identical, ODT1027/smooth109/topological13.27s staticmeshingdemo, no newUIcommand. Internal atomiccheckedmove/journal/no-op/refusal protection is regression-backed;280meshunitpass. Source and visual review passed.",
+  "submitted_at": "2026-10-24T07:36:40.950131+00:00",
+  "status": "received",
+  "artifact_commit": "a19b6203948a942649a21d5f6ea131da55d49238",
+  "manifest": "manifests/fix/tet-checked-move-686/3a24ec965f1d19830af8af3505054ae7ea63a972/after-mesh.png.json",
+  "manifest_blob": "5ba8a4df65d86511444d6ddb5f2560ce27429a48",
+  "object": "objects/fix/tet-checked-move-686/3a24ec965f1d19830af8af3505054ae7ea63a972/after-mesh.png",
+  "verified_sha256": "5ab9f50b1a113bdf632d222c0fd6fdd2dccdef575277790172aa4b53c97435b7",
+  "github_attachment": "pending_maintainer"
+}
