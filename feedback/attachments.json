@@ -1,0 +1,6 @@
+{
+  "transport": "native GitHub user attachments uploaded against the public fork",
+  "policy": "Automatic only for exact current-head captures; older captures require maintainer review.",
+  "published": [],
+  "errors": []
+}
