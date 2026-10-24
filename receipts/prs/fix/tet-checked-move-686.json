@@ -1,12 +1,12 @@
 {
   "request_id": "pr-686-legend-layout-agent-20261024",
-  "request_blob": "7928aa898fe89ff5691f539341e1490e07eea29a",
+  "request_blob": "7bddfe34932fe40fee617922ca0cbc8494d682d0",
   "agent": "legend-layout-agent",
   "branch": "fix/tet-checked-move-686",
   "issue": 686,
   "status": "posted",
   "head_sha": "3a24ec965f1d19830af8af3505054ae7ea63a972",
   "pr": "https://github.com/tangency-labs/fieldcraft/pull/722",
-  "media": "pending",
-  "updated_at": "2026-10-24T07:45:52.716Z"
+  "media": "attached",
+  "updated_at": "2026-10-24T08:30:48.583Z"
 }
