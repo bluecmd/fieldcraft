@@ -1,0 +1,61 @@
+{
+  "number": 409,
+  "title": "GPU (wgpu compute) for the data-parallel steps of projection blocking and relaxation",
+  "body": "Later optimisation, once #399 (projection blocking) and #398 (relaxation) are in and meshes reach millions of nodes.\n\n**GPU-friendly steps** (per node / per element, no global solve):\n- transfinite interpolation filling the blocks;\n- elliptic smoothing (Winslow / Thomas–Middlecoff) — Jacobi-style sweeps, the dominant cost on big meshes;\n- projection onto analytic surfaces (plane, cylinder, sphere, cone, torus); free-form faces stay on the CPU kernel;\n- quality metrics per element;\n- node relaxation (#398) with a node colouring so neighbours never move in the same pass.\n\n**Stays on the CPU:** block planning, interval assignment, the provenance plan (#402), B-rep queries on free-form surfaces.\n\n**How:** `wgpu` compute shaders (already a dependency for rendering), behind the same API with a CPU fallback (results identical within tolerance; tests compare both). Must not break wasm (use WebGPU there or the CPU path).\n\n**Worth it when:** smoothing/projection time exceeds a few seconds — benchmark first on a 1M-node block mesh and report CPU vs GPU.",
+  "state": "open",
+  "updated_at": "2026-10-18T10:19:34Z",
+  "assignees": [
+    "bluecmd"
+  ],
+  "labels": [
+    "enhancement",
+    "in progress",
+    "size: M",
+    "area:mesh"
+  ],
+  "url": "https://github.com/tangency-labs/fieldcraft/issues/409",
+  "comments": [
+    {
+      "author": "bluecmd",
+      "body": "#398 and #399 are in; could we take this one? The plan as written: transfinite fill, Winslow/Thomas–Middlecoff sweeps, projection onto the analytic surfaces and the per-element quality metrics as wgpu compute behind the existing API with the CPU path as the oracle (tests compare both within a tolerance), wasm untouched, and the CPU-vs-GPU benchmark on a 1M-node block mesh first to show it is worth it. We have an RTX 4090 and a GB10 to measure on.",
+      "created_at": "2026-10-17T09:31:31Z",
+      "updated_at": "2026-10-17T09:31:31Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/issues/409#issuecomment-6232318998"
+    },
+    {
+      "author": "jyviko",
+      "body": "Thank you @bluecmd! GPU meshing touches the core of the meshing work we're finishing right now, so let me look at how it lines up with that before saying yes; I'll come back here shortly.",
+      "created_at": "2026-10-17T09:43:34Z",
+      "updated_at": "2026-10-17T09:43:34Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/issues/409#issuecomment-6232425310"
+    },
+    {
+      "author": "bluecmd",
+      "body": "Numbers to inform that decision, measured on a Ryzen 9 7950X under Windows (upstream develop at 417c0c8), a 1 000 000-node / 970 299-hex tapered block through `project_mesh` with three Winslow sweeps, mean of three runs on a shared host:\n\n| Stage | Mean (s) |\n|---|---:|\n| Whole projection pipeline | 61.7 |\n| Certified element quality (Bernstein determinant bounds, metrics) | 34.8 |\n| Guarded Winslow smoothing (3 sweeps; 6.9 s per sweep, plus setup/finish) | 26.2 |\n| Volume TFI, face TFI, plane projection, lattice | < 0.4 together |\n| One relaxation sweep on 64 000 selected nodes (separate operation) | 141 (2.2 ms per node) |\n\nEvery stage is sequential today (no rayon in `fieldcraft-mesh`), so the honest comparison for a GPU port is against a multi-threaded CPU version as well, not only against this baseline. Transfinite fill and plane projection are not where the time goes: the certified quality and the guarded sweeps are 99 % of it, and both have the in-place acceptance order and the whole-element validity certificate to preserve. On a 100-sweep budget the tapered 8k- and 27k-node probes used all 100 sweeps; the regular cube stopped after one.\n\nOne side finding from the same machine: `hex::decompose::tests::a_plate_with_a_slot_gets_an_o_grid` fails on clean 417c0c8 under Windows (minimum corner scaled Jacobian 0.3752 against the 0.5 asserted) while it passes on Linux and in CI; happy to open that as its own issue with the log.\n\nPart of #409.",
+      "created_at": "2026-10-17T10:03:04Z",
+      "updated_at": "2026-10-17T10:03:04Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/issues/409#issuecomment-6232595754"
+    },
+    {
+      "author": "jyviko",
+      "body": "Thank you @bluecmd, those numbers are really helpful for the decision; I'll come back on this after the 0.7.0 meshing release.",
+      "created_at": "2026-10-17T10:13:23Z",
+      "updated_at": "2026-10-17T10:13:23Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/issues/409#issuecomment-6232691153"
+    },
+    {
+      "author": "jyviko",
+      "body": "Go for it @bluecmd, it's yours! Thank you for taking it on.",
+      "created_at": "2026-10-17T12:34:54Z",
+      "updated_at": "2026-10-17T12:34:54Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/issues/409#issuecomment-6233938181"
+    },
+    {
+      "author": "bluecmd",
+      "body": "Linux baseline before any GPU work, with a multi-threaded CPU version as the comparison. Code: bluecmd/fieldcraft@aaf7969 (branch `mesh-gpu` on upstream develop e9ccf10), `cargo test -p fieldcraft-mesh --release --lib tapered_block_benchmark -- --ignored --nocapture` (`project/bench.rs`).\n\n**Mesh:** one tapered block (a square frustum, 2 wide at the bottom, 1 at the top, 1 high, six analytic planes), 99 divisions a side: 1 000 000 nodes, 970 299 hexes, `project_mesh` with Elliptic smoothing and 3 sweeps. The Windows harness from the earlier comment was not kept, so this block is a new one and its taper may differ; compare within this table, not with the 7950X numbers.\n\n**How measured:** mean of 3 runs per row. \"Smoothing\" is the pipeline minus the same pipeline with `Smoothing::None`. \"Certified\" is the `element_quality` loop timed on its own over the output mesh. Rows run one after another in one process.\n\n**What changed for the threaded rows:**\n- The certified loop and the smoother's whole-mesh scaled-Jacobian scans run on `fieldcraft-parallel` blocks and are folded in element order, so the mesh is **bit for bit the same as develop** on any thread count (\"Sequential\" rows).\n- \"Coloured\" also changes the sweep order. Movable nodes are put into classes no two of which share an element (greedy in node order: 8 classes on this grid). Each class moves in parallel against a frozen grid, so every move reads the same neighbours on 1 or N threads. It keeps the per-node guard (full / half / quarter step, accepted only if the scaled Jacobian and edge ratio around the node hold) and the whole-element certificate.\n\n**amd64:** Xeon D-1541 (8 cores / 16 threads, 2.1 GHz), Kubernetes pod limited to 14 CPUs on a lightly loaded node.\n\n| Threads | Sweep order | Pipeline (s) | Smoothing (s) | Certified (s) | min SJ | mean SJ |\n|---:|---|---:|---:|---:|---:|---:|\n| 1 | sequential (develop) | 96.2 | 28.6 | 56.9 | 0.8165 | 0.9267 |\n| 1 | coloured | 92.2 | 22.1 | 57.8 | 0.8165 | 0.9267 |\n| 14 | sequential (develop) | 28.7 | 17.5 | 8.9 | 0.8165 | 0.9267 |\n| 14 | coloured | **16.2** | **5.0** | **9.0** | 0.8165 | 0.9267 |\n\n**GB10 arm64:** DGX Spark (10 Cortex-X925 + 10 Cortex-A725), 18 threads in its pod.\n\n| Threads | Sweep order | Pipeline (s) | Smoothing (s) | Certified (s) | min SJ | mean SJ |\n|---:|---|---:|---:|---:|---:|---:|\n| 1 | sequential (develop) | 73.8 | 15.7 | 50.6 | 0.8165 | 0.9267 |\n| 1 | coloured | 74.1 | 16.3 | 50.6 | 0.8165 | 0.9267 |\n| 18 | sequential (develop) | 16.2 | 11.1 | 3.6 | 0.8165 | 0.9267 |\n| 18 | coloured | **8.1** | **3.0** | **3.6** | 0.8165 | 0.9267 |\n\n**What this says:**\n1. **Certified quality dominates.** It is 59–69 % of the sequential pipeline and runs 6× (amd64) to 14× (GB10) faster on threads, with no change to the result.\n2. **The sweep order must change before a parallel smoother can help.** The current sweep moves one node after another in place, and each acceptance check reads neighbours already moved in that sweep. Threading only the scans around it leaves smoothing at 11–17 s; the coloured order brings it to 3–5 s. On this block it costs nothing on one thread, and min/mean SJ agree to 4 decimals.\n3. **After threading, the whole 1M-node pipeline takes 8 s on GB10 and 16 s on the D-1541.** Of the 8 s, about 3.6 s is certified quality, 3.0 s smoothing and about 1.5 s the parts still sequential (TFI, targets, gap, boundary tags). That is what a GPU port can still win: a few seconds at 1M nodes, more as meshes grow.\n\n**Question before going further:** may the coloured order become the only order of `project_mesh`'s guarded sweeps? It keeps results deterministic and independent of the thread count, but the meshes `mesh.project` produces would no longer match develop bit for bit; no oracle fixture uses a projected mesh. The GPU port needs that order too, so the CPU path would stay its exact oracle algorithm (same order, f64).\n\nProposed next steps:\n- **PR 1 (CPU):** the parallel certified loop and scans (bit-identical); if you agree, the coloured sweeps as the default order.\n- **PR 2 (GPU):** a `fieldcraft-mesh-gpu` crate at L7 like `lbm-gpu`, behind a backend hook in `mesh`, wasm untouched. It covers the coloured Winslow sweep of free interior nodes, with boundary and curve nodes kept on the CPU, and a GPU pre-pass for certified quality. GB10's f64 rate is low, so the plan for the pre-pass: certify in f32 with a safety margin, and send only elements the f32 pass cannot settle back to the CPU's f64 Bernstein certificate. The certificate itself stays on the CPU. Tests compare the GPU path with the coloured CPU path within a stated tolerance.\n\nPart of #409.\n",
+      "created_at": "2026-10-18T10:19:34Z",
+      "updated_at": "2026-10-18T10:19:34Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/issues/409#issuecomment-6248682939"
+    }
+  ]
+}
