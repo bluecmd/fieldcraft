@@ -26,7 +26,7 @@ An exact-head 23-second native Windows / RTX4090 / Vulkan video shows the origin
 
 The H.264 1280x1080 video is an explicitly edited montage of three held native presented frames with captions outside the app pixels. Two stills show the matching velocity legends. Visual review, full video decode and numerical checks passed. The app quit normally and released its control port.
 
-Original media and safe numerical verification were transferred to `s3://agent-exchange/to/fieldcraft-maintainer/fluid-units-733/1bd4d551d70239c819f7b0c01568ec5fdd2a2e72/` and downloaded back for exact byte/SHA256 verification. The identical four originals are also in artifact commit `6588fb579710c1e623072083fb48109e358d2f2c` to bridge the existing native GitHub attachment publisher. Media is absent from feature history. Maintainer received receipts and actual native attachment URLs remain pending.
+Original media and safe numerical verification were transferred through the shared S3 exchange and downloaded back for exact byte/SHA256 verification. The identical four originals are retained in artifact commit `6588fb579710c1e623072083fb48109e358d2f2c` to bridge the existing native GitHub attachment publisher. All four maintainer received receipts now match the original bytes and hashes. Temporary S3 staging copies were cleared after that confirmed pickup; local originals and the Git inbox remain preserved. Media is absent from feature history. Actual native attachment URLs remain pending.
 
 ## Validation
 
