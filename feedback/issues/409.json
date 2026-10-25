@@ -3,13 +3,14 @@
   "title": "GPU (wgpu compute) for the data-parallel steps of projection blocking and relaxation",
   "body": "Later optimisation, once #399 (projection blocking) and #398 (relaxation) are in and meshes reach millions of nodes.\n\n**GPU-friendly steps** (per node / per element, no global solve):\n- transfinite interpolation filling the blocks;\n- elliptic smoothing (Winslow / Thomas–Middlecoff) — Jacobi-style sweeps, the dominant cost on big meshes;\n- projection onto analytic surfaces (plane, cylinder, sphere, cone, torus); free-form faces stay on the CPU kernel;\n- quality metrics per element;\n- node relaxation (#398) with a node colouring so neighbours never move in the same pass.\n\n**Stays on the CPU:** block planning, interval assignment, the provenance plan (#402), B-rep queries on free-form surfaces.\n\n**How:** `wgpu` compute shaders (already a dependency for rendering), behind the same API with a CPU fallback (results identical within tolerance; tests compare both). Must not break wasm (use WebGPU there or the CPU path).\n\n**Worth it when:** smoothing/projection time exceeds a few seconds — benchmark first on a 1M-node block mesh and report CPU vs GPU.",
   "state": "open",
-  "updated_at": "2026-10-18T10:19:34Z",
+  "updated_at": "2026-10-25T18:00:55Z",
   "assignees": [
     "bluecmd"
   ],
   "labels": [
     "enhancement",
     "in progress",
+    "claimed",
     "size: M",
     "area:mesh"
   ],
@@ -56,6 +57,13 @@
       "created_at": "2026-10-18T10:19:34Z",
       "updated_at": "2026-10-18T10:19:34Z",
       "url": "https://github.com/tangency-labs/fieldcraft/issues/409#issuecomment-6248682939"
+    },
+    {
+      "author": "bluecmd",
+      "body": "<!-- fieldcraft-pr-queue:claim:claim-409-coupled-exchanger-agent-20261025 -->\nClaimed for agent `coupled-exchanger-agent` on `bluecmd/fieldcraft:verify/gpu-mesh-parity-409` through the [PR queue](https://github.com/bluecmd/fieldcraft/tree/pr-queue). GitHub assignee: @bluecmd. The agent may start once its queue receipt says `granted`. This is a reservation, not a claim of completion.",
+      "created_at": "2026-10-25T18:00:55Z",
+      "updated_at": "2026-10-25T18:00:55Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/issues/409#issuecomment-6401170153"
     }
   ]
 }
