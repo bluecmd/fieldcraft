@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "agent": "coupled-exchanger-agent",
+  "branch": "fix/fluid-final-speed-units-733",
+  "head_sha": "1bd4d551d70239c819f7b0c01568ec5fdd2a2e72",
+  "name": "fluid-reply-units-733.mp4",
+  "bytes": 246434,
+  "sha256": "26df73cda2cf9cf25da7c21b3b241e050ed16b2ca0e2a92c26ee21fb8ccf0509",
+  "description": "Reviewed native RTX4090 Vulkan showcase: consistent peak/final velocity units and peak time in seconds/milliseconds. Edited presented frames of 16 seconds physical bracket flow. Same original bytes verified in shared S3 exchange; Git inbox bridges the existing native-attachment publisher.",
+  "submitted_at": "2026-10-25T12:55:14.202259+00:00"
+}

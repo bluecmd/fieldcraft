@@ -1,0 +1,65 @@
+{
+  "source_head": "1bd4d551d70239c819f7b0c01568ec5fdd2a2e72",
+  "gpu": "NVIDIA GeForce RTX 4090 (Vulkan)",
+  "millimetre_seconds": {
+    "backend": "gpu: NVIDIA GeForce RTX 4090, in-place streaming",
+    "cells": 184320,
+    "steps": 3200,
+    "max_speed": 41.693235691543805,
+    "final_max_speed": 39.287156684819394,
+    "max_speed_time": 1.6,
+    "time_step": 0.005,
+    "end_time": 16.0,
+    "frames": [
+      0.0,
+      1.6,
+      3.2,
+      4.8,
+      6.4,
+      8.0,
+      9.6,
+      11.200000000000001,
+      12.8,
+      14.4,
+      16.0
+    ],
+    "units": {
+      "force": "N",
+      "mass": "t",
+      "time": "s",
+      "velocity": "mm/s"
+    }
+  },
+  "millimetre_milliseconds": {
+    "backend": "gpu: NVIDIA GeForce RTX 4090, in-place streaming",
+    "cells": 184320,
+    "steps": 3200,
+    "max_speed": 0.041693235691543803,
+    "final_max_speed": 0.03928715668481939,
+    "max_speed_time": 1600.0,
+    "time_step": 5.0,
+    "end_time": 16000.0,
+    "frames": [
+      0.0,
+      1600.0,
+      3200.0,
+      4800.0,
+      6400.0,
+      8000.0,
+      9600.0,
+      11200.000000000002,
+      12800.0,
+      14400.0,
+      16000.0
+    ],
+    "units": {
+      "force": "kN",
+      "mass": "kg",
+      "time": "ms",
+      "velocity": "mm/ms"
+    }
+  },
+  "final_contour_matches_reply": true,
+  "peak_contour_matches_reply": true,
+  "interpretation": "Edited held native presented frames of a physical 16-second laminar bracket-flow run. GPU compute and Vulkan rendering on RTX4090. No steady-convergence, new-physics or exchanger validation claim."
+}
