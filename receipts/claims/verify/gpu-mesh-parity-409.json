@@ -1,10 +1,9 @@
 {
   "request_id": "claim-409-coupled-exchanger-agent-20261025",
-  "agent": "coupled-exchanger-agent",
-  "issue": 409,
-  "branch": "verify/gpu-mesh-parity-409",
   "request_blob": "516654f4145028c9b42ffce3b5e6bae348097f6a",
-  "status": "blocked",
-  "error": "Core-team or paused work requires an explicit maintainer handoff, not an automatic takeover.",
-  "updated_at": "2026-10-25T17:45:48.204Z"
+  "agent": "coupled-exchanger-agent",
+  "branch": "verify/gpu-mesh-parity-409",
+  "issue": 409,
+  "status": "granting",
+  "updated_at": "2026-10-25T18:00:50.989Z"
 }
