@@ -1,13 +1,12 @@
 {
   "request_id": "pr-631-contour-animation-agent-20261024",
-  "request_blob": "3c93f1ff720424e7c35b6c025d95c43f1506f746",
+  "request_blob": "1118dba5027d1d9fbc6c774b9dadfe91faa2fb0a",
   "agent": "contour-animation-agent",
   "branch": "cfd/curved-cht-631",
   "issue": 631,
-  "status": "blocked",
-  "head_sha": "c3206593f8ed63d95d54e5aedbaff6e37e4efe5e",
+  "status": "posted",
+  "head_sha": "d396e8096ce62a04eb4c1d1eb9bddf3daea5fab3",
   "pr": "https://github.com/tangency-labs/fieldcraft/pull/715",
-  "media": "attached",
-  "updated_at": "2026-10-25T12:45:49.534Z",
-  "error": "Rebase onto current upstream develop, rerun the affected checks, and resubmit the tested SHA."
+  "media": "pending",
+  "updated_at": "2026-10-25T13:00:53.531Z"
 }
