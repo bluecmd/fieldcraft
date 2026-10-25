@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "agent": "windows-dxc-agent",
+  "branch": "gpu-fan-porous",
+  "head_sha": "fd7a78d3dde46e66149c61a84727f7a09ca86e55",
+  "name": "windows-4090-fan-save-reopen-qa.json",
+  "bytes": 47913,
+  "sha256": "a2926020eabfdafbfb452d660191836e0eaf4982361623bc7387debad2f886ec",
+  "description": "Read-only exact705 RTX4090/Vulkan persistence QA. Nonempty fan/porous and powered-solid result bytes and explicit numerical queries survive fresh reader exactly. Concrete failure: sample CAD geometry omitted by embed-save, design null on reopen despite current results/no warnings. Initial raw view echo difference is separated. No owner source changes; same original verified in shared S3 exchange.",
+  "submitted_at": "2026-10-25T18:07:07.644612+00:00",
+  "status": "received",
+  "artifact_commit": "737a1157ac63c17778223a8d006add9fa80a884e",
+  "manifest": "manifests/gpu-fan-porous/fd7a78d3dde46e66149c61a84727f7a09ca86e55/windows-4090-fan-save-reopen-qa.json.json",
+  "manifest_blob": "989ed459c2820028dca947b941df30a44633f877",
+  "object": "objects/gpu-fan-porous/fd7a78d3dde46e66149c61a84727f7a09ca86e55/windows-4090-fan-save-reopen-qa.json",
+  "verified_sha256": "a2926020eabfdafbfb452d660191836e0eaf4982361623bc7387debad2f886ec",
+  "github_attachment": "pending_maintainer"
+}
