@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "agent": "contour-animation-agent",
+  "branch": "diagnostics/solver-errors-654",
+  "head_sha": "cb89c56114b26c8ab1f6eaaccb5d1e46dba86ffd",
+  "name": "rtx4090-vulkan-diagnostics-qa.json",
+  "bytes": 6080,
+  "sha256": "5cd68cd74936d260eec5c1ee0b0390c18e7a5c0c3d641f61013d9b4a4da1bc9a",
+  "description": "Read-only RTX4090 Vulkan QA of typed backend diagnostics/cache/reporter contexts: 37 normal tests, one fresh-process reuse test and a 64-cell probe pass. No physics/source edits, real device-loss/OOM or host diagnostic-persistence claim. Sanitized report also verified in shared S3 exchange.",
+  "submitted_at": "2026-10-25T13:06:19.684609+00:00"
+}

@@ -1,0 +1,131 @@
+{
+  "source": "cb89c56114b26c8ab1f6eaaccb5d1e46dba86ffd",
+  "tree": "be1d9dc29c2bec4d27d91725632a272ee5ad3bfe",
+  "source_unchanged": true,
+  "environment": {
+    "source": "cb89c56114b26c8ab1f6eaaccb5d1e46dba86ffd",
+    "threads": 3,
+    "jobs": 3,
+    "require_gpu": "1",
+    "gpu": "hardware",
+    "started_utc": "2026-10-25T13:01:19.0033640Z",
+    "backend": "vulkan"
+  },
+  "finished_utc": "2026-10-25T13:03:54.167622+00:00",
+  "normal_tests": {
+    "command": "cargo test --locked -p fieldcraft-gpu -p fieldcraft-lbm-gpu -- --test-threads=1 --nocapture",
+    "passed": 37,
+    "failed": 0,
+    "ignored_throughput": 3,
+    "missing_device_skips": 0,
+    "gpu_units": 11,
+    "lbm_gpu_units": 3,
+    "lbm_gpu_verification": 23
+  },
+  "fresh_process_reuse": {
+    "command": "cargo test --locked -p fieldcraft-lbm-gpu --test verification a_second_solve_reuses_the_compiled_kernels -- --exact --test-threads=1 --nocapture",
+    "passed": 1,
+    "failed": 0,
+    "second_pipeline_seconds": 0.0
+  },
+  "observed_reporter_probe": {
+    "case": "original 8 x 8 x 1 periodic-depth cavity; each GPU instance advances 3 steps",
+    "finite_second_mass": 64.0,
+    "first": {
+      "adapter": "NVIDIA GeForce RTX 4090",
+      "adapter_limits": {
+        "max_buffer_size": 4294967295,
+        "max_storage_buffer_binding_size": 2147483644,
+        "max_storage_buffers_per_shader_stage": 524288
+      },
+      "backend": "Vulkan",
+      "counter_scope": "devices: successful LBM compute creations, including retired devices; viewport, meshing and external/driver devices are not counted. instances: gpu::select creations; external viewport and driver-internal instances are not counted.",
+      "device_limits": {
+        "max_buffer_size": 4294967295,
+        "max_storage_buffer_binding_size": 2147483644,
+        "max_storage_buffers_per_shader_stage": 7
+      },
+      "devices_opened": 1,
+      "driver": "NVIDIA",
+      "driver_info": "616.56",
+      "instances_opened": 1,
+      "phase": "device_created"
+    },
+    "second": {
+      "adapter": "NVIDIA GeForce RTX 4090",
+      "adapter_limits": {
+        "max_buffer_size": 4294967295,
+        "max_storage_buffer_binding_size": 2147483644,
+        "max_storage_buffers_per_shader_stage": 524288
+      },
+      "backend": "Vulkan",
+      "counter_scope": "devices: successful LBM compute creations, including retired devices; viewport, meshing and external/driver devices are not counted. instances: gpu::select creations; external viewport and driver-internal instances are not counted.",
+      "device_limits": {
+        "max_buffer_size": 4294967295,
+        "max_storage_buffer_binding_size": 2147483644,
+        "max_storage_buffers_per_shader_stage": 7
+      },
+      "devices_opened": 1,
+      "driver": "NVIDIA",
+      "driver_info": "616.56",
+      "instances_opened": 1,
+      "phase": "device_reused"
+    },
+    "second_pipeline_seconds": 0.0,
+    "source": "cb89c56114b26c8ab1f6eaaccb5d1e46dba86ffd",
+    "step_boundary_clears_only_second_reporter": true
+  },
+  "typed_backend_error_evidence": "Unmodified an_adapter_with_too_few_storage_buffers_is_refused_clearly unit regression asserts Error::Backend for a synthetic limit refusal; successful hardware solves exercise ordinary setup and reuse. No real driver failure was induced.",
+  "scope": [
+    "Existing compiled wgpu native backend features are preserved; runtime forced Vulkan. No other platform/backend runtime validated.",
+    "Small canonical physics suites and original 64-cell probe only; no throughput, large allocation, soak or performance claim.",
+    "Device counter counts successful LBM compute-device creations including retired devices, excluding viewport/meshing/external/driver devices. Instance counter counts gpu::select creations only.",
+    "Adapter limits describe available limits; device limits describe actual requested-device limits. They are not measured whole-process memory or allocation success at the limits.",
+    "No deliberate OOM/device loss/driver crash; physical backend-failure capture and host app/CLI diagnostic-file persistence are not exercised in this read-only GPU QA.",
+    "The normal unit suite includes existing synthetic policy/limit tests naming other backends; no non-Vulkan device was selected or executed."
+  ],
+  "logs": {
+    "environment.json": {
+      "bytes": 356,
+      "sha256": "820ac29eab3f8cbcf398cedac4908d21a9d2d3a8dc3383d4c163fcb525250c56"
+    },
+    "build-tests.txt": {
+      "bytes": 1255,
+      "sha256": "0cf578b7266d22a13039a60e3bca3880e2b959e32121f76c9763383c3cfed17f"
+    },
+    "hardware-tests.txt": {
+      "bytes": 20567,
+      "sha256": "12e2d47da3c33b81495110c2fca0e670af765270e74803e83e085ca4c299f44f"
+    },
+    "fresh-process-reuse.txt": {
+      "bytes": 562,
+      "sha256": "8075bbe9eebb13c587a662725820f810a9867998da1dd367a87f37753faedf7d"
+    },
+    "reporter_probe.rs": {
+      "bytes": 2633,
+      "sha256": "ed9913c43e6141a69e6373498cfa66c5c1772ab39a224384d4dd1132e55ef1f4"
+    },
+    "probe-linked-libraries.json": {
+      "bytes": 1511,
+      "sha256": "a030ac18eee725af72e27d70184c2cdc6fe5bf0027e16d11204c4b94cac85981"
+    },
+    "probe-build.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "reporter-observed.json": {
+      "bytes": 1949,
+      "sha256": "8c1f27148c35f3a95f9097399351d36f5d784f0087c7ad9351cb872c6a2f6f8c"
+    },
+    "gpu-feature-tree.txt": {
+      "bytes": 6984,
+      "sha256": "da24237c32a8f3489f10aac94bf28984f125f8054d051546fb59531549999819"
+    },
+    "rustc.txt": {
+      "bytes": 201,
+      "sha256": "2a9ba90ddc1895fc7b4d94baee548ac7947533b6ef348fc9f010ab5d9f3d7898"
+    }
+  },
+  "original_report_sha256": "b2234111997bb79ae8ec00167d356e251b724f0fcab9f9d0b47902e1c2046527",
+  "handoff_note": "Local checkout/target paths omitted. Read-only Vulkan evidence; no feature or PR metadata changes. Parent handles external artifact transfer."
+}
