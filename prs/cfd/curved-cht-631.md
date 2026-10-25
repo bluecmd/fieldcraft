@@ -4,12 +4,12 @@
   "branch": "cfd/curved-cht-631",
   "kind": "pr",
   "base": "develop",
-  "media": "attached",
+  "media": "pending",
   "action": "publish",
   "issue": 631,
   "agent": "contour-animation-agent",
   "draft": false,
-  "head_sha": "c3206593f8ed63d95d54e5aedbaff6e37e4efe5e",
+  "head_sha": "12b4c2d3b2d4f7fd8aad13c70c9849341aafc40f",
   "request_id": "pr-631-contour-animation-agent-20261024",
   "schema": 1
 }
@@ -18,7 +18,7 @@
 
 Refs #631 and #697. Adds an original, cited **measurement-only** benchmark for convection around a passive finite-conductivity circular cylinder. The curved-wall algorithm remains parked; production solver code and the maintainer-owned roadmap are unchanged.
 
-The benchmark checks aligned slots and the curved body's cell mask against an analytic circle, checks CPU/device thermal agreement, and adds a bounded heavy coarse measurement that must actually stop as steady with stable wall heat. It does not freeze an unsupported reference oracle.
+The benchmark checks aligned slots and the curved body's cell mask against an analytic circle, checks CPU/device thermal agreement, and adds a bounded heavy coarse measurement that must actually stop as steady with stable wall heat. The review follow-up adds a separately named 2% coarse Nu regression guardrail; it does not redefine the unchanged 1% scientific target or establish isolated interface accuracy.
 
 The three-grid values alone look close to the paper, but **padding and temporal/collision sensitivity exceed the last grid change**. Consequently this does not establish isolated curved-interface convergence or an independently met 1% accuracy target. The unchanged target and negative controls are reported below so the remaining uncertainty is reviewable.
 
@@ -53,6 +53,16 @@ The n80-to-n160 default change is about 0.082%, whereas doubling padding changes
 The voxelized cylinder area is 0.0325 on n40/n80 and 0.03171875 on n160, versus pi*0.1^2=0.03141593. Fine-grid fluid mean theta is 0.193976893; cylinder theta spans 0.074985348..0.101811811, confirming solved nonuniform conduction rather than an isothermal obstacle. These values are diagnostics, not additional acceptance targets.
 
 CPU n40 stopped steady at t95 / 152000 steps, Nu 4.824827744 (-0.363891%), agreeing closely with the device result. Different final steady sample times are reported honestly. No tolerance was changed after seeing results.
+
+## Review follow-up
+
+The normal linear follow-up `12b4c2d3b2d4f7fd8aad13c70c9849341aafc40f` addresses the three review requests:
+
+- After the existing finite-temperature, steady-stop and stable-tail checks, the coarse CPU test asserts `abs(Nu / 4.842449 - 1) <= 0.02`. Failure output reports the measured Nu, reference, actual relative error and 2% limit. `TARGET_RELATIVE=0.01` remains distinct and is printed as the scientific goal; the ambiguous mean-temperature reference remains secondary, without an acceptance gate.
+- The 2% engineering regression policy covers the measured one-factor reference-error envelope, -0.364% through +1.418%, with headroom alongside the paper's approximately 0.2% grid spread. It is not a proven total-error bound: combined padding/half-speed effects and the n40 control sensitivities were not measured. Passing it does not establish the unchanged 1% scientific target or isolate curved-interface error.
+- Rahman is now cited in the C8 literature table. The unchanged CPU/device startup test is marked heavy so it no longer adds the reported 1–2.5 minute workload to the normal suite. Its physics, duration and thermal tolerances are unchanged.
+
+The test helper reads the same steady parameters through the existing serde schema, allowing the optional newer steady field to default normally. Both crates add the existing locked workspace `serde_json` as a dev-dependency only; the lockfile gains two dependency edges, with no new library version or runtime dependency. Production solver and backend code are unchanged. Existing Metal and other platform support is preserved; this follow-up's hardware validation explicitly forces Vulkan.
 
 ## Reproduce the bounded study
 
@@ -139,9 +149,11 @@ https://github.com/user-attachments/assets/e406b6ef-d5a8-488f-847c-e1e8cd080a6c
 
 <!-- fieldcraft-attachments:end -->
 
+**Historical capture applicability pending for the new head.** The managed attachment block above remains exactly as published for capture/source revision `c3206593f8ed63d95d54e5aedbaff6e37e4efe5e`. No new recording or transfer is claimed for `12b4c2d3b2d4f7fd8aad13c70c9849341aafc40f`. Please perform the protocol's explicit maintainer applicability review: the follow-up changes tests, documentation and test-only dependency edges, while the demonstrated production UI and solver path are unchanged. Existing attachment URLs remain available; `media=pending` records that applicability has not been approved for the updated head.
+
 A real presented native-window recording, curved-conjugate-631.mp4, shows the coarse original model, saved accelerated steady iterations, settled temperature, and velocity/streamlines. 23 seconds, 1440 x 952, H.264 / 12 fps, 499982 bytes; SHA256 d4ce99bdc342ee829c0176932771ef21574580de4cd1768c696115a3c001cebc. The two companion stills are curved-conjugate-temperature.png and curved-conjugate-flow.png. The clip explicitly identifies the dimensionless case, 40 x 40 cavity / one periodic depth cell, passive cylinder, RTX 4090 / Vulkan, 160000 lattice steps, and nonphysical steady-playback semantics. The UI frame count denotes stored frames, not solver iterations. Surface colours read the adjacent fluid, not the cylinder's internal field.
 
-The native app/CLI binaries were built from baseline 7d9c027d71b2c1ea3395e2552e95f0455a7244db; this feature changes tests only, so the recording demonstrates the unchanged production command/UI path rather than claiming a newly implemented algorithm. Original three-body geometry was generated with SolidCraft CLI 0.14.0, opened normally, and configured with model.units/material/fluid_domain/step commands, solve.settings (GPU, no fallback) and solve.fluid. The native solution also stops steady at t100 / 160000 steps. Saved binary projects, raw numerical result files and all media remain outside feature history. Captures are original FieldCraft output; captions use the repository's SIL OFL 1.1 Inter font. No paper figures or third-party CAD assets were copied.
+The native app/CLI binaries were built from baseline 7d9c027d71b2c1ea3395e2552e95f0455a7244db; the original feature changes tests only and the follow-up changes tests, documentation and dev-dependencies, so the recording demonstrates the unchanged production command/UI path rather than claiming a newly implemented algorithm. Original three-body geometry was generated with SolidCraft CLI 0.14.0, opened normally, and configured with model.units/material/fluid_domain/step commands, solve.settings (GPU, no fallback) and solve.fluid. The native solution also stops steady at t100 / 160000 steps. Saved binary projects, raw numerical result files and all media remain outside feature history. Captures are original FieldCraft output; captions use the repository's SIL OFL 1.1 Inter font. No paper figures or third-party CAD assets were copied.
 
 <details>
 <summary>Original native geometry recipe and source provenance</summary>
@@ -164,21 +176,17 @@ All three final media files were delivered through ordinary-Git artifact commit 
 
 ## Validation
 
-Tested source c3206593f8ed63d95d54e5aedbaff6e37e4efe5e, rebased onto the latest mirrored upstream-develop 7d9c027d71b2c1ea3395e2552e95f0455a7244db. Windows x86_64; 3 build jobs and 3 CPU solver threads; strict NVIDIA RTX 4090 hardware Vulkan for device runs.
+Tested feature head `12b4c2d3b2d4f7fd8aad13c70c9849341aafc40f`, a normal follow-up on published `c3206593f8ed63d95d54e5aedbaff6e37e4efe5e` without rewriting history. Windows x86_64; dedicated target directories, 3 build jobs and 3 CPU solver threads. Device runs explicitly set `FIELDCRAFT_GPU=hardware`, `FIELDCRAFT_REQUIRE_GPU=1` and `WGPU_BACKEND=vulkan`: actual NVIDIA RTX 4090, no missing-device skips or software fallback.
 
-- cargo test -p fieldcraft-lbm -p fieldcraft-lbm-gpu:90 passed, 23 heavy/benchmark tests ignored by their annotations (including the new heavy coarse measurement); no failed tests. The device subset has 26 passed, including 23 integration and 3 unit cases; no missing-device skips or software fallback.
-- cargo test -p fieldcraft-lbm --test curved_conjugate rahman_curved_conjugate_coarse_measurement -- --ignored --nocapture:1 passed in 36.87 seconds. Requires steady stop and stable tail heat, finite physically bounded temperature and a nonuniform passive conducting solid. This keeps the added automatic heavy workload bounded, rather than landing the exploratory sweep in CI.
-- New fast regression compares the original tessellated geometry's cell mask to the analytic circle on 20 / 40 / 80 / 160 grids and checks exact slot counts/no cylinder heat source.
-- New startup CPU/device test uses existing thermal tolerances: maximum temperature difference 2e-5 on the 1 K scale; wall heat relative difference 1e-4. Both arrays must be finite before the maximum difference is computed.
-- cargo check -p fieldcraft-lbm -p fieldcraft-lbm-gpu; cargo clippy -p fieldcraft-lbm -p fieldcraft-lbm-gpu --all-targets -- -D warnings; cargo fmt --all --check; git diff --check: passed.
-- Parent read-only review of model/equations, native image and test changes completed. No production numerics or oracle cases changed, so no local oracle regeneration was required. The full workspace gate, all ignored tests, wasm and other OS/device runs were not run locally; The maintainer-relayed 01:30 UTC feedback confirms main CI, the existing oracle job and heavy tests all passed at exact source c3206593f8ed63d95d54e5aedbaff6e37e4efe5e. Windows app and macOS oracle jobs were skipped and are not claimed as passing. The existing oracle success does not validate or freeze the new reference comparison.
+- `cargo test --locked -p fieldcraft-lbm -p fieldcraft-lbm-gpu -- --test-threads=1 --nocapture`: 89 passed, 0 failed, 24 existing heavy/benchmark annotations ignored. Moving the startup case to heavy explains the normal count changing from 90 to 89.
+- `cargo test --locked -p fieldcraft-lbm --test curved_conjugate rahman_curved_conjugate_coarse_measurement -- --ignored --exact --nocapture --test-threads=1`: 1 passed. Nu 4.824827744 (-0.363891%), steady at t95 / 152000 steps; unchanged from the original CPU measurement. Local diagnostic duration 54.97 seconds, with brief compilation overlap; not a performance result.
+- `cargo test --locked -p fieldcraft-lbm-gpu --test curved_conjugate the_passive_conducting_cylinder_matches_the_cpu_during_startup -- --ignored --exact --nocapture --test-threads=1`: 1 passed on hardware Vulkan. The unchanged tolerances are maximum temperature difference 2e-5 on the 1 K scale and wall heat relative difference 1e-4; both arrays must be finite. Local diagnostic duration 4.32 seconds.
+- `cargo check --offline -p fieldcraft-lbm -p fieldcraft-lbm-gpu --tests`, touched-crate all-target Clippy with `-D warnings`, formatting, assets (377 attributed), layers (23 clean), unit-factors (0 outside units), and `git diff --check`: passed. Dedicated-worktree `affected --base HEAD` reports 0 changed paths after commit.
+- Compatibility check in a separate private checkout of current develop `3751d3bb93676aa49d1a18c438424be88162ac03`: applied the complete feature diff from base `7d9c027d71b2c1ea3395e2552e95f0455a7244db` to tested head `12b4c2d3b2d4f7fd8aad13c70c9849341aafc40f` with `git apply --3way`. The exact staged integration tree is `83b248bde259cd81e529ce259881374a8108a021`. Both test targets compiled with `--locked`; the analytic mask case, explicit coarse CPU measurement and explicit GPU startup case each passed. The newer steady schema produces the same printed CPU Nu 4.824827744 and steady t95 / 152000 steps. These are integration-tree checks, not a claim that the published branch was rebased. The full final integration patch SHA256 is `77d58db427ba26a24129604c660a6d9e4c3997e1509343cb159a5cfcdce03b14`.
+- Parent read-only source review accepted the seven-file follow-up and the distinct scientific/regression policies. No full workspace gate, complete ignored suite, oracle, wasm or other OS/backend run was performed locally. The manifest/lockfile edges make the affected planner select broader remote CI (`everything=true`, including solver/wasm); **new-head remote CI is pending**. Historical main CI, existing oracle and heavy jobs passed at exact `c3206593f8ed63d95d54e5aedbaff6e37e4efe5e`; Windows app and macOS oracle jobs were skipped, not passed. Those results do not establish the status of the new head or validate isolated interface accuracy.
 
 ## Known limitations
 
-The 1% default fine-grid comparison is not a validated interface-only acceptance: doubling passages and halving lattice speed exceed that target and exceed the last grid change. Boundary/model form, temporal/collision sensitivity, voxelized geometry and the paper's own grid spread are not isolated from one another. No convergence order, mesh independence or frozen accuracy fixture is claimed. The bulk mean has no reference acceptance gate because the reference integration domain is ambiguous. There is no higher-conductivity/otherRi/three-dimensional validation in this slice.
+The 1% default fine-grid comparison is not a validated interface-only acceptance: doubling passages and halving lattice speed exceed that target and exceed the last grid change. Boundary/model form, temporal/collision sensitivity, voxelized geometry and the paper's own grid spread are not isolated from one another. No convergence order, mesh independence or validated interface-accuracy fixture is claimed. The separate 2% coarse regression guardrail is an engineering policy, not a replacement for the 1% scientific target or a bound on unmeasured combined sensitivity. The bulk mean has no reference acceptance gate because the reference integration domain is ambiguous. There is no higher-conductivity/otherRi/three-dimensional validation in this slice.
 
-Steady solid-capacity scaling accelerates convergence; recorded intermediate temperatures are not a physical transient. The video shows only the coarse case, not every grid or a coupled two-circuit heat exchanger. Local diagnostic timings are not performance claims (the n160padding2 and native coarse solves briefly overlapped). The verified video and stills are attached through the maintainer protocol. #631 stays open; the curved-wall production algorithm remains parked, and no renderer or backend-removal work is included.
-
-
-
-
+Steady solid-capacity scaling accelerates convergence; recorded intermediate temperatures are not a physical transient. The video shows only the coarse case, not every grid or a coupled two-circuit heat exchanger. Local diagnostic timings are not performance claims (the n160padding2 and native coarse solves briefly overlapped). The verified historical video and stills are attached through the maintainer protocol; their applicability to the updated test/docs/dev-dependency head awaits explicit maintainer review. #631 stays open; the curved-wall production algorithm remains parked, and no renderer or backend-removal work is included.
