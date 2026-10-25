@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "agent": "coupled-exchanger-agent",
+  "branch": "fix/fluid-final-speed-units-733",
+  "head_sha": "1bd4d551d70239c819f7b0c01568ec5fdd2a2e72",
+  "name": "sample-geometry-save-baseline.json",
+  "bytes": 2473,
+  "sha256": "9787aea3884eb47f7d41118e0be45fbfd5add7bb4f17a4538fcc02419422fd7f",
+  "description": "Independent CPU-only no-solve baseline for newly found sample geometry persistence gap. Current3751-family units-only head also omits heated-flow CAD from embed save and fresh-opens design null without warning. Not caused by unit mappings or fan kernel. Original safe report verified in shared S3; no source edits.",
+  "submitted_at": "2026-10-25T18:08:05.421364+00:00",
+  "status": "received",
+  "artifact_commit": "737a1157ac63c17778223a8d006add9fa80a884e",
+  "manifest": "manifests/fix/fluid-final-speed-units-733/1bd4d551d70239c819f7b0c01568ec5fdd2a2e72/sample-geometry-save-baseline.json.json",
+  "manifest_blob": "4d3cd0bf979554a6adcebfae0bface9719d08a30",
+  "object": "objects/fix/fluid-final-speed-units-733/1bd4d551d70239c819f7b0c01568ec5fdd2a2e72/sample-geometry-save-baseline.json",
+  "verified_sha256": "9787aea3884eb47f7d41118e0be45fbfd5add7bb4f17a4538fcc02419422fd7f",
+  "github_attachment": "pending_maintainer"
+}
