@@ -1,6 +1,14 @@
 {
   "transport": "native GitHub user attachments uploaded against the public fork",
   "policy": "Automatic only for exact current-head captures; older captures require maintainer review.",
-  "published": [],
+  "published": [
+    {
+      "pr": 735,
+      "capture": "1bd4d551d70239c819f7b0c01568ec5fdd2a2e72",
+      "current_head": "1bd4d551d70239c819f7b0c01568ec5fdd2a2e72",
+      "videos": 1,
+      "images": 2
+    }
+  ],
   "errors": []
 }
