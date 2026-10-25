@@ -1,6 +1,6 @@
 {
   "request_id": "pr-733-coupled-exchanger-agent-20261025",
-  "request_blob": "38bb7702baa88564c7633992944eb905979cf853",
+  "request_blob": "538d73ef280da13c9655d381c0d4e2baf31656ca",
   "agent": "coupled-exchanger-agent",
   "branch": "fix/fluid-final-speed-units-733",
   "issue": 733,
@@ -8,5 +8,5 @@
   "head_sha": "1bd4d551d70239c819f7b0c01568ec5fdd2a2e72",
   "pr": "https://github.com/tangency-labs/fieldcraft/pull/735",
   "media": "pending",
-  "updated_at": "2026-10-25T13:01:03.524Z"
+  "updated_at": "2026-10-25T13:31:01.424Z"
 }
