@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "agent": "contour-animation-agent",
+  "branch": "diagnostics/solver-errors-654",
+  "head_sha": "cb89c56114b26c8ab1f6eaaccb5d1e46dba86ffd",
+  "name": "vulkan-option-isolation-handoff.json",
+  "bytes": 13233,
+  "sha256": "f865eb69321c42aa32e01241f9806c791637941d260e1fc00aa39b580d64b08b",
+  "description": "Read-only Vulkan startup isolation bug, exact pre-721 baseline and current721 runtime diagnostics. Requests explicit712/713 ownership coordination; no source fix or backend policy change. Original bytes also verified in shared S3 exchange.",
+  "submitted_at": "2026-10-25T18:05:13.202952+00:00",
+  "status": "received",
+  "artifact_commit": "737a1157ac63c17778223a8d006add9fa80a884e",
+  "manifest": "manifests/diagnostics/solver-errors-654/cb89c56114b26c8ab1f6eaaccb5d1e46dba86ffd/vulkan-option-isolation-handoff.json.json",
+  "manifest_blob": "87fa4b8b439c2130cd32f416c1e03cf2cfb7408d",
+  "object": "objects/diagnostics/solver-errors-654/cb89c56114b26c8ab1f6eaaccb5d1e46dba86ffd/vulkan-option-isolation-handoff.json",
+  "verified_sha256": "f865eb69321c42aa32e01241f9806c791637941d260e1fc00aa39b580d64b08b",
+  "github_attachment": "pending_maintainer"
+}
