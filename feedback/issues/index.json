@@ -1,5 +1,18 @@
 [
   {
+    "number": 734,
+    "title": "Proposal: engineer-facing technical documentation as part of feature acceptance",
+    "body": "﻿FieldCraft already requires cited numerical methods and reproducible verification tests. However, mathematical explanations are scattered across developer-oriented documents and Rust source comments.\n\n**Proposal:** make documentation intended for engineers, not Rust developers, part of the **definition of done** for each new or significantly changed analysis capability declared ready for use.\n\nA concise, versioned technical reference should cover:\n\n1. **Theory:** physical assumptions, governing equations, defined notation, reasons for the chosen formulation, applicability and limitations.\n2. **Verification:** links to reproducible oracle cases, published references, convergence checks and known failures.\n3. **User guidance:** inputs, units, a worked example and interpretation of results.\n4. **Publication and languages:** documentation delivered with the corresponding release, prepared for translation and available in the languages required for its intended markets.\n\nIdeally, implementation, verification and source-language user documentation should be reviewed in the **same PR**. Experimental features can remain explicitly labelled as such.\n\nA lightweight, reusable template/checklist would be a practical first step; there is no need to rewrite the existing documentation.\n\n**Principle:** an engineer must be able to understand and assess a numerical method **without knowing or reading Rust**.\r\n",
+    "state": "open",
+    "updated_at": "2026-10-25T11:29:05Z",
+    "labels": [
+      "area:docs",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/734"
+  },
+  {
     "number": 733,
     "title": "solve.fluid: final_max_speed is reported in m/s next to max_speed in display units",
     "body": "`solve.fluid` reports `final_max_speed` in SI (m/s) while `max_speed` next to it is in the display units, so in mm-t-s-N-MPa the two differ by a factor of 1000.\n\n**Repro** (develop 3751d3b, `fieldcraft-cli mcp --headless`, CPU or GPU):\n```json\n{\"command\":\"file.sample\",\"params\":{\"name\":\"flow-past\"}}\n{\"command\":\"solve.fluid\",\"params\":{\"step\":\"Flow\",\"backend\":\"gpu\"}}\n```\nReply: `\"max_speed\": 41.693` (mm/s), `\"final_max_speed\": 0.039287`. The last frame's real peak is 39.287 mm/s: `results.frame {frame: 10}` then `results.contour {field: \"velocity\"}` gives a max of 39.28715890097606.\n\n**Cause:** the `solve.fluid` reply table in `crates/engine/src/units.rs` (around line 513) lists `/max_speed` but not `/final_max_speed`, so it's left in SI. `/max_speed_time` is missing too. It reads correctly in seconds only because every display system uses seconds today.\n\n**Fix:** add `(\"/final_max_speed\", Dim::Velocity)` and `(\"/max_speed_time\", Dim::Time)`, plus a test that converts a fluid reply into mm-t-s-N-MPa and checks both. Both keys came in with 7fd5348 (#590).\n",
