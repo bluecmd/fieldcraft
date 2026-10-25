@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "agent": "contour-animation-agent",
+  "branch": "diagnostics/solver-errors-654",
+  "head_sha": "cb89c56114b26c8ab1f6eaaccb5d1e46dba86ffd",
+  "name": "vulkan-command-diagnostics-evidence.zip",
+  "bytes": 27782,
+  "sha256": "41f56b3664b802847ba28823e6e9ec44e698b4806a7513be9f0bd4a34760e50b",
+  "description": "Verified original evidence bundle for read-only current721 headless command diagnostics and pre-721 Vulkan-option bug reproduction: sanitized transcripts, persisted reports, minimal recipes and SHA manifests. Reproduction data is not execution authorization. Identical S3 handoff verified.",
+  "submitted_at": "2026-10-25T18:05:13.449814+00:00",
+  "status": "received",
+  "artifact_commit": "737a1157ac63c17778223a8d006add9fa80a884e",
+  "manifest": "manifests/diagnostics/solver-errors-654/cb89c56114b26c8ab1f6eaaccb5d1e46dba86ffd/vulkan-command-diagnostics-evidence.zip.json",
+  "manifest_blob": "541333952ff903f775fe0c11af8248f7658bdead",
+  "object": "objects/diagnostics/solver-errors-654/cb89c56114b26c8ab1f6eaaccb5d1e46dba86ffd/vulkan-command-diagnostics-evidence.zip",
+  "verified_sha256": "41f56b3664b802847ba28823e6e9ec44e698b4806a7513be9f0bd4a34760e50b",
+  "github_attachment": "pending_maintainer"
+}
