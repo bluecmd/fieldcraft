@@ -1,0 +1,2028 @@
+{
+  "schema": 1,
+  "kind": "exact-head-gpu-save-reopen-QA",
+  "owner_pr": 705,
+  "source_head": "fd7a78d3dde46e66149c61a84727f7a09ca86e55",
+  "cli_sha256": "8723c39bee4b933d112600c7304e1da06c14022b79f7f38b4cd0917ec47d3805",
+  "original_recipe_sha256": "9ec897ca702dcbda16195fadc60dd1ce000f488c4cc3d3447a70f77dee968430",
+  "policy": {
+    "WGPU_BACKEND": "vulkan",
+    "FIELDCRAFT_GPU": "hardware",
+    "FIELDCRAFT_REQUIRE_GPU": "1",
+    "fresh_reader_policy": "cpu; no solver invoked"
+  },
+  "checks": {
+    "embedded_geometry_nonempty": false,
+    "nonempty_zone_solid_results": true,
+    "nonzero_zone_history_samples": true,
+    "powered_solid_transfers_heat": true,
+    "sample_geometry_retained": false,
+    "probe_points_present": true,
+    "fresh_process": true,
+    "current_results": true,
+    "no_open_warnings": true,
+    "results_bin_nonempty": true,
+    "results_bin_identical": true,
+    "model_json_identical": true,
+    "embedded_geometry_identical": false,
+    "queries_identical": false,
+    "eleven_frames": true,
+    "source_clean": true,
+    "explicit_numerical_queries_identical": true,
+    "frame_timestamps_and_stale_flags_identical": true
+  },
+  "all_checks_pass": false,
+  "unmet_checks": [
+    "embedded_geometry_nonempty",
+    "sample_geometry_retained",
+    "embedded_geometry_identical",
+    "queries_identical"
+  ],
+  "producer_backend": "gpu: NVIDIA GeForce RTX 4090, in-place streaming",
+  "cells": 5824,
+  "fluid_cells": 5504,
+  "physical_end_time_s": 30,
+  "stored_frames": [
+    0.0,
+    3.0,
+    6.0,
+    9.0,
+    12.0,
+    15.0,
+    18.0,
+    21.0,
+    24.0,
+    27.0,
+    30.0
+  ],
+  "zones": [
+    {
+      "flow": {
+        "final": 21632.80844688416,
+        "mean": 21093.370674053822
+      },
+      "kind": "porous",
+      "name": "Outlet vent",
+      "pressure_drop": {
+        "final": 3.3671838173177095e-05,
+        "mean": 3.2220200219308045e-05
+      }
+    },
+    {
+      "flow": {
+        "final": 21631.710231304172,
+        "mean": 21091.933204730365
+      },
+      "kind": "fan",
+      "measured_pressure_rise": {
+        "final": 5.587112536886707e-05,
+        "mean": 5.6504366861190663e-05
+      },
+      "name": "Cooling fan",
+      "pressure_rise": {
+        "final": 5.700131150661036e-05,
+        "mean": 5.815108496462921e-05
+      }
+    }
+  ],
+  "solids": [
+    {
+      "body": "Bracket",
+      "cells": 320,
+      "heat_to_fluid": {
+        "final": 395.48336890563377,
+        "mean": 357.602160920307
+      },
+      "limit": 80.0,
+      "margin": 35.36731719970703,
+      "ok": true,
+      "peak": 44.63268280029297,
+      "peak_time": 30.0,
+      "power": 80000.00000000001,
+      "temperature": {
+        "max": 44.63268280029297,
+        "mean": 44.618675482271726,
+        "min": 44.58507537841797
+      }
+    }
+  ],
+  "units": {
+    "force": "N",
+    "mass": "t",
+    "power": "mW",
+    "pressure": "Pa",
+    "temperature": "°C",
+    "temperature_difference": "K",
+    "time": "s",
+    "velocity": "mm/s",
+    "volume_flow": "mm³/s"
+  },
+  "packages": {
+    "original": {
+      "file_bytes": 2883146,
+      "results_magic": "MCRSLT01",
+      "results_bytes": 2874845,
+      "results_sha256": "2410cb01e2d0bc7e22fa02ddd8a63bc10b7c93e8c65c1fc5dc678e95d4c39cb9",
+      "embedded": {},
+      "model_sha256": "209bed9b571d428d85e3e7122795d5268c49d9aaa67e34ca92cb513c7bbd557f"
+    },
+    "resaved": {
+      "file_bytes": 2883146,
+      "results_magic": "MCRSLT01",
+      "results_bytes": 2874845,
+      "results_sha256": "2410cb01e2d0bc7e22fa02ddd8a63bc10b7c93e8c65c1fc5dc678e95d4c39cb9",
+      "embedded": {},
+      "model_sha256": "209bed9b571d428d85e3e7122795d5268c49d9aaa67e34ca92cb513c7bbd557f"
+    }
+  },
+  "sample_open": {
+    "design": "Untitled",
+    "elements": 0,
+    "journal": 4,
+    "migrated_from": null,
+    "nodes": 0,
+    "path": null,
+    "results": [],
+    "sample": "heated-flow",
+    "surfaces": 0,
+    "warnings": []
+  },
+  "file_open": {
+    "design": null,
+    "elements": 0,
+    "journal": 8,
+    "migrated_from": null,
+    "mismatched": [],
+    "nodes": 0,
+    "path": "\\\\?\\$QA_ROOT\\fan-original.fieldcraft",
+    "renamed": [],
+    "results": [
+      {
+        "stale": false,
+        "step": "HeatedFlow"
+      }
+    ],
+    "stale": {
+      "mesh_bodies": [],
+      "references": [],
+      "seeds": [],
+      "sets": []
+    },
+    "surfaces": 0,
+    "view": null,
+    "warnings": []
+  },
+  "model_before": {
+    "definitions": {
+      "boundary_conditions": 0,
+      "contacts": 0,
+      "couplings": 0,
+      "datums": 0,
+      "defeatures": 0,
+      "face_merges": 0,
+      "face_splits": 0,
+      "fluid_domains": 1,
+      "loads": 0,
+      "masses": 0,
+      "materials": 2,
+      "partitions": 0,
+      "reference_points": 0,
+      "sections": 0,
+      "seeds": 0,
+      "sets": 0,
+      "size_controls": 0,
+      "springs": 0,
+      "steps": 1,
+      "stitches": 0,
+      "ties": 0
+    },
+    "display_units": "mm-t-s-N-MPa (pressure: Pa)",
+    "elements": {},
+    "nodes": 0,
+    "own_units": true
+  },
+  "model_after": {
+    "definitions": {
+      "boundary_conditions": 0,
+      "contacts": 0,
+      "couplings": 0,
+      "datums": 0,
+      "defeatures": 0,
+      "face_merges": 0,
+      "face_splits": 0,
+      "fluid_domains": 1,
+      "loads": 0,
+      "masses": 0,
+      "materials": 2,
+      "partitions": 0,
+      "reference_points": 0,
+      "sections": 0,
+      "seeds": 0,
+      "sets": 0,
+      "size_controls": 0,
+      "springs": 0,
+      "steps": 1,
+      "stitches": 0,
+      "ties": 0
+    },
+    "display_units": "mm-t-s-N-MPa (pressure: Pa)",
+    "elements": {},
+    "nodes": 0,
+    "own_units": true
+  },
+  "queries": {
+    "frame0": {
+      "contour": {
+        "field": "temperature",
+        "label": "Temperature",
+        "legend": {
+          "max": 50.0,
+          "min": 20.0
+        },
+        "range": {
+          "max": {
+            "at": [
+              -22.5,
+              -17.5,
+              2.5
+            ],
+            "cell": 1,
+            "value": 20.0
+          },
+          "min": {
+            "at": [
+              -22.5,
+              -17.5,
+              2.5
+            ],
+            "cell": 1,
+            "value": 20.0
+          }
+        },
+        "unit": "°C"
+      },
+      "frames": [
+        0.0,
+        3.0,
+        6.0,
+        9.0,
+        12.0,
+        15.0,
+        18.0,
+        21.0,
+        24.0,
+        27.0,
+        30.0
+      ],
+      "slice": {
+        "axis": "y",
+        "position": 19.999999999999996
+      },
+      "stale": false,
+      "streamlines": {
+        "count": 64,
+        "inlet": "x_min",
+        "max_steps": 4000
+      },
+      "surface": true,
+      "time": 0.0,
+      "view": {
+        "animate": false,
+        "bands": 12,
+        "contour": "temperature",
+        "deformed": false,
+        "flow": {
+          "slice": {
+            "axis": "y"
+          },
+          "streamlines": {
+            "count": 64,
+            "max_steps": 4000
+          },
+          "surface": true
+        },
+        "frame": 0,
+        "mode": 1,
+        "range_max": 50.0,
+        "range_min": 20.0,
+        "scale": null,
+        "step": "HeatedFlow"
+      }
+    },
+    "velocity0": {
+      "contour": {
+        "field": "velocity",
+        "label": "Velocity magnitude",
+        "range": {
+          "max": {
+            "at": [
+              -22.5,
+              -17.5,
+              2.5
+            ],
+            "cell": 1,
+            "value": 0.0
+          },
+          "min": {
+            "at": [
+              -22.5,
+              -17.5,
+              2.5
+            ],
+            "cell": 1,
+            "value": 0.0
+          }
+        },
+        "unit": "mm/s"
+      },
+      "frames": [
+        0.0,
+        3.0,
+        6.0,
+        9.0,
+        12.0,
+        15.0,
+        18.0,
+        21.0,
+        24.0,
+        27.0,
+        30.0
+      ],
+      "slice": {
+        "axis": "y",
+        "position": 19.999999999999996
+      },
+      "stale": false,
+      "streamlines": {
+        "count": 64,
+        "inlet": "x_min",
+        "max_steps": 4000
+      },
+      "surface": true,
+      "time": 0.0,
+      "view": {
+        "animate": false,
+        "bands": 12,
+        "contour": "velocity",
+        "deformed": false,
+        "flow": {
+          "slice": {
+            "axis": "y"
+          },
+          "streamlines": {
+            "count": 64,
+            "max_steps": 4000
+          },
+          "surface": true
+        },
+        "frame": 0,
+        "mode": 1,
+        "scale": null,
+        "step": "HeatedFlow"
+      }
+    },
+    "temperature0": {
+      "contour": {
+        "field": "temperature",
+        "label": "Temperature",
+        "range": {
+          "max": {
+            "at": [
+              -22.5,
+              -17.5,
+              2.5
+            ],
+            "cell": 1,
+            "value": 20.0
+          },
+          "min": {
+            "at": [
+              -22.5,
+              -17.5,
+              2.5
+            ],
+            "cell": 1,
+            "value": 20.0
+          }
+        },
+        "unit": "°C"
+      },
+      "frames": [
+        0.0,
+        3.0,
+        6.0,
+        9.0,
+        12.0,
+        15.0,
+        18.0,
+        21.0,
+        24.0,
+        27.0,
+        30.0
+      ],
+      "slice": {
+        "axis": "y",
+        "position": 19.999999999999996
+      },
+      "stale": false,
+      "streamlines": {
+        "count": 64,
+        "inlet": "x_min",
+        "max_steps": 4000
+      },
+      "surface": true,
+      "time": 0.0,
+      "view": {
+        "animate": false,
+        "bands": 12,
+        "contour": "temperature",
+        "deformed": false,
+        "flow": {
+          "slice": {
+            "axis": "y"
+          },
+          "streamlines": {
+            "count": 64,
+            "max_steps": 4000
+          },
+          "surface": true
+        },
+        "frame": 0,
+        "mode": 1,
+        "scale": null,
+        "step": "HeatedFlow"
+      }
+    },
+    "probe0": {
+      "frame": 0,
+      "points": [
+        {
+          "cell": 2705,
+          "point": [
+            -22.5,
+            22.5,
+            32.5
+          ],
+          "pressure": 0.0,
+          "solid": false,
+          "temperature": 20.0,
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "cell": 2725,
+          "point": [
+            77.5,
+            22.5,
+            32.5
+          ],
+          "pressure": 0.0,
+          "solid": false,
+          "temperature": 20.0,
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "step": "HeatedFlow",
+      "time": 0.0,
+      "units": {
+        "point": "mm",
+        "pressure": "Pa",
+        "temperature": "°C",
+        "time": "s",
+        "velocity": "mm/s"
+      }
+    },
+    "frame5": {
+      "contour": {
+        "field": "temperature",
+        "label": "Temperature",
+        "range": {
+          "max": {
+            "at": [
+              12.500000000000004,
+              22.500000000000004,
+              12.5
+            ],
+            "cell": 1048,
+            "value": 31.997928619384766
+          },
+          "min": {
+            "at": [
+              -22.5,
+              -17.5,
+              67.5
+            ],
+            "cell": 5409,
+            "value": 20.013683319091797
+          }
+        },
+        "unit": "°C"
+      },
+      "frames": [
+        0.0,
+        3.0,
+        6.0,
+        9.0,
+        12.0,
+        15.0,
+        18.0,
+        21.0,
+        24.0,
+        27.0,
+        30.0
+      ],
+      "slice": {
+        "axis": "y",
+        "position": 19.999999999999996
+      },
+      "stale": false,
+      "streamlines": {
+        "count": 64,
+        "inlet": "x_min",
+        "max_steps": 4000
+      },
+      "surface": true,
+      "time": 15.0,
+      "view": {
+        "animate": false,
+        "bands": 12,
+        "contour": "temperature",
+        "deformed": false,
+        "flow": {
+          "slice": {
+            "axis": "y"
+          },
+          "streamlines": {
+            "count": 64,
+            "max_steps": 4000
+          },
+          "surface": true
+        },
+        "frame": 5,
+        "mode": 1,
+        "scale": null,
+        "step": "HeatedFlow"
+      }
+    },
+    "velocity5": {
+      "contour": {
+        "field": "velocity",
+        "label": "Velocity magnitude",
+        "range": {
+          "max": {
+            "at": [
+              17.5,
+              57.49999999999999,
+              67.5
+            ],
+            "cell": 5807,
+            "value": 7.906001374175945
+          },
+          "min": {
+            "at": [
+              12.500000000000004,
+              22.500000000000004,
+              12.5
+            ],
+            "cell": 1048,
+            "value": 0.0032788896479565006
+          }
+        },
+        "unit": "mm/s"
+      },
+      "frames": [
+        0.0,
+        3.0,
+        6.0,
+        9.0,
+        12.0,
+        15.0,
+        18.0,
+        21.0,
+        24.0,
+        27.0,
+        30.0
+      ],
+      "slice": {
+        "axis": "y",
+        "position": 19.999999999999996
+      },
+      "stale": false,
+      "streamlines": {
+        "count": 64,
+        "inlet": "x_min",
+        "max_steps": 4000
+      },
+      "surface": true,
+      "time": 15.0,
+      "view": {
+        "animate": false,
+        "bands": 12,
+        "contour": "velocity",
+        "deformed": false,
+        "flow": {
+          "slice": {
+            "axis": "y"
+          },
+          "streamlines": {
+            "count": 64,
+            "max_steps": 4000
+          },
+          "surface": true
+        },
+        "frame": 5,
+        "mode": 1,
+        "scale": null,
+        "step": "HeatedFlow"
+      }
+    },
+    "temperature5": {
+      "contour": {
+        "field": "temperature",
+        "label": "Temperature",
+        "range": {
+          "max": {
+            "at": [
+              12.500000000000004,
+              22.500000000000004,
+              12.5
+            ],
+            "cell": 1048,
+            "value": 31.997928619384766
+          },
+          "min": {
+            "at": [
+              -22.5,
+              -17.5,
+              67.5
+            ],
+            "cell": 5409,
+            "value": 20.013683319091797
+          }
+        },
+        "unit": "°C"
+      },
+      "frames": [
+        0.0,
+        3.0,
+        6.0,
+        9.0,
+        12.0,
+        15.0,
+        18.0,
+        21.0,
+        24.0,
+        27.0,
+        30.0
+      ],
+      "slice": {
+        "axis": "y",
+        "position": 19.999999999999996
+      },
+      "stale": false,
+      "streamlines": {
+        "count": 64,
+        "inlet": "x_min",
+        "max_steps": 4000
+      },
+      "surface": true,
+      "time": 15.0,
+      "view": {
+        "animate": false,
+        "bands": 12,
+        "contour": "temperature",
+        "deformed": false,
+        "flow": {
+          "slice": {
+            "axis": "y"
+          },
+          "streamlines": {
+            "count": 64,
+            "max_steps": 4000
+          },
+          "surface": true
+        },
+        "frame": 5,
+        "mode": 1,
+        "scale": null,
+        "step": "HeatedFlow"
+      }
+    },
+    "probe5": {
+      "frame": 5,
+      "points": [
+        {
+          "cell": 2705,
+          "point": [
+            -22.5,
+            22.5,
+            32.5
+          ],
+          "pressure": 2.3603438421559986e-06,
+          "solid": false,
+          "temperature": 20.48920440673828,
+          "velocity": [
+            0.944832805544138,
+            -0.01458893711969722,
+            -0.15519924636464566
+          ]
+        },
+        {
+          "cell": 2725,
+          "point": [
+            77.5,
+            22.5,
+            32.5
+          ],
+          "pressure": 2.5510787963867188e-05,
+          "solid": false,
+          "temperature": 21.168622970581055,
+          "velocity": [
+            3.5010790452361107,
+            -0.052210671128705144,
+            -0.8491632179357111
+          ]
+        }
+      ],
+      "step": "HeatedFlow",
+      "time": 15.0,
+      "units": {
+        "point": "mm",
+        "pressure": "Pa",
+        "temperature": "°C",
+        "time": "s",
+        "velocity": "mm/s"
+      }
+    },
+    "frame10": {
+      "contour": {
+        "field": "temperature",
+        "label": "Temperature",
+        "range": {
+          "max": {
+            "at": [
+              12.500000000000004,
+              17.499999999999996,
+              12.5
+            ],
+            "cell": 1022,
+            "value": 44.22925567626953
+          },
+          "min": {
+            "at": [
+              -22.5,
+              -17.5,
+              57.5
+            ],
+            "cell": 4577,
+            "value": 20.011491775512695
+          }
+        },
+        "unit": "°C"
+      },
+      "frames": [
+        0.0,
+        3.0,
+        6.0,
+        9.0,
+        12.0,
+        15.0,
+        18.0,
+        21.0,
+        24.0,
+        27.0,
+        30.0
+      ],
+      "slice": {
+        "axis": "y",
+        "position": 19.999999999999996
+      },
+      "stale": false,
+      "streamlines": {
+        "count": 64,
+        "inlet": "x_min",
+        "max_steps": 4000
+      },
+      "surface": true,
+      "time": 30.0,
+      "view": {
+        "animate": false,
+        "bands": 12,
+        "contour": "temperature",
+        "deformed": false,
+        "flow": {
+          "slice": {
+            "axis": "y"
+          },
+          "streamlines": {
+            "count": 64,
+            "max_steps": 4000
+          },
+          "surface": true
+        },
+        "frame": 10,
+        "mode": 1,
+        "scale": null,
+        "step": "HeatedFlow"
+      }
+    },
+    "velocity10": {
+      "contour": {
+        "field": "velocity",
+        "label": "Velocity magnitude",
+        "range": {
+          "max": {
+            "at": [
+              -22.5,
+              57.49999999999999,
+              67.5
+            ],
+            "cell": 5799,
+            "value": 11.185305412050564
+          },
+          "min": {
+            "at": [
+              12.500000000000004,
+              17.499999999999996,
+              12.5
+            ],
+            "cell": 1022,
+            "value": 0.0032485966680798084
+          }
+        },
+        "unit": "mm/s"
+      },
+      "frames": [
+        0.0,
+        3.0,
+        6.0,
+        9.0,
+        12.0,
+        15.0,
+        18.0,
+        21.0,
+        24.0,
+        27.0,
+        30.0
+      ],
+      "slice": {
+        "axis": "y",
+        "position": 19.999999999999996
+      },
+      "stale": false,
+      "streamlines": {
+        "count": 64,
+        "inlet": "x_min",
+        "max_steps": 4000
+      },
+      "surface": true,
+      "time": 30.0,
+      "view": {
+        "animate": false,
+        "bands": 12,
+        "contour": "velocity",
+        "deformed": false,
+        "flow": {
+          "slice": {
+            "axis": "y"
+          },
+          "streamlines": {
+            "count": 64,
+            "max_steps": 4000
+          },
+          "surface": true
+        },
+        "frame": 10,
+        "mode": 1,
+        "scale": null,
+        "step": "HeatedFlow"
+      }
+    },
+    "temperature10": {
+      "contour": {
+        "field": "temperature",
+        "label": "Temperature",
+        "range": {
+          "max": {
+            "at": [
+              12.500000000000004,
+              17.499999999999996,
+              12.5
+            ],
+            "cell": 1022,
+            "value": 44.22925567626953
+          },
+          "min": {
+            "at": [
+              -22.5,
+              -17.5,
+              57.5
+            ],
+            "cell": 4577,
+            "value": 20.011491775512695
+          }
+        },
+        "unit": "°C"
+      },
+      "frames": [
+        0.0,
+        3.0,
+        6.0,
+        9.0,
+        12.0,
+        15.0,
+        18.0,
+        21.0,
+        24.0,
+        27.0,
+        30.0
+      ],
+      "slice": {
+        "axis": "y",
+        "position": 19.999999999999996
+      },
+      "stale": false,
+      "streamlines": {
+        "count": 64,
+        "inlet": "x_min",
+        "max_steps": 4000
+      },
+      "surface": true,
+      "time": 30.0,
+      "view": {
+        "animate": false,
+        "bands": 12,
+        "contour": "temperature",
+        "deformed": false,
+        "flow": {
+          "slice": {
+            "axis": "y"
+          },
+          "streamlines": {
+            "count": 64,
+            "max_steps": 4000
+          },
+          "surface": true
+        },
+        "frame": 10,
+        "mode": 1,
+        "scale": null,
+        "step": "HeatedFlow"
+      }
+    },
+    "probe10": {
+      "frame": 10,
+      "points": [
+        {
+          "cell": 2705,
+          "point": [
+            -22.5,
+            22.5,
+            32.5
+          ],
+          "pressure": 3.1948088690114673e-06,
+          "solid": false,
+          "temperature": 21.287538528442383,
+          "velocity": [
+            0.3429184725973755,
+            -0.046067721996223554,
+            -0.33820944372564554
+          ]
+        },
+        {
+          "cell": 2725,
+          "point": [
+            77.5,
+            22.5,
+            32.5
+          ],
+          "pressure": 3.0350685847224668e-05,
+          "solid": false,
+          "temperature": 26.056215286254883,
+          "velocity": [
+            3.453475423157215,
+            -0.09218735067406669,
+            -1.6621729591861367
+          ]
+        }
+      ],
+      "step": "HeatedFlow",
+      "time": 30.0,
+      "units": {
+        "point": "mm",
+        "pressure": "Pa",
+        "temperature": "°C",
+        "time": "s",
+        "velocity": "mm/s"
+      }
+    }
+  },
+  "reopen_commands": [
+    "file.open",
+    "model.info",
+    "results.frame",
+    "results.contour",
+    "results.contour",
+    "solve.probe",
+    "results.frame",
+    "results.contour",
+    "results.contour",
+    "solve.probe",
+    "results.frame",
+    "results.contour",
+    "results.contour",
+    "solve.probe",
+    "file.save_as"
+  ],
+  "elapsed_seconds": 3.110000000044238,
+  "limits": [
+    "Exact owner head only; not current-develop/rebased result-encoding compatibility.",
+    "No owner source changes, fixture blessing, LES, large-buffer or coupled-domain claim.",
+    "Original low-speed coarse30s transient, not converged cooling or experimental validation.",
+    "No saved UI-view claim; frame/contour queries select their own state.",
+    "Exact-head705 has the pre-existing733 final_max_speed reply-unit bug; that raw field is omitted from this report.",
+    "Byte equality checks the actual production result decoder/encoder including nonempty zone and solid data.",
+    "A raw first-frame view echo mismatch is an uncontrolled initial-view difference, not a numerical query discrepancy or asserted UI-view persistence bug."
+  ],
+  "query_comparison": {
+    "explicit_contours_matched": 6,
+    "explicit_probe_calls_matched": 3,
+    "points_per_probe": 2,
+    "frame_selections": [
+      0,
+      5,
+      10
+    ],
+    "raw_replies_identical": false,
+    "mismatch": "Only results.frame(0) echoed a different pre-existing view: producer temperature with 20–50°C legend, fresh reader velocity/auto. Later explicit field queries and frame5/frame10 replies match. No claim that file.save_as requested UI-view persistence.",
+    "fresh_reader_queries": [
+      {
+        "command": {
+          "command": "results.frame",
+          "params": {
+            "frame": 0,
+            "step": "HeatedFlow"
+          }
+        },
+        "reply": {
+          "contour": {
+            "field": "velocity",
+            "label": "Velocity magnitude",
+            "range": {
+              "max": {
+                "at": [
+                  -22.5,
+                  -17.5,
+                  2.5
+                ],
+                "cell": 1,
+                "value": 0.0
+              },
+              "min": {
+                "at": [
+                  -22.5,
+                  -17.5,
+                  2.5
+                ],
+                "cell": 1,
+                "value": 0.0
+              }
+            },
+            "unit": "mm/s"
+          },
+          "frames": [
+            0.0,
+            3.0,
+            6.0,
+            9.0,
+            12.0,
+            15.0,
+            18.0,
+            21.0,
+            24.0,
+            27.0,
+            30.0
+          ],
+          "slice": {
+            "axis": "y",
+            "position": 19.999999999999996
+          },
+          "stale": false,
+          "streamlines": {
+            "count": 64,
+            "inlet": "x_min",
+            "max_steps": 4000
+          },
+          "surface": true,
+          "time": 0.0,
+          "view": {
+            "animate": false,
+            "bands": 12,
+            "contour": "velocity",
+            "deformed": false,
+            "flow": {
+              "slice": {
+                "axis": "y"
+              },
+              "streamlines": {
+                "count": 64,
+                "max_steps": 4000
+              },
+              "surface": true
+            },
+            "frame": 0,
+            "mode": 1,
+            "scale": null,
+            "step": "HeatedFlow"
+          }
+        }
+      },
+      {
+        "command": {
+          "command": "results.contour",
+          "params": {
+            "field": "velocity",
+            "range": "auto",
+            "step": "HeatedFlow"
+          }
+        },
+        "reply": {
+          "contour": {
+            "field": "velocity",
+            "label": "Velocity magnitude",
+            "range": {
+              "max": {
+                "at": [
+                  -22.5,
+                  57.49999999999999,
+                  67.5
+                ],
+                "cell": 5799,
+                "value": 11.185305412050564
+              },
+              "min": {
+                "at": [
+                  12.500000000000004,
+                  17.499999999999996,
+                  12.5
+                ],
+                "cell": 1022,
+                "value": 0.0032485966680798084
+              }
+            },
+            "unit": "mm/s"
+          },
+          "frames": [
+            0.0,
+            3.0,
+            6.0,
+            9.0,
+            12.0,
+            15.0,
+            18.0,
+            21.0,
+            24.0,
+            27.0,
+            30.0
+          ],
+          "slice": {
+            "axis": "y",
+            "position": 19.999999999999996
+          },
+          "stale": false,
+          "streamlines": {
+            "count": 64,
+            "inlet": "x_min",
+            "max_steps": 4000
+          },
+          "surface": true,
+          "time": 30.0,
+          "view": {
+            "animate": false,
+            "bands": 12,
+            "contour": "velocity",
+            "deformed": false,
+            "flow": {
+              "slice": {
+                "axis": "y"
+              },
+              "streamlines": {
+                "count": 64,
+                "max_steps": 4000
+              },
+              "surface": true
+            },
+            "frame": 10,
+            "mode": 1,
+            "scale": null,
+            "step": "HeatedFlow"
+          }
+        }
+      },
+      {
+        "command": {
+          "command": "results.contour",
+          "params": {
+            "field": "temperature",
+            "range": "auto",
+            "step": "HeatedFlow"
+          }
+        },
+        "reply": {
+          "contour": {
+            "field": "temperature",
+            "label": "Temperature",
+            "range": {
+              "max": {
+                "at": [
+                  12.500000000000004,
+                  17.499999999999996,
+                  12.5
+                ],
+                "cell": 1022,
+                "value": 44.22925567626953
+              },
+              "min": {
+                "at": [
+                  -22.5,
+                  -17.5,
+                  57.5
+                ],
+                "cell": 4577,
+                "value": 20.011491775512695
+              }
+            },
+            "unit": "°C"
+          },
+          "frames": [
+            0.0,
+            3.0,
+            6.0,
+            9.0,
+            12.0,
+            15.0,
+            18.0,
+            21.0,
+            24.0,
+            27.0,
+            30.0
+          ],
+          "slice": {
+            "axis": "y",
+            "position": 19.999999999999996
+          },
+          "stale": false,
+          "streamlines": {
+            "count": 64,
+            "inlet": "x_min",
+            "max_steps": 4000
+          },
+          "surface": true,
+          "time": 30.0,
+          "view": {
+            "animate": false,
+            "bands": 12,
+            "contour": "temperature",
+            "deformed": false,
+            "flow": {
+              "slice": {
+                "axis": "y"
+              },
+              "streamlines": {
+                "count": 64,
+                "max_steps": 4000
+              },
+              "surface": true
+            },
+            "frame": 10,
+            "mode": 1,
+            "scale": null,
+            "step": "HeatedFlow"
+          }
+        }
+      },
+      {
+        "command": {
+          "command": "solve.probe",
+          "params": {
+            "frame": 0,
+            "points": [
+              [
+                -22.5,
+                22.5,
+                32.5
+              ],
+              [
+                77.5,
+                22.5,
+                32.5
+              ]
+            ],
+            "step": "HeatedFlow"
+          }
+        },
+        "reply": {
+          "frame": 0,
+          "points": [
+            {
+              "cell": 2705,
+              "point": [
+                -22.5,
+                22.5,
+                32.5
+              ],
+              "pressure": 0.0,
+              "solid": false,
+              "temperature": 20.0,
+              "velocity": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "cell": 2725,
+              "point": [
+                77.5,
+                22.5,
+                32.5
+              ],
+              "pressure": 0.0,
+              "solid": false,
+              "temperature": 20.0,
+              "velocity": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          ],
+          "step": "HeatedFlow",
+          "time": 0.0,
+          "units": {
+            "point": "mm",
+            "pressure": "Pa",
+            "temperature": "°C",
+            "time": "s",
+            "velocity": "mm/s"
+          }
+        }
+      },
+      {
+        "command": {
+          "command": "results.frame",
+          "params": {
+            "frame": 5,
+            "step": "HeatedFlow"
+          }
+        },
+        "reply": {
+          "contour": {
+            "field": "temperature",
+            "label": "Temperature",
+            "range": {
+              "max": {
+                "at": [
+                  12.500000000000004,
+                  22.500000000000004,
+                  12.5
+                ],
+                "cell": 1048,
+                "value": 31.997928619384766
+              },
+              "min": {
+                "at": [
+                  -22.5,
+                  -17.5,
+                  67.5
+                ],
+                "cell": 5409,
+                "value": 20.013683319091797
+              }
+            },
+            "unit": "°C"
+          },
+          "frames": [
+            0.0,
+            3.0,
+            6.0,
+            9.0,
+            12.0,
+            15.0,
+            18.0,
+            21.0,
+            24.0,
+            27.0,
+            30.0
+          ],
+          "slice": {
+            "axis": "y",
+            "position": 19.999999999999996
+          },
+          "stale": false,
+          "streamlines": {
+            "count": 64,
+            "inlet": "x_min",
+            "max_steps": 4000
+          },
+          "surface": true,
+          "time": 15.0,
+          "view": {
+            "animate": false,
+            "bands": 12,
+            "contour": "temperature",
+            "deformed": false,
+            "flow": {
+              "slice": {
+                "axis": "y"
+              },
+              "streamlines": {
+                "count": 64,
+                "max_steps": 4000
+              },
+              "surface": true
+            },
+            "frame": 5,
+            "mode": 1,
+            "scale": null,
+            "step": "HeatedFlow"
+          }
+        }
+      },
+      {
+        "command": {
+          "command": "solve.probe",
+          "params": {
+            "frame": 5,
+            "points": [
+              [
+                -22.5,
+                22.5,
+                32.5
+              ],
+              [
+                77.5,
+                22.5,
+                32.5
+              ]
+            ],
+            "step": "HeatedFlow"
+          }
+        },
+        "reply": {
+          "frame": 5,
+          "points": [
+            {
+              "cell": 2705,
+              "point": [
+                -22.5,
+                22.5,
+                32.5
+              ],
+              "pressure": 2.3603438421559986e-06,
+              "solid": false,
+              "temperature": 20.48920440673828,
+              "velocity": [
+                0.944832805544138,
+                -0.01458893711969722,
+                -0.15519924636464566
+              ]
+            },
+            {
+              "cell": 2725,
+              "point": [
+                77.5,
+                22.5,
+                32.5
+              ],
+              "pressure": 2.5510787963867188e-05,
+              "solid": false,
+              "temperature": 21.168622970581055,
+              "velocity": [
+                3.5010790452361107,
+                -0.052210671128705144,
+                -0.8491632179357111
+              ]
+            }
+          ],
+          "step": "HeatedFlow",
+          "time": 15.0,
+          "units": {
+            "point": "mm",
+            "pressure": "Pa",
+            "temperature": "°C",
+            "time": "s",
+            "velocity": "mm/s"
+          }
+        }
+      },
+      {
+        "command": {
+          "command": "results.frame",
+          "params": {
+            "frame": 10,
+            "step": "HeatedFlow"
+          }
+        },
+        "reply": {
+          "contour": {
+            "field": "temperature",
+            "label": "Temperature",
+            "range": {
+              "max": {
+                "at": [
+                  12.500000000000004,
+                  17.499999999999996,
+                  12.5
+                ],
+                "cell": 1022,
+                "value": 44.22925567626953
+              },
+              "min": {
+                "at": [
+                  -22.5,
+                  -17.5,
+                  57.5
+                ],
+                "cell": 4577,
+                "value": 20.011491775512695
+              }
+            },
+            "unit": "°C"
+          },
+          "frames": [
+            0.0,
+            3.0,
+            6.0,
+            9.0,
+            12.0,
+            15.0,
+            18.0,
+            21.0,
+            24.0,
+            27.0,
+            30.0
+          ],
+          "slice": {
+            "axis": "y",
+            "position": 19.999999999999996
+          },
+          "stale": false,
+          "streamlines": {
+            "count": 64,
+            "inlet": "x_min",
+            "max_steps": 4000
+          },
+          "surface": true,
+          "time": 30.0,
+          "view": {
+            "animate": false,
+            "bands": 12,
+            "contour": "temperature",
+            "deformed": false,
+            "flow": {
+              "slice": {
+                "axis": "y"
+              },
+              "streamlines": {
+                "count": 64,
+                "max_steps": 4000
+              },
+              "surface": true
+            },
+            "frame": 10,
+            "mode": 1,
+            "scale": null,
+            "step": "HeatedFlow"
+          }
+        }
+      },
+      {
+        "command": {
+          "command": "solve.probe",
+          "params": {
+            "frame": 10,
+            "points": [
+              [
+                -22.5,
+                22.5,
+                32.5
+              ],
+              [
+                77.5,
+                22.5,
+                32.5
+              ]
+            ],
+            "step": "HeatedFlow"
+          }
+        },
+        "reply": {
+          "frame": 10,
+          "points": [
+            {
+              "cell": 2705,
+              "point": [
+                -22.5,
+                22.5,
+                32.5
+              ],
+              "pressure": 3.1948088690114673e-06,
+              "solid": false,
+              "temperature": 21.287538528442383,
+              "velocity": [
+                0.3429184725973755,
+                -0.046067721996223554,
+                -0.33820944372564554
+              ]
+            },
+            {
+              "cell": 2725,
+              "point": [
+                77.5,
+                22.5,
+                32.5
+              ],
+              "pressure": 3.0350685847224668e-05,
+              "solid": false,
+              "temperature": 26.056215286254883,
+              "velocity": [
+                3.453475423157215,
+                -0.09218735067406669,
+                -1.6621729591861367
+              ]
+            }
+          ],
+          "step": "HeatedFlow",
+          "time": 30.0,
+          "units": {
+            "point": "mm",
+            "pressure": "Pa",
+            "temperature": "°C",
+            "time": "s",
+            "velocity": "mm/s"
+          }
+        }
+      }
+    ]
+  },
+  "geometry_observation": {
+    "sample_design_before": "Untitled",
+    "reopened_design": null,
+    "embedded_members": 0,
+    "open_warnings": [],
+    "open_results": [
+      {
+        "stale": false,
+        "step": "HeatedFlow"
+      }
+    ],
+    "cpu_no_solve_preflight": {
+      "source_head": "fd7a78d3dde46e66149c61a84727f7a09ca86e55",
+      "before": {
+        "design": "Untitled",
+        "elements": 0,
+        "journal": 4,
+        "migrated_from": null,
+        "nodes": 0,
+        "path": null,
+        "results": [],
+        "sample": "heated-flow",
+        "surfaces": 0,
+        "warnings": []
+      },
+      "saved": {
+        "bytes": 7121,
+        "contents": [
+          "the model definition, its mesh and the commands that built it"
+        ],
+        "path": "\\\\?\\$QA_ROOT\\preflight.fieldcraft"
+      },
+      "opened": {
+        "design": null,
+        "elements": 0,
+        "journal": 4,
+        "migrated_from": null,
+        "mismatched": [],
+        "nodes": 0,
+        "path": "\\\\?\\$QA_ROOT\\preflight.fieldcraft",
+        "renamed": [],
+        "results": [],
+        "stale": {
+          "mesh_bodies": [],
+          "references": [],
+          "seeds": [],
+          "sets": []
+        },
+        "surfaces": 0,
+        "view": null,
+        "warnings": []
+      },
+      "geometry_members": 0,
+      "manifest_geometry": {}
+    },
+    "source_explanation": "file.sample creates a CAD design without registering sources.design; file_bytes_with/geometry_copies only retain registered sources. Geometry is absent although the reopened stored results are current.",
+    "source_locations": [
+      "crates/engine/src/cmd/file.rs:112",
+      "crates/engine/src/cmd/file.rs:237",
+      "crates/engine/src/cmd/file.rs:256"
+    ]
+  },
+  "reproduction": {
+    "producer_commands": [
+      {
+        "command": "file.sample",
+        "params": {
+          "name": "heated-flow"
+        }
+      },
+      {
+        "command": "model.units",
+        "params": {
+          "system": "mm-t-s-N-MPa",
+          "overrides": {
+            "pressure": "Pa"
+          }
+        }
+      },
+      {
+        "command": "model.material.create",
+        "params": {
+          "name": "Aluminium",
+          "density": "2700 kg/m³",
+          "thermal": {
+            "conductivity": "200 W/(m K)",
+            "specific_heat": "900 J/(kg K)"
+          }
+        }
+      },
+      {
+        "command": "model.fluid_domain.edit",
+        "params": {
+          "name": "WarmAir",
+          "material": "Air",
+          "min": [
+            -30,
+            -20,
+            0
+          ],
+          "max": [
+            100,
+            60,
+            70
+          ],
+          "spacing": 5,
+          "faces": {
+            "x_min": {
+              "type": "pressure",
+              "pressure": 0
+            },
+            "x_max": {
+              "type": "pressure",
+              "pressure": 0
+            },
+            "y_min": {
+              "type": "slip"
+            },
+            "y_max": {
+              "type": "slip"
+            },
+            "z_min": {
+              "type": "wall"
+            },
+            "z_max": {
+              "type": "slip"
+            }
+          },
+          "obstacles": [
+            "Bracket"
+          ],
+          "porous": [
+            {
+              "name": "Outlet vent",
+              "min": [
+                85,
+                -20,
+                0
+              ],
+              "max": [
+                95,
+                60,
+                70
+              ],
+              "axis": "x",
+              "resistance": {
+                "type": "loss_coefficient",
+                "coefficient": 3
+              }
+            }
+          ],
+          "fans": [
+            {
+              "name": "Cooling fan",
+              "min": [
+                -20,
+                -20,
+                0
+              ],
+              "max": [
+                -10,
+                60,
+                70
+              ],
+              "direction": "+x",
+              "curve": [
+                [
+                  0,
+                  "0.0001 Pa"
+                ],
+                [
+                  "0.00005 m³/s",
+                  0
+                ]
+              ],
+              "relaxation": 0.01
+            }
+          ],
+          "thermal": {
+            "initial_temperature": 20,
+            "faces": {
+              "x_min": {
+                "type": "temperature",
+                "value": 20
+              }
+            },
+            "solids": [
+              {
+                "body": "Bracket",
+                "material": "Aluminium",
+                "power": "80 W",
+                "limit": 80
+              }
+            ]
+          }
+        }
+      },
+      {
+        "command": "model.step.edit",
+        "params": {
+          "name": "HeatedFlow",
+          "procedure": {
+            "type": "fluid",
+            "domain": "WarmAir",
+            "time_step": 0.01,
+            "end_time": 30,
+            "frames": 10,
+            "collision": "regularized"
+          }
+        }
+      },
+      {
+        "command": "solve.fluid",
+        "params": {
+          "backend": "gpu",
+          "max_cells": 10000,
+          "max_steps": 5000,
+          "max_cell_updates": 20000000,
+          "max_frame_bytes": 16777216,
+          "threads": 3
+        }
+      },
+      {
+        "command": "results.slice",
+        "params": {
+          "field": "temperature",
+          "axis": "y"
+        }
+      },
+      {
+        "command": "results.contour",
+        "params": {
+          "field": "temperature",
+          "range": {
+            "min": 20,
+            "max": 50
+          }
+        }
+      },
+      {
+        "command": "results.surface",
+        "params": {
+          "show": true
+        }
+      },
+      {
+        "command": "results.streamlines",
+        "params": {
+          "show": true
+        }
+      },
+      {
+        "command": "results.frame",
+        "params": {
+          "frame": 10
+        }
+      }
+    ],
+    "producer_save_command": {
+      "command": "file.save_as",
+      "params": {
+        "path": "$QA_ROOT/fan-original.fieldcraft",
+        "geometry": "embed",
+        "results": true
+      }
+    },
+    "fresh_process_commands": [
+      {
+        "command": "file.open",
+        "params": {
+          "path": "$QA_ROOT/fan-original.fieldcraft"
+        }
+      },
+      {
+        "command": "results.frame",
+        "params": {
+          "step": "HeatedFlow",
+          "frame": 0
+        }
+      },
+      {
+        "command": "results.contour",
+        "params": {
+          "step": "HeatedFlow",
+          "field": "velocity",
+          "range": "auto"
+        }
+      },
+      {
+        "command": "results.contour",
+        "params": {
+          "step": "HeatedFlow",
+          "field": "temperature",
+          "range": "auto"
+        }
+      },
+      {
+        "command": "solve.probe",
+        "params": {
+          "step": "HeatedFlow",
+          "frame": 0,
+          "points": [
+            [
+              -22.5,
+              22.5,
+              32.5
+            ],
+            [
+              77.5,
+              22.5,
+              32.5
+            ]
+          ]
+        }
+      },
+      {
+        "note": "Repeat the four result query commands for frames5 and10, then save_as fan-resaved.fieldcraft with geometry=embed/results=true. No solver call in this fresh process."
+      }
+    ],
+    "cpu_geometry_repro": [
+      {
+        "command": "file.sample",
+        "params": {
+          "name": "heated-flow"
+        }
+      },
+      {
+        "command": "file.save_as",
+        "params": {
+          "path": "$QA_ROOT/preflight.fieldcraft",
+          "geometry": "embed",
+          "results": true
+        }
+      },
+      {
+        "fresh_process_command": "file.open",
+        "params": {
+          "path": "$QA_ROOT/preflight.fieldcraft"
+        }
+      }
+    ]
+  },
+  "build": {
+    "command": "cargo build -p fieldcraft-cli",
+    "CARGO_BUILD_JOBS": "3",
+    "CARGO_TARGET_DIR": "dedicated per-source target",
+    "profile": "unchanged dev profile",
+    "duration_seconds": 1170,
+    "source_clean": true,
+    "binary_provenance": "Built from exact source_head in its dedicated target; copied unchanged for this QA."
+  },
+  "completed_utc": "2026-10-25T18:05:13.928093+00:00"
+}

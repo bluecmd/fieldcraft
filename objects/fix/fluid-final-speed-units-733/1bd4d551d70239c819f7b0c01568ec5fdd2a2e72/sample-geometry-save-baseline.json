@@ -1,0 +1,98 @@
+{
+  "schema": 1,
+  "kind": "CPU-only-no-solve-sample-geometry-baseline-control",
+  "source_head": "1bd4d551d70239c819f7b0c01568ec5fdd2a2e72",
+  "source_base": "3751d3bb93676aa49d1a18c438424be88162ac03",
+  "source_clean": true,
+  "cli_sha256": "dcb2ccf461ecaae3ed4a6051477e6a9235f444c4f7357aefe347e90d6967c301",
+  "binary_provenance": "Existing verified PR733 CLI, no rebuild; base3751 plus final-speed reply units changes only.",
+  "policy": {
+    "FIELDCRAFT_GPU": "cpu",
+    "WGPU_BACKEND": "vulkan",
+    "solver_calls": 0
+  },
+  "commands": [
+    {
+      "process": "producer",
+      "command": "file.sample",
+      "params": {
+        "name": "heated-flow"
+      }
+    },
+    {
+      "process": "producer",
+      "command": "file.save_as",
+      "params": {
+        "path": "$QA_ROOT/sample-embed.fieldcraft",
+        "geometry": "embed",
+        "results": true
+      }
+    },
+    {
+      "process": "fresh-reader",
+      "command": "file.open",
+      "params": {
+        "path": "$QA_ROOT/sample-embed.fieldcraft"
+      }
+    }
+  ],
+  "sample_reply": {
+    "design": "Untitled",
+    "elements": 0,
+    "journal": 4,
+    "migrated_from": null,
+    "nodes": 0,
+    "path": null,
+    "results": [],
+    "sample": "heated-flow",
+    "surfaces": 0,
+    "warnings": []
+  },
+  "save_reply": {
+    "bytes": 7121,
+    "contents": [
+      "the model definition, its mesh and the commands that built it"
+    ],
+    "path": "\\\\?\\$QA_ROOT\\sample-embed.fieldcraft"
+  },
+  "open_reply": {
+    "design": null,
+    "elements": 0,
+    "journal": 4,
+    "migrated_from": null,
+    "mismatched": [],
+    "nodes": 0,
+    "path": "\\\\?\\$QA_ROOT\\sample-embed.fieldcraft",
+    "renamed": [],
+    "results": [],
+    "stale": {
+      "mesh_bodies": [],
+      "references": [],
+      "seeds": [],
+      "sets": []
+    },
+    "surfaces": 0,
+    "view": null,
+    "warnings": []
+  },
+  "package": {
+    "file_bytes": 7121,
+    "geometry": {},
+    "embedded_members": {},
+    "results_bytes": 0
+  },
+  "observations": {
+    "design_initially_present": true,
+    "geometry_embedded": false,
+    "design_retained": false,
+    "open_warned": false,
+    "fresh_process": true,
+    "producer_exit": 0,
+    "reader_exit": 0
+  },
+  "limits": [
+    "No solver or GPU execution, numerical-result or UI-view claim.",
+    "Confirms the workflow on this exact current-develop-family revision; does not claim every sample is affected.",
+    "No source edits, workaround, fixture change or build."
+  ]
+}

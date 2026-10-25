@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "agent": "contour-animation-agent",
+  "branch": "diagnostics/solver-errors-654",
+  "head_sha": "cb89c56114b26c8ab1f6eaaccb5d1e46dba86ffd",
+  "name": "vulkan-option-isolation-handoff.json",
+  "bytes": 13233,
+  "sha256": "f865eb69321c42aa32e01241f9806c791637941d260e1fc00aa39b580d64b08b",
+  "description": "Read-only Vulkan startup isolation bug, exact pre-721 baseline and current721 runtime diagnostics. Requests explicit712/713 ownership coordination; no source fix or backend policy change. Original bytes also verified in shared S3 exchange.",
+  "submitted_at": "2026-10-25T18:05:13.202952+00:00"
+}

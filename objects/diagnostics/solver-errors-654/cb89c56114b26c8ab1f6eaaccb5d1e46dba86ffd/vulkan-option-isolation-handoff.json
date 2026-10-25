@@ -1,0 +1,325 @@
+{
+  "schema": "fieldcraft-vulkan-inactive-option-isolation/1",
+  "status": "bug_reproduced_unfixed_ownership_coordination_required",
+  "title": "Explicit Vulkan selection is blocked by an inactive DX12 compiler override",
+  "summary": "WGPU_BACKEND=vulkan plus inherited WGPU_DX12_COMPILER=staticdxc fails before instance creation. Reproduced independently before PR721 and at its exact current head. Removing only the compiler override permits Vulkan execution.",
+  "source_proof": [
+    {
+      "head": "3751d3bb93676aa49d1a18c438424be88162ac03",
+      "evidence": "read_only_source",
+      "path": "crates/gpu/src/select.rs",
+      "adapter_enumeration_call": 118,
+      "validation_call": 142,
+      "unconditional_staticdxc_check": 170,
+      "instance_creation": 148
+    },
+    {
+      "head": "cb89c56114b26c8ab1f6eaaccb5d1e46dba86ffd",
+      "evidence": "read_only_source_and_runtime",
+      "path": "crates/gpu/src/select.rs",
+      "adapter_enumeration_call": 118,
+      "validation_call": 148,
+      "unconditional_staticdxc_check": 176,
+      "instance_creation": 154
+    }
+  ],
+  "call_order_proof": "The platform mask is narrowed by WGPU_BACKEND to Vulkan; adapter() calls enumerate(), then instance(). instance() parses all BackendOptions and calls backend_options() before cache lookup or wgpu::Instance::new(). backend_options() rejects StaticDxc without inspecting the attempted mask. wgpu-types30.0.1 src/backend.rs824-852 parses the environment override as StaticDxc.",
+  "minimal_reproduction": {
+    "nature": "Original reproduction data for an authorized tester; receiving this report does not authorize execution.",
+    "environment": {
+      "WGPU_BACKEND": "vulkan",
+      "FIELDCRAFT_GPU": "hardware",
+      "FIELDCRAFT_REQUIRE_GPU": "1",
+      "WGPU_DX12_COMPILER": "staticdxc",
+      "FIELDCRAFT_CRASH_DIR": "<isolated writable report directory>"
+    },
+    "script_json": [
+      {
+        "command": "file.sample",
+        "params": {
+          "name": "flow-past"
+        }
+      },
+      {
+        "command": "solve.fluid",
+        "params": {
+          "step": "Flow",
+          "backend": "gpu"
+        }
+      }
+    ],
+    "cli_command_data": {
+      "executable": "<verified exact-head fieldcraft-cli>",
+      "arguments": [
+        "run",
+        "reproduce.json"
+      ],
+      "working_directory": "<isolated reproduction directory>",
+      "script_file_contains": "script_json array above"
+    },
+    "expected": "Nonzero CLI run exit with staticdxc refusal before Instance::new; exact baseline observation below. PR721 additionally writes a bounded solver_error record if the report directory is allowed and writable."
+  },
+  "independent_baseline": {
+    "head": "1bd4d551d70239c819f7b0c01568ec5fdd2a2e72",
+    "provenance": "Parent-verified #733 CLI; only fluid reply-unit mapping differs from develop3751. Not a develop3751 runtime claim.",
+    "binary_sha256": "dcb2ccf461ecaae3ed4a6051477e6a9235f444c4f7357aefe347e90d6967c301",
+    "started_utc": "2026-10-25T17:53:12.8949557Z",
+    "completed_utc": "2026-10-25T17:53:13.320928Z",
+    "cli_run_exit": 1,
+    "stdout": "",
+    "stderr": "error: step 2 (solve.fluid): invalid input: GPU: the GPU device could not be opened: WGPU_DX12_COMPILER=staticdxc is not built in: use dxc with dxcompiler.dll, or fxc\n",
+    "isolated_report_files": 0,
+    "healthy_control_executed": false,
+    "driver_activity_independently_instrumented": false,
+    "instance_creation_prevented": "Established by exact source call order, not external driver instrumentation."
+  },
+  "pr721_runtime": {
+    "head": "cb89c56114b26c8ab1f6eaaccb5d1e46dba86ffd",
+    "tree": "be1d9dc29c2bec4d27d91725632a272ee5ad3bfe",
+    "binary_sha256": "bae9764a5e407be41a9c52bc6ef4e37927f85ac772fe6d7dbec2345638829e1d",
+    "cli_version": "fieldcraft-cli 0.7.0",
+    "started_utc": "2026-10-25T19:00:20.738188+01:00",
+    "completed_utc": "2026-10-25T19:00:21.522362+01:00",
+    "provenance": "Newton executed the corrected helper that explicitly forwards the four relevant environment variables into each child process. The initial helper with omitted child environment is preserved privately and excluded from this evidence.",
+    "host": "CLI MCP headless, original64-cell cavity, scoped read/write roots; each host process exited0 even when the solve tool returned an error.",
+    "setup_command_data": [
+      {
+        "command": "file.new",
+        "params": {}
+      },
+      {
+        "command": "model.units",
+        "params": {
+          "system": "m-kg-s-N-Pa"
+        }
+      },
+      {
+        "command": "model.material.create",
+        "params": {
+          "name": "Fluid",
+          "density": 1,
+          "fluid": {
+            "type": "newtonian",
+            "viscosity": 0.1
+          }
+        }
+      },
+      {
+        "command": "model.fluid_domain.create",
+        "params": {
+          "name": "Wind",
+          "material": "Fluid",
+          "min": [
+            0,
+            0,
+            0
+          ],
+          "max": [
+            1,
+            1,
+            0.125
+          ],
+          "spacing": 0.125,
+          "faces": {
+            "x_min": {
+              "type": "velocity",
+              "velocity": [
+                0.1,
+                0,
+                0
+              ]
+            },
+            "x_max": {
+              "type": "pressure",
+              "pressure": 0
+            },
+            "z_min": {
+              "type": "periodic"
+            },
+            "z_max": {
+              "type": "periodic"
+            }
+          }
+        }
+      },
+      {
+        "command": "model.step.create",
+        "params": {
+          "name": "Flow",
+          "procedure": {
+            "type": "fluid",
+            "domain": "Wind",
+            "end_time": 0.01,
+            "time_step": 0.001,
+            "frames": 4,
+            "steady": {
+              "window": 1,
+              "min_time": 20
+            }
+          }
+        }
+      }
+    ],
+    "solve_command_data": {
+      "command": "solve.fluid",
+      "params": {
+        "step": "Flow",
+        "backend": "gpu"
+      }
+    },
+    "mcp_command_data": {
+      "executable": "<verified exact-cb89 CLI>",
+      "arguments": [
+        "mcp",
+        "--headless",
+        "--automation-read-root",
+        "<allowed directory>",
+        "--automation-write-root",
+        "<allowed directory>"
+      ],
+      "request_method": "tools/call",
+      "request_tool": "execute",
+      "request_arguments": "Each setup_command_data entry, followed by solve_command_data",
+      "initialization": {
+        "method": "initialize",
+        "protocolVersion": "2025-03-26",
+        "capabilities": {}
+      }
+    },
+    "startup_failure": {
+      "solve_tool_result": "error",
+      "mcp_process_exit": 0,
+      "message_preserved": "backend error: GPU: the GPU device could not be opened: WGPU_DX12_COMPILER=staticdxc is not built in: use dxc with dxcompiler.dll, or fxc",
+      "observed_backend": {
+        "actual": null,
+        "observed_context": {
+          "adapter": null,
+          "adapter_limits": null,
+          "backend": null,
+          "counter_scope": "devices: successful LBM compute creations, including retired devices; viewport, meshing and external/driver devices are not counted. instances: gpu::select creations; external viewport and driver-internal instances are not counted.",
+          "device_limits": null,
+          "devices_opened": 0,
+          "driver": null,
+          "driver_info": null,
+          "instances_opened": 0,
+          "phase": "selecting_adapter"
+        },
+        "requested": "gpu"
+      },
+      "retained_report_kind": "solver_error",
+      "report_contains_only_report_json": true,
+      "list_and_read_verified": true,
+      "returned_error_home_path_redacted": true,
+      "absolute_private_paths_omitted": true,
+      "solve_tool_isError": true,
+      "mcp_transport_exit_code": 0,
+      "transport_note": "MCP server exits 0 normally on stdin EOF; the solve fails as a tool result with isError=true. This is not a CLI script exit-code experiment."
+    },
+    "retention_controls": {
+      "outside_write_root": {
+        "original_error_unchanged": true,
+        "report_retained": false
+      },
+      "io_failure_existing_file": {
+        "original_error_unchanged": true,
+        "report_retained": false,
+        "existing_sentinel_preserved": true
+      }
+    },
+    "vulkan_control": {
+      "only_compiler_override_unset": true,
+      "cells": 64,
+      "steps": 10,
+      "first_stop": "max_time",
+      "first_backend": {
+        "adapter": "NVIDIA GeForce RTX 4090",
+        "adapter_limits": {
+          "max_buffer_size": 4294967295,
+          "max_storage_buffer_binding_size": 2147483644,
+          "max_storage_buffers_per_shader_stage": 524288
+        },
+        "backend": "Vulkan",
+        "counter_scope": "devices: successful LBM compute creations, including retired devices; viewport, meshing and external/driver devices are not counted. instances: gpu::select creations; external viewport and driver-internal instances are not counted.",
+        "device_limits": {
+          "max_buffer_size": 4294967295,
+          "max_storage_buffer_binding_size": 2147483644,
+          "max_storage_buffers_per_shader_stage": 7
+        },
+        "devices_opened": 1,
+        "driver": "NVIDIA",
+        "driver_info": "616.56",
+        "instances_opened": 1,
+        "phase": "device_created"
+      },
+      "second_backend": {
+        "adapter": "NVIDIA GeForce RTX 4090",
+        "adapter_limits": {
+          "max_buffer_size": 4294967295,
+          "max_storage_buffer_binding_size": 2147483644,
+          "max_storage_buffers_per_shader_stage": 524288
+        },
+        "backend": "Vulkan",
+        "counter_scope": "devices: successful LBM compute creations, including retired devices; viewport, meshing and external/driver devices are not counted. instances: gpu::select creations; external viewport and driver-internal instances are not counted.",
+        "device_limits": {
+          "max_buffer_size": 4294967295,
+          "max_storage_buffer_binding_size": 2147483644,
+          "max_storage_buffers_per_shader_stage": 7
+        },
+        "devices_opened": 1,
+        "driver": "NVIDIA",
+        "driver_info": "616.56",
+        "instances_opened": 1,
+        "phase": "device_reused"
+      },
+      "repeat_record_count": 2,
+      "completed_physical_transient_adds_no_report": true,
+      "mcp_process_exit": 0,
+      "interpretation": "Vulkan setup and stepping succeed. The intentionally short steady case reaches max_time, not steady convergence; a subsequent requested physical transient completes without an added diagnostic."
+    },
+    "corrected_runtime_summary_integrity": {
+      "file": "runtime-summary-home-redacted.json",
+      "bytes": 21121,
+      "sha256": "56233315763e777cfa595ea7a4c2595e59a74652d1dd2774190f1ea2ddec3c9d"
+    }
+  },
+  "ownership": {
+    "implementation_authorized": false,
+    "queue_snapshot": "c741568",
+    "overlap_issues": [
+      712
+    ],
+    "overlap_prs": [
+      713
+    ],
+    "request": "Please create a distinct inactive-backend option isolation issue and reconcile ownership with #712/PR713, or explicitly hand the narrow correction to that owner. No competing implementation before a matching claim grant."
+  },
+  "proposed_scope": {
+    "correction": "Validate StaticDxc only when the attempted backend mask includes DX12.",
+    "preserve": [
+      "Explicit DX12 StaticDxc refusal",
+      "Other backend option fields and cache/reuse behavior",
+      "Metal/DX12/GL paths and existing fallback policy",
+      "All numerical/shader behavior"
+    ],
+    "regressions": [
+      "Vulkan-only StaticDxc accepted by pure options validator",
+      "DX12-containing masks still refuse StaticDxc",
+      "Auto/Fxc behavior unchanged",
+      "Process-isolated environment regression; Vulkan hardware control"
+    ]
+  },
+  "limitations": [
+    "No source change or fix is claimed.",
+    "No runtime test of exact develop3751; the independent older-code runtime is exact1bd4d551.",
+    "No driver crash, device loss, OOM, throughput, large model or cross-platform validation.",
+    "The healthy control is a tiny operational setup/stepping check, not a new scientific verification.",
+    "This report does not authorize backend removal, changing backend policy, or modifying another owner branch."
+  ],
+  "peer_runtime_report": {
+    "file": "vulkan-inactive-option-isolation.json",
+    "role": "Newton exact-cb89 corrected-environment runtime-only report, supplied separately",
+    "bytes": 13742,
+    "sha256": "d47a7a033e6cd70f4621bc861093ad6fff1d2bdb4e4b457743bd25175319aef4"
+  },
+  "scope_distinction": "Independent baseline CLI run exits1. Exact-cb89 MCP transport exits0 normally, but the solve tool returns isError=true. All four diagnostic QA cases passing does not mean the isolation bug was fixed."
+}
