@@ -1,13 +1,13 @@
 {
   "number": 731,
   "branch": "fix/contact-corner-reports-203",
-  "head_sha": "7f6528611943fef617c18a641cfd1d1f6368655f",
+  "head_sha": "eaf2cf45693eade2d34255488521e35d89e59cad",
   "state": "open",
   "merged": false,
   "draft": false,
   "title": "solver: derive contact reports from overlapping face support",
-  "body": "## What and why\n\nRefs #203. Contact pressure and the integrated normal force were projected onto the sum of every secondary face's area vector. At a surface corner, uncontacted side faces tilted that direction and understated the reports, even though the assembled force and motion were correct. This is a review handoff pending an explicit maintainer decision on eight moved frozen reporting quantities; completion and green acceptance are not claimed.\n\nReporting now uses the actual overlapping face pairs' projection normals, weighted by each node's existing mortar support. Small sliding keeps the fixed reference pair's normal; finite sliding uses the current overlap's normal. Pressure, normal force and frictional shear use this coherent reporting direction. The physical `State::normal` used by the friction return map is deliberately unchanged, as are assembly, multipliers, gaps, active sets, convergence controls and limits. Zero or exactly cancelling support vectors produce a zero reporting direction, not a fabricated fallback or a NaN.\n\nThe independent regression compresses a unit-area flat interface while including all six secondary cube faces. Actual pressure must equal actual normal force divided by area, independently of the unchanged augmentation stopping gap. The original C-ring regression now also compares every corresponding nodal pressure in plane strain and both layers of the 3D ring, integrated normal force, and existing thread-count determinism. Neither old ring report is used as a reference: the 2D general-contact surface also turns a corner at its contacting end; the 3D surface includes additional uncontacted Z faces.\n\nA small original native command recipe and explanation are committed at `docs/recipes/contact-corner-reports.{json,md}`. No new command, dependency, physical reference, tolerance or ROADMAP change is included.\n\n## Demonstration\n\n<!-- fieldcraft-attachments:start -->\n### Attached files\n\nThese uploads are complete; earlier pending-upload wording below describes the original handoff.\n\nCapture/source revision: `7f6528611943fef617c18a641cfd1d1f6368655f`.\n\n**contact-corner-reports-203.mp4**\n\nhttps://github.com/user-attachments/assets/93dae5be-4c65-4ca9-96cb-30d42ec50760\n\n**after-pressure.png**\n\n![after-pressure.png](https://github.com/user-attachments/assets/9ce37332-9db8-4d92-884c-bf2db8e6a6ac)\n\n**after-probe.png**\n\n![after-probe.png](https://github.com/user-attachments/assets/ec3bbb1c-fad4-4f56-bb37-70fb7cef1de4)\n\n<!-- fieldcraft-attachments:end -->\n\nAn exact-head **29.0-second native Windows / RTX 4090 / Vulkan** recording shows the committed original two-cube setup, the readable secondary-set form with all six faces, static compression, contact-pressure contours and an actual node 9 viewport probe at 9.992 MPa. The complete 36-command recipe also succeeded through the native control channel; its four bottom nodes report uniform pressure 9.992283950616748 MPa and the unsupported top node zero. Both hexes pass mesh quality. Deformation scales 1 and 50 and the static-equilibrium interpretation are explicit; this is not a physical transient. The final caption explicitly states that eight frozen Hertz reports await maintainer review: the recording is review evidence, not green oracle acceptance.\n\nNative presented-frame/GPU checks, visual inspection, caption bounds and full H.264 decode passed. The owned app quit cleanly. Immutable external originals are `contact-corner-reports-203.mp4` (1280×1080, 10 fps), `after-pressure.png` and `after-probe.png`. Parent source/body/native visual review, independent original/index byte-hash checks and full video decode passed. The three files were transferred in ordinary-Git artifact commit `0b0f2522a855c5d5418a797d1ad0af426c6ff694`, under `objects/fix/contact-corner-reports-203/7f6528611943fef617c18a641cfd1d1f6368655f/`. Received receipts and actual attachment URLs remain pending; transport submission is not an attachment claim. Video and stills are absent from feature history.\n\n## Validation\n\nSource `7f6528611943fef617c18a641cfd1d1f6368655f`, rebased without changes on mirrored develop `7d9c027d71b2c1ea3395e2552e95f0455a7244db`:\n\n- Full `cargo test -p fieldcraft-solver`: 146 passed, seven existing ignored heavy tests, no failures or filtered tests. The independent cube, mapped C-ring pressure parity, small/reference and finite/current pair normals, support weighting at scales 1e-200/1/1e200, and zero/cancelling support tests pass. Existing flat Coulomb stick/slip and thread-count checks pass.\n- `cargo check -p fieldcraft-solver`, touched-crate all-target clippy with warnings denied, fmt and diff checks pass. Individually run rooted assets (377), layers (23 crates) and unit-factors (zero new factors; nine frozen migration factors) gates pass. `cargo xtask affected --base HEAD` confirms the helper embeds this worktree's root.\n- Exact before/after full-result QA on the original 2D ring, 3D ring and independent cube confirms every displacement, reaction, stress, convergence record and physical contact force/multiplier/gap/status/penetration/augmentation field is identical; only intended pressure and normal-force reports change. A separate bounded tilted-cube assembly audit covers small and finite sliding, each frictionless and Coulomb: every physical `State` field, complete internal-force vector and complete tangent block array match the unchanged baseline exactly. Temporary audit instrumentation and raw outputs remain external.\n- Original ring normal-force reports move from 0.00816041725853901 / 0.005945751845527164 (2D/3D) to 0.009499384811150152 / 0.00949934639419216. Peak pressures move from 0.05816282193004552 / 0.04469019561665807 to 0.08152629750177039 / 0.08152578925910003. The corrected 2D/3D agreement is approximately 0.0004% for normal force and 0.0006% for peak pressure. In the independent unit-area cube, physical normal force remains 9.992283950617677 while the understated report 5.807670897995931 becomes 9.992283950617677.\n- Mandatory full default `cargo xtask oracle` ran all 82 normal cases and checked the existing nightly-only case through its frozen fixture. It exits **1 / RED** solely for the eight frozen reporting quantities below. Each still passes its unchanged Hertz theory tolerance; no other frozen quantity is flagged. The existing nine known-failure quantities and nine pending cases remain explicit. No fixture, expected physical reference or tolerance was edited or blessed. The generated `docs/oracle.md` and its exact eight-row MOVED diff are preserved externally for review; the feature keeps the accepted page until the fixture decision is made.\n- A fresh dedicated per-worktree native target built successfully in 19m53s; the final frozen-head build succeeded again in 0.36s before capture. No full local workspace gate, workspace clippy or wasm run is claimed. Remote CI is pending publication; the unchanged frozen fixtures are expected to keep its oracle red until reconciliation.\n\n### Frozen-report reconciliation requested\n\nThe source cases are `tests/oracle/nl-hertz-cylinder/{README.md,recipe.json,expected.json,fixture.json}` and `tests/oracle/nl-hertz-cylinder-plane-strain/{README.md,recipe.json,expected.json,fixture.json}` at base `7d9c027d71b2c1ea3395e2552e95f0455a7244db`; the new values below are from the full oracle at `7f6528611943fef617c18a641cfd1d1f6368655f`. Both committed `expected.json` files cite Hertz (1882) and K. L. Johnson, *Contact Mechanics* (1985), §4.3, equations 4.45–4.49. These round secondary patches are small sliding: the old reports averaged current full-face area vectors, while the correction uses the fixed reference pair projection normals and actual nodal supports, consistently with the unchanged small-sliding constraint. This also changes reports at curved support boundaries, beyond the dramatic cube-corner example. This is an output-definition change, not an improvement claimed against every theory number.\n\nPressure values are MPa; integrated normal force is N. The final two columns use the **unchanged public-theory** tolerance, not the much tighter frozen-result band. Those fixture bands are unchanged and still fail.\n\n| Case | Quantity | Old frozen value | New report | Theory reference | New theory error | Theory tolerance |\n|---|---|---:|---:|---:|---:|---:|\n| `nl-hertz-cylinder` | `peak_pressure` | 2891.953889449524 | 2891.9551242243965 | 2884.6153846153843 | 0.2544443% | 2% |\n| `nl-hertz-cylinder` | `normal_force` | 1133.0366360113278 | 1133.119329027206 | 1132.7858125924733 | 0.02944214% | 0.2% |\n| `nl-hertz-cylinder` | `pressure_x0296` | 2257.8357909118563 | 2258.083913024357 | 2325.066800691437 | 2.880902% | 5% |\n| `nl-hertz-cylinder` | `pressure_x0367` | 2078.4005834495074 | 2078.7720720428797 | 1959.0164149439815 | 6.11305% | 10% |\n| `nl-hertz-cylinder-plane-strain` | `peak_pressure` | 2891.9633998947766 | 2891.964634672629 | 2884.6153846153843 | 0.254774% | 2% |\n| `nl-hertz-cylinder-plane-strain` | `normal_force` | 1133.0442926242354 | 1133.1269867294397 | 1132.7858125924733 | 0.03011815% | 0.2% |\n| `nl-hertz-cylinder-plane-strain` | `pressure_x0296` | 2257.8514097926386 | 2258.099534120568 | 2325.066800691437 | 2.88023% | 5% |\n| `nl-hertz-cylinder-plane-strain` | `pressure_x0367` | 2078.406343070884 | 2078.7778319837876 | 1959.0164149439815 | 6.113344% | 10% |\n\nMaintainer decision requested: review these intentional pressure/normal-force changes and decide how to reconcile the frozen accepted reporting values while retaining the published theory references, tolerances and all unchanged physical quantities. This branch does not special-case Hertz or silently restore the old reporting direction to pass fixtures. Until that review, the frozen oracle is red and #203 stays open.\n\n## Known limitations\n\nThis corrects implicit contact output decomposition. It does not change the physical friction law's existing normal, contact discretisation or convergence behavior, and does not add quadratic contact faces, new sliding semantics or a new solver. A zero/cancelling support sum has no unique normal direction: its reported normal component is zero, while the full finite force remains in frictional shear when that field is present.\n\nThe native recipe is an original coarse, frictionless two-hex static compression example. It demonstrates the reporting workflow and independent flat-interface identity; the original C-ring comparison and physical tangent/force invariance are numerical regression/QA evidence. The eight moved frozen Hertz reports remain an unresolved acceptance gate; the native video is review evidence and does not make that gate green or claim issue completion. Run-specific raw logs, saved models and media remain outside feature history. Actual GitHub attachments remain pending until maintainer URLs are supplied.\n",
-  "updated_at": "2026-10-24T22:51:43Z",
+  "body": "Contact pressure at a corner included uncontacted side faces in its reporting normal, understating pressure and normal force although the physical contact force and motion were correct. Closes #203.\n\nThe report now uses overlapping face-pair normals weighted by nodal mortar support. Small sliding keeps the reference pair normal; finite sliding follows the current overlap. Pressure, the scalar normal-force sum and reported shear share that direction. Physical force assembly, tangent, multipliers, gaps, the friction return map, active sets and convergence rules retain their existing definitions. Missing or cancelling support has no reporting direction and produces zero normal component instead of a manufactured direction or NaN.\n\nThe existing independent cube regression checks pressure = normal force / area even when all six secondary faces are selected. Plane-strain and one-layer solid C-ring regressions compare corresponding pressures and normal force, alongside the existing thread-count checks.\n\n## Why the Hertz normal force moves farther from the load\n\n`normal_force = Σ(-f_A · n_A)` adds **local** normal components. `force = Σ f_A` is the vector resultant. On a curved contact the scalar sum need not equal the resultant's vertical component. The old report used deformed full-face area vectors; the corrected small-sliding report uses the reference-pair normals used by the unchanged constraint. The old scalar happened to be closer to the vertical Hertz load.\n\nA simple estimate predicts the difference: Hertz's `p(x) = p₀ sqrt(1-x²/b²)` has pressure-weighted `<x²> = b²/4`; circular normals therefore lose about `b²/(8R²)` of their vertical component. For `b = 0.5 mm`, `R = 10 mm`, that is **0.03125%**. This explains the scale; it does not replace the Hertz reference or change its tolerance.\n\nCurrent Linux CPU traces from the original two oracle recipes:\n\n| Case | Applied vertical load (N) | Resultant `force.y` (N) | Ground springs (N) | Old frozen scalar (N) | Corrected scalar (N) |\n|---|---:|---:|---:|---:|---:|\n| `nl-hertz-cylinder` | 1132.785812592473 | 1132.770506982133 | 0.015305610423 | 1133.036636011328 | 1133.119329027206 |\n| `nl-hertz-cylinder-plane-strain` | 1132.785812592473 | 1132.778159744225 | 0.007652848299 | 1133.044292624235 | 1133.126986729440 |\n\nThe ground-spring entries were calculated independently as the original spring stiffness times the summed top-node displacement. Resultant + springs balances applied load to **8.3e-11 N / 5.1e-11 N**; each resultant also matches its foundation reaction to about 3e-11 N. The 3D scalar exceeds its vertical resultant by 0.348822 N (0.030793%), consistent with the curvature estimate. Its 0.082693 N increase over the old scalar is a reporting projection change. The apparent error against the unchanged 1132.785813 N Hertz load rises from 0.02214% to 0.02944%, comfortably inside the existing 0.2% tolerance. The 2D scalar rises by 0.082694 N, to 0.03012% from that same reference.\n\nThe two Hertz READMEs and API docs explain this distinction. Only the eight intended report entries are refrozen below, using the oracle's existing band formula. Physical reference values, acceptance tolerances, all other fixtures, and the already matching depth-stress/zero-pressure entries stay unchanged.\n\n| Case | Quantity | Old frozen | Corrected frozen |\n|---|---|---:|---:|\n| `nl-hertz-cylinder` | `peak_pressure` | 2891.953889449524 | 2891.955124224397 |\n| `nl-hertz-cylinder` | `normal_force` | 1133.036636011328 | 1133.119329027206 |\n| `nl-hertz-cylinder` | `pressure_x0296` | 2257.835790911856 | 2258.083913024357 |\n| `nl-hertz-cylinder` | `pressure_x0367` | 2078.400583449507 | 2078.772072042880 |\n| `nl-hertz-cylinder-plane-strain` | `peak_pressure` | 2891.963399894777 | 2891.964634672629 |\n| `nl-hertz-cylinder-plane-strain` | `normal_force` | 1133.044292624235 | 1133.126986729440 |\n| `nl-hertz-cylinder-plane-strain` | `pressure_x0296` | 2257.851409792639 | 2258.099534120568 |\n| `nl-hertz-cylinder-plane-strain` | `pressure_x0367` | 2078.406343070884 | 2078.777831983788 |\n\n## Validation\n\nCurrent tested source: `eaf2cf45693eade2d34255488521e35d89e59cad`, rebased on develop `e8ee48d0`.\n\n- `cargo check -p fieldcraft-solver` passed.\n- `cargo test -p fieldcraft-solver`: **147 passed, 0 failed, 7 existing heavy tests ignored**; no doc examples.\n- `cargo fmt --all`, scoped all-target clippy with warnings denied, manual simplification review and `git diff --check` passed.\n- The narrow oracle first reproduced exactly eight moved reporting entries with all twelve physical-reference checks passing. Only `nl-hertz-cylinder` and `nl-hertz-cylinder-plane-strain` were blessed. The original depth-stress fixture entries were retained rather than rewriting insignificant 1e-10 platform round-off.\n- Full default oracle **passed (exit 0)**: 82 normal cases executed, the existing nightly-only case checked by fixture, and all frozen quantities matched after the deliberate two-case blessing. Nine existing known-failure quantities and nine pending cases remain explicit. `docs/oracle.md` was regenerated; only six displayed Hertz rows change (the two tiny peak-pressure moves round to the same display values). There are no moved fixtures or error rows.\n\nThe oracle used the exact `fieldcraft-testkit` generator through `cargo run -p fieldcraft-testkit --bin oracle -- ...`, with the existing optimized development cache and four CPU threads. This was a CPU numerical run, not a release-profile build or a GPU test. No full local workspace gate, CI watching, new dependency, command, physical solver formulation or roadmap edit.\n\n## Original native demonstration\n\n<!-- fieldcraft-attachments:start -->\n### Attached files\n\nThese uploads are complete; earlier pending-upload wording below describes the original handoff.\n\nCapture/source revision: `7f6528611943fef617c18a641cfd1d1f6368655f`.\n\n**contact-corner-reports-203.mp4**\n\nhttps://github.com/user-attachments/assets/93dae5be-4c65-4ca9-96cb-30d42ec50760\n\n**after-pressure.png**\n\n![after-pressure.png](https://github.com/user-attachments/assets/9ce37332-9db8-4d92-884c-bf2db8e6a6ac)\n\n**after-probe.png**\n\n![after-probe.png](https://github.com/user-attachments/assets/ec3bbb1c-fad4-4f56-bb37-70fb7cef1de4)\n\n<!-- fieldcraft-attachments:end -->\n\nThe attached **29-second Windows / RTX 4090 / Vulkan** recording is historical evidence captured at `7f6528611943fef617c18a641cfd1d1f6368655f`. It shows the original two-cube setup with all six secondary faces, static compression, pressure contours and a real node-9 viewport probe near 9.992 MPa. Deformation scales and static-equilibrium interpretation are explicit. Its caption says the eight Hertz reports awaited fixture review at capture time; the current CPU work above resolves that review request. This is not a new hardware run of the rebased source.\n\nThe original native presented-frame and full-result/assembly-invariance audits remain evidence for that original capture and source. No fresh native or GPU numerical validation was possible in this environment. The recording and stills remain outside feature history. The original one-run recipe and explanation were removed from `docs/recipes/` and are reproduced below for review.\n\n## Scope\n\nThis changes implicit contact output decomposition, not its friction law, contact discretisation or convergence behavior. It adds no quadratic contact faces or sliding semantics. Zero/cancelling support yields no normal direction; a finite force remains in reported shear where that field exists. A small-sliding curved normal sum remains distinct from a fixed-direction equilibrium load, as documented above.\n\n## Reproduction of the original demonstration\n\n# Contact reports at a surface corner\n\nRun the original command recipe below in a fresh model:\n\n```sh\ncargo run -p fieldcraft-cli -- run /tmp/contact-corner-reports.json\n```\n\nThe same array can be passed as `commands` to the desktop control channel's `engine.script`.\nThe recipe sets mm, N and MPa display units. Two touching 10 mm cubes each have one hex8\nelement, E = 1000 MPa and Poisson ratio zero. Every lower-cube node is fixed, the upper cube's\nlateral translations are held, and its top is displaced down by 0.1 mm in one small-sliding\nnonlinear static step. This is a static equilibrium, not a physical transient. Deformation is\ndisplayed at 50 times its actual magnitude.\n\nThe main surface is the lower cube's top. The secondary surface deliberately includes **all six\nfaces** of the upper cube. Only its bottom overlaps the main surface. Its four bottom nodes\nshould each report pressure about 10 MPa and the upper nodes zero; the integrated normal force\nis about 1000 N. The small remaining penetration follows the unchanged augmented-contact\nconvergence criterion. The actual pressure equals the actual normal force divided by the\n100 mm² interface area, independently of that stopping gap.\n\nThe reporting direction is the unit sum of overlapping face-pair normals weighted by their\nnodal mortar support (the integral of the secondary shape function over that overlap).\nUncontacted side and top faces contribute no support and cannot tilt this direction. Small\nsliding uses the fixed reference pair's normal; finite sliding uses the current overlap's\nprojection normal. At a node whose support vectors exactly cancel, there is no reporting\ndirection: its reported normal component is zero, and any force remains in the shear component\nwhen frictional shear is reported. No arbitrary fallback direction is chosen.\n\nThis correction changes the decomposition reported as pressure, normal force and frictional\nshear. It leaves the assembled contact force, tangent, multiplier, gap, friction return map and\nconvergence controls unchanged. `crates/solver/tests/contact.rs` checks this independent flat\ninterface identity and compares the original closing C-ring's nodal pressure and normal force\nbetween plane strain and a one-layer 3D model. Both rings need the support-based reporting\ndirection: the 2D surface also turns a corner at its contacting end, while the 3D surface has\nadditional uncontacted Z faces. Neither model's old report is a reference solution.\n\nSave this original recipe as `/tmp/contact-corner-reports.json`:\n\n```json\n[\n  {\"command\": \"model.units\", \"params\": {\"system\": \"mm-t-s-N-MPa\"}},\n  {\"command\": \"mesh.node.add\", \"params\": {\"label\": 1, \"xyz\": [0, 0, 0]}},\n  {\"command\": \"mesh.node.add\", \"params\": {\"label\": 2, \"xyz\": [10, 0, 0]}},\n  {\"command\": \"mesh.node.add\", \"params\": {\"label\": 3, \"xyz\": [10, 10, 0]}},\n  {\"command\": \"mesh.node.add\", \"params\": {\"label\": 4, \"xyz\": [0, 10, 0]}},\n  {\"command\": \"mesh.node.add\", \"params\": {\"label\": 5, \"xyz\": [0, 0, 10]}},\n  {\"command\": \"mesh.node.add\", \"params\": {\"label\": 6, \"xyz\": [10, 0, 10]}},\n  {\"command\": \"mesh.node.add\", \"params\": {\"label\": 7, \"xyz\": [10, 10, 10]}},\n  {\"command\": \"mesh.node.add\", \"params\": {\"label\": 8, \"xyz\": [0, 10, 10]}},\n  {\"command\": \"mesh.element.add\", \"params\": {\"label\": 1, \"kind\": \"hex8\", \"nodes\": [1, 2, 3, 4, 5, 6, 7, 8]}},\n  {\"command\": \"mesh.node.add\", \"params\": {\"label\": 9, \"xyz\": [0, 0, 10]}},\n  {\"command\": \"mesh.node.add\", \"params\": {\"label\": 10, \"xyz\": [10, 0, 10]}},\n  {\"command\": \"mesh.node.add\", \"params\": {\"label\": 11, \"xyz\": [10, 10, 10]}},\n  {\"command\": \"mesh.node.add\", \"params\": {\"label\": 12, \"xyz\": [0, 10, 10]}},\n  {\"command\": \"mesh.node.add\", \"params\": {\"label\": 13, \"xyz\": [0, 0, 20]}},\n  {\"command\": \"mesh.node.add\", \"params\": {\"label\": 14, \"xyz\": [10, 0, 20]}},\n  {\"command\": \"mesh.node.add\", \"params\": {\"label\": 15, \"xyz\": [10, 10, 20]}},\n  {\"command\": \"mesh.node.add\", \"params\": {\"label\": 16, \"xyz\": [0, 10, 20]}},\n  {\"command\": \"mesh.element.add\", \"params\": {\"label\": 2, \"kind\": \"hex8\", \"nodes\": [9, 10, 11, 12, 13, 14, 15, 16]}},\n  {\"command\": \"model.set.create\", \"params\": {\"name\": \"all\", \"elements\": [1, 2]}},\n  {\"command\": \"model.set.create\", \"params\": {\"name\": \"base\", \"nodes\": [1, 2, 3, 4, 5, 6, 7, 8]}},\n  {\"command\": \"model.set.create\", \"params\": {\"name\": \"upper\", \"nodes\": [9, 10, 11, 12, 13, 14, 15, 16]}},\n  {\"command\": \"model.set.create\", \"params\": {\"name\": \"top\", \"nodes\": [13, 14, 15, 16]}},\n  {\"command\": \"model.set.create\", \"params\": {\"name\": \"main\", \"faces\": [{\"element\": 1, \"face\": 2}]}},\n  {\"command\": \"model.set.create\", \"params\": {\"name\": \"secondary\", \"faces\": [{\"element\": 2, \"face\": 1}, {\"element\": 2, \"face\": 2}, {\"element\": 2, \"face\": 3}, {\"element\": 2, \"face\": 4}, {\"element\": 2, \"face\": 5}, {\"element\": 2, \"face\": 6}]}},\n  {\"command\": \"model.material.create\", \"params\": {\"name\": \"Elastic\", \"elastic\": {\"type\": \"isotropic\", \"young\": 1000, \"poisson\": 0}}},\n  {\"command\": \"model.section.create\", \"params\": {\"name\": \"Solid\", \"set\": \"all\", \"material\": \"Elastic\", \"kind\": {\"type\": \"solid\"}}},\n  {\"command\": \"interaction.contact.pair\", \"params\": {\"name\": \"Interface\", \"main\": \"main\", \"secondary\": \"secondary\"}},\n  {\"command\": \"model.boundary_condition.create\", \"params\": {\"name\": \"base\", \"type\": \"displacement\", \"target\": {\"set\": \"base\"}, \"values\": [0, 0, 0, null, null, null]}},\n  {\"command\": \"model.boundary_condition.create\", \"params\": {\"name\": \"upper\", \"type\": \"displacement\", \"target\": {\"set\": \"upper\"}, \"values\": [0, 0, null, null, null, null]}},\n  {\"command\": \"model.boundary_condition.create\", \"params\": {\"name\": \"top\", \"type\": \"displacement\", \"target\": {\"set\": \"top\"}, \"values\": [null, null, -0.1, null, null, null]}},\n  {\"command\": \"model.step.create\", \"params\": {\"name\": \"Press\", \"procedure\": {\"type\": \"nonlinear_static\", \"nonlinear_geometry\": false, \"initial_increment\": 1, \"max_increment\": 1}, \"boundary_conditions\": [\"base\", \"upper\", \"top\"], \"loads\": []}},\n  {\"command\": \"solve.nonlinear\", \"params\": {\"step\": \"Press\"}},\n  {\"command\": \"solve.probe\", \"params\": {\"step\": \"Press\", \"nodes\": [9, 10, 11, 12, 13]}},\n  {\"command\": \"results.contour\", \"params\": {\"step\": \"Press\", \"field\": \"contact_pressure\", \"bands\": 12}},\n  {\"command\": \"results.deformed\", \"params\": {\"step\": \"Press\", \"show\": true, \"scale\": 50}}\n]\n```\n",
+  "updated_at": "2026-10-26T08:06:04Z",
   "url": "https://github.com/tangency-labs/fieldcraft/pull/731",
   "comments": [],
   "reviews": [
@@ -23,164 +23,131 @@
   "inline_comments": [],
   "checks": [
     {
-      "id": 120861288074,
+      "id": 121462553395,
+      "name": "cargo xtask test --heavy",
+      "status": "in_progress",
+      "conclusion": null,
+      "started_at": "2026-10-26T08:06:41Z",
+      "completed_at": null,
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40289935535/job/121462553395",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121462553395/annotations"
+      }
+    },
+    {
+      "id": 121462553367,
       "name": "cargo xtask ci",
       "status": "completed",
       "conclusion": "success",
-      "started_at": "2026-10-24T11:31:39Z",
-      "completed_at": "2026-10-24T11:35:07Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40090217556/job/120861288074",
+      "started_at": "2026-10-26T08:06:38Z",
+      "completed_at": "2026-10-26T08:13:42Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40289935535/job/121462553367",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120861288074/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121462553367/annotations"
       }
     },
     {
-      "id": 120861288055,
-      "name": "cargo xtask test --heavy",
-      "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-10-24T11:31:39Z",
-      "completed_at": "2026-10-24T11:43:56Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40090217556/job/120861288055",
-      "output": {
-        "title": null,
-        "summary": null,
-        "text": null,
-        "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120861288055/annotations"
-      }
-    },
-    {
-      "id": 120861288038,
+      "id": 121462553327,
       "name": "cargo xtask oracle",
       "status": "completed",
-      "conclusion": "failure",
-      "started_at": "2026-10-24T11:31:40Z",
-      "completed_at": "2026-10-24T11:35:48Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40090217556/job/120861288038",
-      "output": {
-        "title": null,
-        "summary": null,
-        "text": null,
-        "annotations_count": 1,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120861288038/annotations"
-      },
-      "log_error": "the response contains terminal escape sequences; pass --allow-escape-sequences to output it anyway\n"
-    },
-    {
-      "id": 120861191681,
-      "name": "cargo xtask oracle (macOS)",
-      "status": "completed",
-      "conclusion": "skipped",
-      "started_at": "2026-10-24T11:31:05Z",
-      "completed_at": "2026-10-24T11:31:05Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40090217556/job/120861191681",
+      "conclusion": "success",
+      "started_at": "2026-10-26T08:06:39Z",
+      "completed_at": "2026-10-26T08:11:02Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40289935535/job/121462553327",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120861191681/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121462553327/annotations"
       }
     },
     {
-      "id": 120861191636,
+      "id": 121462346511,
       "name": "Windows app tests",
       "status": "completed",
       "conclusion": "skipped",
-      "started_at": "2026-10-24T11:31:05Z",
-      "completed_at": "2026-10-24T11:31:05Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40090217556/job/120861191636",
+      "started_at": "2026-10-26T08:05:56Z",
+      "completed_at": "2026-10-26T08:05:55Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40289935535/job/121462346511",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120861191636/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121462346511/annotations"
       }
     },
     {
-      "id": 120861191533,
-      "name": "Claim bot",
+      "id": 121462345142,
+      "name": "cargo xtask oracle (macOS)",
       "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-10-24T11:31:12Z",
-      "completed_at": "2026-10-24T11:31:19Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40090217369/job/120861191533",
+      "conclusion": "skipped",
+      "started_at": "2026-10-26T08:05:55Z",
+      "completed_at": "2026-10-26T08:05:55Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40289935535/job/121462345142",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120861191533/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121462345142/annotations"
       }
     },
     {
-      "id": 120861191018,
-      "name": "Dependency licences, advisories and sources",
-      "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-10-24T11:31:11Z",
-      "completed_at": "2026-10-24T11:32:43Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40090217556/job/120861191018",
-      "output": {
-        "title": null,
-        "summary": null,
-        "text": null,
-        "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120861191018/annotations"
-      }
-    },
-    {
-      "id": 120861191016,
-      "name": "Triage bot",
-      "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-10-24T11:31:12Z",
-      "completed_at": "2026-10-24T11:31:20Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40090217345/job/120861191016",
-      "output": {
-        "title": null,
-        "summary": null,
-        "text": null,
-        "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120861191016/annotations"
-      }
-    },
-    {
-      "id": 120861190990,
+      "id": 121462343867,
       "name": "Plan (affected crates)",
       "status": "completed",
       "conclusion": "success",
-      "started_at": "2026-10-24T11:31:11Z",
-      "completed_at": "2026-10-24T11:31:33Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40090217556/job/120861190990",
+      "started_at": "2026-10-26T08:06:04Z",
+      "completed_at": "2026-10-26T08:06:31Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40289935535/job/121462343867",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120861190990/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121462343867/annotations"
       }
     },
     {
-      "id": 120861190857,
+      "id": 121462343823,
       "name": "Claim and triage bot tests",
       "status": "completed",
       "conclusion": "success",
-      "started_at": "2026-10-24T11:31:11Z",
-      "completed_at": "2026-10-24T11:31:18Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40090217556/job/120861190857",
+      "started_at": "2026-10-26T08:06:05Z",
+      "completed_at": "2026-10-26T08:06:14Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40289935535/job/121462343823",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120861190857/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121462343823/annotations"
+      }
+    },
+    {
+      "id": 121462343558,
+      "name": "Dependency licences, advisories and sources",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-26T08:06:01Z",
+      "completed_at": "2026-10-26T08:07:35Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40289935535/job/121462343558",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121462343558/annotations"
       }
     }
   ]
