@@ -915,14 +915,17 @@
     "title": "Tait PVT material model (pressure- and temperature-dependent density)",
     "body": "## What to build\nThe modified two-domain Tait equation for polymers (specific volume as a function of pressure and temperature), as a material option used by packing/cooling and shrinkage. Verify against the equation's own reference curves.\n\nRead [CONTRIBUTING.md](https://github.com/jyviko/fieldcraft/blob/develop/CONTRIBUTING.md) and comment to claim this issue before starting. Clean-room rules: papers, public specifications and analytic results only; no GPL code, no commercial-product files or output.",
     "state": "open",
-    "updated_at": "2026-10-14T17:10:10Z",
+    "updated_at": "2026-10-26T08:39:04Z",
     "labels": [
       "enhancement",
       "help wanted",
+      "claimed",
       "size: S",
       "area:solver"
     ],
-    "assignees": [],
+    "assignees": [
+      "bluecmd"
+    ],
     "url": "https://github.com/tangency-labs/fieldcraft/issues/159"
   },
   {
@@ -963,15 +966,18 @@
     "title": "Non-Newtonian viscosity: power-law, Carreau–Yasuda, Cross-WLF",
     "body": "## Current behaviour\nFluids are Newtonian (one viscosity).\n## What to build\nShear-rate- and temperature-dependent viscosity in the LBM (local strain rate from the non-equilibrium moments): power-law, Carreau–Yasuda, Cross and Cross-WLF (polymer melts), Bingham/Herschel–Bulkley later. Material definitions with units. Verify with power-law Poiseuille flow (closed form).\n\nRead [CONTRIBUTING.md](https://github.com/jyviko/fieldcraft/blob/develop/CONTRIBUTING.md) and comment to claim this issue before starting. Clean-room rules: papers, public specifications and analytic results only; no GPL code, no commercial-product files or output.",
     "state": "open",
-    "updated_at": "2026-10-14T17:10:05Z",
+    "updated_at": "2026-10-26T08:39:11Z",
     "labels": [
       "enhancement",
       "help wanted",
+      "claimed",
       "size: M",
       "area:solver",
       "area:cfd"
     ],
-    "assignees": [],
+    "assignees": [
+      "bluecmd"
+    ],
     "url": "https://github.com/tangency-labs/fieldcraft/issues/156"
   },
   {
