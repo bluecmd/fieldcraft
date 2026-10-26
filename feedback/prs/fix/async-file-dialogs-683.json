@@ -1,13 +1,13 @@
 {
   "number": 717,
   "branch": "fix/async-file-dialogs-683",
-  "head_sha": "b485880d04f0005232e9e24fc7f5cfbd79f12e3f",
+  "head_sha": "4dd0eae4e026dd0db97316efe55c342f362ee7b9",
   "state": "open",
   "merged": false,
   "draft": false,
   "title": "Desktop: keep native file choosers off the event loop",
-  "body": "## What and why\n\nCloses #683. Native Open, Save, Save As, embedded-model save, import, deck export and CSV export currently enter a blocking OS file dialog from the app event loop. The desktop host now returns an `rfd::AsyncFileDialog` future. The app polls only a pending chooser and schedules repaint while it is pending, including the first poll when a toolbar action creates the chooser after frame logic. Idle frames do not poll a chooser or gain a periodic repaint.\n\nOnly one chooser can be pending. A selection is discarded if the model, current document identity, path or revision changes, or if a background job has started. New/Open/sample/update continuations run only after the selected save actually succeeds; cancellation or a write failure keeps the current document. Existing explicit-path/programmatic commands retain their normal no-dialog result contract. The browser retains its existing picker behavior.\n\n`ui.inspect` exposes `file_picker` so control clients can distinguish a pending host chooser from app forms; the control protocol documentation is updated. There are no dependency, solver, ROADMAP or GPU-backend changes.\n\n## Demonstration\n\nA 24-second Windows native evidence clip shows the genuine OS Save As window, then seven selected, actually presented app frames while that same chooser is pending and the camera changes. The chooser is captured separately because it is an OS window; an explicitly marked opaque redaction covers only the private folder/search breadcrumb. Its type/Save/Cancel controls are original pixels. The app frames are not presented as screenshots of the chooser.\n\nOn Windows 11 with an NVIDIA GeForce RTX 4090 Vulkan viewport, eight bounded `ui.inspect` calls returned while `file_picker` was true; the slowest roundtrip was 0.0110964 seconds with a two-second timeout. The app rendered all seven camera frames through the native presented-frame capture path. This is responsiveness evidence, not a throughput benchmark. At the unchanged base `7d9c027`, the same real Save As interaction caused two two-second control timeouts and responded again after native Cancel.\n\nThe executable was built after the exact requested commit. Its SHA-256 is `d4ed882e0b0510135fa8106015b9dd5d779f67bb0a73d4e26ff08274a5398e27`; the original 315-node/160-hex model remained byte-identical after the demonstration. The owned app and chooser were closed through `app.quit` after capture.\n\n`async-native-file-chooser.mp4`, `native-chooser.png` and `responsive-viewport.png` were transferred as ordinary Git blobs by the coordinator in artifact-queue commit `c453484333dd6fecd51ac64396409d69cc647b51`, under `objects/fix/async-file-dialogs-683/b485880d04f0005232e9e24fc7f5cfbd79f12e3f/`. Index SHA-256 hashes and byte sizes were verified before the normal push. The maintainer's receipts confirm all three artifacts received, with SHA-256 hashes and byte counts matching their manifests; `github_attachment` is now `attached` with the verified native URLs below. Private logs, unredacted chooser capture and the original capture/encoding recipe are retained externally. No demonstration binaries, raster images or LFS pointers are in the feature history.\n\nNative GitHub attachments (original capture revision `b485880d04f0005232e9e24fc7f5cfbd79f12e3f`; receipts verify the original SHA-256 and byte sizes):\n\n- [async-native-file-chooser.mp4](https://github.com/user-attachments/assets/e9ceecf5-edbf-418a-be06-e48faafb73a4)\n- [native-chooser.png](https://github.com/user-attachments/assets/c9382c74-e09f-4dbc-b5a9-3ca993d50e2a)\n- [responsive-viewport.png](https://github.com/user-attachments/assets/ccd8a942-f079-468c-b71c-b055cf0ea471)\n\n## Validation\n\n- `cargo test -p fieldcraft-ui-egui -p fieldcraft -p fieldcraft-web`: 195 UI tests, 8 desktop tests, 3 web tests and 3 UI doctests pass.\n- Nine added deferred-chooser regressions cover pending frames, duplicate invocation, a toolbar-created chooser's first repaint, save/open/import, stale model/path/document results, background jobs, cancellation and write failure, deck/CSV naming and parameters, save-before-open, and save-before-update. Existing explicit-path/programmatic tests also assert that the host chooser is never called.\n- `cargo clippy -p fieldcraft-ui-egui -p fieldcraft -p fieldcraft-web --all-targets -- -D warnings` passes.\n- `cargo check -p fieldcraft-web -p fieldcraft-ui-egui --target wasm32-unknown-unknown` passes.\n- `cargo fmt --all -- --check` and `git diff --check` pass. Native `cargo build -p fieldcraft` passes at the requested commit. Fresh fork `upstream-develop` fetch/rebase was a no-op before the feature push.\n- Real native Save As pending responsiveness and presented viewport frames were checked as described above. No full local CI gate, numerical oracle, sustained GPU solve or performance study was run for this UI change.\n\n- Relayed CI on this exact head: main `cargo xtask ci`, heavy tests and oracle succeeded. Windows app and macOS oracle jobs were skipped, not runtime passes.\n\n## Known limitations\n\nWindows native pending-dialog responsiveness is verified. Wayland/Hyprland and macOS runtime behavior have not been tested here; this does not claim reproduction or resolution of a compositor-specific warning.\n\nThe Windows input helper could capture the genuine chooser but returned `failed to activate captured window` after the permitted fresh-window retry. No unsupported native-input workaround was used. Consequently the new native chooser's Save/Cancel completion was not manually exercised in this run: successful selection, cancellation, failed write and guarded continuations are covered by the deferred-host unit tests, and those are explicitly distinct from native manual validation. The final capture closes the owned app through its control API rather than claiming a native Cancel result.\n",
-  "updated_at": "2026-10-24T15:51:19Z",
+  "body": "## What and why\n\nCloses #683. Native Open, Save, Save As, embedded-model save, import, deck export and CSV export currently enter a blocking OS file dialog from the app event loop. The desktop host now returns an `rfd::AsyncFileDialog` future. The app polls only a pending chooser and schedules repaint while it is pending, including the first poll when a toolbar action creates the chooser after frame logic. Idle frames do not poll a chooser or gain a periodic repaint.\n\nOnly one chooser can be pending. A selection is discarded if the model, current document identity, path or revision changes, or if a background job has started. New/Open/sample/update continuations run only after the selected save actually succeeds; cancellation or a write failure keeps the current document. Existing explicit-path/programmatic commands retain their normal no-dialog result contract. The browser retains its existing picker behavior.\n\nEvery chooser starts from a fresh clone of a builder parented to the actual FieldCraft window through `CreationContext` and `AsyncFileDialog::set_parent`. This supplies the parent to the Wayland portal and the Windows/macOS chooser without retaining a borrowed creation context or accumulating filters and names across requests.\n\n`ui.inspect` exposes `file_picker` so control clients can distinguish a pending host chooser from app forms; the control protocol documentation is updated. There are no dependency, solver, ROADMAP or GPU-backend changes.\n\nValidation on Linux CPU at `4dd0eae4e026dd0db97316efe55c342f362ee7b9`:\n\n- `cargo check -p fieldcraft -p fieldcraft-ui-egui`.\n- Desktop app and UI tests: 8 desktop tests and 202 UI tests passed, zero failures. Only those test binaries ran; the build retained the existing cached package feature resolution plus the desktop app. UI doctests: 3 passed through direct `rustdoc` using the freshly compiled UI library, its exact 18 direct-dependency/self artifacts, build-script native search paths and Cargo compile environment.\n- `cargo clippy -p fieldcraft -p fieldcraft-ui-egui --all-targets -- -D warnings`, formatting and diff checks.\n- Manual simplification review. No new dependencies, unsafe code, command schemas, numerical changes or fixtures.\n\nThis session has no configured Wayland or X11 desktop session or Wayland compositor, so the requested native Wayland Save/Cancel check remains pending. No GPU or new native desktop validation is claimed.\n\nHistorical demonstration from the original `b485880d04f0005232e9e24fc7f5cfbd79f12e3f` capture follows. These attachments show the pre-parent-fix source; they are retained with their original provenance and do not validate the parent-window correction.\n\nA 24-second Windows native evidence clip shows the genuine OS Save As window, then seven selected, actually presented app frames while that same chooser is pending and the camera changes. The chooser is captured separately because it is an OS window; an explicitly marked opaque redaction covers only the private folder/search breadcrumb. Its type/Save/Cancel controls are original pixels. The app frames are not presented as screenshots of the chooser.\n\nOn Windows 11 with an NVIDIA GeForce RTX 4090 Vulkan viewport, eight bounded `ui.inspect` calls returned while `file_picker` was true; the slowest roundtrip was 0.0110964 seconds with a two-second timeout. The app rendered all seven camera frames through the native presented-frame capture path. This is responsiveness evidence, not a throughput benchmark. At the unchanged base `7d9c027`, the same real Save As interaction caused two two-second control timeouts and responded again after native Cancel.\n\nThe executable was built after the exact requested commit. Its SHA-256 is `d4ed882e0b0510135fa8106015b9dd5d779f67bb0a73d4e26ff08274a5398e27`; the original 315-node/160-hex model remained byte-identical after the demonstration. The owned app and chooser were closed through `app.quit` after capture.\n\n`async-native-file-chooser.mp4`, `native-chooser.png` and `responsive-viewport.png` were transferred as ordinary Git blobs by the coordinator in artifact-queue commit `c453484333dd6fecd51ac64396409d69cc647b51`, under `objects/fix/async-file-dialogs-683/b485880d04f0005232e9e24fc7f5cfbd79f12e3f/`. Index SHA-256 hashes and byte sizes were verified before the normal push. The maintainer's receipts confirm all three artifacts received, with SHA-256 hashes and byte counts matching their manifests; `github_attachment` is now `attached` with the verified native URLs below. Private logs, unredacted chooser capture and the original capture/encoding recipe are retained externally. No demonstration binaries, raster images or LFS pointers are in the feature history.\n\nNative GitHub attachments (original capture revision `b485880d04f0005232e9e24fc7f5cfbd79f12e3f`; receipts verify the original SHA-256 and byte sizes):\n\n- [async-native-file-chooser.mp4](https://github.com/user-attachments/assets/e9ceecf5-edbf-418a-be06-e48faafb73a4)\n- [native-chooser.png](https://github.com/user-attachments/assets/c9382c74-e09f-4dbc-b5a9-3ca993d50e2a)\n- [responsive-viewport.png](https://github.com/user-attachments/assets/ccd8a942-f079-468c-b71c-b055cf0ea471)\n\nKnown limits: native Save/Cancel completion with the parented chooser still needs a Wayland desktop check; macOS and Windows completion behavior was not rerun. The original Windows input helper could capture the chooser but could not activate it, so its historical clip demonstrates pending-dialog responsiveness, not native Save/Cancel completion. Deferred-host tests cover successful selection, cancellation, failed writes and guarded continuations separately. No full local CI gate, wasm gate, numerical oracle or performance study was run for this review revision.\n",
+  "updated_at": "2026-10-26T08:09:18Z",
   "url": "https://github.com/tangency-labs/fieldcraft/pull/717",
   "comments": [],
   "reviews": [
@@ -23,163 +23,131 @@
   "inline_comments": [],
   "checks": [
     {
-      "id": 120740857289,
+      "id": 121463568615,
+      "name": "cargo xtask test --heavy",
+      "status": "in_progress",
+      "conclusion": null,
+      "started_at": "2026-10-26T08:09:32Z",
+      "completed_at": null,
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40290262250/job/121463568615",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121463568615/annotations"
+      }
+    },
+    {
+      "id": 121463568366,
       "name": "cargo xtask ci",
       "status": "completed",
       "conclusion": "success",
-      "started_at": "2026-10-24T01:31:24Z",
-      "completed_at": "2026-10-24T01:35:01Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40050129070/job/120740857289",
+      "started_at": "2026-10-26T08:09:32Z",
+      "completed_at": "2026-10-26T08:12:55Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40290262250/job/121463568366",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120740857289/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121463568366/annotations"
       }
     },
     {
-      "id": 120740857275,
-      "name": "cargo xtask test --heavy",
-      "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-10-24T01:31:24Z",
-      "completed_at": "2026-10-24T01:50:35Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40050129070/job/120740857275",
-      "output": {
-        "title": null,
-        "summary": null,
-        "text": null,
-        "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120740857275/annotations"
-      }
-    },
-    {
-      "id": 120740857272,
+      "id": 121463568353,
       "name": "cargo xtask oracle",
       "status": "completed",
       "conclusion": "success",
-      "started_at": "2026-10-24T01:31:24Z",
-      "completed_at": "2026-10-24T01:36:06Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40050129070/job/120740857272",
+      "started_at": "2026-10-26T08:09:31Z",
+      "completed_at": "2026-10-26T08:12:37Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40290262250/job/121463568353",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120740857272/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121463568353/annotations"
       }
     },
     {
-      "id": 120740734246,
-      "name": "cargo xtask oracle (macOS)",
-      "status": "completed",
-      "conclusion": "skipped",
-      "started_at": "2026-10-24T01:30:46Z",
-      "completed_at": "2026-10-24T01:30:46Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40050129070/job/120740734246",
-      "output": {
-        "title": null,
-        "summary": null,
-        "text": null,
-        "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120740734246/annotations"
-      }
-    },
-    {
-      "id": 120740734191,
+      "id": 121463390788,
       "name": "Windows app tests",
       "status": "completed",
       "conclusion": "skipped",
-      "started_at": "2026-10-24T01:30:46Z",
-      "completed_at": "2026-10-24T01:30:46Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40050129070/job/120740734191",
+      "started_at": "2026-10-26T08:08:55Z",
+      "completed_at": "2026-10-26T08:08:55Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40290262250/job/121463390788",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120740734191/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121463390788/annotations"
       }
     },
     {
-      "id": 120740733752,
+      "id": 121463390191,
+      "name": "cargo xtask oracle (macOS)",
+      "status": "completed",
+      "conclusion": "skipped",
+      "started_at": "2026-10-26T08:08:55Z",
+      "completed_at": "2026-10-26T08:08:55Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40290262250/job/121463390191",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121463390191/annotations"
+      }
+    },
+    {
+      "id": 121463389201,
       "name": "Plan (affected crates)",
       "status": "completed",
       "conclusion": "success",
-      "started_at": "2026-10-24T01:30:54Z",
-      "completed_at": "2026-10-24T01:31:16Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40050129070/job/120740733752",
+      "started_at": "2026-10-26T08:09:02Z",
+      "completed_at": "2026-10-26T08:09:25Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40290262250/job/121463389201",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120740733752/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121463389201/annotations"
       }
     },
     {
-      "id": 120740733323,
+      "id": 121463389033,
       "name": "Claim and triage bot tests",
       "status": "completed",
       "conclusion": "success",
-      "started_at": "2026-10-24T01:30:53Z",
-      "completed_at": "2026-10-24T01:31:00Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40050129070/job/120740733323",
+      "started_at": "2026-10-26T08:09:02Z",
+      "completed_at": "2026-10-26T08:09:09Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40290262250/job/121463389033",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120740733323/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121463389033/annotations"
       }
     },
     {
-      "id": 120740733147,
+      "id": 121463388721,
       "name": "Dependency licences, advisories and sources",
       "status": "completed",
       "conclusion": "success",
-      "started_at": "2026-10-24T01:30:53Z",
-      "completed_at": "2026-10-24T01:32:27Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40050129070/job/120740733147",
+      "started_at": "2026-10-26T08:09:01Z",
+      "completed_at": "2026-10-26T08:10:37Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40290262250/job/121463388721",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120740733147/annotations"
-      }
-    },
-    {
-      "id": 120740731673,
-      "name": "Claim bot",
-      "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-10-24T01:30:53Z",
-      "completed_at": "2026-10-24T01:31:00Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40050128279/job/120740731673",
-      "output": {
-        "title": null,
-        "summary": null,
-        "text": null,
-        "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120740731673/annotations"
-      }
-    },
-    {
-      "id": 120740731478,
-      "name": "Triage bot",
-      "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-10-24T01:30:53Z",
-      "completed_at": "2026-10-24T01:31:01Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40050128270/job/120740731478",
-      "output": {
-        "title": null,
-        "summary": null,
-        "text": null,
-        "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/120740731478/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121463388721/annotations"
       }
     }
   ]
