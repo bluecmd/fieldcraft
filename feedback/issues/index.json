@@ -798,15 +798,18 @@
     "title": "Cattaneo–Mindlin partial slip benchmark",
     "body": "Needs a constant normal load followed by increasing shear (depends on the amplitudes/multiple-steps issue). Verify stick-zone radius and tangential force against Johnson 1985 §7.2.\n\nFollow-up from #161 (PRs #180, #181, #183, #184). Read [CONTRIBUTING.md](https://github.com/jyviko/fieldcraft/blob/develop/CONTRIBUTING.md) and comment to claim this issue before starting.",
     "state": "open",
-    "updated_at": "2026-10-14T19:48:33Z",
+    "updated_at": "2026-10-27T21:41:53Z",
     "labels": [
       "enhancement",
       "help wanted",
+      "claimed",
       "size: S",
       "area:solver",
       "area:docs"
     ],
-    "assignees": [],
+    "assignees": [
+      "bluecmd"
+    ],
     "url": "https://github.com/tangency-labs/fieldcraft/issues/189"
   },
   {
@@ -916,14 +919,17 @@
     "title": "Map residual stress and temperature from a process simulation onto the part",
     "body": "## What to build\nInitial-stress and initial-temperature fields on a structural mesh, mapped from another analysis's results (moulding, thermal, or another mesh) by interpolation, so warpage and stress after ejection can be solved. Verify with a uniform field (exact transfer) and a linear field on non-matching meshes.\n\nRead [CONTRIBUTING.md](https://github.com/jyviko/fieldcraft/blob/develop/CONTRIBUTING.md) and comment to claim this issue before starting. Clean-room rules: papers, public specifications and analytic results only; no GPL code, no commercial-product files or output.",
     "state": "open",
-    "updated_at": "2026-10-14T17:10:12Z",
+    "updated_at": "2026-10-27T21:42:59Z",
     "labels": [
       "enhancement",
       "help wanted",
+      "claimed",
       "size: M",
       "area:solver"
     ],
-    "assignees": [],
+    "assignees": [
+      "bluecmd"
+    ],
     "url": "https://github.com/tangency-labs/fieldcraft/issues/160"
   },
   {
