@@ -955,15 +955,18 @@
     "title": "Solidification / phase change in flow and heat transfer",
     "body": "## What to build\nLatent heat and a no-flow-below transition temperature (enthalpy method), so a melt freezes as it cools: frozen layer growth during filling and cooling. Verify with the Stefan problem (closed form).\n\nRead [CONTRIBUTING.md](https://github.com/jyviko/fieldcraft/blob/develop/CONTRIBUTING.md) and comment to claim this issue before starting. Clean-room rules: papers, public specifications and analytic results only; no GPL code, no commercial-product files or output.",
     "state": "open",
-    "updated_at": "2026-10-14T17:10:08Z",
+    "updated_at": "2026-10-28T05:54:37Z",
     "labels": [
       "enhancement",
       "help wanted",
+      "claimed",
       "size: M",
       "area:solver",
       "area:cfd"
     ],
-    "assignees": [],
+    "assignees": [
+      "bluecmd"
+    ],
     "url": "https://github.com/tangency-labs/fieldcraft/issues/158"
   },
   {
@@ -1051,14 +1054,17 @@
     "title": "Flatpak: publish a Flatpak repository on Pages",
     "body": "## Current behaviour\nLinux users get a tar.gz and an AppImage from the release.\n## What to build\nA Flatpak manifest (org.freedesktop.Platform runtime, offline cargo vendoring), AppStream metainfo, and a workflow that builds it on releases and publishes a Flatpak repository to GitHub Pages under the project path, alongside the web app (#119), as SolidCraft does with its `flatpak-pages.yml` (MIT/Apache; adapt with attribution).\n## Acceptance criteria\n- [ ] `flatpak install` from the published repo installs and runs FieldCraft\n- [ ] Metainfo passes `appstreamcli validate`",
     "state": "open",
-    "updated_at": "2026-10-16T15:17:46Z",
+    "updated_at": "2026-10-28T05:53:39Z",
     "labels": [
       "enhancement",
       "help wanted",
+      "claimed",
       "size: M",
       "area:infra"
     ],
-    "assignees": [],
+    "assignees": [
+      "bluecmd"
+    ],
     "url": "https://github.com/tangency-labs/fieldcraft/issues/123"
   },
   {
