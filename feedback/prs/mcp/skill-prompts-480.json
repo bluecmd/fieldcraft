@@ -7,7 +7,7 @@
   "draft": false,
   "title": "MCP: serve exact bundled skills as discoverable prompts",
   "body": "## What and why\n\nRefs #480. Bundled modelling and meshing skills are discoverable as stable MCP prompts, with exact source text and a fixed allowlist of three modelling reference resources. Retrieval never executes a modelling command or opens an arbitrary file.\n\n`prompts/list` now treats absent and explicit null cursors identically, matching clients that send `{\"cursor\": null}`. Non-null cursors and malformed parameters remain errors. Wire regressions cover all three negotiated protocol versions and unchanged, source-identical prompt/resource contents.\n\nThis PR stacks the updated modelling skill from #718: parent `04e3c73b01bd28ff1222b3cb68b662d139e78ea4`, followed by one MCP commit. Merge #718 first.\n\n## Validation\n\nTested source `2dab07c0fbcbe135f640bc8454339b60113ac5d8`, on trunk `3751d3bb93676aa49d1a18c438424be88162ac03`.\n\n- Complete MCP unit suite: 15 passed; workflow integration: 1 passed; no failures/ignores. MCP doc tests: 0.\n- Scoped `cargo check`, all-target clippy with `-D warnings`, manual simplification review, formatting and diff checks pass.\n- Tests used a cached nine-package `--no-run` build to retain Cargo's dependency-feature resolution; only the emitted MCP normal test binaries executed. The doc-test filter excluded unrelated examples. CPU rendering was forced; no GPU runtime or full workspace gate was run.\n- No solver numerics, command schema, result format or oracle case changed.\n\n## Historical demonstration\n\nThe original 24-second clip shows prompt retrieval leaving a cantilever unchanged, followed by an explicit tools/call batch running the synthetic conductor recipe. Retrieval and model actions are separate; no desktop prompt selector is implied.\n\nThe historical CLI was built at original commit `c515f79e`. Its native host was reused from build `99d8536`, with production source equivalent to branch base `7d9c027d71`; it was not rebuilt at the MCP head. The solver was CPU and the RTX 4090 Vulkan adapter rendered the viewport. The synthetic conduction patch checks an assumed-property calculation, not physical validation or exchanger accuracy. No fresh native capture was made for this cursor correction.\n\nNative GitHub attachments (original capture revision `c515f79ec5856e898154be9e238a139851d8a559`, with the reused viewport/new CLI provenance described above):\n\n- [mcp-skill-prompts.mp4](https://github.com/user-attachments/assets/4594ef85-25ad-40cd-8292-0d355a16fc11)\n- [mcp-model-unchanged.png](https://github.com/user-attachments/assets/2b34560b-7df0-43f5-8171-87c457050d4e)\n- [mcp-connected-conductor.png](https://github.com/user-attachments/assets/b64c6221-e6b6-4ebf-8cb7-a981fd3ebaff)\n\n\n\n## Limits\n\nClients choose whether to expose prompts and explicitly request model commands afterward. Reference URIs are fixed; other documentation links require the matching checkout. The historical attachments retain their original capture/source provenance. GPU solver support and coupled-exchanger capability are separate release work.\n\n",
-  "updated_at": "2026-10-25T12:50:21Z",
+  "updated_at": "2026-10-28T13:48:13Z",
   "url": "https://github.com/tangency-labs/fieldcraft/pull/720",
   "comments": [],
   "reviews": [
@@ -18,6 +18,14 @@
       "state": "COMMENTED",
       "submitted_at": "2026-10-24T15:51:22Z",
       "commit_id": "c515f79ec5856e898154be9e238a139851d8a559"
+    },
+    {
+      "author": "jyviko",
+      "body": "Reviewed. The code is sound: prompt names and resources are a fixed allowlist, path-traversal URIs return -32002, errors are bounded, nothing panics outside tests, and the test that walks `skills/*/SKILL.md` keeps the registry complete.\n\nIt's stacked on #718 (04e3c73), so it merges after #718, and it serves #718's broken `docs/lbm-collision.md` link in its prompt text. Once #718 is fixed, please rebase this onto it.\n",
+      "url": "https://github.com/tangency-labs/fieldcraft/pull/720#pullrequestreview-5683678998",
+      "state": "COMMENTED",
+      "submitted_at": "2026-10-28T13:48:13Z",
+      "commit_id": "2dab07c0fbcbe135f640bc8454339b60113ac5d8"
     }
   ],
   "inline_comments": [],
