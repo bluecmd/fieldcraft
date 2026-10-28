@@ -7,7 +7,7 @@
   "draft": false,
   "title": "Agent skill: choose and check structural, heat and flow models",
   "body": "## What and why\n\nRefs #481. Adds a bundled modelling skill that guides structural, heat and fluid setup, independent estimates, load/BC activity, balance checks and refinement. It includes original axial-rod and steady-conductor recipes with a verification worksheet.\n\nThe fluid guidance now states the limits explicitly: aim for Ma ≲ 0.1; τ must exceed ½ and stability degrades near it; regularized collision helps stability; the automatic time step targets Ma ≈ 0.087 and τ ≤ 1. Density variation is identified as compressibility error to investigate before trusting pressure or heat-rate results.\n\n## Validation\n\nRevision `04e3c73b01bd28ff1222b3cb68b662d139e78ea4` is a single logical skill commit rebased onto `3751d3bb93676aa49d1a18c438424be88162ac03`.\n\n- Statements checked against current LBM setup/solve code, model.step.create schema and collision documentation.\n- Manual simplification review, formatting, relative-link existence and diff checks pass.\n- Both unchanged reference recipes execute successfully with the cached, tested diagnostics CLI artifact from `cb89c561`. That branch does not change solver/FEM numerics. This is recipe execution, not new physical validation.\n- No Rust code changed; no new crate suite, GPU run or full workspace gate was needed.\n\n## Historical demonstration\n\nThe original 33-second clip shows a synthetic conductor patch and the held-hot bracket in a single air domain: 5 mm spacing, a 45-second physical transient, CPU solve with three threads and an RTX 4090 Vulkan viewport. Its density-variation warnings remain material: 15.9% at dt = 0.25 s and 3.5% at dt = 0.125 s. These are coarse smoke/sensitivity demonstrations, with no steady-state, heat-rate-accuracy or two-fluid-exchanger claim.\n\nThe reused executable was built at `99d8536`; its production app/engine/solver source matches the original branch base `7d9c027d71` (the earlier Rust difference is updater tests). It was not rebuilt at the skill commit. The attachments remain historical evidence, not a fresh native capture of this text revision.\n\nNative GitHub attachments (original capture revision `443160e0bbc3c6a8f8310c1366bb6e593eb6eda6`; receipts verify the original SHA-256 and byte sizes):\n\n- [conduction-check.png](https://github.com/user-attachments/assets/89893403-069c-40b4-af5a-46ec8464aa75)\n- [heated-flow-check.png](https://github.com/user-attachments/assets/2597656d-2d5b-4cfe-80a4-61490c66da9f)\n- [modelling-checks.mp4](https://github.com/user-attachments/assets/9b454386-6d65-43c0-b588-7e581ed06b0d)\n\n\n## Limits\n\nThe skill guides modelling decisions; it does not automatically choose or run commands, establish material data, or certify engineering accuracy. The examples are verification exercises with stated assumptions. GPU LES/fan support and coupled-exchanger capability must be checked against implemented and verified behavior. MCP prompt delivery is the separate stacked PR #720.\n\n",
-  "updated_at": "2026-10-25T12:48:34Z",
+  "updated_at": "2026-10-28T13:48:12Z",
   "url": "https://github.com/tangency-labs/fieldcraft/pull/718",
   "comments": [],
   "reviews": [
@@ -18,6 +18,14 @@
       "state": "COMMENTED",
       "submitted_at": "2026-10-24T15:51:20Z",
       "commit_id": "443160e0bbc3c6a8f8310c1366bb6e593eb6eda6"
+    },
+    {
+      "author": "jyviko",
+      "body": "Reviewed. I checked the advice against the code and it holds: default units, force distribution, pressure sign, axisymmetric axes, the fluid step's automatic time step, wall-heat sign, mesh.block face numbering, the heated-flow sample and every command name. Two fixes:\n\n1. **Broken link:** `skills/fieldcraft-modelling/SKILL.md:100` links `../../docs/lbm-collision.md`, which was deleted on develop (ca35e80f). It's now `docs/manual/fluid/collision.md`.\n2. **The recipes aren't tested.** `references/axial-rod.json` and `steady-conductor.json` never run, so a command schema change would leave agents with stale recipes and no CI failure. Please add a headless test that runs both and checks the numbers `checks.md` states (u = 4.2857e-5 m, ±4.5 W).\n",
+      "url": "https://github.com/tangency-labs/fieldcraft/pull/718#pullrequestreview-5683678634",
+      "state": "COMMENTED",
+      "submitted_at": "2026-10-28T13:48:12Z",
+      "commit_id": "04e3c73b01bd28ff1222b3cb68b662d139e78ea4"
     }
   ],
   "inline_comments": [],
