@@ -276,20 +276,6 @@
     "url": "https://github.com/tangency-labs/fieldcraft/issues/683"
   },
   {
-    "number": 674,
-    "title": "Tet mesh: boundary nodes added by refinement stay on the tessellation's facets, so curved faces never get closer than the chordal tolerance",
-    "body": "### Observed failure\r\n\r\nIn a tet mesh refined below the tessellation's own facet size, the boundary nodes that refinement adds lie on the **tessellation's flat facets**, not on the design's curved faces. Refining therefore never brings the boundary closer to the true surface than the chordal `tolerance`. Stress peaks on small fillets keep changing with refinement instead of converging. In a convergence study of a printed part, fillet peaks rose about 10 % per refinement step.\r\n\r\n### Reproduction\r\n\r\nA block with a Ø10 bore and a 0.3 mm fillet round the bore's top edge, with a 0.06 mm size control around one point of the fillet:\r\n\r\n```json\r\n[{\"command\":\"solid.box\",\"params\":{\"corner\":[0,0,0],\"length\":30,\"width\":30,\"height\":10,\"body_name\":\"Block\"}},\r\n {\"command\":\"solid.cylinder\",\"params\":{\"diameter\":10,\"height\":10,\"base\":[15,15,0],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"Block\"]}},\r\n {\"command\":\"solid.fillet\",\"params\":{\"edges\":[[20,15,10]],\"radius\":0.3}}]\r\n```\r\n(saved with `solidcraft-cli run design.json --save design.solidcraft`)\r\n\r\n```json\r\n[{\"command\":\"geometry.open\",\"params\":{\"path\":\"design.solidcraft\"}},\r\n {\"command\":\"mesh.size.set\",\"params\":{\"name\":\"Round\",\"size\":0.06,\"sphere\":{\"center\":[20.3,15,9.7],\"radius\":1}}},\r\n {\"command\":\"mesh.tet.generate\",\"params\":{\"tolerance\":0.05,\"size\":2}},\r\n {\"command\":\"mesh.export.stl\",\"params\":{\"path\":\"skin.stl\",\"format\":\"ascii\"}}]\r\n```\r\n\r\nThen measure each boundary node's distance from the exact surface, within 1 mm of (20.3, 15, 9.7):\r\n- the fillet is a torus, centre circle radius 5.3 at z = 9.7, tube radius 0.3;\r\n- the bore is a cylinder of radius 5.\r\n\r\n### Evidence\r\n\r\n| Face | Boundary nodes | Distance from the exact surface: median | 95th percentile | max |\r\n|---|---|---|---|---|\r\n| 0.3 mm fillet (`solid.fillet`) | 205 | 0.0000 mm | 0.0155 mm | 0.0178 mm |\r\n| Ø10 bore (cylinder face) | 224 | 0.0000 mm | 0.0217 mm | 0.0275 mm |\r\n\r\nThe median is exact (the tessellation's own vertices), but the nodes refinement adds in between sit on the facets, up to the chordal sag. On a 0.3 mm fillet, 0.018 mm is 6 % of the radius, which is a geometric corner at every facet edge. Without the size control (a 1 mm fillet, global size 0.25) almost every node was exact, with one or two up to 0.02 mm.\r\n\r\n### Expected behaviour\r\n\r\nBoundary nodes, and the mid-side nodes of tet10, lie on the exact face. They'd be projected onto the B-rep face as `mesh.node.relax` already slides surface nodes on the geometry (#398), and as the projection blocking mesher does (#399). Refinement then converges to the true shape, whatever the tessellation `tolerance`.\r\n\r\n### Investigation\r\n\r\nLowering `tolerance` to 0.01 works around it, but roughly doubled the element count in the larger study, and the error is still bounded by the tessellation, not the mesh. I haven't checked whether tet10 mid-side nodes are placed on the surface; `mesh.export.stl` writes corner nodes only.\r\n\r\n### Version and platform\r\n\r\nFieldCraft develop 7160a82 (CLI); design saved by SolidCraft 0.16.2; Linux (Ubuntu 24.04).\r\n",
-    "state": "open",
-    "updated_at": "2026-10-25T22:23:58Z",
-    "labels": [
-      "bug",
-      "area:mesh",
-      "needs-triage"
-    ],
-    "assignees": [],
-    "url": "https://github.com/tangency-labs/fieldcraft/issues/674"
-  },
-  {
     "number": 669,
     "title": "Can't open designs from SolidCraft 0.18.3 (format 29): develop reads up to 28",
     "body": "### Observed failure\n\nSolidCraft 0.18.3, released today as the latest release, saves designs in format 29. Its release notes say \"Designs saved in 0.18.3 use format 29 and don't open in 0.18.2 or older\". FieldCraft `develop` (7160a82, pinned to SolidCraft 0.18.2 since #662) reads up to 28:\n\n```\nerror: step 1 (geometry.open): this design was saved by a newer SolidCraft (format 29); this FieldCraft reads up to 28. Update FieldCraft to open it\n```\n\nIt's the same situation as #655 one format later.\n\n### Reproduction\n\n1. With `solidcraft-cli` at v0.18.3 (fea32f8), save `[{\"command\":\"solid.box\",\"params\":{\"corner\":[0,0,0],\"length\":20,\"width\":20,\"height\":20}}]` with `run box.json --save box_0.18.3.solidcraft`.\n2. Run `fieldcraft-cli run open.json` on `[{\"command\":\"geometry.open\",\"params\":{\"path\":\"box_0.18.3.solidcraft\"}}]`, with FieldCraft `develop` at 7160a82. It fails as above.\n\n### Evidence\n\n0.18.3's notes also list a face-naming change: \"pieces of a split face keep their numbers from one evaluation to the next; older designs keep their numbering\" (SolidCraft #3991). That may matter for models whose sets name split faces, as #617 did for 0.16.\n\n### Expected behaviour\n\nFieldCraft opens designs saved by SolidCraft 0.18.3, after a re-pin to v0.18.3.\n\n### Investigation\n\nNone beyond the above. The tagged-3MF route still works meanwhile.\n\n### Version and platform\n\nFieldCraft develop 7160a82; SolidCraft v0.18.3 (fea32f8); Linux (Ubuntu 24.04).\n",
@@ -400,23 +386,6 @@
     ],
     "assignees": [],
     "url": "https://github.com/tangency-labs/fieldcraft/issues/642"
-  },
-  {
-    "number": 632,
-    "title": "First window: keep the restored or cascaded position inside the work area (second monitor, 125 % cascade)",
-    "body": "### Observed failure\n\nTwo cases where the first window's position, not its size, puts part of it off the work area. Both were left open by #601 / #607.\n\n**1. 125 %: Windows' cascade pushes a window that fits under the taskbar.** At 125 % on a 3440 × 1440 monitor the default 1400 × 900 points (1750 × 1125 px) fits the 1380 px work area, so #607's fit doesn't apply and Windows places the window. Its default placement cascades each new window by about 32–38 px. In the #607 Windows check, one launch on develop opened at (288, 288) px (frame bottom 1413 px) and one launch of #607's commit at (320, 320) px (frame bottom 1445 px), both below the 1380 px work area. The command line and the journal timeline are behind the taskbar until the window is moved. Other launches opened at 32–224 px and fit.\n\n**2. A second monitor (from @jyviko's review of #607).** When the first window doesn't fit, #607 computes its size from the window's current monitor (`viewport().monitor_size`). But it sends `OuterPosition` in desktop coordinates measured from the origin, as if that monitor's top-left were (0, 0). When the window opens on a monitor that isn't at the desktop's origin (on macOS a new window can open on a smaller secondary screen), that position moves it onto the primary monitor with a size computed for the other one.\n\n### Reproduction\n\nCase 1, Windows 11, one 3440 × 1440 monitor at 125 %, no saved window state:\n\n1. Start `fieldcraft.exe` with no arguments several times in a row (with a few seconds between launches; each launch cascades further).\n2. Watch the bottom of the restored window: once the cascade offset passes about 255 px, the timeline strip is under the taskbar.\n\nCase 2: from the code. `fit_first_window` in `apps/fieldcraft/src/main.rs` sends `ViewportCommand::OuterPosition(fit.min)` whatever monitor the window is on.\n\n### Evidence\n\nCase 1, 125 %, the #607 build launched at (320, 320) px. The screenshot is cropped at the work area, so the command line is cut and the timeline is hidden:\n\n![125 % cascade](https://raw.githubusercontent.com/bluecmd/fieldcraft/issue-evidence/601/windows-125-cascade-320.png)\n\nMeasured with `GetWindowRect`/`GetClientRect` in a DPI-aware process: window (320, 320)–(2070, 1445) px, client 1400 × 900 pt, work area (0, 0)–(3440, 1380) px. The full table is in the Windows check comment on #607.\n\n### Expected behaviour\n\nThe first window is fully inside the work area wherever the system places it, on the monitor it opens on:\n\n- When the default size fits but the system's placement would put the window past the monitor less the reserve, move it up/left just enough (or to the top, centred across) so that it fits.\n- Send a position only when the window opened on the monitor at the desktop's origin, where positions from the monitor's top-left are also desktop positions. Elsewhere, send only `InnerSize` + `Maximized` and leave placement to the system, as @jyviko suggested.\n\n### Investigation\n\nwinit gives the current monitor's size but not its origin or work area, so both cases use the same test: is the window's top-left within `[0, monitor)`? Note that this can't be \"is the outer rectangle inside the monitor\": in the #601 case the window cascades to about (202, 202) pt with 900 pt of height on a 960-pt monitor, so its rectangle isn't inside, yet that's exactly where the position is needed.\n\nThe second-monitor part is written and tested on our side (`at_origin_monitor`, a pure function with its own test, `cargo test -p fieldcraft` and clippy clean). The 125 % clamp would reuse the same test and the existing reserve. We'd like to take this one, as one small PR, with the same Windows check (125 % cascade ×3, 150 % regression) before marking it ready.\n\n### Version and platform\n\ndevelop at 9c8ab0e (after #607), Windows 11 Pro 26200, RTX 4090, release build; case 2 from @jyviko's review on macOS.\n\n\n## Outstanding review evidence (2026-10-23)\n\nPR #633 has Windows cascade and two-monitor measurements, but the maintainer's last review still requests:\n\n- [ ] Paired before/after screenshots showing the clipped timeline/taskbar and corrected placement.\n- [ ] macOS: a first window that already fits keeps the system's position.\n- [ ] Linux X11: the same placement check.\n- [ ] Linux Wayland: unknown-position handling leaves placement to the system.\n\nKeep this open until those checks are supplied and #633 is reviewed/merged. This is outside #697's cooling critical path unless it blocks the demonstrated workflow.\n",
-    "state": "open",
-    "updated_at": "2026-10-23T16:59:27Z",
-    "labels": [
-      "bug",
-      "in progress",
-      "claimed",
-      "area:ui"
-    ],
-    "assignees": [
-      "bluecmd"
-    ],
-    "url": "https://github.com/tangency-labs/fieldcraft/issues/632"
   },
   {
     "number": 631,
@@ -750,20 +719,6 @@
     "url": "https://github.com/tangency-labs/fieldcraft/issues/224"
   },
   {
-    "number": 205,
-    "title": "results.frame of a nonlinear static step shows final-state contours on every frame",
-    "body": "For nonlinear static steps, `results.frame` moves the deformed shape to the chosen frame, but the contours stay at the final state. The command's own doc says so: \"its contours show the final state\". Stresses and contact pressure at intermediate load levels therefore can't be shown. A folding seal at 1/3 and 2/3 of its travel gets the final pressures painted on.\n\n## Reproduce\n1. Solve any nonlinear static step with contact.\n2. Run `results.frame {\"step\": ..., \"frame\": 3}`, then `results.contour {\"field\": \"von_mises\"}` (or `contact_pressure`).\n3. The colours are those of the last frame.\n\n## Expected\nEach frame can show its own fields: stress, strain and contact pressure/status, recomputed from the frame's displacements and committed state or stored with the frame. Contours then follow the frame.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)",
-    "state": "open",
-    "updated_at": "2026-10-25T17:26:36Z",
-    "labels": [
-      "enhancement",
-      "area:solver",
-      "area:ui"
-    ],
-    "assignees": [],
-    "url": "https://github.com/tangency-labs/fieldcraft/issues/205"
-  },
-  {
     "number": 203,
     "title": "Contact pressure and normal force skewed at nodes where a contact surface turns a corner",
     "body": "A secondary node's unit normal is the sum of the area vectors of all its secondary faces. Where a general-contact surface turns a corner, those faces point in different directions, for example:\n- an end face meeting a z = const face of a one-layer plane-strain hex model;\n- an outer face meeting an end face.\n\nThe reported nodal `pressure` (−f·n over the support) and the contact's `normal_force` are then projections onto a tilted normal. The forces themselves are unaffected, and so are the displacements.\n\n## Reproduce\n1. Run `c_ring(true, 0.15)` in `crates/solver/tests/contact.rs`: a 3D one-layer hybrid C-ring closing on itself.\n2. Run the same ring in plane strain (`planar_c_ring`).\n3. The displacements agree node for node to 1e-5, and so does the contact force vector (−3.29e-5 in both).\n4. `normal_force` differs: 0.00595 in 3D against 0.00816 in 2D. The nodal pressures at the closed nodes are about 25 % lower in 3D (0.044 against 0.058).\n\n## Expected\nTake each node's normal and normal force from the faces that carry the contact at that node, e.g. weighted by each face pair's support ∫Φ_A. Faces with no overlap at the node should not tilt the normal. The 3D and plane-strain rings should then report the same normal force and pressures.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)",
@@ -778,25 +733,6 @@
       "bluecmd"
     ],
     "url": "https://github.com/tangency-labs/fieldcraft/issues/203"
-  },
-  {
-    "number": 189,
-    "title": "Cattaneo–Mindlin partial slip benchmark",
-    "body": "Needs a constant normal load followed by increasing shear (depends on the amplitudes/multiple-steps issue). Verify stick-zone radius and tangential force against Johnson 1985 §7.2.\n\nFollow-up from #161 (PRs #180, #181, #183, #184). Read [CONTRIBUTING.md](https://github.com/jyviko/fieldcraft/blob/develop/CONTRIBUTING.md) and comment to claim this issue before starting.",
-    "state": "open",
-    "updated_at": "2026-10-27T21:41:53Z",
-    "labels": [
-      "enhancement",
-      "help wanted",
-      "claimed",
-      "size: S",
-      "area:solver",
-      "area:docs"
-    ],
-    "assignees": [
-      "bluecmd"
-    ],
-    "url": "https://github.com/tangency-labs/fieldcraft/issues/189"
   },
   {
     "number": 188,
