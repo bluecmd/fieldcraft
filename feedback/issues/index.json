@@ -893,24 +893,6 @@
     "url": "https://github.com/tangency-labs/fieldcraft/issues/124"
   },
   {
-    "number": 123,
-    "title": "Flatpak: publish a Flatpak repository on Pages",
-    "body": "## Current behaviour\nLinux users get a tar.gz and an AppImage from the release.\n## What to build\nA Flatpak manifest (org.freedesktop.Platform runtime, offline cargo vendoring), AppStream metainfo, and a workflow that builds it on releases and publishes a Flatpak repository to GitHub Pages under the project path, alongside the web app (#119), as SolidCraft does with its `flatpak-pages.yml` (MIT/Apache; adapt with attribution).\n## Acceptance criteria\n- [ ] `flatpak install` from the published repo installs and runs FieldCraft\n- [ ] Metainfo passes `appstreamcli validate`",
-    "state": "open",
-    "updated_at": "2026-10-28T05:53:39Z",
-    "labels": [
-      "enhancement",
-      "help wanted",
-      "claimed",
-      "size: M",
-      "area:infra"
-    ],
-    "assignees": [
-      "bluecmd"
-    ],
-    "url": "https://github.com/tangency-labs/fieldcraft/issues/123"
-  },
-  {
     "number": 115,
     "title": "Tet meshes of SolidCraft parts differ between platforms (and some between runs)",
     "body": "## Observed failure\nThe oracle case `filleted-bracket-fillet-stress` gives a fillet peak von Mises of **213.307 MPa on macOS** (where it was blessed) and **212.42 MPa on Linux CI** (main's run on 9469ac0); the coarse case 213.307 vs **210.17 MPa**. Equilibrium is exact on both, and both pass the 3 % reference tolerance — the meshes differ.\n\n## Reproduction\n```\ncargo xtask oracle --case filleted-bracket-fillet-stress-coarse --no-write   # on macOS and on Linux\n```\nCompare the element counts and the peak. Also: `rounded-box` tessellates differently on repeated runs on one machine (tet-quality work, #110).\n\n## Evidence\nCI log of the oracle job on 9469ac0 (fixture MOVED for both cases). Until this is fixed the two quantities are not frozen (`\"fixture\": false`, see docs/verification.md).\n\n## Expected behaviour\nThe same recipe gives the same mesh, bit for bit, on every platform and every run, as the solvers already do (results never depend on the thread count). Then mesh-dependent quantities can be frozen again.\n\n## Investigation\nSuspects, in order: (1) SolidCraft's tessellation uses transcendental functions (`sin`, `cos`, `atan2`) whose last bits differ between the macOS and glibc maths libraries; (2) hash-map iteration order anywhere between tessellation and meshing; (3) floating-point decisions in the tet pipeline that are not made by the exact predicates. Check first: dump the tessellation of the bracket on both platforms and diff it.\n\n## Acceptance criteria\n- [ ] The bracket's tessellation and tet mesh are identical on macOS and Linux (a test hashes them)\n- [ ] `\"fixture\": false` removed from both bracket cases and the fixtures re-blessed\n- [ ] Repeated runs of `rounded-box` give the same mesh\n\nRead [CONTRIBUTING.md](https://github.com/jyviko/fieldcraft/blob/develop/CONTRIBUTING.md) and comment to claim this issue before starting.",
