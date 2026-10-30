@@ -1,15 +1,23 @@
 {
   "number": 725,
   "branch": "cfd/cpu-checkpoint-653",
-  "head_sha": "afef7b10972d195953d69fa0dad5cfcab5b32e18",
+  "head_sha": "3b828136f3e3a098f16892e0bedd7ce229d5ac26",
   "state": "open",
   "merged": false,
   "draft": false,
   "title": "CFD: checkpoint and resume complete CPU fluid state",
   "body": "## What and why\n\nRefs #653. A stopped CPU fluid solve can continue from an explicit restart file rather than repeat the run. The checkpoint retains population buffers, outlet/fan and conducting-solid state, output cursors and histories, partial steady windows, LES eddy-viscosity state, and complete running-average accumulators.\n\nResume restores the same result, statistics and stopping decision bit for bit. Model, geometry, physical settings and caps must match; CPU thread count and storage cadence may change. `checkpoint_every` is required whenever a checkpoint path is supplied, including resume, so a large solve never silently rewrites its complete state every 64 steps.\n\nThe streamed, versioned format bounds memory, validates shapes and finite values, checks identity and SHA-256, and atomically replaces only a recognized checkpoint. Cancellation preserves the latest sound save. The solver-state layout is now `FCRST2`; it is not a cross-version migration format. Display results in a project remain separate from restart state.\n\nThree logical commits cover solver state, native persistence, and commands/forms/docs.\n\n## Validation\n\nTested revision: `afef7b10972d195953d69fa0dad5cfcab5b32e18`, rebased onto `3751d3bb93676aa49d1a18c438424be88162ac03`. Current verification is Linux CPU-only.\n\n- `cargo check` and normal suites: LBM 84 passed (22 existing ignores), engine 379 passed (15 existing ignores), IO 76 passed (1 existing ignore); no baseline failures.\n- All 10 checkpoint regressions pass, including heated LES with averaging before/after the interruption, both collisions, early steady stopping, changed cadence and changed CPU thread count. Complete results and retained floating-point state match bit for bit.\n- Scoped all-target clippy with `-D warnings`, formatting and diff checks pass.\n- The identical `fieldcraft_engine::catalogue::features_page()` generator was invoked through a temporary Rust wrapper against the tested engine; output exactly matches `docs/features.md`.\n- GPU execution, the full workspace gate, heavy suites and oracle were not run. The numerical scheme and numerical fixtures are unchanged.\n\n## Historical demonstration\n\nThese attachments retain their original capture revision. They demonstrate the earlier restart workflow, before the new LES/averaging state and thread-independent identity changes; they are not a new UI verification of this revision.\n\n<!-- fieldcraft-attachments:start -->\n### Attached files\n\nThese uploads are complete; earlier pending-upload wording below describes the original handoff.\n\nCapture/source revision: `c3867d6cd1647171a01a84cb30c5d68af30f2fb8`.\n\n**cpu-checkpoint-653.mp4**\n\nhttps://github.com/user-attachments/assets/cfd45ff2-1691-4d62-b4ba-6c3ed7064c9c\n\n**cpu-restart-flow.png**\n\n![cpu-restart-flow.png](https://github.com/user-attachments/assets/4ae0e3ce-cbc4-4211-be31-489ec2f1d476)\n\n**cpu-restart-form.png**\n\n![cpu-restart-form.png](https://github.com/user-attachments/assets/4ce20a3b-af85-4838-82a1-2c9b561fee45)\n\n<!-- fieldcraft-attachments:end -->\n\nThe original clip uses a 64-cell CPU flow and shows cancellation, retained state, changed save cadence and completion. The RTX 4090 rendered its viewport; the solver was CPU. It is edited frame playback rather than a real-time recording. No media belongs to feature history.\n\n## Limits\n\nGPU, other solvers, browser restart, automatic discovery and wall-clock scheduling remain open under #653. Each save rewrites retained state and may be large; atomic replacement temporarily needs space for old and new files. Concurrent writers need separate paths. A hard kill can leave an unpublished adjacent temporary file. This checks continuation fidelity, not additional physical accuracy.\n\n",
-  "updated_at": "2026-10-28T13:51:08Z",
+  "updated_at": "2026-10-30T17:15:25Z",
   "url": "https://github.com/tangency-labs/fieldcraft/pull/725",
-  "comments": [],
+  "comments": [
+    {
+      "author": "jyviko",
+      "body": "Rebased onto develop (after #759 melting/freezing, #747 shear-dependent viscosity, the wall models, MRT, the hybrid collision and Vreman's model) and addressed the open review. Three commits, one per layer, subjects now `area: …`:\n\n- `lbm: save and restore the complete CPU fluid state (#653)`\n- `io: bounded, streamed CPU checkpoint files with identity and atomic replacement (#653)`\n- `engine: solve.fluid checkpoint, checkpoint_every and resume on the CPU (#653)`\n\nWhat I found and changed (all folded into the lbm commit unless noted):\n\n1. **State that landed after the PR was written was not saved.** The rebase applied cleanly, which is why nothing flagged it. Missing from FCRST2:\n   - `Phase::liquid`, the lagged liquid fractions that the next collision's Carman–Kozeny resistance reads. A resumed freezing run rebuilt them from the initial temperature.\n   - `Clamps` (last, total, collisions). The resumed run's clamp share only counted steps from the resume point.\n   - The wall cells' friction velocities, which the final y⁺ warning reads. A resumed finished checkpoint dropped the warning.\n   - The hybrid collision's dynamic σ statistics.\n\n   They are all saved now, and the tag is `FCRST3`. The wall model's samples (`boundary`, `rate`, `stress`), the on-node bounce's `stress` and `taken`, `removed` and `gradient_u` are rebuilt from the populations at the start of each step, or used up within it, so they are not stored. The checkpoint now also checks that the collision, σ, Vreman's constant, the wall flags, periodicity and the thermal and phase-change constants match the rebuilt flow.\n2. **The layout is pinned (review item 3).** `Flow::checkpoint` destructures `Flow` and `ThermalState` with every field named and no `..`. `Walls`, `WallNodes` and the monitor's `Quantity` are destructured the same way. A new field does not compile until it is saved here or marked as not state, and the tag sits next to that code.\n3. **Tests (review item 1).**\n   - The Smagorinsky test literals now include `van_driest` and `wall_model`, and the fluid procedures include `sigma`.\n   - New parity tests cover the Musker wall model with Van Driest damping under MRT, `spalding_bounce_halfway` under TRT, the on-node `spalding_bounce` with Van Driest damping under the hybrid collision with dynamic σ, Vreman's model with the wall model under the regularised collision, power-law clamping under TRT and MRT, and a channel that freezes on one wall while it flows.\n   - Each test checks that the resumed result, and the bytes of the final checkpoint, equal the uninterrupted run.\n   - I checked that the tests catch a missing save: leaving out the liquid fractions, the clamps or the friction velocities makes the freezing, clamp and wall tests fail.\n4. `docs/cpu-fluid-checkpoints.md` lists the new state and FCRST3, and ROADMAP M12 has a line for CPU fluid checkpoints (engine commit).\n\nNot changed: the nit about the unstable-step rewind re-deriving the event schedule. `k = last_event` is covered by `an_advance_failure_keeps_the_uninterrupted_reporting_boundary`.\n\nChecked locally on macOS: `cargo check --all-targets` at each commit, `cargo clippy -p fieldcraft-lbm -p fieldcraft-io -p fieldcraft-engine --all-targets -D warnings`, `cargo fmt`, and the lbm and io tests (13/13 checkpoint tests).\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+      "created_at": "2026-10-30T17:15:25Z",
+      "updated_at": "2026-10-30T17:15:25Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/pull/725#issuecomment-6528816041"
+    }
+  ],
   "reviews": [
     {
       "author": "jyviko",
@@ -31,131 +39,131 @@
   "inline_comments": [],
   "checks": [
     {
-      "id": 121164488895,
+      "id": 124206346078,
       "name": "cargo xtask test --heavy",
-      "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-10-25T12:09:55Z",
-      "completed_at": "2026-10-25T12:23:14Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40191861628/job/121164488895",
+      "status": "in_progress",
+      "conclusion": null,
+      "started_at": "2026-10-30T17:16:20Z",
+      "completed_at": null,
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41097223991/job/124206346078",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121164488895/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124206346078/annotations"
       }
     },
     {
-      "id": 121164488859,
+      "id": 124206346024,
       "name": "cargo xtask ci",
-      "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-10-25T12:09:55Z",
-      "completed_at": "2026-10-25T12:13:55Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40191861628/job/121164488859",
+      "status": "in_progress",
+      "conclusion": null,
+      "started_at": "2026-10-30T17:16:20Z",
+      "completed_at": null,
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41097223991/job/124206346024",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121164488859/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124206346024/annotations"
       }
     },
     {
-      "id": 121164488857,
+      "id": 124206345960,
       "name": "cargo xtask oracle",
-      "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-10-25T12:09:54Z",
-      "completed_at": "2026-10-25T12:13:02Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40191861628/job/121164488857",
+      "status": "in_progress",
+      "conclusion": null,
+      "started_at": "2026-10-30T17:16:19Z",
+      "completed_at": null,
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41097223991/job/124206345960",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121164488857/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124206345960/annotations"
       }
     },
     {
-      "id": 121164353120,
+      "id": 124206110249,
       "name": "Windows app tests",
       "status": "completed",
       "conclusion": "skipped",
-      "started_at": "2026-10-25T12:09:11Z",
-      "completed_at": "2026-10-25T12:09:10Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40191861628/job/121164353120",
+      "started_at": "2026-10-30T17:15:48Z",
+      "completed_at": "2026-10-30T17:15:31Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41097223991/job/124206110249",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121164353120/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124206110249/annotations"
       }
     },
     {
-      "id": 121164353055,
+      "id": 124206090407,
       "name": "cargo xtask oracle (macOS)",
       "status": "completed",
       "conclusion": "skipped",
-      "started_at": "2026-10-25T12:09:11Z",
-      "completed_at": "2026-10-25T12:09:10Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40191861628/job/121164353055",
+      "started_at": "2026-10-30T17:15:46Z",
+      "completed_at": "2026-10-30T17:15:31Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41097223991/job/124206090407",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121164353055/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124206090407/annotations"
       }
     },
     {
-      "id": 121164352324,
-      "name": "Plan (affected crates)",
-      "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-10-25T12:09:20Z",
-      "completed_at": "2026-10-25T12:09:48Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40191861628/job/121164352324",
-      "output": {
-        "title": null,
-        "summary": null,
-        "text": null,
-        "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121164352324/annotations"
-      }
-    },
-    {
-      "id": 121164352302,
+      "id": 124205934246,
       "name": "Claim and triage bot tests",
       "status": "completed",
       "conclusion": "success",
-      "started_at": "2026-10-25T12:09:17Z",
-      "completed_at": "2026-10-25T12:09:24Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40191861628/job/121164352302",
+      "started_at": "2026-10-30T17:15:39Z",
+      "completed_at": "2026-10-30T17:15:46Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41097223991/job/124205934246",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121164352302/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124205934246/annotations"
       }
     },
     {
-      "id": 121164352141,
+      "id": 124205934086,
       "name": "Dependency licences, advisories and sources",
-      "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-10-25T12:09:16Z",
-      "completed_at": "2026-10-25T12:10:49Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40191861628/job/121164352141",
+      "status": "in_progress",
+      "conclusion": null,
+      "started_at": "2026-10-30T17:15:33Z",
+      "completed_at": null,
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41097223991/job/124205934086",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121164352141/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124205934086/annotations"
+      }
+    },
+    {
+      "id": 124205933650,
+      "name": "Plan (affected crates)",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-30T17:15:37Z",
+      "completed_at": "2026-10-30T17:16:12Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41097223991/job/124205933650",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124205933650/annotations"
       }
     }
   ]
