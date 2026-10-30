@@ -1,15 +1,23 @@
 {
   "number": 721,
   "branch": "diagnostics/solver-errors-654",
-  "head_sha": "cb89c56114b26c8ab1f6eaaccb5d1e46dba86ffd",
+  "head_sha": "d6b4a3dc377c3eee8660d8b1bee41355a3df6684",
   "state": "open",
   "merged": false,
   "draft": false,
   "title": "Record ordinary solver stops and expose persistent headless report paths",
   "body": "## What and why\n\nRefs #654. Ordinary solver cap, convergence, stability and backend failures now leave a bounded local `solver_error` diagnostic while preserving the original typed error or stopped result. Successful physical transients, malformed parameters and cancellation do not create records.\n\nReports include command/step, model size, observed progress and available backend context, without a copied model, replay or crash prompt. Context belongs to the actual solve, including children of `solve.run`. Device failures use a typed backend error rather than matching message strings.\n\nSolver records are pruned before recovered panics and other crash reports. If a full crash budget immediately discards a new solver diagnostic, the command returns its original error without announcing a nonexistent path. CLI/headless MCP retain reports in the per-user data directory by default; CI and automated desktop recovery stay isolated. `FIELDCRAFT_CRASH_DIR` can select a mounted worker directory, subject to automation roots. Local stderr prints the actual retained path; automation error/results use the home-redacted display path.\n\n## Validation\n\nTested revision: `cb89c56114b26c8ab1f6eaaccb5d1e46dba86ffd`, rebased onto `3751d3bb93676aa49d1a18c438424be88162ac03`. Current verification is Linux CPU-only, with `FIELDCRAFT_GPU=cpu`.\n\n- Normal suites and doc tests for all nine touched crates pass: 898 harness passes, zero failures, 41 existing heavy ignores. This includes 21 fluid-device wrappers and one offscreen-device wrapper that returned early under the CPU policy; no GPU numerical execution is claimed.\n- Engine: 390 unit and two integration tests pass, including full count/byte crash-budget protection, durable report location, returned-path privacy, typed backend refusal and ordinary embedded-session isolation. CLI seven tests and MCP protocol/workflow suites pass.\n- Scoped nine-crate `cargo check` and all-target clippy with `-D warnings`, formatting, diff and tracked-path checks pass. Feature generation from the tested CLI matches the committed page.\n- Isolated real CLI and MCP CPU processes deliberately hit a cantilever DOF cap: reports survive process exit in the default per-user location, local stderr names the actual file, returned paths redact home, the original cap failure remains intact, and repeats increment to two.\n- No current GPU numerical or native-window run, full workspace gate, heavy suites or oracle run. No solver numerical scheme or shader changed.\n\n## Historical demonstration\n\nThe attachments retain their original capture revision. The historical RTX 4090/Vulkan example illustrates diagnostic reporting and cached-device context; it does not verify the updated revision on a GPU.\n\n<!-- fieldcraft-attachments:start -->\n### Attached files\n\nThese uploads are complete; earlier pending-upload wording below describes the original handoff.\n\nCapture/source revision: `e7b00e713b42c93b574bf279b78d46356975baac`.\n\n**solver-errors-654.mp4**\n\nhttps://github.com/user-attachments/assets/1f00aa3d-5e4d-4b7a-89c6-18bd54a4a3b4\n\n**solver-record-device.png**\n\n![solver-record-device.png](https://github.com/user-attachments/assets/4c7f749b-9d7f-4993-b5d9-43efafd7a353)\n\n**solver-record-path.png**\n\n![solver-record-path.png](https://github.com/user-attachments/assets/a18d01d1-5cc1-4175-9522-ee7fe1de31bc)\n\n<!-- fieldcraft-attachments:end -->\n\nThe original 64-cell flow intentionally reaches its steady-time cap, then completes a requested physical transient without creating another record. Media remains outside feature history.\n\n## Limits\n\nNo current GPU numerical or native-window verification was available. Backend changes here concern error typing and diagnostic observations; no shader or numerical scheme changed. Confined sessions need a granted report directory; persistence failure leaves the original solve outcome unchanged. Container workers still need a persistent mount to retain files after the container is removed.\n\n",
-  "updated_at": "2026-10-28T13:49:08Z",
+  "updated_at": "2026-10-30T18:19:28Z",
   "url": "https://github.com/tangency-labs/fieldcraft/pull/721",
-  "comments": [],
+  "comments": [
+    {
+      "author": "jyviko",
+      "body": "Maintainer review and fixes, rebased onto develop. The branch is now three commits, renamed to the repository's `area: what` style; every fix is folded into the commit it belongs to.\n\n**Review findings (2026-10-28) and what changed**\n\n1. **Conflict in `crates/lbm-gpu/src/native.rs`.** Rebased onto current develop. The `backend_diagnostic(...)` call now sits after the remaining CPU-only refusals (non-Newtonian fluid, phase change), before the fans and porous zones check.\n2. **GPU run.** Rerun at this revision (d6b4a3dc) on a real GPU: an **Apple M4 Max via Metal**, macOS arm64. `cargo test -p fieldcraft-lbm-gpu -p fieldcraft-lbm` passes, except two Smagorinsky Couette cases whose GPU-vs-CPU density bound (1e-6) fails at 2.2e-6 and 2.4e-6. They fail identically on develop at 72fadfe7, and this PR does not touch the kernels, so I filed them as #776. `a_second_solve_reuses_the_compiled_kernels` ran on the device and checks the observed adapter context and device reuse. Not rerun on Vulkan/NVIDIA.\n3. **Limit refusals and the error type.** `solver_failure` no longer counts `Limit` errors (solver, explicit, fluid). A `max_dofs`, `max_cells` or other cap refusal is the plain error it was on develop and writes nothing. Recorded: `NotConverged`, `Singular`, `Internal`, `Element`, explicit and fluid `Unstable`, fluid `Backend`, plus the two stops that return a result (a steady flow at its time cap, an explicit step at its increment cap). No error is wrapped any more. The error is the same value as on develop, and the path never leads its message. `solve.run` again maps a failed step to `EngineError::Params(\"step `…`: …\")`, as on develop.\n4. **Process-global switches.** Removed `crash::use_persistent_dir`, the `PERSISTENT_DIR` flag, `recovery::user_data_dir` and the `use_automation_dir()` calls the CLI and `Headless::new` made. They also moved the CLI's recovery files into the temporary folder, which was out of scope. `FIELDCRAFT_CRASH_DIR` no longer turns diagnostics on. The setting belongs to the session: `Session::solver_diagnostics: Option<PathBuf>`, the folder to record into, `None` by default. Hosts set it explicitly:\n   - the desktop app, to its installed crash folder;\n   - `fieldcraft-cli run`, to `crash::default_dir()`;\n   - `fieldcraft-cli mcp`, through a new `mcp::Options::solver_diagnostics`.\n\n   `Headless::new` records nothing, so MCP tests never write to the developer's data folder. `tests/diagnostic_intent.rs` now checks that a dependency session writes nothing even with `FIELDCRAFT_CRASH_DIR` set.\n5. **stderr from the engine.** Removed. The engine logs the path (`log::info!`) and keeps it for the host: `Session::take_solver_diagnostic()`. A stopped result still carries the redacted `diagnostic_report`. The CLI prints the record's path on stderr. A failed MCP command's reply ends with `(solver diagnostic: ~/…/report.json)`, after the solver's message.\n\nThe earlier findings (2026-10-24) stay addressed: solver records are pruned before crash reports, `lbm::Error::Backend` is typed, returned paths are home-redacted.\n\n**Tests.** The engine process tests now use a real solver failure, a cantilever whose step leaves its clamp out (singular), instead of `max_dofs`. `refusals_and_cancellation_do_not_create_solver_records` covers `max_dofs` on `solve.static` and `solve.run`, a missing step, and cancellation. `refusals_of_the_request_are_not_solver_failures` covers the classifier. `docs/crash-reports.md` is rewritten for the new behaviour and is shorter.\n\n**Local checks** (macOS arm64): tests of engine (403 lib + integration), mcp, io, model, cli, lbm and lbm-gpu pass. `cargo clippy --all-targets -D warnings` is clean for model, lbm, gpu, lbm-gpu, engine, mcp, cli, the app and ui-egui. Each commit passes `cargo check`. `docs/features.md` is unchanged.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+      "created_at": "2026-10-30T18:19:27Z",
+      "updated_at": "2026-10-30T18:19:27Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/pull/721#issuecomment-6530273319"
+    }
+  ],
   "reviews": [
     {
       "author": "jyviko",
@@ -31,131 +39,132 @@
   "inline_comments": [],
   "checks": [
     {
-      "id": 121167554435,
+      "id": 124235895036,
+      "name": "cargo xtask ci",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-30T18:20:42Z",
+      "completed_at": "2026-10-30T18:30:57Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41105898155/job/124235895036",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 2,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124235895036/annotations"
+      },
+      "log_error": "gh: HTTP 503\n"
+    },
+    {
+      "id": 124235894926,
+      "name": "cargo xtask test --heavy",
+      "status": "in_progress",
+      "conclusion": null,
+      "started_at": "2026-10-30T18:20:41Z",
+      "completed_at": null,
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41105898155/job/124235894926",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124235894926/annotations"
+      }
+    },
+    {
+      "id": 124235894814,
       "name": "cargo xtask oracle",
       "status": "completed",
       "conclusion": "success",
-      "started_at": "2026-10-25T12:23:54Z",
-      "completed_at": "2026-10-25T12:26:50Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40192877777/job/121167554435",
+      "started_at": "2026-10-30T18:20:06Z",
+      "completed_at": "2026-10-30T18:25:03Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41105898155/job/124235894814",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121167554435/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124235894814/annotations"
       }
     },
     {
-      "id": 121167554394,
-      "name": "cargo xtask test --heavy",
-      "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-10-25T12:23:54Z",
-      "completed_at": "2026-10-25T12:37:37Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40192877777/job/121167554394",
-      "output": {
-        "title": null,
-        "summary": null,
-        "text": null,
-        "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121167554394/annotations"
-      }
-    },
-    {
-      "id": 121167554341,
-      "name": "cargo xtask ci",
-      "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-10-25T12:23:54Z",
-      "completed_at": "2026-10-25T12:27:39Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40192877777/job/121167554341",
-      "output": {
-        "title": null,
-        "summary": null,
-        "text": null,
-        "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121167554341/annotations"
-      }
-    },
-    {
-      "id": 121167447917,
-      "name": "Windows app tests",
-      "status": "completed",
-      "conclusion": "skipped",
-      "started_at": "2026-10-25T12:23:18Z",
-      "completed_at": "2026-10-25T12:23:18Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40192877777/job/121167447917",
-      "output": {
-        "title": null,
-        "summary": null,
-        "text": null,
-        "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121167447917/annotations"
-      }
-    },
-    {
-      "id": 121167447381,
+      "id": 124235511542,
       "name": "cargo xtask oracle (macOS)",
       "status": "completed",
       "conclusion": "skipped",
-      "started_at": "2026-10-25T12:23:18Z",
-      "completed_at": "2026-10-25T12:23:18Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40192877777/job/121167447381",
+      "started_at": "2026-10-30T18:19:11Z",
+      "completed_at": "2026-10-30T18:19:11Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41105898155/job/124235511542",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121167447381/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124235511542/annotations"
       }
     },
     {
-      "id": 121167446949,
+      "id": 124235511046,
+      "name": "Windows app tests",
+      "status": "completed",
+      "conclusion": "skipped",
+      "started_at": "2026-10-30T18:19:11Z",
+      "completed_at": "2026-10-30T18:19:11Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41105898155/job/124235511046",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124235511046/annotations"
+      }
+    },
+    {
+      "id": 124235509454,
       "name": "Plan (affected crates)",
       "status": "completed",
       "conclusion": "success",
-      "started_at": "2026-10-25T12:23:25Z",
-      "completed_at": "2026-10-25T12:23:48Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40192877777/job/121167446949",
+      "started_at": "2026-10-30T18:19:22Z",
+      "completed_at": "2026-10-30T18:19:56Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41105898155/job/124235509454",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121167446949/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124235509454/annotations"
       }
     },
     {
-      "id": 121167446926,
-      "name": "Dependency licences, advisories and sources",
-      "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-10-25T12:23:25Z",
-      "completed_at": "2026-10-25T12:24:57Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40192877777/job/121167446926",
-      "output": {
-        "title": null,
-        "summary": null,
-        "text": null,
-        "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121167446926/annotations"
-      }
-    },
-    {
-      "id": 121167446798,
+      "id": 124235509184,
       "name": "Claim and triage bot tests",
       "status": "completed",
       "conclusion": "success",
-      "started_at": "2026-10-25T12:23:24Z",
-      "completed_at": "2026-10-25T12:23:30Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40192877777/job/121167446798",
+      "started_at": "2026-10-30T18:19:22Z",
+      "completed_at": "2026-10-30T18:19:30Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41105898155/job/124235509184",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121167446798/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124235509184/annotations"
+      }
+    },
+    {
+      "id": 124235508687,
+      "name": "Dependency licences, advisories and sources",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-30T18:19:21Z",
+      "completed_at": "2026-10-30T18:21:50Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41105898155/job/124235508687",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124235508687/annotations"
       }
     }
   ]
