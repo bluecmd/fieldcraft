@@ -722,24 +722,6 @@
     "url": "https://github.com/tangency-labs/fieldcraft/issues/203"
   },
   {
-    "number": 188,
-    "title": "Contact on quadratic faces (hex20, tet10)",
-    "body": "Mortar contact refuses hex20/tet10 faces. Add quadratic segmentation (or dual-basis treatment of mid-side nodes) and verify with the contact patch test.\n\nFollow-up from #161 (PRs #180, #181, #183, #184). Read [CONTRIBUTING.md](https://github.com/jyviko/fieldcraft/blob/develop/CONTRIBUTING.md) and comment to claim this issue before starting.",
-    "state": "open",
-    "updated_at": "2026-10-26T18:23:54Z",
-    "labels": [
-      "enhancement",
-      "help wanted",
-      "claimed",
-      "size: M",
-      "area:solver"
-    ],
-    "assignees": [
-      "bluecmd"
-    ],
-    "url": "https://github.com/tangency-labs/fieldcraft/issues/188"
-  },
-  {
     "number": 187,
     "title": "Amplitudes and multiple steps in nonlinear analysis",
     "body": "Nonlinear steps scale every load and BC by one factor. Needed: amplitudes per load/BC and sequential steps carrying state (needed for push-then-tilt, Cattaneo–Mindlin partial slip, preload then service load). ROADMAP M7.\n\nFollow-up from #161 (PRs #180, #181, #183, #184). Read [CONTRIBUTING.md](https://github.com/jyviko/fieldcraft/blob/develop/CONTRIBUTING.md) and comment to claim this issue before starting.",
