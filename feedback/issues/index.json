@@ -806,25 +806,6 @@
     "url": "https://github.com/tangency-labs/fieldcraft/issues/161"
   },
   {
-    "number": 158,
-    "title": "Solidification / phase change in flow and heat transfer",
-    "body": "## What to build\nLatent heat and a no-flow-below transition temperature (enthalpy method), so a melt freezes as it cools: frozen layer growth during filling and cooling. Verify with the Stefan problem (closed form).\n\nRead [CONTRIBUTING.md](https://github.com/jyviko/fieldcraft/blob/develop/CONTRIBUTING.md) and comment to claim this issue before starting. Clean-room rules: papers, public specifications and analytic results only; no GPL code, no commercial-product files or output.",
-    "state": "open",
-    "updated_at": "2026-10-28T05:54:37Z",
-    "labels": [
-      "enhancement",
-      "help wanted",
-      "claimed",
-      "size: M",
-      "area:solver",
-      "area:cfd"
-    ],
-    "assignees": [
-      "bluecmd"
-    ],
-    "url": "https://github.com/tangency-labs/fieldcraft/issues/158"
-  },
-  {
     "number": 157,
     "title": "Thermal lattice Boltzmann and conjugate heat transfer with solids",
     "body": "## Current behaviour\nThe LBM carries no temperature; heat transfer runs only in solids.\n## What to build\nA temperature distribution (double-distribution LBM) advected with the flow, with wall temperature/flux conditions, and two-way coupling with the solid heat-transfer solver at the fluid–solid interface. Verify with heated-channel (Graetz) and natural-convection cavity benchmarks (de Vahl Davis).\n\nRead [CONTRIBUTING.md](https://github.com/jyviko/fieldcraft/blob/develop/CONTRIBUTING.md) and comment to claim this issue before starting. Clean-room rules: papers, public specifications and analytic results only; no GPL code, no commercial-product files or output.",
