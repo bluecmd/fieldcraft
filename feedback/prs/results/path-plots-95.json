@@ -1,15 +1,23 @@
 {
   "number": 730,
   "branch": "results/path-plots-95",
-  "head_sha": "b4e3e1840749adefc34ca6847aa0fc00049f4555",
+  "head_sha": "84fdb5da0f59ed344852bb6aaffa8c4d042f0ea3",
   "state": "open",
   "merged": false,
   "draft": false,
   "title": "Results: interpolate and plot solid fields along picked or typed paths",
   "body": "## What and why\n\nCloses #95. Results > Plots > Path Plot now samples a typed or surface-picked polyline, draws its value-versus-distance graph and viewport station markers, and exports `distance,x,y,z,value` CSV. `results.path` is the same read-only typed session command through the desktop, CLI, scripts and MCP. Outside stations become null values and plot/CSV gaps; there is no nearest-node substitution.\n\nThe pure FEM locator supports all six existing solid families: Tet4, Tet10, Wedge6, Pyramid5, Hex8 and Hex20. It uses the actual isoparametric shape functions, bounded inverse solves and conservative outward-rounded Bernstein/control bounds for curved geometry. An exhausted inverse search reports unresolved instead of silently classifying a potentially inside point as outside. Actual-node Jacobians are checked, including a folded Tet10 regression; the Pyramid5 apex has its explicit singular-chart handling. This establishes local query admissibility, not global injectivity of arbitrary folded meshes.\n\nThe engine caches a deterministic element BVH per exact current result, with the lowest element label winning shared-face ties. Storage is SI; points, distances, scalar replies and CSV convert once through Quantity. All five display presets and Celsius/Kelvin/Fahrenheit are covered. Categorical contact status is refused; numerical contact quantities interpolate only defined contributing values, ignoring exactly-zero shape coefficients without renormalizing.\n\nPicking uses genuine rendered triangle hits and barycentric natural coordinates, followed by the full FE map to recover reference coordinates even on curved/deformed displays. Draft points retain their SI precision through all display presets and actual widget rendering. Opening the command again preserves an unsampled draft; fresh drafts inherit compatible visible modes/frames. The plot labels retain their own step/field/frame/mode when the active result view changes. Graph decimation preserves interior extrema in station order and conservatively breaks bins containing gaps; graph scaling preserves both multiplicative unit changes and temperature offsets.\n\nSampling and export run as cancellable background jobs, with index-building and station-loop progress checks. Cancellation, stale results and failed exports preserve the previous successful plot. Programmatic calls never open a dialog. Index storage is capped at 500,000 elements, two million result nodes and 96 MiB; construction has an independent 14-million basis-evaluation budget, queries four million, with bounded candidates and BVH visits. The guide documents the caps and numerical scope; original demonstration recipes are included below. Numerical-method source citations remain next to the implementation. Generated feature documentation is updated; ROADMAP is unchanged.\n\n## Current review changes\n\nThe locator cites Sederberg only through the official BYU archive, with its recorded January 10, 2012 publication metadata. The two demonstration recipe files and one-run write-up have moved out of the repository into this description. Three existing regression tests now define their synthetic models directly, retaining the analytic conductor, transient-frame inheritance and actual curved/deformed surface picking checks. Rebasing onto upstream develop retains both the new orphan import and path command modules. No production interpolation or UI behavior changed.\n\nLinux CPU validation at `b4e3e1840749adefc34ca6847aa0fc00049f4555` (rebased on `e8ee48d0`):\n\n- FEM:96 passed; engine:395 passed with15 heavy tests ignored; UI:204 passed plus3 doctests. The full engine run found only stale generated feature totals; these are corrected to88 ready/34 coming soon, and the exact catalogue/page guard passed on rerun. No engine tests were excluded on Linux.\n- Scoped `cargo check`, all-target clippy with warnings denied, formatting, manual simplification review and diff checks passed. The source tree is unchanged by autosquash into the original3 logical commits.\n- Builds retained the cached dependency-feature resolution; only FEM,engine and UI test binaries were executed. This revision ran no GPU numerical/native capture, wasm build or full workspace gate. Historical attachments below retain their original source revision and provenance.\n\n## Historical demonstration at 0b324482\n\nWindows native evidence was captured from a dedicated build of the exact tested head `0b32448242f693680985eb8e67b88bb78490b061`. CPU solvers were used with an actual NVIDIA GeForce RTX 4090 Vulkan viewport. The 24-second H.264 video is a captioned sequence of six genuine presented app frames, not reconstructed UI or an offscreen rendering. It shows beam stress, actual deformed curved-surface picking, the sampled endpoint graph, steady conduction temperature and outside gaps. Two stills and a small numerical verification JSON accompany it. Older private `5e3b302` layout captures are superseded and are not part of this handoff.\n\nThe coordinator normal-pushed all four immutable originals through ordinary Git in artifact-queue commit `9889db110eaacab5573cabcaecf6219540daa48d`, under `objects/results/path-plots-95/0b32448242f693680985eb8e67b88bb78490b061/`: `solid-path-plots.mp4`, `curved-surface-path.png`, `temperature-path-gaps.png` and `native-verification.json`. Original and staged blob SHA-256 values and byte counts match; the full video decodes successfully. Maintainer receipts confirm all four artifacts received, with SHA-256 values and byte counts matching the immutable originals. The maintainer has attached all three native media files at the URLs below. The JSON is numerical evidence in the inbox, not a native attachment. No demonstration media or binaries are in the feature branch. The video is not a timing benchmark, physical transient, coupled two-fluid exchanger demonstration or experimental validation.\n\n- [solid-path-plots.mp4](https://github.com/user-attachments/assets/6dc43c8b-913b-4708-9b00-62c273e7db15)\n- [curved-surface-path.png](https://github.com/user-attachments/assets/e6440082-b4da-46cf-8f49-31167c099cae)\n- [temperature-path-gaps.png](https://github.com/user-attachments/assets/e8454be0-969f-4624-8086-559430c5b7c9)\n\n## Historical validation at 0b324482\n\nDedicated per-worktree target; no cross-worktree cached binary was used for final checks or capture. Three logical source commits cover FEM, engine and UI. No full local CI/oracle/heavy gate was run.\n\n- `cargo test -p fieldcraft-fem`: 96 passed, including linear/nodal patches across all six solids, curved bounds, exact-node/NaN contributor behavior, folded-map refusal, Pyramid5 boundaries, work caps and hostile inputs.\n- `cargo test -p fieldcraft-engine` with the three known Windows baseline exclusions below: 382 passed, 15 existing ignored, three filtered. Path regressions include analytic beam and conduction patches, exact CSV/reply units across all presets, modal normalization, repeated nonlinear load factors, cancellation, Roots confinement, stale state and hostile parameters.\n- `cargo test -p fieldcraft-ui-egui`: 197 passed plus three doctests, explicitly selecting Vulkan and requiring real hardware GPU. Focused strict GPU UI tests also passed 2/2. Path tests cover real curved/deformed pick-to-query under all five presets, precision after widget drawing, visible mode/frame inheritance, draft preservation, graph peaks/gaps/unit invariance and actual context-width bounds.\n- Scoped all-target clippy for FEM, engine and UI; targeted wasm32 checks for those crates; UI clippy/wasm repeated after the final layout correction. Formatting, assets (377), layers (23), unit-factors and diff checks passed. The gate executable was rebuilt in the intended source worktree before its checks.\n- Exact-head native build and presented capture: cantilever top-fibre 101 stations match `1.5 (100-x)` MPa with maximum relative error 0.123340%, below the issue's 10% acceptance bound. The tension side is positive. Actual deformed curved-face endpoint picks are at least 3.5912 mm from every mesh node and produce finite FE-interpolated displacements.\n- Original steady conduction recipe: 48 Hex8 elements / 117 nodes, assumed conductivity 15 W/(m K), 20/30 degrees Celsius at the ends of a 120 mm bar, remaining faces insulated. Across 121 stations, maximum temperature error is 6.68e-13 degrees Celsius and the midpoint is 25.000000000000625 degrees Celsius. Signed axial heat flux -1250 W/m2 is checked by the committed analytic regression. Extending the path outside gives 24 nulls among 145 stations and exactly 24 blank CSV values; all exported numbers match the typed reply.\n\n## Known limitations\n\nOnly existing 3D solid elements are supported; shell/beam interpolation is refused. Stress sampling interpolates existing nodal averaged results, not a new constitutive recovery scheme. A locally admissible inverse does not certify global mesh injectivity. Bounded unresolved searches report an error, and resource limits can refuse an oversized query.\n\nStored nonlinear frames expose displacement only; final stress/contact/temperature require omitted/null frame. Equal load factors do not imply equal committed material/contact state, so there is no final-state substitution for a stored nonlinear frame. True stored intermediate fields remain #205. Heat flux is final-only. Frequency fields keep the existing mass-normalized, dimensionless field convention. The baseline `results.frame` command's omission of heat steps is unchanged; the path panel itself can select available heat frames.\n\nA straight chord between points on a concave curved face may leave the solid. The curved native example deliberately checks two picked endpoints; intermediate outside stations remain gaps. The viewport uses existing display deformation while queries retain reference coordinates. Decimated graph/overlay drawing is bounded; full numerical samples remain available in the reply and CSV.\n\nThe historical full engine run excluded these independently known Windows baseline failures: `bug_report::tests::a_long_session_and_the_model_are_attachments` (escaped home path, #554), `cmd::file::tests::every_migrated_journal_replays_to_its_migrated_model` (last-bit imperial density), and `cmd::render::tests::labels_and_command_lines_read_well` (path separators). Their behavior was not changed or blessed. Ignored heavy tests were not run locally.\n\nNative runtime evidence is Windows / RTX 4090 / Vulkan only. Targeted wasm compilation passed; browser runtime, macOS, other GPU hardware and throughput were not measured. The beam and constant-conductivity checks are synthetic implementation verification, not experimental validation or a coupled heat-exchanger design claim. Relayed CI for the historical captured head reported all enabled checks successful (main gate, oracle and heavy included); Windows app and macOS oracle are skipped. Native GitHub attachments are published at the original exact captured head.\n\n## Original demonstration model details\n\nRun the original conductor recipe below:\n\n```text\nfieldcraft-cli run path-temperature.json\n```\n\nIt builds a 20 × 30 × 120 mm insulated rectangular conductor, with an explicitly assumed\nconstant conductivity of 15 W/(m·K), held at 20 °C and 30 °C at its ends, then solves steady\nconduction on the CPU. The 48 hex8 elements reproduce the linear solution:\n\n```text\nT(z) = 20 + z / 12 °C  (z in mm)\nq_z = -1250 W/m²\n```\n\nThe centreline path contains 121 stations, so the endpoint temperatures are 20 and 30 °C and\nthe midpoint is 25 °C. This checks interpolation and unit handling against an analytic field;\nthe assumed constant is not a material grade or a validated heat-exchanger model. To inspect\nit in the app, run the recipe through `engine.script`, show its temperature contour, then\nopen Path Plot. A path extended beyond either end should show gaps, not extrapolated values.\n\nThe original curved-picking recipe below defines one hex20 with\nthe reference map `x = 10 r`, `y = 10 (s + 0.3 r - 0.4 (1-r²))`, `z = 10 t` in millimetres.\nIts positive map Jacobian is constant. It clamps the negative-x face and applies 100 N in -z\nat the other face, using explicitly assumed elastic constants. After solving, show its\ndeformed shape, pick surface points and sample them. The regression checks the genuine\ndisplay-triangle picks under all five presets; this is a picking/interpolation check, not a\nconverged stress benchmark. A two-station query checks both picked endpoints without\nassuming their straight connecting chord stays inside the concave solid.\n\n## Original demonstration recipes\n\nThese original models reproduce the earlier native evidence. Save each JSON block to its named file and run `fieldcraft-cli run <file>`. These are synthetic implementation checks with assumed material constants.\n\n\n<details>\n<summary>path-temperature.json</summary>\n\n```json\n[\n  {\n    \"command\":\"model.units\",\n    \"params\":{\n      \"system\":\"mm-t-s-N-MPa\",\n      \"temperature\":\"°C\"\n    }\n  },\n  {\n    \"command\":\"mesh.block\",\n    \"params\":{\n      \"body\":\"Conductor\",\n      \"kind\":\"hex8\",\n      \"corners\":[\n        [\n          0,\n          0,\n          0\n        ],\n        [\n          20,\n          0,\n          0\n        ],\n        [\n          20,\n          30,\n          0\n        ],\n        [\n          0,\n          30,\n          0\n        ],\n        [\n          0,\n          0,\n          120\n        ],\n        [\n          20,\n          0,\n          120\n        ],\n        [\n          20,\n          30,\n          120\n        ],\n        [\n          0,\n          30,\n          120\n        ]\n      ],\n      \"divisions\":[\n        2,\n        2,\n        12\n      ],\n      \"faces\":{\n        \"1\":\"cold\",\n        \"2\":\"hot\"\n      }\n    }\n  },\n  {\n    \"command\":\"model.set.create\",\n    \"params\":{\n      \"name\":\"all\",\n      \"geometry\":[\n        {\n          \"body\":\"Conductor\"\n        }\n      ]\n    }\n  },\n  {\n    \"command\":\"model.set.create\",\n    \"params\":{\n      \"name\":\"cold\",\n      \"geometry\":[\n        {\n          \"body\":\"Conductor\",\n          \"face\":\"cold\"\n        }\n      ]\n    }\n  },\n  {\n    \"command\":\"model.set.create\",\n    \"params\":{\n      \"name\":\"hot\",\n      \"geometry\":[\n        {\n          \"body\":\"Conductor\",\n          \"face\":\"hot\"\n        }\n      ]\n    }\n  },\n  {\n    \"command\":\"model.material.create\",\n    \"params\":{\n      \"name\":\"Assumed_conductor\",\n      \"thermal\":{\n        \"conductivity\":\"15 W/(m*K)\"\n      }\n    }\n  },\n  {\n    \"command\":\"model.section.create\",\n    \"params\":{\n      \"name\":\"Conductor\",\n      \"set\":\"all\",\n      \"material\":\"Assumed_conductor\",\n      \"kind\":{\n        \"type\":\"solid\"\n      }\n    }\n  },\n  {\n    \"command\":\"model.boundary_condition.create\",\n    \"params\":{\n      \"name\":\"Cold\",\n      \"type\":\"temperature\",\n      \"target\":{\n        \"set\":\"cold\"\n      },\n      \"value\":\"20 °C\"\n    }\n  },\n  {\n    \"command\":\"model.boundary_condition.create\",\n    \"params\":{\n      \"name\":\"Hot\",\n      \"type\":\"temperature\",\n      \"target\":{\n        \"set\":\"hot\"\n      },\n      \"value\":\"30 °C\"\n    }\n  },\n  {\n    \"command\":\"model.step.create\",\n    \"params\":{\n      \"name\":\"Conduction\",\n      \"procedure\":{\n        \"type\":\"heat_transfer\"\n      },\n      \"boundary_conditions\":[\n        \"Cold\",\n        \"Hot\"\n      ]\n    }\n  },\n  {\n    \"command\":\"solve.heat\",\n    \"params\":{\n      \"step\":\"Conduction\"\n    }\n  },\n  {\n    \"command\":\"results.contour\",\n    \"params\":{\n      \"step\":\"Conduction\",\n      \"field\":\"temperature\"\n    }\n  },\n  {\n    \"command\":\"results.path\",\n    \"params\":{\n      \"step\":\"Conduction\",\n      \"field\":\"temperature\",\n      \"points\":[\n        [\n          10,\n          15,\n          0\n        ],\n        [\n          10,\n          15,\n          120\n        ]\n      ],\n      \"samples\":121\n    }\n  }\n]\n```\n\n</details>\n\n<details>\n<summary>path-curved-picking.json</summary>\n\n```json\n[\n  {\n    \"command\":\"model.units\",\n    \"params\":{\n      \"system\":\"mm-t-s-N-MPa\"\n    }\n  },\n  {\n    \"command\":\"mesh.node.add\",\n    \"params\":{\n      \"label\":1,\n      \"xyz\":[\n        -10,\n        -13.0,\n        -10\n      ]\n    }\n  },\n  {\n    \"command\":\"mesh.node.add\",\n    \"params\":{\n      \"label\":2,\n      \"xyz\":[\n        10,\n        -7.0,\n        -10\n      ]\n    }\n  },\n  {\n    \"command\":\"mesh.node.add\",\n    \"params\":{\n      \"label\":3,\n      \"xyz\":[\n        10,\n        13.0,\n        -10\n      ]\n    }\n  },\n  {\n    \"command\":\"mesh.node.add\",\n    \"params\":{\n      \"label\":4,\n      \"xyz\":[\n        -10,\n        7.0,\n        -10\n      ]\n    }\n  },\n  {\n    \"command\":\"mesh.node.add\",\n    \"params\":{\n      \"label\":5,\n      \"xyz\":[\n        -10,\n        -13.0,\n        10\n      ]\n    }\n  },\n  {\n    \"command\":\"mesh.node.add\",\n    \"params\":{\n      \"label\":6,\n      \"xyz\":[\n        10,\n        -7.0,\n        10\n      ]\n    }\n  },\n  {\n    \"command\":\"mesh.node.add\",\n    \"params\":{\n      \"label\":7,\n      \"xyz\":[\n        10,\n        13.0,\n        10\n      ]\n    }\n  },\n  {\n    \"command\":\"mesh.node.add\",\n    \"params\":{\n      \"label\":8,\n      \"xyz\":[\n        -10,\n        7.0,\n        10\n      ]\n    }\n  },\n  {\n    \"command\":\"mesh.node.add\",\n    \"params\":{\n      \"label\":9,\n      \"xyz\":[\n        0.0,\n        -14.0,\n        -10.0\n      ]\n    }\n  },\n  {\n    \"command\":\"mesh.node.add\",\n    \"params\":{\n      \"label\":10,\n      \"xyz\":[\n        10.0,\n        3.0,\n        -10.0\n      ]\n    }\n  },\n  {\n    \"command\":\"mesh.node.add\",\n    \"params\":{\n      \"label\":11,\n      \"xyz\":[\n        0.0,\n        6.0,\n        -10.0\n      ]\n    }\n  },\n  {\n    \"command\":\"mesh.node.add\",\n    \"params\":{\n      \"label\":12,\n      \"xyz\":[\n        -10.0,\n        -3.0,\n        -10.0\n      ]\n    }\n  },\n  {\n    \"command\":\"mesh.node.add\",\n    \"params\":{\n      \"label\":13,\n      \"xyz\":[\n        0.0,\n        -14.0,\n        10.0\n      ]\n    }\n  },\n  {\n    \"command\":\"mesh.node.add\",\n    \"params\":{\n      \"label\":14,\n      \"xyz\":[\n        10.0,\n        3.0,\n        10.0\n      ]\n    }\n  },\n  {\n    \"command\":\"mesh.node.add\",\n    \"params\":{\n      \"label\":15,\n      \"xyz\":[\n        0.0,\n        6.0,\n        10.0\n      ]\n    }\n  },\n  {\n    \"command\":\"mesh.node.add\",\n    \"params\":{\n      \"label\":16,\n      \"xyz\":[\n        -10.0,\n        -3.0,\n        10.0\n      ]\n    }\n  },\n  {\n    \"command\":\"mesh.node.add\",\n    \"params\":{\n      \"label\":17,\n      \"xyz\":[\n        -10.0,\n        -13.0,\n        0.0\n      ]\n    }\n  },\n  {\n    \"command\":\"mesh.node.add\",\n    \"params\":{\n      \"label\":18,\n      \"xyz\":[\n        10.0,\n        -7.0,\n        0.0\n      ]\n    }\n  },\n  {\n    \"command\":\"mesh.node.add\",\n    \"params\":{\n      \"label\":19,\n      \"xyz\":[\n        10.0,\n        13.0,\n        0.0\n      ]\n    }\n  },\n  {\n    \"command\":\"mesh.node.add\",\n    \"params\":{\n      \"label\":20,\n      \"xyz\":[\n        -10.0,\n        7.0,\n        0.0\n      ]\n    }\n  },\n  {\n    \"command\":\"mesh.element.add\",\n    \"params\":{\n      \"label\":1,\n      \"kind\":\"hex20\",\n      \"nodes\":[\n        1,\n        2,\n        3,\n        4,\n        5,\n        6,\n        7,\n        8,\n        9,\n        10,\n        11,\n        12,\n        13,\n        14,\n        15,\n        16,\n        17,\n        18,\n        19,\n        20\n      ]\n    }\n  },\n  {\n    \"command\":\"model.set.create\",\n    \"params\":{\n      \"name\":\"all\",\n      \"elements\":[\n        1\n      ]\n    }\n  },\n  {\n    \"command\":\"model.set.create\",\n    \"params\":{\n      \"name\":\"root\",\n      \"nodes\":[\n        1,\n        4,\n        5,\n        8,\n        12,\n        16,\n        17,\n        20\n      ]\n    }\n  },\n  {\n    \"command\":\"model.set.create\",\n    \"params\":{\n      \"name\":\"tip\",\n      \"nodes\":[\n        2,\n        3,\n        6,\n        7,\n        10,\n        14,\n        18,\n        19\n      ]\n    }\n  },\n  {\n    \"command\":\"model.material.create\",\n    \"params\":{\n      \"name\":\"M\",\n      \"elastic\":{\n        \"type\":\"isotropic\",\n        \"young\":200000,\n        \"poisson\":0.3\n      }\n    }\n  },\n  {\n    \"command\":\"model.section.create\",\n    \"params\":{\n      \"name\":\"S\",\n      \"set\":\"all\",\n      \"material\":\"M\",\n      \"kind\":{\n        \"type\":\"solid\"\n      }\n    }\n  },\n  {\n    \"command\":\"model.boundary_condition.create\",\n    \"params\":{\n      \"name\":\"Clamp\",\n      \"type\":\"fixed\",\n      \"target\":{\n        \"set\":\"root\"\n      }\n    }\n  },\n  {\n    \"command\":\"model.load.create\",\n    \"params\":{\n      \"name\":\"Force\",\n      \"type\":\"force\",\n      \"target\":{\n        \"set\":\"tip\"\n      },\n      \"vector\":[\n        0,\n        0,\n        -100\n      ]\n    }\n  },\n  {\n    \"command\":\"model.step.create\",\n    \"params\":{\n      \"name\":\"Load\",\n      \"procedure\":{\n        \"type\":\"static\"\n      },\n      \"boundary_conditions\":[\n        \"Clamp\"\n      ],\n      \"loads\":[\n        \"Force\"\n      ]\n    }\n  },\n  {\n    \"command\":\"solve.static\",\n    \"params\":{\n      \"step\":\"Load\"\n    }\n  }\n]\n```\n\n</details>\n",
-  "updated_at": "2026-10-28T13:49:03Z",
+  "updated_at": "2026-10-30T18:31:39Z",
   "url": "https://github.com/tangency-labs/fieldcraft/pull/730",
-  "comments": [],
+  "comments": [
+    {
+      "author": "jyviko",
+      "body": "Maintainer review, rebased onto develop (8b1a01e1 → 72fadfe7, 94 commits) and fixed on the branch. The three commits keep their scope; every fix below is folded into the commit it belongs to.\n\nThe 28 Oct review's four points were still open on b4e3e184. All four are fixed now, plus one more that appeared with the rebase:\n\n1. **Non-solid elements made every path refuse** (`engine/src/path.rs`, `Index::build`). The build loop now skips shells, beams, rods and 2D elements (`Basis::dim() != 3`), so a solid model with a shell skin or a beam stiffener samples its solids. The old test asserted the refusal. It is replaced by `shells_beams_and_rods_beside_solids_are_left_out_of_the_index`, where a Quad4 and a Tri3 skin, a Beam2 and a Rod2 are labelled below a Hex8. A point on the skin locates in the solid, and a model with only non-solids still gets a named refusal. The command help and docs/path-plots.md now say this. (commit \"Sample solid result paths…\", and docs in the UI commit)\n2. **A read-only query replaced the whole window session** (`ui-egui/src/files.rs`). A background job now returns a `Product`. Model-changing jobs return `Session(session, prebuilt)` as before. `results.path` (`reads_only`) returns `PathPlot(path_plot, path_index)`: its session copy is dropped on the worker, no `Prebuilt` is built, and the window keeps its session with no `model_changed()` and no display rebuild. It only takes the plot and the index, then refreshes the editor. A CSV export by the job reports \"Wrote <file>\". The new test `a_path_job_keeps_the_session` checks that the revision and journal are unchanged and the plot is current. It fails on the old code. (commit \"Add interactive result path plots…\")\n3. **features.md** regenerated after the rebase: 88 ready, 34 coming soon, which matches the catalogue on develop.\n4. **docs/SUMMARY.md** lists Path plots under the user guide. ROADMAP's M9 row is now \"started\" and records path plots as done (XY plots were already shipped).\n5. **Nonlinear frames (stale since #205 landed on develop).** The PR refused every non-displacement field on a stored nonlinear frame. Develop's `Frame` now keeps its own stress and contact state, and `results::field_values` already refuses a frame that did not save them without substituting the final state. So `results.path` now lets stress and contact fields through to `field_values`, and still refuses temperature at a frame (only the final state carries it). The path panel offers frames for those fields too. The tests construct `Frame` with its new `stress`/`contacts` fields; without them they no longer compile on develop. A new assertion samples a frame's own stress (5 MPa) and checks that a frame without stress is refused with \"was not saved\".\n\nChecked: the earlier ask about the Sederberg citation is done (BYU copy only), and the recipes are out of the repo. The locator's hex20/tet10 Bernstein conversion (`2·v_mid − (v0+v2)/2` per axis) is correct. Fixed-size indexing in `bounds`/`interval_weights` is bounded by construction. Every loop has a cap.\n\nLocal runs (ci profile): fieldcraft-fem 119 passed; fieldcraft-engine 407 passed (16 heavy ignored); fieldcraft-ui-egui 205 passed; clippy `-D warnings` is clean on all three with `--all-targets`; `cargo fmt` applied. The engine commit builds on its own (`cargo check --all-targets`).\n\nLooked at in the app (`ui.capture`, macOS, Apple M4 Max/Metal, cantilever sample):\n- A typed top-fibre path from x=0 to x=100 shows the panel's two coordinate rows, the station markers along the top edge in the viewport, and a linear graph from 149.4 MPa down to about 6 MPa, as 1.5·(100−x) predicts. The status reads \"Path Plot done in 0.0 s\", and the window was not reloaded.\n- With the deformed shape on (×41.9), three points picked on the front face with `ui.path {at}` gave reference coordinates on y=0 (one click off the part added nothing). Adding a point at x=130 outside the beam left the overlay following the deformed face and ending at the beam's end, and the graph breaks where the path leaves the solid.\n- Minor: on a 1400×900 window, four path rows plus the graph push the \"values · gaps\" line below the bottom of the results panel. It does not block merging.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+      "created_at": "2026-10-30T18:31:39Z",
+      "updated_at": "2026-10-30T18:31:39Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/pull/730#issuecomment-6530544966"
+    }
+  ],
   "reviews": [
     {
       "author": "jyviko",
@@ -31,131 +39,131 @@
   "inline_comments": [],
   "checks": [
     {
-      "id": 121455383650,
+      "id": 124241982877,
       "name": "cargo xtask ci",
-      "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-10-26T07:45:46Z",
-      "completed_at": "2026-10-26T07:50:33Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40287698060/job/121455383650",
+      "status": "in_progress",
+      "conclusion": null,
+      "started_at": "2026-10-30T18:32:18Z",
+      "completed_at": null,
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41107683406/job/124241982877",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121455383650/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124241982877/annotations"
       }
     },
     {
-      "id": 121455383542,
-      "name": "cargo xtask test --heavy",
-      "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-10-26T07:45:47Z",
-      "completed_at": "2026-10-26T08:09:53Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40287698060/job/121455383542",
-      "output": {
-        "title": null,
-        "summary": null,
-        "text": null,
-        "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121455383542/annotations"
-      }
-    },
-    {
-      "id": 121455383522,
+      "id": 124241982776,
       "name": "cargo xtask oracle",
-      "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-10-26T07:45:46Z",
-      "completed_at": "2026-10-26T07:50:29Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40287698060/job/121455383522",
+      "status": "in_progress",
+      "conclusion": null,
+      "started_at": "2026-10-30T18:32:18Z",
+      "completed_at": null,
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41107683406/job/124241982776",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121455383522/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124241982776/annotations"
       }
     },
     {
-      "id": 121455163768,
-      "name": "cargo xtask oracle (macOS)",
-      "status": "completed",
-      "conclusion": "skipped",
-      "started_at": "2026-10-26T07:45:02Z",
-      "completed_at": "2026-10-26T07:45:01Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40287698060/job/121455163768",
+      "id": 124241982575,
+      "name": "cargo xtask test --heavy",
+      "status": "in_progress",
+      "conclusion": null,
+      "started_at": "2026-10-30T18:32:18Z",
+      "completed_at": null,
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41107683406/job/124241982575",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121455163768/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124241982575/annotations"
       }
     },
     {
-      "id": 121455163722,
+      "id": 124241699325,
       "name": "Windows app tests",
       "status": "completed",
       "conclusion": "skipped",
-      "started_at": "2026-10-26T07:45:02Z",
-      "completed_at": "2026-10-26T07:45:01Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40287698060/job/121455163722",
+      "started_at": "2026-10-30T18:31:37Z",
+      "completed_at": "2026-10-30T18:31:37Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41107683406/job/124241699325",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121455163722/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124241699325/annotations"
       }
     },
     {
-      "id": 121455162188,
-      "name": "Dependency licences, advisories and sources",
+      "id": 124241699085,
+      "name": "cargo xtask oracle (macOS)",
       "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-10-26T07:45:10Z",
-      "completed_at": "2026-10-26T07:47:45Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40287698060/job/121455162188",
+      "conclusion": "skipped",
+      "started_at": "2026-10-30T18:31:37Z",
+      "completed_at": "2026-10-30T18:31:37Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41107683406/job/124241699085",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121455162188/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124241699085/annotations"
       }
     },
     {
-      "id": 121455162123,
+      "id": 124241697711,
       "name": "Claim and triage bot tests",
       "status": "completed",
       "conclusion": "success",
-      "started_at": "2026-10-26T07:45:09Z",
-      "completed_at": "2026-10-26T07:45:18Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40287698060/job/121455162123",
+      "started_at": "2026-10-30T18:31:45Z",
+      "completed_at": "2026-10-30T18:31:53Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41107683406/job/124241697711",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121455162123/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124241697711/annotations"
       }
     },
     {
-      "id": 121455161864,
-      "name": "Plan (affected crates)",
-      "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-10-26T07:45:09Z",
-      "completed_at": "2026-10-26T07:45:39Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40287698060/job/121455161864",
+      "id": 124241697584,
+      "name": "Dependency licences, advisories and sources",
+      "status": "in_progress",
+      "conclusion": null,
+      "started_at": "2026-10-30T18:31:44Z",
+      "completed_at": null,
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41107683406/job/124241697584",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121455161864/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124241697584/annotations"
+      }
+    },
+    {
+      "id": 124241697393,
+      "name": "Plan (affected crates)",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-30T18:31:45Z",
+      "completed_at": "2026-10-30T18:32:11Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41107683406/job/124241697393",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124241697393/annotations"
       }
     }
   ]
