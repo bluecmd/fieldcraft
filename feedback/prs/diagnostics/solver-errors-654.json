@@ -2,12 +2,12 @@
   "number": 721,
   "branch": "diagnostics/solver-errors-654",
   "head_sha": "f732939a7e5c72ebf155ebc39a0c0588df7148af",
-  "state": "open",
-  "merged": false,
+  "state": "closed",
+  "merged": true,
   "draft": false,
   "title": "Record ordinary solver stops and expose persistent headless report paths",
   "body": "## What and why\n\nRefs #654. Ordinary solver cap, convergence, stability and backend failures now leave a bounded local `solver_error` diagnostic while preserving the original typed error or stopped result. Successful physical transients, malformed parameters and cancellation do not create records.\n\nReports include command/step, model size, observed progress and available backend context, without a copied model, replay or crash prompt. Context belongs to the actual solve, including children of `solve.run`. Device failures use a typed backend error rather than matching message strings.\n\nSolver records are pruned before recovered panics and other crash reports. If a full crash budget immediately discards a new solver diagnostic, the command returns its original error without announcing a nonexistent path. CLI/headless MCP retain reports in the per-user data directory by default; CI and automated desktop recovery stay isolated. `FIELDCRAFT_CRASH_DIR` can select a mounted worker directory, subject to automation roots. Local stderr prints the actual retained path; automation error/results use the home-redacted display path.\n\n## Validation\n\nTested revision: `cb89c56114b26c8ab1f6eaaccb5d1e46dba86ffd`, rebased onto `3751d3bb93676aa49d1a18c438424be88162ac03`. Current verification is Linux CPU-only, with `FIELDCRAFT_GPU=cpu`.\n\n- Normal suites and doc tests for all nine touched crates pass: 898 harness passes, zero failures, 41 existing heavy ignores. This includes 21 fluid-device wrappers and one offscreen-device wrapper that returned early under the CPU policy; no GPU numerical execution is claimed.\n- Engine: 390 unit and two integration tests pass, including full count/byte crash-budget protection, durable report location, returned-path privacy, typed backend refusal and ordinary embedded-session isolation. CLI seven tests and MCP protocol/workflow suites pass.\n- Scoped nine-crate `cargo check` and all-target clippy with `-D warnings`, formatting, diff and tracked-path checks pass. Feature generation from the tested CLI matches the committed page.\n- Isolated real CLI and MCP CPU processes deliberately hit a cantilever DOF cap: reports survive process exit in the default per-user location, local stderr names the actual file, returned paths redact home, the original cap failure remains intact, and repeats increment to two.\n- No current GPU numerical or native-window run, full workspace gate, heavy suites or oracle run. No solver numerical scheme or shader changed.\n\n## Historical demonstration\n\nThe attachments retain their original capture revision. The historical RTX 4090/Vulkan example illustrates diagnostic reporting and cached-device context; it does not verify the updated revision on a GPU.\n\n<!-- fieldcraft-attachments:start -->\n### Attached files\n\nThese uploads are complete; earlier pending-upload wording below describes the original handoff.\n\nCapture/source revision: `e7b00e713b42c93b574bf279b78d46356975baac`.\n\n**solver-errors-654.mp4**\n\nhttps://github.com/user-attachments/assets/1f00aa3d-5e4d-4b7a-89c6-18bd54a4a3b4\n\n**solver-record-device.png**\n\n![solver-record-device.png](https://github.com/user-attachments/assets/4c7f749b-9d7f-4993-b5d9-43efafd7a353)\n\n**solver-record-path.png**\n\n![solver-record-path.png](https://github.com/user-attachments/assets/a18d01d1-5cc1-4175-9522-ee7fe1de31bc)\n\n<!-- fieldcraft-attachments:end -->\n\nThe original 64-cell flow intentionally reaches its steady-time cap, then completes a requested physical transient without creating another record. Media remains outside feature history.\n\n## Limits\n\nNo current GPU numerical or native-window verification was available. Backend changes here concern error typing and diagnostic observations; no shader or numerical scheme changed. Confined sessions need a granted report directory; persistence failure leaves the original solve outcome unchanged. Container workers still need a persistent mount to retain files after the container is removed.\n\n",
-  "updated_at": "2026-10-30T22:14:24Z",
+  "updated_at": "2026-10-30T22:34:30Z",
   "url": "https://github.com/tangency-labs/fieldcraft/pull/721",
   "comments": [
     {
@@ -41,10 +41,10 @@
     {
       "id": 124341353126,
       "name": "cargo xtask test --heavy",
-      "status": "in_progress",
-      "conclusion": null,
+      "status": "completed",
+      "conclusion": "success",
       "started_at": "2026-10-30T22:15:19Z",
-      "completed_at": null,
+      "completed_at": "2026-10-30T22:32:02Z",
       "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41136786057/job/124341353126",
       "output": {
         "title": null,
