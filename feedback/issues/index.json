@@ -1,5 +1,18 @@
 [
   {
+    "number": 776,
+    "title": "lbm-gpu: Smagorinsky Couette GPU-vs-CPU density bound fails on Apple Metal",
+    "body": "### Current behaviour\n\nOn an Apple M4 Max (Metal), two GPU-vs-CPU Smagorinsky cases in `crates/lbm-gpu/tests/verification.rs` fail on develop (`origin/develop` at 72fadfe7) on their density bound `drho < 1e-6`:\n\n| test | velocity difference | density difference |\n|---|---|---|\n| `couette_flow_with_smagorinsky_matches_the_cpu` | 3.15e-6 | 2.21e-6 |\n| `heated_couette_flow_with_smagorinsky_matches_the_cpu` | 4.11e-6 | 2.44e-6 |\n\n`forced_poiseuille_with_smagorinsky_matches_the_cpu` passes. The velocity and shear bounds hold. The tolerances were measured on an RTX 4070 Laptop GPU (the doc comment above the Couette case). Found while running the GPU suites for #721, which does not touch the kernels.\n\n### Expected behaviour\n\nThe suite passes on every supported adapter. The density bound should reflect f32 on more than one device, or the cause of the larger density difference on Metal should be found.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "state": "open",
+    "updated_at": "2026-10-30T18:07:31Z",
+    "labels": [
+      "area:cfd",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/776"
+  },
+  {
     "number": 775,
     "title": "solver: contact gap normalisation counts uncontacted secondary faces",
     "body": "### Current behaviour\n\nImplicit mortar contact normalises each secondary node's weighted gap by its reference area A_A = ∫ Φ_A over **all** of its secondary faces (`Interface::new` in `crates/solver/src/contact.rs`, the `own` integral per face). When the secondary set also holds faces that never touch the main surface (a block's sides, as in the #203 corner case), A_A grows by those faces' share, so ĝ_A = g̃_A / A_A is smaller at the nodes on them and those nodes are penalised less than the others.\n\nSeen while reviewing #731: a hex20 cube pressed flat on a hex8 one (secondary = all six faces, uniform compression, lateral translations held) reports 9.93 at the bottom corners and 10.12 at the bottom mid-side nodes, against 9.998 everywhere when the secondary set is only the bottom face. Hex8 is uniform because its four bottom nodes all gain the same side-face share. The total force is right; the per-node closure differs within the augmentation's gap tolerance.\n\n### Expected behaviour\n\nA node's gap normalisation (and penalty) should not depend on secondary faces that carry no contact, e.g. A_A taken over the faces that pair with the main surface, or the overlaps' support. Regression: the case above with `uncontacted_corner_faces_do_not_tilt_reported_pressure` (`crates/solver/tests/contact.rs`) tightened from 3 % to round-off for hex20.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
