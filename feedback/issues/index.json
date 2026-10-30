@@ -824,24 +824,6 @@
     "url": "https://github.com/tangency-labs/fieldcraft/issues/161"
   },
   {
-    "number": 159,
-    "title": "Tait PVT material model (pressure- and temperature-dependent density)",
-    "body": "## What to build\nThe modified two-domain Tait equation for polymers (specific volume as a function of pressure and temperature), as a material option used by packing/cooling and shrinkage. Verify against the equation's own reference curves.\n\nRead [CONTRIBUTING.md](https://github.com/jyviko/fieldcraft/blob/develop/CONTRIBUTING.md) and comment to claim this issue before starting. Clean-room rules: papers, public specifications and analytic results only; no GPL code, no commercial-product files or output.",
-    "state": "open",
-    "updated_at": "2026-10-26T08:39:04Z",
-    "labels": [
-      "enhancement",
-      "help wanted",
-      "claimed",
-      "size: S",
-      "area:solver"
-    ],
-    "assignees": [
-      "bluecmd"
-    ],
-    "url": "https://github.com/tangency-labs/fieldcraft/issues/159"
-  },
-  {
     "number": 158,
     "title": "Solidification / phase change in flow and heat transfer",
     "body": "## What to build\nLatent heat and a no-flow-below transition temperature (enthalpy method), so a melt freezes as it cools: frozen layer growth during filling and cooling. Verify with the Stefan problem (closed form).\n\nRead [CONTRIBUTING.md](https://github.com/jyviko/fieldcraft/blob/develop/CONTRIBUTING.md) and comment to claim this issue before starting. Clean-room rules: papers, public specifications and analytic results only; no GPL code, no commercial-product files or output.",
