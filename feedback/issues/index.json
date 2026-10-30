@@ -1,5 +1,18 @@
 [
   {
+    "number": 775,
+    "title": "solver: contact gap normalisation counts uncontacted secondary faces",
+    "body": "### Current behaviour\n\nImplicit mortar contact normalises each secondary node's weighted gap by its reference area A_A = ∫ Φ_A over **all** of its secondary faces (`Interface::new` in `crates/solver/src/contact.rs`, the `own` integral per face). When the secondary set also holds faces that never touch the main surface (a block's sides, as in the #203 corner case), A_A grows by those faces' share, so ĝ_A = g̃_A / A_A is smaller at the nodes on them and those nodes are penalised less than the others.\n\nSeen while reviewing #731: a hex20 cube pressed flat on a hex8 one (secondary = all six faces, uniform compression, lateral translations held) reports 9.93 at the bottom corners and 10.12 at the bottom mid-side nodes, against 9.998 everywhere when the secondary set is only the bottom face. Hex8 is uniform because its four bottom nodes all gain the same side-face share. The total force is right; the per-node closure differs within the augmentation's gap tolerance.\n\n### Expected behaviour\n\nA node's gap normalisation (and penalty) should not depend on secondary faces that carry no contact, e.g. A_A taken over the faces that pair with the main surface, or the overlaps' support. Regression: the case above with `uncontacted_corner_faces_do_not_tilt_reported_pressure` (`crates/solver/tests/contact.rs`) tightened from 3 % to round-off for hex20.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "state": "open",
+    "updated_at": "2026-10-30T16:57:26Z",
+    "labels": [
+      "area:solver",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/775"
+  },
+  {
     "number": 751,
     "title": "nix flake build as in solidcraft",
     "body": "### Current behaviour\n\nthere is no flake.nix\n\n### What you need and why\n\na flake nix exposing this application as a package\n\n**why**\nto be able fieldcraft through a nixbuild and easily integrate self-build daily updated into my nixos setup\n\n### Expected behaviour\n\nthe same as already present for solidcraft: \n\nit should expose ui application and cli as two distinct packages\n\n### Pictures\n\n_No response_\n\n### References\n\nhttps://github.com/tangency-labs/solidcraft/blob/main/flake.nix",
