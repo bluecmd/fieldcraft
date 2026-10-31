@@ -1,13 +1,13 @@
 {
   "number": 729,
   "branch": "import/abaqus-deck-98",
-  "head_sha": "2d12cd7f5abaa4143282752eab82b71ad64e831c",
+  "head_sha": "08b3a95f962e3b8c4c8ff8df9583a403d8869f19",
   "state": "open",
   "merged": false,
   "draft": false,
   "title": "Read Abaqus model data with explicit units and atomic replacement",
   "body": "Refs #98. `deck.read` imports bounded flat Abaqus model data into a fresh unsaved FieldCraft document using an explicit consistent input-unit preset. It reads labelled nodes/elements, sets and element surfaces, constant elasticity/density and representable sections. Unknown options and analysis history are reported with their original line numbers. Validation and cancellation finish before replacing the current model, results, path and undo state; desktop imports run as cancellable jobs with unsaved-work protection.\n\nMaterial context now follows recognized material behaviors across unread options: `CONDUCTIVITY` before `ELASTIC`, `PLASTIC` before `DENSITY`, and FieldCraft's own `HYPERELASTIC` then `DENSITY` decks import the supported properties into the correct material. Unsupported behavior remains explicitly unread; a hyperelastic-only stiffness is absent after import and must be supplied before solving. Other model options and unrecognized keywords end the context. `GENERATE` names a zero increment at its data line, and the documentation explains that same-name `NSET`, `ELSET` and element `SURFACE` definitions combine into a FieldCraft set.\n\nThe three commits remain the pure reader, atomic command/catalogue and desktop workflow/documentation. Rebased onto upstream/develop `e8ee48d0`, retaining both orphan-mesh and deck imports in the background command list. No ROADMAP change or solver numerical change.\n\nCurrent Linux CPU validation at `2d12cd7f5abaa4143282752eab82b71ad64e831c`:\n\n- `cargo check -p fieldcraft-decks -p fieldcraft-engine -p fieldcraft-ui-egui` passed.\n- Decks: 91 unit/integration tests passed. Engine: 383 passed, 15 heavy tests ignored; the sole initial failure was the rebased generated feature count. Regenerating through the compiled `engine::catalogue::features_page()` changed only 87 ready/35 coming soon to 88/34, and the exact previously failing test passed. The other engine tests were not repeated. This validates all 384 enabled engine tests against the final source tree.\n- UI: all 197 unit tests passed using the already-built binary from the same three-package resolution. All 3 UI doctests passed; decks and engine have no doctests.\n- All-targets clippy with `-D warnings` passed for decks, engine and UI. `cargo fmt --all`, manual simplification review and whitespace checks completed.\n- `FIELDCRAFT_GPU=cpu` was set for runtime tests. No new native app or hardware-GPU run was performed.\n\nThe three fixups (reader/tests, generated feature page and documentation) are autosquashed into the corresponding original commits. Source tree `26f15da8172ff37f0835b222647867ac5908714d` is identical before and after autosquash.\n\nNew regressions cover material-context boundaries and separate materials, original unread lines, three actual FieldCraft-generated hyperelastic variants, combined node/element/surface sets, and zero increments. Before this fix, the new conductivity, writer-generated hyperelastic and zero-increment checks fail; with the fix they pass. Only original handwritten or FieldCraft-generated test data are used. Public [material data definition](https://docs.software.vt.edu/abaqusv2025/English/SIMACAEMATRefMap/simamat-c-materialdata.htm) supplies the scope rule; no commercial CAE software was run.\n\nThe original reusable `tools/abaqus-import/beam.json` recipe and `docs/abaqus-import.md` document the existing import-and-rebuild workflow. No new native or GPU validation was run for this revision. The historical media below was captured from source `c5203312e97857665facfcd985d38fd80eaddfd9`, on Windows with an RTX 4090 Vulkan viewport and CPU static solve; it does not show this review revision. The original/reconstructed 80 x 10 x 10 mm, 81-node, 32-hex8 beam had equal peak displacement 0.09613877492912645 mm at node 18 and peak von Mises 44.67 MPa. The 28-second movie is an edited held-frame recording with an appended caption band (repository Inter SemiBold under OFL 1.1). Artifact commit `5cfe546e7c2a978c7f9e1ff01d5faf44d9e80624` preserves originals; media remains attached outside feature history.\n\n<!-- fieldcraft-attachments:start -->\n### Attached files\n\nThese uploads are complete; earlier pending-upload wording below describes the original handoff.\n\nCapture/source revision: `c5203312e97857665facfcd985d38fd80eaddfd9`.\n\n**abaqus-import-98.mp4**\n\nhttps://github.com/user-attachments/assets/32b12da1-8b56-4df9-802e-118669cad548\n\n**import-report.png**\n\n![import-report.png](https://github.com/user-attachments/assets/2d7c7aad-6aa9-4b10-aadf-24cf844e09f4)\n\n**imported-beam-result.png**\n\n![imported-beam-result.png](https://github.com/user-attachments/assets/5ee9f6e6-4752-4712-8e49-fe452d42e72d)\n\n<!-- fieldcraft-attachments:end -->\n\nLimitations: flat model data only. Loads, constraints, steps, contact and coupling must be deliberately recreated. No raw passthrough, assembly/part/instance or INCLUDE support; input coordinate transforms are refused. Constant isotropic/engineering elasticity and density are supported; the documented other material behaviors remain unread. Review the unread report and material completeness before solving. The parser uses the existing wasm-compatible design, but this revision has no new browser-runtime or hardware-GPU validation.\n",
-  "updated_at": "2026-10-28T13:49:04Z",
+  "updated_at": "2026-10-31T12:47:54Z",
   "url": "https://github.com/tangency-labs/fieldcraft/pull/729",
   "comments": [],
   "reviews": [
@@ -31,131 +31,131 @@
   "inline_comments": [],
   "checks": [
     {
-      "id": 121458738040,
-      "name": "cargo xtask test --heavy",
-      "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-10-26T07:55:42Z",
-      "completed_at": "2026-10-26T08:16:20Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40288736303/job/121458738040",
-      "output": {
-        "title": null,
-        "summary": null,
-        "text": null,
-        "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121458738040/annotations"
-      }
-    },
-    {
-      "id": 121458738033,
-      "name": "cargo xtask ci",
-      "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-10-26T07:55:42Z",
-      "completed_at": "2026-10-26T07:59:31Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40288736303/job/121458738033",
-      "output": {
-        "title": null,
-        "summary": null,
-        "text": null,
-        "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121458738033/annotations"
-      }
-    },
-    {
-      "id": 121458737955,
+      "id": 124541586763,
       "name": "cargo xtask oracle",
       "status": "completed",
       "conclusion": "success",
-      "started_at": "2026-10-26T07:55:41Z",
-      "completed_at": "2026-10-26T07:58:49Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40288736303/job/121458737955",
+      "started_at": "2026-10-31T12:48:33Z",
+      "completed_at": "2026-10-31T12:51:58Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41202697261/job/124541586763",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121458737955/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124541586763/annotations"
       }
     },
     {
-      "id": 121458536403,
-      "name": "cargo xtask oracle (macOS)",
+      "id": 124541586752,
+      "name": "cargo xtask test --heavy",
+      "status": "in_progress",
+      "conclusion": null,
+      "started_at": "2026-10-31T12:48:34Z",
+      "completed_at": null,
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41202697261/job/124541586752",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124541586752/annotations"
+      }
+    },
+    {
+      "id": 124541586747,
+      "name": "cargo xtask ci",
       "status": "completed",
-      "conclusion": "skipped",
-      "started_at": "2026-10-26T07:55:00Z",
-      "completed_at": "2026-10-26T07:55:00Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40288736303/job/121458536403",
+      "conclusion": "success",
+      "started_at": "2026-10-31T12:48:33Z",
+      "completed_at": "2026-10-31T12:51:53Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41202697261/job/124541586747",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121458536403/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124541586747/annotations"
       }
     },
     {
-      "id": 121458536254,
+      "id": 124541487487,
       "name": "Windows app tests",
       "status": "completed",
       "conclusion": "skipped",
-      "started_at": "2026-10-26T07:55:00Z",
-      "completed_at": "2026-10-26T07:55:00Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40288736303/job/121458536254",
+      "started_at": "2026-10-31T12:48:00Z",
+      "completed_at": "2026-10-31T12:48:00Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41202697261/job/124541487487",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121458536254/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124541487487/annotations"
       }
     },
     {
-      "id": 121458534741,
+      "id": 124541487195,
+      "name": "cargo xtask oracle (macOS)",
+      "status": "completed",
+      "conclusion": "skipped",
+      "started_at": "2026-10-31T12:48:00Z",
+      "completed_at": "2026-10-31T12:48:00Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41202697261/job/124541487195",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124541487195/annotations"
+      }
+    },
+    {
+      "id": 124541486332,
       "name": "Dependency licences, advisories and sources",
       "status": "completed",
       "conclusion": "success",
-      "started_at": "2026-10-26T07:55:11Z",
-      "completed_at": "2026-10-26T07:58:15Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40288736303/job/121458534741",
+      "started_at": "2026-10-31T12:48:14Z",
+      "completed_at": "2026-10-31T12:49:53Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41202697261/job/124541486332",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121458534741/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124541486332/annotations"
       }
     },
     {
-      "id": 121458534717,
+      "id": 124541486319,
       "name": "Plan (affected crates)",
       "status": "completed",
       "conclusion": "success",
-      "started_at": "2026-10-26T07:55:07Z",
-      "completed_at": "2026-10-26T07:55:35Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40288736303/job/121458534717",
+      "started_at": "2026-10-31T12:48:05Z",
+      "completed_at": "2026-10-31T12:48:27Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41202697261/job/124541486319",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121458534717/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124541486319/annotations"
       }
     },
     {
-      "id": 121458534550,
+      "id": 124541486178,
       "name": "Claim and triage bot tests",
       "status": "completed",
       "conclusion": "success",
-      "started_at": "2026-10-26T07:55:09Z",
-      "completed_at": "2026-10-26T07:55:17Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40288736303/job/121458534550",
+      "started_at": "2026-10-31T12:48:05Z",
+      "completed_at": "2026-10-31T12:48:12Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41202697261/job/124541486178",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121458534550/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124541486178/annotations"
       }
     }
   ]
