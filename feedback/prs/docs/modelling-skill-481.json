@@ -1,13 +1,13 @@
 {
   "number": 718,
   "branch": "docs/modelling-skill-481",
-  "head_sha": "04e3c73b01bd28ff1222b3cb68b662d139e78ea4",
+  "head_sha": "55dfc8773f0d0f50ae62f763891f954e88a43004",
   "state": "open",
   "merged": false,
   "draft": false,
   "title": "Agent skill: choose and check structural, heat and flow models",
   "body": "## What and why\n\nRefs #481. Adds a bundled modelling skill that guides structural, heat and fluid setup, independent estimates, load/BC activity, balance checks and refinement. It includes original axial-rod and steady-conductor recipes with a verification worksheet.\n\nThe fluid guidance now states the limits explicitly: aim for Ma ≲ 0.1; τ must exceed ½ and stability degrades near it; regularized collision helps stability; the automatic time step targets Ma ≈ 0.087 and τ ≤ 1. Density variation is identified as compressibility error to investigate before trusting pressure or heat-rate results.\n\n## Validation\n\nRevision `04e3c73b01bd28ff1222b3cb68b662d139e78ea4` is a single logical skill commit rebased onto `3751d3bb93676aa49d1a18c438424be88162ac03`.\n\n- Statements checked against current LBM setup/solve code, model.step.create schema and collision documentation.\n- Manual simplification review, formatting, relative-link existence and diff checks pass.\n- Both unchanged reference recipes execute successfully with the cached, tested diagnostics CLI artifact from `cb89c561`. That branch does not change solver/FEM numerics. This is recipe execution, not new physical validation.\n- No Rust code changed; no new crate suite, GPU run or full workspace gate was needed.\n\n## Historical demonstration\n\nThe original 33-second clip shows a synthetic conductor patch and the held-hot bracket in a single air domain: 5 mm spacing, a 45-second physical transient, CPU solve with three threads and an RTX 4090 Vulkan viewport. Its density-variation warnings remain material: 15.9% at dt = 0.25 s and 3.5% at dt = 0.125 s. These are coarse smoke/sensitivity demonstrations, with no steady-state, heat-rate-accuracy or two-fluid-exchanger claim.\n\nThe reused executable was built at `99d8536`; its production app/engine/solver source matches the original branch base `7d9c027d71` (the earlier Rust difference is updater tests). It was not rebuilt at the skill commit. The attachments remain historical evidence, not a fresh native capture of this text revision.\n\nNative GitHub attachments (original capture revision `443160e0bbc3c6a8f8310c1366bb6e593eb6eda6`; receipts verify the original SHA-256 and byte sizes):\n\n- [conduction-check.png](https://github.com/user-attachments/assets/89893403-069c-40b4-af5a-46ec8464aa75)\n- [heated-flow-check.png](https://github.com/user-attachments/assets/2597656d-2d5b-4cfe-80a4-61490c66da9f)\n- [modelling-checks.mp4](https://github.com/user-attachments/assets/9b454386-6d65-43c0-b588-7e581ed06b0d)\n\n\n## Limits\n\nThe skill guides modelling decisions; it does not automatically choose or run commands, establish material data, or certify engineering accuracy. The examples are verification exercises with stated assumptions. GPU LES/fan support and coupled-exchanger capability must be checked against implemented and verified behavior. MCP prompt delivery is the separate stacked PR #720.\n\n",
-  "updated_at": "2026-10-28T13:48:12Z",
+  "updated_at": "2026-10-31T12:47:32Z",
   "url": "https://github.com/tangency-labs/fieldcraft/pull/718",
   "comments": [],
   "reviews": [
@@ -31,131 +31,131 @@
   "inline_comments": [],
   "checks": [
     {
-      "id": 121170088896,
+      "id": 124541575706,
       "name": "cargo xtask oracle",
       "status": "completed",
       "conclusion": "success",
-      "started_at": "2026-10-25T12:35:19Z",
-      "completed_at": "2026-10-25T12:38:16Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40193728161/job/121170088896",
+      "started_at": "2026-10-31T12:48:30Z",
+      "completed_at": "2026-10-31T12:51:56Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41202671324/job/124541575706",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121170088896/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124541575706/annotations"
       }
     },
     {
-      "id": 121170088860,
+      "id": 124541575620,
       "name": "cargo xtask test --heavy",
-      "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-10-25T12:35:19Z",
-      "completed_at": "2026-10-25T12:49:03Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40193728161/job/121170088860",
+      "status": "in_progress",
+      "conclusion": null,
+      "started_at": "2026-10-31T12:48:32Z",
+      "completed_at": null,
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41202671324/job/124541575620",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121170088860/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124541575620/annotations"
       }
     },
     {
-      "id": 121170088811,
+      "id": 124541575560,
       "name": "cargo xtask ci",
       "status": "completed",
       "conclusion": "success",
-      "started_at": "2026-10-25T12:35:19Z",
-      "completed_at": "2026-10-25T12:38:42Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40193728161/job/121170088811",
+      "started_at": "2026-10-31T12:48:30Z",
+      "completed_at": "2026-10-31T12:51:46Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41202671324/job/124541575560",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121170088811/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124541575560/annotations"
       }
     },
     {
-      "id": 121169990681,
-      "name": "cargo xtask oracle (macOS)",
-      "status": "completed",
-      "conclusion": "skipped",
-      "started_at": "2026-10-25T12:34:45Z",
-      "completed_at": "2026-10-25T12:34:45Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40193728161/job/121169990681",
-      "output": {
-        "title": null,
-        "summary": null,
-        "text": null,
-        "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121169990681/annotations"
-      }
-    },
-    {
-      "id": 121169990571,
+      "id": 124541407792,
       "name": "Windows app tests",
       "status": "completed",
       "conclusion": "skipped",
-      "started_at": "2026-10-25T12:34:45Z",
-      "completed_at": "2026-10-25T12:34:45Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40193728161/job/121169990571",
+      "started_at": "2026-10-31T12:47:37Z",
+      "completed_at": "2026-10-31T12:47:37Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41202671324/job/124541407792",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121169990571/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124541407792/annotations"
       }
     },
     {
-      "id": 121169989837,
-      "name": "Claim and triage bot tests",
+      "id": 124541407678,
+      "name": "cargo xtask oracle (macOS)",
       "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-10-25T12:34:52Z",
-      "completed_at": "2026-10-25T12:34:59Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40193728161/job/121169989837",
+      "conclusion": "skipped",
+      "started_at": "2026-10-31T12:47:37Z",
+      "completed_at": "2026-10-31T12:47:37Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41202671324/job/124541407678",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121169989837/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124541407678/annotations"
       }
     },
     {
-      "id": 121169989797,
+      "id": 124541407050,
       "name": "Plan (affected crates)",
       "status": "completed",
       "conclusion": "success",
-      "started_at": "2026-10-25T12:34:51Z",
-      "completed_at": "2026-10-25T12:35:13Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40193728161/job/121169989797",
+      "started_at": "2026-10-31T12:47:51Z",
+      "completed_at": "2026-10-31T12:48:24Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41202671324/job/124541407050",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121169989797/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124541407050/annotations"
       }
     },
     {
-      "id": 121169989704,
-      "name": "Dependency licences, advisories and sources",
+      "id": 124541406914,
+      "name": "Claim and triage bot tests",
       "status": "completed",
       "conclusion": "success",
-      "started_at": "2026-10-25T12:34:51Z",
-      "completed_at": "2026-10-25T12:36:26Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40193728161/job/121169989704",
+      "started_at": "2026-10-31T12:47:44Z",
+      "completed_at": "2026-10-31T12:47:50Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41202671324/job/124541406914",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121169989704/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124541406914/annotations"
+      }
+    },
+    {
+      "id": 124541406799,
+      "name": "Dependency licences, advisories and sources",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-31T12:47:44Z",
+      "completed_at": "2026-10-31T12:49:20Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41202671324/job/124541406799",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124541406799/annotations"
       }
     }
   ]
