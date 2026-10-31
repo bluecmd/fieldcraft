@@ -1,13 +1,13 @@
 {
   "number": 720,
   "branch": "mcp/skill-prompts-480",
-  "head_sha": "2dab07c0fbcbe135f640bc8454339b60113ac5d8",
+  "head_sha": "7e144c4ef5be4a18e013c31a669e43903f51b7ba",
   "state": "open",
   "merged": false,
   "draft": false,
   "title": "MCP: serve exact bundled skills as discoverable prompts",
   "body": "## What and why\n\nRefs #480. Bundled modelling and meshing skills are discoverable as stable MCP prompts, with exact source text and a fixed allowlist of three modelling reference resources. Retrieval never executes a modelling command or opens an arbitrary file.\n\n`prompts/list` now treats absent and explicit null cursors identically, matching clients that send `{\"cursor\": null}`. Non-null cursors and malformed parameters remain errors. Wire regressions cover all three negotiated protocol versions and unchanged, source-identical prompt/resource contents.\n\nThis PR stacks the updated modelling skill from #718: parent `04e3c73b01bd28ff1222b3cb68b662d139e78ea4`, followed by one MCP commit. Merge #718 first.\n\n## Validation\n\nTested source `2dab07c0fbcbe135f640bc8454339b60113ac5d8`, on trunk `3751d3bb93676aa49d1a18c438424be88162ac03`.\n\n- Complete MCP unit suite: 15 passed; workflow integration: 1 passed; no failures/ignores. MCP doc tests: 0.\n- Scoped `cargo check`, all-target clippy with `-D warnings`, manual simplification review, formatting and diff checks pass.\n- Tests used a cached nine-package `--no-run` build to retain Cargo's dependency-feature resolution; only the emitted MCP normal test binaries executed. The doc-test filter excluded unrelated examples. CPU rendering was forced; no GPU runtime or full workspace gate was run.\n- No solver numerics, command schema, result format or oracle case changed.\n\n## Historical demonstration\n\nThe original 24-second clip shows prompt retrieval leaving a cantilever unchanged, followed by an explicit tools/call batch running the synthetic conductor recipe. Retrieval and model actions are separate; no desktop prompt selector is implied.\n\nThe historical CLI was built at original commit `c515f79e`. Its native host was reused from build `99d8536`, with production source equivalent to branch base `7d9c027d71`; it was not rebuilt at the MCP head. The solver was CPU and the RTX 4090 Vulkan adapter rendered the viewport. The synthetic conduction patch checks an assumed-property calculation, not physical validation or exchanger accuracy. No fresh native capture was made for this cursor correction.\n\nNative GitHub attachments (original capture revision `c515f79ec5856e898154be9e238a139851d8a559`, with the reused viewport/new CLI provenance described above):\n\n- [mcp-skill-prompts.mp4](https://github.com/user-attachments/assets/4594ef85-25ad-40cd-8292-0d355a16fc11)\n- [mcp-model-unchanged.png](https://github.com/user-attachments/assets/2b34560b-7df0-43f5-8171-87c457050d4e)\n- [mcp-connected-conductor.png](https://github.com/user-attachments/assets/b64c6221-e6b6-4ebf-8cb7-a981fd3ebaff)\n\n\n\n## Limits\n\nClients choose whether to expose prompts and explicitly request model commands afterward. Reference URIs are fixed; other documentation links require the matching checkout. The historical attachments retain their original capture/source provenance. GPU solver support and coupled-exchanger capability are separate release work.\n\n",
-  "updated_at": "2026-10-28T13:48:13Z",
+  "updated_at": "2026-10-31T12:47:40Z",
   "url": "https://github.com/tangency-labs/fieldcraft/pull/720",
   "comments": [],
   "reviews": [
@@ -31,131 +31,131 @@
   "inline_comments": [],
   "checks": [
     {
-      "id": 121172651454,
+      "id": 124541529823,
       "name": "cargo xtask oracle",
       "status": "completed",
       "conclusion": "success",
-      "started_at": "2026-10-25T12:46:36Z",
-      "completed_at": "2026-10-25T12:49:35Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40194576001/job/121172651454",
+      "started_at": "2026-10-31T12:48:18Z",
+      "completed_at": "2026-10-31T12:51:38Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41202680303/job/124541529823",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121172651454/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124541529823/annotations"
       }
     },
     {
-      "id": 121172651408,
+      "id": 124541529804,
+      "name": "cargo xtask test --heavy",
+      "status": "in_progress",
+      "conclusion": null,
+      "started_at": "2026-10-31T12:48:19Z",
+      "completed_at": null,
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41202680303/job/124541529804",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124541529804/annotations"
+      }
+    },
+    {
+      "id": 124541529745,
       "name": "cargo xtask ci",
       "status": "completed",
       "conclusion": "success",
-      "started_at": "2026-10-25T12:46:38Z",
-      "completed_at": "2026-10-25T12:50:59Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40194576001/job/121172651408",
+      "started_at": "2026-10-31T12:48:18Z",
+      "completed_at": "2026-10-31T12:52:18Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41202680303/job/124541529745",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121172651408/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124541529745/annotations"
       }
     },
     {
-      "id": 121172651379,
-      "name": "cargo xtask test --heavy",
-      "status": "completed",
-      "conclusion": "success",
-      "started_at": "2026-10-25T12:46:37Z",
-      "completed_at": "2026-10-25T13:01:44Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40194576001/job/121172651379",
-      "output": {
-        "title": null,
-        "summary": null,
-        "text": null,
-        "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121172651379/annotations"
-      }
-    },
-    {
-      "id": 121172549512,
+      "id": 124541458869,
       "name": "Windows app tests",
       "status": "completed",
       "conclusion": "skipped",
-      "started_at": "2026-10-25T12:46:03Z",
-      "completed_at": "2026-10-25T12:46:03Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40194576001/job/121172549512",
+      "started_at": "2026-10-31T12:47:52Z",
+      "completed_at": "2026-10-31T12:47:44Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41202680303/job/124541458869",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121172549512/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124541458869/annotations"
       }
     },
     {
-      "id": 121172549363,
+      "id": 124541434635,
       "name": "cargo xtask oracle (macOS)",
       "status": "completed",
       "conclusion": "skipped",
-      "started_at": "2026-10-25T12:46:03Z",
-      "completed_at": "2026-10-25T12:46:03Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40194576001/job/121172549363",
+      "started_at": "2026-10-31T12:47:45Z",
+      "completed_at": "2026-10-31T12:47:44Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41202680303/job/124541434635",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121172549363/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124541434635/annotations"
       }
     },
     {
-      "id": 121172548784,
+      "id": 124541433964,
       "name": "Dependency licences, advisories and sources",
       "status": "completed",
       "conclusion": "success",
-      "started_at": "2026-10-25T12:46:10Z",
-      "completed_at": "2026-10-25T12:47:47Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40194576001/job/121172548784",
+      "started_at": "2026-10-31T12:47:50Z",
+      "completed_at": "2026-10-31T12:49:29Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41202680303/job/124541433964",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121172548784/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124541433964/annotations"
       }
     },
     {
-      "id": 121172548685,
+      "id": 124541433922,
       "name": "Claim and triage bot tests",
       "status": "completed",
       "conclusion": "success",
-      "started_at": "2026-10-25T12:46:09Z",
-      "completed_at": "2026-10-25T12:46:16Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40194576001/job/121172548685",
+      "started_at": "2026-10-31T12:47:51Z",
+      "completed_at": "2026-10-31T12:47:58Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41202680303/job/124541433922",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121172548685/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124541433922/annotations"
       }
     },
     {
-      "id": 121172548548,
+      "id": 124541433795,
       "name": "Plan (affected crates)",
       "status": "completed",
       "conclusion": "success",
-      "started_at": "2026-10-25T12:46:09Z",
-      "completed_at": "2026-10-25T12:46:30Z",
-      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/40194576001/job/121172548548",
+      "started_at": "2026-10-31T12:47:50Z",
+      "completed_at": "2026-10-31T12:48:12Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/actions/runs/41202680303/job/124541433795",
       "output": {
         "title": null,
         "summary": null,
         "text": null,
         "annotations_count": 0,
-        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/121172548548/annotations"
+        "annotations_url": "https://api.github.com/repos/tangency-labs/fieldcraft/check-runs/124541433795/annotations"
       }
     }
   ]
