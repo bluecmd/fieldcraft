@@ -1,5 +1,17 @@
 [
   {
+    "number": 780,
+    "title": "app: the macOS save chooser panics when AppKit returns no NSSavePanel",
+    "body": "A FieldCraft debug build (0.7.0 + #717, macOS aarch64, Apple M4 Max) panicked on the main thread while opening the save chooser:\n\n```\npanic at objc2-app-kit-0.3.2/src/generated/NSSavePanel.rs:103: unexpected NULL returned from +[NSSavePanel savePanel]\n```\n\nCrash report `20261030-230009-a234dadcab5f2b3f` (kind `panic`, last activity `control ui.inspect`, 2026-10-30T23:00:09Z). The run was driven over the control channel with the window behind another app and not drawing frames.\n\nAppKit returned nil from `+[NSSavePanel savePanel]`, and the generated binding treats the return as non-null, so it panics. rfd 0.17.2 builds both the blocking and the async save panel through the same `Panel::build_save_file` → `NSSavePanel::savePanel(mtm)` (`backend/macos/file_dialog/panel_ffi.rs:197`), so this predates #717 and affects every Save As, deck export and CSV export.\n\nThe panic is outside `Session::execute`, so nothing catches it: the app exits and unsaved work is lost.\n\nTo do:\n- find the condition under which AppKit returns nil here (app not active, no key window, during another modal, …) and reproduce it;\n- make the chooser fail as \"the file chooser could not open\" instead of crashing (a guard in the app around the panel's creation, or a fix upstream in rfd/objc2 so the panel is nullable), with a regression test where one can be written.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "state": "open",
+    "updated_at": "2026-11-01T14:22:20Z",
+    "labels": [
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/780"
+  },
+  {
     "number": 778,
     "title": "mcp: screenshot_takes_a_camera_orientation is flaky on lavapipe in CI (two pictures of one camera differ)",
     "body": "## Observed\n`fieldcraft-mcp`'s `tests::screenshot_takes_a_camera_orientation` fails intermittently in CI's `cargo xtask ci` job (Blacksmith, lavapipe, `FIELDCRAFT_GPU=software`, `FIELDCRAFT_REQUIRE_GPU=1`), on branches that do not touch mcp, render or gpu:\n\n| run | branch | date |\n|---|---|---|\n| 40926023281 | fix/windows-home-redaction-554 | 2026-10-29 |\n| 41043699331 | mapped-initial-fields-160 | 2026-10-30 |\n| 41056786266 | solidification-158 | 2026-10-30 |\n| 41108955086 (twice) | corpus-goldens (#670: testkit, fixtures and docs only) | 2026-10-30 |\n\nIt passes on most runs of the same base (develop f6ea0f5d passed it on its push run). Always the same assertion, `crates/mcp/src/tests.rs:229`:\n\n```\nlet (again, _) = picture(&mut s, json!({\"width\": 64, \"height\": 48}));\nassert_eq!(again, turned);\n```\n\nThe second picture of the same kept camera differs from the first (in the failing runs the two PNGs differ in size, so it is not a last-bit difference). It passes locally on macOS with Metal and with `FIELDCRAFT_GPU=cpu`.\n\n## Expected\nTwo headless screenshots of the same model and camera are identical on the software GPU, as the test says, or the test states what may differ.\n\n## Reproduce\nRerun the `cargo xtask ci` job of any of the runs above; it failed in 5 of the 37 pull request runs since 2026-10-29 that ran it.\n",
@@ -280,23 +292,6 @@
     ],
     "assignees": [],
     "url": "https://github.com/tangency-labs/fieldcraft/issues/684"
-  },
-  {
-    "number": 683,
-    "title": "Desktop: file dialogs block the UI thread, so Wayland compositors flag FieldCraft as not responding",
-    "body": "### Observed failure\nOn Hyprland (Wayland), pressing Ctrl+S opens the save chooser (`xdg-desktop-portal-gtk`) and the compositor shows an **Application Not Responding** warning for FieldCraft on top of it. Reported by @MayberryDT in a partial Omarchy / Hyprland pass on the v0.7.0 Linux tarball (#100, Intel HD Graphics 500, Vulkan).\n\n### Cause (from the code)\nThe desktop app opens its file dialogs with `rfd::FileDialog` (`apps/fieldcraft/src/main.rs`, the `dialog(...).save_file()` and open calls), which is synchronous: the call blocks the UI thread, and so the event loop, until the chooser closes. While the portal's chooser is open the window stops answering the compositor's pings, and Hyprland (like GNOME's mutter) flags the app as not responding. The web build already uses `rfd::AsyncFileDialog`.\n\n### Expected behaviour\nThe event loop keeps running while a file chooser is open: no \"not responding\" warning, the window keeps repainting, and the dialog's result is applied when it arrives. Use `rfd::AsyncFileDialog` (or run the blocking dialog off the UI thread) for open, save, save-as, import and export, with the result delivered back to the app; the dialogs stay UI-only (programmatic commands never open dialogs).\n\n### Reproduction\nLinux on Wayland (Hyprland 0.56.2 here; GNOME should show the same), `fieldcraft --sample cantilever`, press Ctrl+S, leave the chooser open for a few seconds.\n",
-    "state": "open",
-    "updated_at": "2026-10-24T00:30:19Z",
-    "labels": [
-      "bug",
-      "claimed",
-      "area:ui",
-      "needs-triage"
-    ],
-    "assignees": [
-      "bluecmd"
-    ],
-    "url": "https://github.com/tangency-labs/fieldcraft/issues/683"
   },
   {
     "number": 669,
