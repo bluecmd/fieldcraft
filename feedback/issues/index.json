@@ -242,7 +242,7 @@
     "title": "lbm-gpu: Smagorinsky Couette GPU-vs-CPU density bound fails on Apple Metal",
     "body": "### Current behaviour\n\nOn an Apple M4 Max (Metal), two GPU-vs-CPU Smagorinsky cases in `crates/lbm-gpu/tests/verification.rs` fail on develop (`origin/develop` at 72fadfe7) on their density bound `drho < 1e-6`:\n\n| test | velocity difference | density difference |\n|---|---|---|\n| `couette_flow_with_smagorinsky_matches_the_cpu` | 3.15e-6 | 2.21e-6 |\n| `heated_couette_flow_with_smagorinsky_matches_the_cpu` | 4.11e-6 | 2.44e-6 |\n\n`forced_poiseuille_with_smagorinsky_matches_the_cpu` passes. The velocity and shear bounds hold. The tolerances were measured on an RTX 4070 Laptop GPU (the doc comment above the Couette case). Found while running the GPU suites for #721, which does not touch the kernels.\n\n### Expected behaviour\n\nThe suite passes on every supported adapter. The density bound should reflect f32 on more than one device, or the cause of the larger density difference on Metal should be found.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
     "state": "open",
-    "updated_at": "2026-10-30T18:07:31Z",
+    "updated_at": "2026-11-02T10:50:00Z",
     "labels": [
       "area:cfd",
       "needs-triage"
