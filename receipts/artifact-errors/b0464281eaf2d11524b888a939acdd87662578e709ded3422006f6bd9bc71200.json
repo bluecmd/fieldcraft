@@ -1,0 +1,5 @@
+{
+  "status": "blocked",
+  "manifest": "manifests/diagnostics/solver-errors-654/e7b00e713b42c93b574bf279b78d46356975baac/solver-errors-654.mp4.json",
+  "error": "gh: Internal Server Error (HTTP 500)\n"
+}
