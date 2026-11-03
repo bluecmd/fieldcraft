@@ -1,5 +1,18 @@
 [
   {
+    "number": 818,
+    "title": "Bit-identical CPU speedups from a profiling pass (#804–#813)",
+    "body": null,
+    "state": "open",
+    "updated_at": "2026-11-03T13:17:12Z",
+    "labels": [
+      "needs-triage",
+      "needs-info"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/818"
+  },
+  {
     "number": 802,
     "title": "FDM parts: take the layer direction from SolidCraft's print face, and report the stress across the layers",
     "body": "### What are you trying to do\r\n\r\nI check 3D-printed (FDM) parts. Their weak direction is across the layers: the tensile strength between layers is often a third to a half of the in-plane value. Today I set this up by hand for every part:\r\n- an orthotropic material with its axis along the build direction;\r\n- a results probe of σ_zz in that frame;\r\n- a note of which way the part prints.\r\n\r\nSolidCraft 0.28.0 now stores the face a body prints on (Print face, #8433). So the build direction is already in the design FieldCraft opens.\r\n\r\n### How I imagine it working\r\n\r\n- **Read the print face.** When a body in the opened design has a print face, FieldCraft offers it as that body's **build direction**: the outward normal of the print face, pointing into the bed. `inspect_model` lists it per body.\r\n- **Material orientation from it:** `model.material.orientation {body, from: \"print_face\"}` (or a `build_direction` vector). An orthotropic material then puts its third axis along the build direction, with no manual frame.\r\n- **FDM presets** (optional): a few named starting points, such as \"PLA, PETG, ASA, PET-CF, 100 % infill, layer-direction factor k\". These are clearly marked as rough values to replace with coupon data.\r\n- **Results:** `show_results {field: \"stress_across_layers\"}`, which is the normal stress along the build direction, with its tension-only peak. A check, \"across-layer tension ≤ allowable\", gives a pass or fail and its margin.\r\n- **Without a print face**, nothing changes. The user can still give `build_direction` directly.\r\n\r\n### Why\r\n\r\nIt turns the most common printed-part failure check into one step, and it uses data SolidCraft now saves anyway. It also catches the classic mistake of printing a part on the wrong face: rotate the print face and re-run.\r\n\r\n### Notes\r\n\r\nThe existing orthotropic elastic materials and the result frames cover the solver side. This is mostly orientation plumbing, a result field and a check.\r\n\r\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\r\n",
