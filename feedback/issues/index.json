@@ -1104,24 +1104,6 @@
     "url": "https://github.com/tangency-labs/fieldcraft/issues/157"
   },
   {
-    "number": 155,
-    "title": "Free-surface flow in the lattice Boltzmann solver (VOF / melt front)",
-    "body": "## Current behaviour\n`fieldcraft-lbm` is single-phase: it cannot track a liquid front filling a cavity.\n## What to build\nA free-surface LBM (volume-of-fluid with interface cells, e.g. Körner et al. 2005; Thürey's free-surface LBM), with mass conservation checks; inlet (gate) conditions that inject fluid. Verify with a dam break against published experiments and a channel filling against its analytic front position.\n\nRead [CONTRIBUTING.md](https://github.com/jyviko/fieldcraft/blob/develop/CONTRIBUTING.md) and comment to claim this issue before starting. Clean-room rules: papers, public specifications and analytic results only; no GPL code, no commercial-product files or output.",
-    "state": "open",
-    "updated_at": "2026-11-01T12:55:39Z",
-    "labels": [
-      "enhancement",
-      "help wanted",
-      "claimed",
-      "size: L",
-      "area:cfd"
-    ],
-    "assignees": [
-      "bluecmd"
-    ],
-    "url": "https://github.com/tangency-labs/fieldcraft/issues/155"
-  },
-  {
     "number": 154,
     "title": "Injection moulding: filling, packing, cooling and warpage (epic)",
     "body": "## Current behaviour\nFieldCraft cannot simulate injection moulding: no melt front, no polymer viscosity model, no solidification, no residual stress transfer.\n## Goal\nA moulding workflow on a SolidCraft part: gate placement, filling (melt front, pressure, shear rate, temperature), packing and cooling, then residual stress and warpage of the moulded part. Verified against published benchmarks (e.g. strip and disc filling with analytic Hele-Shaw solutions) and our own convergence studies.\n## Depends on\nThe issues opened alongside this one: free-surface flow, non-Newtonian viscosity, thermal LBM with conjugate heat transfer, solidification, Tait PVT, residual-stress mapping. ROADMAP M12, M13, M17, M19.\n\nRead [CONTRIBUTING.md](https://github.com/jyviko/fieldcraft/blob/develop/CONTRIBUTING.md) and comment to claim this issue before starting. Clean-room rules: papers, public specifications and analytic results only; no GPL code, no commercial-product files or output.",
