@@ -460,9 +460,16 @@ checks passing; their bodies contain the before/after numbers and controls.
 
 [#820](https://github.com/tangency-labs/fieldcraft/issues/820#issuecomment-6639418969)
 remains under investigation in [draft PR #832](https://github.com/tangency-labs/fieldcraft/pull/832).
-The draft records the reproduction and controls; its repair is still pending.
-A broader transverse seed also excites an
-inlet mode with periodic sides, so the repair must cover more than slip-face
-intersections. No candidate repair has passed acceptance. #795 is upstream;
+A boundary-local candidate now passes the CPU reproduction and controls: stress-trace
+extrapolation plus a fourth-order high-pass of the density extrapolation residual,
+with unchanged bulk collision and SGS. Both disturbance signs complete 30,000 steps
+(previously guard at 2838), final density departure 7.84e-9 and velocity 2.27e-9;
+broadband and all-axis/sign controls also decay. Hardware validation and final
+integration checks remain pending; the draft is not ready yet. Results are in
+[the #820 update](https://github.com/tangency-labs/fieldcraft/issues/820#issuecomment-6642703716).
+The original roadmap's tau=.5005 sweep remains unmet: its fully periodic control
+without an inlet grows too (Smagorinsky C=.1, broadband seed 1e-6, density peak 1.1e-3).
+That bulk limitation is separate from the inlet repair; the .505/.518 results do
+not establish arbitrary low-tau stability or LES/drag accuracy. #795 is upstream;
 slices 5–7 are assigned separately. No re-architecture PR is open; slice 8 still
 requires agreement on #785 and the #786 measurement.
