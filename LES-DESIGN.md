@@ -458,18 +458,31 @@ refuses the unstable halfway wall selection while retaining explicit historical
 diagnostics. Both PRs are ready for review with CI green and final-head GB10
 checks passing; their bodies contain the before/after numbers and controls.
 
-[#820](https://github.com/tangency-labs/fieldcraft/issues/820#issuecomment-6639418969)
-remains under investigation in [draft PR #832](https://github.com/tangency-labs/fieldcraft/pull/832).
-A boundary-local candidate now passes the CPU reproduction and controls: stress-trace
+[PR #832](https://github.com/tangency-labs/fieldcraft/pull/832) repairs the original
+tau=.505 reproduction from [#820](https://github.com/tangency-labs/fieldcraft/issues/820).
+The boundary-local repair passes the CPU reproduction and controls: stress-trace
 extrapolation plus a fourth-order high-pass of the density extrapolation residual,
 with unchanged bulk collision and SGS. Both disturbance signs complete 30,000 steps
 (previously guard at 2838), final density departure 7.84e-9 and velocity 2.27e-9;
-broadband and all-axis/sign controls also decay. Hardware validation and final
-integration checks remain pending; the draft is not ready yet. Results are in
-[the #820 update](https://github.com/tangency-labs/fieldcraft/issues/820#issuecomment-6642703716).
-The original roadmap's tau=.5005 sweep remains unmet: its fully periodic control
-without an inlet grows too (Smagorinsky C=.1, broadband seed 1e-6, density peak 1.1e-3).
-That bulk limitation is separate from the inlet repair; the .505/.518 results do
-not establish arbitrary low-tau stability or LES/drag accuracy. #795 is upstream;
+broadband and all-axis/sign controls also decay. Both GB10 layouts pass eight
+30,000-step cases, worst final density 1.79e-7 and velocity 9.39e-8 (bound 1e-6),
+plus rotated, periodic, channel, backflow and thermal controls. The PR is ready
+for review with CI green (main gate, heavy tests and oracle). Results are in
+[the #820 update](https://github.com/tangency-labs/fieldcraft/issues/820#issuecomment-6643921336).
+The original Re=100 sphere now reaches 120 D/U (28,800 steps, previously guard
+at 2736), with final density [0.997923, 1.003769], maximum Mach 0.09841 and no
+invalid cells. Its 80–120 D/U mean Cd is 1.15780 and lift RMS is 0.01958, failing
+the proposed <1e-3 lift criterion. This is survival evidence; #792 and drag
+validation remain open.
+
+Supplemental CPU checkerboards also decay at tau=.507 and .518: final density
+1.1e-14 and 8.8e-15, respectively, after 30,000 steps. The original roadmap's
+tau=.5005 sweep remains unmet: its inlet checkerboard with Smagorinsky C=.1
+ends at density departure 1.6e-3 and velocity departure 1.69e-2, with growing
+late windows. The unchanged fully periodic broadband control also grows
+(density peak 1.1e-3), establishing a bulk limitation without proving that all
+of the inlet-case growth is bulk-driven. Maintainer confirmation of the narrower
+.505/.507/.518 scope is requested before landing. These results do not establish
+arbitrary low-tau stability or LES/drag accuracy. #795 is upstream;
 slices 5–7 are assigned separately. No re-architecture PR is open; slice 8 still
 requires agreement on #785 and the #786 measurement.
