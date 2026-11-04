@@ -94,7 +94,7 @@
     "title": "lbm-gpu: the throughput benchmarks fail in parallel on NVIDIA with \"the readback did not complete\"",
     "body": "### Observed failure\n\nThe `lbm-gpu` throughput benchmarks (`crates/lbm-gpu/tests/throughput.rs`, all `#[ignore]`d, so part of `cargo xtask test --heavy`) fail now and then on a real NVIDIA card when they run in parallel, the default for `cargo test`:\n\n```\nthread 'smagorinsky_cost' panicked at crates/lbm-gpu/tests/throughput.rs:312:40:\ncalled `Result::unwrap()` on an `Err` value: Backend(\"GPU: the readback did not complete\")\nthread 'cell_updates_per_second' panicked at crates/lbm-gpu/tests/throughput.rs:121:28:\ncalled `Result::unwrap()` on an `Err` value: Backend(\"GPU: the readback did not complete\")\n```\n\n`zone_throughput_and_diagnostic_cost` failed once as well (at `throughput.rs:54`, `device.advance(32).unwrap()`).\n\n### Reproduction\n\n```\nFIELDCRAFT_GPU=hardware FIELDCRAFT_REQUIRE_GPU=1 \\\n  cargo test --profile ci -p fieldcraft-lbm-gpu --test throughput -- --include-ignored\n```\n\nRepeated on the same machine, `develop` at cb97611:\n\n| | runs | failed with \"the readback did not complete\" |\n|---|---|---|\n| default test threads | 12 | 4 (1–2 tests each); one more run ended without any test result, its output was not kept |\n| `--test-threads=1` | 1 | 0 |\n| `smagorinsky_cost` alone | 2 | 0 |\n\n### Evidence\n\nNo Xid in the guest's kernel log, no PCIe/AER messages on the host, the card idle at 41 °C afterwards. `verification.rs` and the other tests of the crate pass in the same runs.\n\n### Expected behaviour\n\nThe benchmarks pass, as they do one at a time. CI runs them on lavapipe only, so it does not see this.\n\n### Investigation\n\n`verification.rs` takes a shared turn (`static TURN: Mutex<()>`, #616) since the parallel hang in #614 (NVIDIA, concurrent devices); `throughput.rs` does not, so its six benchmarks share the card. The error comes from `read` in `crates/lbm-gpu/src/native.rs`: `device.poll(PollType::Wait { .. })` returns `Ok`, but the `map_async` callback has not run yet, so `rx.try_recv()` is empty. The runs end in about 60 s, well inside `DEVICE_TIMEOUT` (120 s). I have not looked further into why the poll returns before the callback. Taking the same turn in `throughput.rs` would also keep the measured rates clean (in parallel they read 837 M cell updates/s against 1115–1686 M/s alone).\n\n### Version and platform\n\n`develop` at cb97611 (0.7.0). NVIDIA GeForce RTX 3060 Ti, NVIDIA open kernel module 615.78.08, Vulkan, power-limited to 186 W, passed through to a Fedora 44 x86_64 KVM guest (kernel 7.2.14).\n",
     "state": "open",
-    "updated_at": "2026-11-04T01:10:17Z",
+    "updated_at": "2026-11-04T01:30:12Z",
     "labels": [
       "bug",
       "help wanted",
@@ -318,21 +318,6 @@
     "url": "https://github.com/tangency-labs/fieldcraft/issues/785"
   },
   {
-    "number": 778,
-    "title": "mcp: screenshot_takes_a_camera_orientation is flaky on lavapipe in CI (two pictures of one camera differ)",
-    "body": "## Observed\n`fieldcraft-mcp`'s `tests::screenshot_takes_a_camera_orientation` fails intermittently in CI's `cargo xtask ci` job (Blacksmith, lavapipe, `FIELDCRAFT_GPU=software`, `FIELDCRAFT_REQUIRE_GPU=1`), on branches that do not touch mcp, render or gpu:\n\n| run | branch | date |\n|---|---|---|\n| 40926023281 | fix/windows-home-redaction-554 | 2026-10-29 |\n| 41043699331 | mapped-initial-fields-160 | 2026-10-30 |\n| 41056786266 | solidification-158 | 2026-10-30 |\n| 41108955086 (twice) | corpus-goldens (#670: testkit, fixtures and docs only) | 2026-10-30 |\n\nIt passes on most runs of the same base (develop f6ea0f5d passed it on its push run). Always the same assertion, `crates/mcp/src/tests.rs:229`:\n\n```\nlet (again, _) = picture(&mut s, json!({\"width\": 64, \"height\": 48}));\nassert_eq!(again, turned);\n```\n\nThe second picture of the same kept camera differs from the first (in the failing runs the two PNGs differ in size, so it is not a last-bit difference). It passes locally on macOS with Metal and with `FIELDCRAFT_GPU=cpu`.\n\n## Expected\nTwo headless screenshots of the same model and camera are identical on the software GPU, as the test says, or the test states what may differ.\n\n## Reproduce\nRerun the `cargo xtask ci` job of any of the runs above; it failed in 5 of the 37 pull request runs since 2026-10-29 that ran it.\n",
-    "state": "open",
-    "updated_at": "2026-11-04T01:10:12Z",
-    "labels": [
-      "bug",
-      "help wanted",
-      "claimed",
-      "area:infra"
-    ],
-    "assignees": [],
-    "url": "https://github.com/tangency-labs/fieldcraft/issues/778"
-  },
-  {
     "number": 777,
     "title": "Tet mesher: the exact-geometry snap lowers the worst dihedral angle by 10° and more on curved parts",
     "body": "## Observed\nSince c118b978 (`tet: snap boundary vertices onto the exact faces in sweeps that back off`, #674) the worst element of the tet quality stage is much worse on curved corpus parts, with the same tetrahedron count: the snap moves boundary vertices after improvement and nothing improves the elements it distorts.\n\n`bent-tube` on macOS aarch64, `cargo xtask corpus --part bent-tube --no-write`:\n\n| commit | tets | min dihedral ° | max dihedral ° |\n|---|---|---|---|\n| 44d0cb21 (parent) | 25112 | 29.5 | 141.2 |\n| c118b978 | 25112 | 18.3 | 153.3 |\n\nThe corpus fixtures of #670, blessed on 2026-10-21 and again on develop f6ea0f5d, show the same on other curved parts (min dihedral °, the change includes #687 too, which moved them by about a degree):\n\n| part | macOS aarch64 | Linux x86_64 |\n|---|---|---|\n| analytic-cylinder | 36.0 → 34.7 | 34.2 → 21.4 |\n| analytic-pipe | 31.7 (unchanged) | 35.0 → 17.8 (same 17908 tets) |\n| analytic-torus | 31.7 → 27.1 | 31.4 → 21.9 |\n| bent-tube | 30.2 → 18.3 | 30.0 → 17.5 |\n| filleted-bracket | 33.6 → 18.9 | 32.5 → 23.2 |\n| filleted-bracket-blocks | 31.9 → 18.2 | 29.9 → 17.6 (same 173867 tets) |\n| perforated-plate | 27.7 → 20.9 | 27.7 → 20.9 |\n\n## Expected\nPutting boundary vertices on the exact geometry should not cost the worst element 10° and more. Either the snap runs before (or inside) the improvement loop so improvement sees the snapped positions, or a snap move that lowers an element's quality below what improvement reached is refused or followed by local improvement.\n\n## Reproduce\n`cargo xtask corpus --part bent-tube --no-write` at 44d0cb21 and at c118b978 (the `min dihedral °` column). Once #670 lands, the corpus fixtures freeze the current values, so a fix shows as a fixture move to bless.\n",
@@ -345,22 +330,6 @@
     ],
     "assignees": [],
     "url": "https://github.com/tangency-labs/fieldcraft/issues/777"
-  },
-  {
-    "number": 776,
-    "title": "lbm-gpu: Smagorinsky Couette GPU-vs-CPU density bound fails on Apple Metal",
-    "body": "### Current behaviour\n\nOn an Apple M4 Max (Metal), two GPU-vs-CPU Smagorinsky cases in `crates/lbm-gpu/tests/verification.rs` fail on develop (`origin/develop` at 72fadfe7) on their density bound `drho < 1e-6`:\n\n| test | velocity difference | density difference |\n|---|---|---|\n| `couette_flow_with_smagorinsky_matches_the_cpu` | 3.15e-6 | 2.21e-6 |\n| `heated_couette_flow_with_smagorinsky_matches_the_cpu` | 4.11e-6 | 2.44e-6 |\n\n`forced_poiseuille_with_smagorinsky_matches_the_cpu` passes. The velocity and shear bounds hold. The tolerances were measured on an RTX 4070 Laptop GPU (the doc comment above the Couette case). Found while running the GPU suites for #721, which does not touch the kernels.\n\n### Expected behaviour\n\nThe suite passes on every supported adapter. The density bound should reflect f32 on more than one device, or the cause of the larger density difference on Metal should be found.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
-    "state": "open",
-    "updated_at": "2026-11-04T01:10:05Z",
-    "labels": [
-      "help wanted",
-      "claimed",
-      "area:cfd"
-    ],
-    "assignees": [
-      "semmelrinde"
-    ],
-    "url": "https://github.com/tangency-labs/fieldcraft/issues/776"
   },
   {
     "number": 775,
