@@ -455,11 +455,13 @@ The maintainer approved taking #819, #820 and the protective #794 slice.
 outlet: the original 1480-step failure completes 30000 steps, and the 192-case
 CPU sweep remains below 2.45e-14. [PR #827](https://github.com/tangency-labs/fieldcraft/pull/827)
 refuses the unstable halfway wall selection while retaining explicit historical
-diagnostics. Both PRs are undergoing CI; their bodies contain the controls and
-hardware validation status.
+diagnostics. Both PRs are ready for review with CI green and final-head GB10
+checks passing; their bodies contain the before/after numbers and controls.
 
 [#820](https://github.com/tangency-labs/fieldcraft/issues/820#issuecomment-6639418969)
-remains under local investigation. A broader transverse seed also excites an
+remains under investigation in [draft PR #832](https://github.com/tangency-labs/fieldcraft/pull/832).
+The draft records the reproduction and controls; its repair is still pending.
+A broader transverse seed also excites an
 inlet mode with periodic sides, so the repair must cover more than slip-face
 intersections. No candidate repair has passed acceptance. #795 is upstream;
 slices 5–7 are assigned separately. No re-architecture PR is open; slice 8 still
