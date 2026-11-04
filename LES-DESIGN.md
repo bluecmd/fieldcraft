@@ -450,7 +450,17 @@ publisher sections are not a full independent reproduction of its derivation.
 
 ## Execution status
 
-Design review complete; proposed acceptance numbers await maintainer steering.
-#795 is upstream. Requests to take #819 and #820 were posted on their issues;
-neither was labelled help wanted at review time. No re-architecture PR is open.
-The implementation sequence and fresh reproduction results are in `PROGRESS.md`.
+The maintainer approved taking #819, #820 and the protective #794 slice.
+[PR #826](https://github.com/tangency-labs/fieldcraft/pull/826) repairs the uniform
+outlet: the original 1480-step failure completes 30000 steps, and the 192-case
+CPU sweep remains below 2.45e-14. [PR #827](https://github.com/tangency-labs/fieldcraft/pull/827)
+refuses the unstable halfway wall selection while retaining explicit historical
+diagnostics. Both PRs are undergoing CI; their bodies contain the controls and
+hardware validation status.
+
+[#820](https://github.com/tangency-labs/fieldcraft/issues/820#issuecomment-6639418969)
+remains under local investigation. A broader transverse seed also excites an
+inlet mode with periodic sides, so the repair must cover more than slip-face
+intersections. No candidate repair has passed acceptance. #795 is upstream;
+slices 5–7 are assigned separately. No re-architecture PR is open; slice 8 still
+requires agreement on #785 and the #786 measurement.
