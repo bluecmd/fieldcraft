@@ -484,5 +484,214 @@ late windows. The unchanged fully periodic broadband control also grows
 of the inlet-case growth is bulk-driven. Maintainer confirmation of the narrower
 .505/.507/.518 scope is requested before landing. These results do not establish
 arbitrary low-tau stability or LES/drag accuracy. #795 is upstream;
-slices 5–7 are assigned separately. No re-architecture PR is open; slice 8 still
-requires agreement on #785 and the #786 measurement.
+slices 5–7 are assigned separately. #829 now exposes the #786 stress gap.
+The slice 8 proposal and local mechanism results follow; implementation PRs
+still require agreement on #785.
+
+## Slice 8 proposal — stress-carrying wall layer (2026-11-05)
+
+Status: proposal for [#785](https://github.com/tangency-labs/fieldcraft/issues/785),
+following the stress diagnostic in [#829](https://github.com/tangency-labs/fieldcraft/pull/829).
+[Proposal discussion](https://github.com/tangency-labs/fieldcraft/issues/785#issuecomment-6651971536);
+awaiting the maintainer's direction.
+The numerical prototype is local and unpublished (`ae710001`, based on develop
+`6b613217`). No re-architecture PR is open.
+
+### Boundary contract and first implementation
+
+Use the existing **on-node Han traction boundary**, initially for stationary,
+planar channel walls with periodic tangential directions. Couple it to a Musker
+wall law sampled at an explicit **physical matching height** `h`, rather than
+implicitly at the first or second lattice row. Preserve the wall position at the
+boundary-node centre. This is a proposed combination of existing ingredients,
+not a claim that changing the wall law alone fixes #786.
+
+For each face, store its physical wall point, inward normal, area and a bounded
+sampling stencil. Interpolate the pre-collision resolved tangential velocity and
+density at `h`; use a common immutable snapshot for all faces. Solve
+`|u_t(h)| = u_tau U_plus(h u_tau / nu)` with the existing bounded Musker root
+solver. The wall takes `rho u_tau^2` along `u_t(h)` (the traction on the fluid has
+the opposite sign). At rest the requested tangential stress is zero. Reject
+nonfinite inputs, unavailable samples and unsupported geometry explicitly.
+
+Impose that stress through Han's mass-conserving incoming-population assignments,
+without separately replacing the first fluid cell's velocity. Keep the normal
+impermeability/pressure closure. Record the **actual incoming/outgoing population
+impulse**, not the requested stress relabelled as a measured force. Do not restore
+the unstable halfway stress correction guarded by #794/#827.
+
+The wall function still defines a velocity profile and derivative below `h`:
+`U_wm(y) = u_tau U_plus(y u_tau / nu)` and
+`dU_wm/dy = u_tau^2 / nu * U_plus'(y u_tau / nu)`.
+In the next experiment, supply this normal derivative to the near-wall gradient
+stencil, while retaining resolved tangential derivatives. Assess a physical
+wall-layer viscosity consistent with the target shear and that derivative;
+for an equilibrium layer its candidate is
+`nu_eff = u_tau^2 / |dU_wm/dy|`. Count its excess over molecular viscosity once,
+in place of the unresolved near-wall SGS contribution, not added a second time.
+A channel refinement must also test the pressure-gradient correction to the
+constant-stress assumption. The layer-to-resolved transition at `h` must have an
+explicit stencil and be tested for a shear/gradient jump; its design is not yet
+validated by the prototype below. Do not prescribe both the entire velocity
+profile and an independent traction to the same populations.
+
+Use `h/delta = 0.20` as the initial fixed-height channel experiment, with
+`0.15` and `0.25` as sensitivity controls. These are experimental choices, not
+validated defaults. Report `h`, `h/dx`, `h/delta` and `h+`. Interpolation is required
+when `h/dx` is nonintegral; refining the grid must not silently move the physical
+sampling plane. Limit this first version to `dx <= h <= delta`; corners, curved
+walls, moving walls, heat transfer and refinement interfaces require separate
+contracts. Serialize the eventual user-visible configuration, rebuild stencils on
+restart, and expose it through the normal fluid command/model schema.
+
+### Collision, diagnostics and geometry
+
+TRT retains its magic-parameter relation when a physical wall-layer viscosity
+changes its even relaxation rate. HRR uses the same physical wall stress and
+wall-aware normal derivative, with a fixed, declared sigma in the first study.
+A numerical HRR filter is not a physical eddy viscosity; do not infer wall stress
+from sigma or retune sigma/C_s by grid. MRT and regularized collision are controls.
+The local prototype changes sampling and traction only; it has **not** implemented
+the proposed gradient/viscosity coupling.
+
+Extend #829's closed-system diagnostic to on-node boundaries before accepting a
+wall-layer PR. Its current fluid-only population inventory is insufficient here:
+include populations that arrived at the wall nodes from the fluid and will return
+on the next step. Then evaluate independently
+`carried impulse = body impulse - [P(t+1)-P(t)]` and compare it with the summed
+measured wall impulse. Count each node/link contribution once. Existing Han tests
+already demonstrate this inventory convention on CPU. Keep normal pressure and
+tangential drag separate, and retain requested/applied/carried values per wall
+and sampling block; cancellation between opposite walls must not hide an error.
+
+For comparison with DNS, define wall position, wetted area, bulk-velocity
+quadrature and forcing volume together. On-node walls at the two outer centres
+need `2N+1` rows for a channel of height `2 delta`; halfway walls need `2N`.
+Only the `2N-1` interior on-node rows currently receive body force. Thus a uniform
+input acceleration does not imply the continuum `tau_w = rho a delta` exactly.
+Report the actual summed body impulse and calibrate the prescribed total drive
+for the intended reference stress; never use nominal box volume to invent a
+carried force. Report the wall-interval contribution to the bulk-velocity
+quadrature from the wall profile and its sensitivity. For the original #786
+reproduction also retain its original drive and report the resulting measured
+Re_tau, so a geometry/forcing correction cannot masquerade as a boundary fix.
+
+### Local mechanism experiment
+
+Ran on sc-builder-2 under its flock, from develop `6b613217`, with a separate
+worktree/target, four build jobs and two solver threads. This is an **unpublished
+CPU mechanism prototype**, not the #786 turbulent reproduction: periodic 8-by-8
+wall-parallel cells, delta=1, nu=1/950, initial Musker mean profile plus small
+3D perturbations, lattice velocity scale 200, Smagorinsky C_s=.08, and HRR
+sigma=.99. Both walls and all three normal axes are exercised. N=10/20/30
+share a physical h/delta=.20; h/delta=.25 at N=10 tests interpolation between
+rows 2 and 3. The same number of steps represents different physical durations
+on different grids; these rows are not a convergence study.
+
+At N=10, mean streamwise stresses over the first 200 steps are below, in units
+where the initial reference rho u_tau^2 is 1. “Applied” is the measured wall
+population impulse per area. The legacy Musker inferred value is reconstructed
+from its wall-law target and current wall-cell density; its initialization
+transient is deliberately retained. **These are not steady C_f measurements**
+and do not replace #786's original 1.245 requested/carried ratio.
+
+| Collision | Existing Musker requested / applied | Existing Han requested / applied | Matched-height Musker requested / applied |
+|---|---:|---:|---:|
+| TRT | 0.979321 / 5.116751 | 0.792771 / 0.792771 | 0.978246 / 0.978246 |
+| Regularized | 0.968672 / 5.246485 | 0.761701 / 0.761701 | 1.033894 / 1.033894 |
+| MRT | 0.968246 / 5.263427 | 0.761169 / 0.761169 | 1.035146 / 1.035146 |
+| HRR | 0.964417 / 5.321940 | 0.758035 / 0.758035 | 1.015233 / 1.015233 |
+
+All 32 short cases complete. Across the 24 prototype cases, the largest relative
+requested/applied mean gap is **2.45e-15**, the independent per-step momentum
+budget residual is **3.17e-14 of momentum**, and mass drift is **8.95e-14**.
+The original Han control already conserves traction; the new evidence is that
+this property survives a separate, interpolated physical sampling height and
+Musker inference. Legacy Musker/MRT's short transient has mass drift 9.86e-6
+and a budget residual 1.38e-10 of momentum; it does not pass the new contract.
+
+Extended all 24 prototype cases to 2,000 steps, and repeated them with reversed
+velocity/body force: all 48 complete. Across both signs, requested/applied mean
+gap <=2.00e-15, independent budget residual <=3.71e-14 of momentum
+(<=4.23e-9 of applied impulse), and mass drift <=2.86e-13. Rest and invalid-height
+controls pass. At h=.25, the initial interpolated request is 0.995225 instead of
+1.000000: the approximately 0.48% interpolation effect is observable, not hidden
+by snapping h to a lattice row.
+
+**Limitations revealed by the longer control:** TRT's final maximum lattice
+speed reaches 0.225307 (Mach 0.390), outside the proposed .2 envelope. HRR's N=10
+mean requested/applied stress over 2,000 steps is 0.910227, versus 1.015233 over
+200 steps. Exact transfer therefore does not establish stationarity, an accurate
+mean profile, or acceptable C_f. The prototype has not supplied the missing
+wall-gradient/viscosity layer, passed the full turbulent reproduction, tested
+restart/thread determinism for its new option, or run on a GPU. These remain
+work and acceptance gates, not inferred successes.
+
+### Validation and release gates
+
+1. **Discrete contract.** On all axes and both wall normals, check rest, reversed
+   tangential flow, mass, impermeability, interpolation, restart and thread-count
+   determinism. Exercise TRT, HRR, regularized and MRT collision. Sum wall-node
+   inventory explicitly. CPU budget residual must be below `1e-11` of momentum
+   in the bounded mechanism cases; also report residual relative to wall impulse
+   with #829's cancellation floor. Requested/applied stress must agree within 1%
+   per wall and over complete blocks, with a separate absolute bound near zero.
+   Reject bad heights and missing samples before stepping.
+2. **Re_tau 950 reproduction.** Re-run #786's original domain, drive, timestep,
+   initialization and statistics as the before case. Then compare the proposed
+   boundary on the same physical channel, reporting the geometry and quadrature
+   differences above. Use N=10/20/30 with fixed `h/delta`, and the height controls.
+   Establish stationarity and block uncertainty using the statistical gate, not
+   a fixed end time alone. Budget carry must agree with population impulse;
+   carried `C_f = 2 <tau_w> / (rho U_b^2)` must be within 5% of the explicitly
+   selected DNS value. Report Dean separately. For the historical 950 comparison,
+   label any interpolation between Lee–Moser profiles and do not relabel the
+   Torroja Re_tau approximately 934 dataset as exact 950 DNS.
+3. **Profile and model gates.** Ordinary relative RMS of mean velocity above `h`
+   must be <=5%; total-stress budget error <=5% of wall stress. Include viscous,
+   resolved Reynolds and explicit modeled shear, and examine the transition at
+   `h`. Do not use the sample-count-dependent M&S error metric as ordinary RMS.
+   Require requested/applied <=1% **and** carried C_f <=5%; conservation alone
+   passes neither drag nor log-layer accuracy. Report uncertainty, achieved
+   Re_tau, density/Mach envelopes and spectral/perturbation controls. Hold C_s and
+   sigma fixed across grids; failure is evidence to revise the layer, not to
+   tune each grid into agreement.
+4. **Re_tau 1000 and 2000.** Repeat with the published Lee–Moser references at
+   their actual Reynolds numbers, the same configuration and acceptance bounds,
+   before claiming a usable envelope. Use the accepted channel reference numbers
+   as fixtures only after these checks pass. Neither a narrow periodic box nor
+   a prescribed analytic profile establishes turbulent-channel validation.
+5. **GPU parity.** Build the sampling stencil once and evaluate stress from an
+   immutable pre-collision snapshot; apply the same Han rule in both two-buffer
+   and AA layouts. Extend #829's population inventory to wall-node in-flight
+   populations and their AA parity mapping. Test odd/even steps, chunk boundaries,
+   restart, all axes/signs and zero/reversed velocity. Use f32-aware budget floors;
+   bounded CPU/GPU stress and velocity comparisons target `1e-5` relative with
+   explicit near-zero absolute tolerances. Run the channel acceptance on a real
+   GB10 in both layouts before readiness; statistical quantities use their
+   uncertainty bounds rather than chaotic pointwise equality. No real-GPU run
+   has been made for this prototype.
+
+### Literature and decision requested
+
+* Malaspinas & Sagaut (2014), DOI
+  [10.1016/j.jcp.2014.06.020](https://doi.org/10.1016/j.jcp.2014.06.020):
+  analytic wall profile and near-wall regularization. Its inferred friction is
+  not a substitute for independently transported momentum in this implementation.
+* Han, Ooka & Kikumoto (2021), DOI
+  [10.1088/1873-7005/ac1782](https://doi.org/10.1088/1873-7005/ac1782),
+  [author preprint](https://arxiv.org/abs/2009.04352): the on-node assignments
+  provide the traction mechanism; their original law is Spalding. Musker at a
+  separate matching height is our experiment, not a result attributed to Han.
+* Asmuth et al. (2021), DOI
+  [10.1063/5.0065701](https://doi.org/10.1063/5.0065701),
+  [institutional full text](https://tore.tuhh.de/bitstream/11420/10618/1/5.0065701.pdf):
+  sampling above the first node reduces log-layer mismatch but does not alone
+  remove gradient overshoot. Their CLBM/AMD results motivate a coupling study;
+  they do not establish HRR/TRT accuracy for this design.
+
+Requested direction: agree on **on-node traction + an explicit physical matching
+height**, followed by measured wall-gradient/viscosity coupling, as slice 8's
+first implementation scope. Keep halfway treatment, curved walls, heat and
+refinement outside this PR. The channel and GPU gates above remain mandatory.
+Await the maintainer's response on #785 before opening any wall-layer PR.

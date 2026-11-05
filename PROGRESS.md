@@ -1,96 +1,173 @@
-# LES design and fixes — progress
+# LES progress — 2026-11-05
 
-2026-11-04. Worktree `fc-les2`, branch `les-design`, base `upstream/develop`
-`4b680571`. Fork remote: `bluecmd/fieldcraft`; upstream: `tangency-labs/fieldcraft`.
+Verdict: retain the LBM core; fix boundaries and validity before selected architecture changes.
+Public `les-design` includes the slice 8 proposal below. The unpublished audit link is fixed.
+Claims for #819, #820 and #794 are approved. Slices 5–7 belong to codex-les3;
+slice 8 local prototype/proposal is authorized; a PR waits for #785 agreement.
+#829 now exposes the stress gap. Never merge these PRs ourselves.
 
-## Verdict and completed work
+## PR status
 
-**Re-architect parts; retain the LBM core.** See [LES-DESIGN.md](LES-DESIGN.md)
-for the issue-by-issue assessment, literature, target interfaces and staged
-acceptance gates. Repair isolated open-boundary failures before interpreting
-external drag; require carried wall stress and reliable acceptance before larger
-wall/refinement changes. Hybrid RANS–LES and turbulent CHT need additional
-transport, wall and coupling contracts.
+- **#826 / #819:** ready, green CI `41893106606`, head `3c268c4c`.
+  Uniform-pressure extrapolation repairs the original failure at step 1480:
+  30,000 steps at roundoff; CPU 192-case sweep max departure 2.45e-14.
+  GB10 both layouts, 64 cases at 30k: max 2.98e-7; inner-zone mismatch 5.59e-9.
+  Channel/cylinder controls and oracle pass. Both review threads resolved.
+- **#827 / #794:** ready, green CI `41893593637`, head `78c79791`.
+  Refuses unstable halfway wall before allocation/backend/checkpoint callbacks.
+  Historical 80-case sweep: 40 on-node cases decay, 40 halfway cases grow.
+  Focused tests, oracle, and final GB10 wall/fan/porous controls pass.
+- **#832 / #820:** ready, green CI `41926505284`, head
+  `45d3ac6994529e56c114e3f12e791e1dc35660f1`; characterization `195ff7a6`.
+  Branch `fix/820-inlet-slip`, worktree `/home/agent/work/fc-les2-820`.
+  Based on latest upstream/develop `6b613217`, checked at 22:35 UTC.
+  Issue results: https://github.com/tangency-labs/fieldcraft/issues/820#issuecomment-6643921336
 
-Read #785, #786–798, #819–820, including the recent #792 inlet-localisation and
-#798 non-monotone R9 sphere comments, the prior local audit, and current source.
-#795 is already closed/fixed upstream (`b7cbfe0d`); both channel studies use
-absolute lag-1 correlation. No duplicate patch is needed.
+## #820 implementation and evidence
 
-## Claims and PRs
+TRT velocity inlet only: extrapolate non-equilibrium stress trace from two inner
+cells; apply fourth-order Shapiro high-pass to the density extrapolation residual.
+Preserves prescribed velocity and deviatoric stress. Bulk collision, SGS and
+viscosity unchanged. Outward velocity faces, missing inner cells and free-surface
+flows retain the original closure. CPU/GPU snapshot scratch before boundary writes.
 
-No fix PR yet. Open-PR list and topic searches found no overlapping outlet,
-inlet/slip, wall-stress or halfway-Spalding PR. The candidate issues were all
-unassigned and lacked `help wanted`. Following the brief and CONTRIBUTING.md,
-requests were posted before claiming:
+CPU on sc-builder-2:
+- Original 16³, tau=.505, U=.05, ±1e-6 seed: guard at 2838 -> 30,000 steps;
+  final density 7.84e-9, velocity 2.27e-9, decreasing late windows.
+- Broadband tau=.505: density 2.56e-8 / velocity 6.12e-9; tau=.518:
+  7.26e-12 / 3.97e-12. Nine cases including all axes/signs pass.
+- Eight controls pass, including original six and periodic broadband seeds.
+- Pressure channel profile error 2.96e-4 -> 2.94e-4; original bounds retained.
+- 289 linear modes with actual convective outlet decay; worst log modulus
+  -3.33e-5/step. Diagnostic only, not a general stability proof.
 
-* [#819: uniform outlet](https://github.com/tangency-labs/fieldcraft/issues/819#issuecomment-6627408534)
-* [#820: inlet/slip interaction](https://github.com/tangency-labs/fieldcraft/issues/820#issuecomment-6627408964)
-* [#794: refuse the unstable halfway wall variant](https://github.com/tangency-labs/fieldcraft/issues/794#issuecomment-6627574408)
+NVIDIA GB10 at final head:
+- Eight 30k cases across both layouts: final density <=1.79e-7, velocity <=9.39e-8.
+- 96 axis/sign/slip/periodic/chunk comparisons: relative velocity difference
+  <=4.55e-7, density difference <=7.61e-8.
+- Channel, vortex/backflow, thermal and odd/even readback controls pass.
+- Initial two-buffer run failed at density 1.61e-6. Aligned staged/applied density
+  sums and single-precision formula; final rerun passes the original 1e-6 bound.
 
-Awaiting maintainer replies/claim eligibility. No production solver changes
-have been made. The brief also requires a maintainer response on #785 before a
-re-architecture PR. The maintainer merges; do not merge these changes locally
-or remotely on their behalf.
+Sphere integration: original Re=100, D=12 cells, tau=.518, grid 192×96×96 now
+completes 28,800 steps / 120 D/U (previous guard at 2736). Final density
+[.997923, 1.003769], maximum Mach .09841, no invalid cells. Mean Cd=1.15780,
+lift RMS=.01958 **fails** the roadmap's 1e-3 criterion. #792 and drag validation
+remain open. Also unfixed: fully periodic tau=.5005, Smagorinsky C=.1 broadband
+control grows to density peak 1.1e-3, final 6.4e-4; separate bulk limitation.
 
-The design branch is published to the fork. The concise verdict and roadmap
-were [posted on #785](https://github.com/tangency-labs/fieldcraft/issues/785#issuecomment-6627645180)
-with a link to the complete document. No maintainer reply was present at the
-session's final check.
+All local validation passes: normal lbm tests, nine heavy perturbation cases,
+eight controls, memory/checkpoint/parallelism, clippy for both crates, fmt and
+manual simplify review. Shader reflection uses at most eight storage buffers.
+The oracle initially exposed free-surface drift; excluding moving interfaces
+fixed it. Final oracle passes, fixtures and generated report unchanged.
+Final shader rounding fix rechecked on builder: reflection/clippy/fmt pass.
 
-## Fresh measurements
+## Compute released / next steps
 
-Original issue Rust reproducers, unchanged except path dependencies pointing at
-this checkout. CPU f64, release, builder pods only; `CARGO_INCREMENTAL=0`, own
-`CARGO_TARGET_DIR=/work/fc-les2-target`. Each command holds its pod's flock.
-Baseline and controls are execution diagnostics, not LES validation.
+GPU released at 22:36 UTC after about 12 minutes. `GPU-DONE` written, `GPU-READY`
+removed, request archived as `GPU-REQUEST.done-820`. Own source/build/results
+cleaned under flock; /work retains 998 MiB Rust cache. No active GPU or builder job.
 
-| Reproduction | Builder | Current develop result |
-|---|---|---|
-| #819, TRT tau=0.518, uniform pressure outlet, 4×1×1 | sc-builder-2 | Guard at step **1480**, exactly as reported; at step 1400 max density departure 0.0394 and max velocity departure 0.117 |
-| #820, TRT tau=0.505, slip sides, seed 1e-6, 16³ | sc-builder-2 | Guard at step **2838**, exactly as reported; inlet density departure 8.9e-4 at step 2500 versus 4.9e-5 beyond x=2 |
-| #819 control: change only to convective outlet | sc-builder-1 | **30,000 steps completed**, largest density/velocity departure **6.11e-15** |
-| #820 control: change only to periodic side faces | sc-builder-2 | **30,000 steps completed**, final density departure **2.4e-14**; largest transient departure 1.3e-6 |
+CI 41926505284 is fully green at 45d3ac69: main gate 13m21s, heavy 20m28s,
+oracle 4m36s, dependencies and review check pass.
+Review response: https://github.com/tangency-labs/fieldcraft/pull/832#issuecomment-6644180092
+Review suggested additional tau cases. Local CPU diagnostic at final head:
+.507 checkerboard final density 1.1e-14 / velocity 2.71e-15 (before guard 12217);
+.518 checkerboard 8.8e-15 / 4.51e-15. Both tails decay. .5005 with Smag C=.1
+fails: final density 1.6e-3 / velocity 1.69e-2, growing tail. Log
+`820-review-tau-sweep.log`. No source changes. PR comment asks jyviko to confirm
+the narrower .505/.507/.518 scope before landing; full original tau sweep is
+unmet. Fully periodic broadband growth proves a bulk limitation, but not that
+all inlet-case growth is bulk-driven. Await owner response.
+Keep all three PRs responsive to review. No code or test jobs remain active. All three PRs verified open, ready and
+green at 22:56 UTC; no new #826/#827 review requests.
+Await jyviko's scope confirmation before landing #832; do not merge ourselves.
+Public design and PR body record green CI and the unresolved acceptance limits. No further GPU use without a fresh lease.
 
-Local reproducer packages: `.agent-files/uniform-outlet/` and
-`.agent-files/inlet-slip/`. Logs: `.agent-files/results/`. These are local-only,
-excluded from commits. No GPU allocation requested yet; no solver ran in the
-workspace pod and sc-builder-3 was not used.
+CPU work only on sc-builder-2 under `/home/agent/work/.sc-builder-2.lock`, via
+`SC_POD=sc-builder-2 SC_WORKTREE=/home/agent/work/fc-les2-820 sc-remote run`.
+Use `CARGO_TARGET_DIR=/work/fc-les2-820-target`, `CARGO_INCREMENTAL=0`,
+`FIELDCRAFT_THREADS=8`. Commit as Christian Svensson <blue@cmd.nu>, ending
+`Part of #N.` Fold fixes into their commit, push topic with force-with-lease.
 
-## Next execution
+Logs and PR bodies: `/tmp/fc-les2-review/`. Final GPU `gpu-820.log` has
+`GPU_820_LEASE_EXIT=0`; initial failure `gpu-820-initial.log`; sphere data in
+`sphere-820/`. CPU logs: `820-production-acceptance2.log`, `820-production-checks.log`,
+`820-remaining-checks.log`, `820-production-final-checks.log`, `820-oracle-final.log`.
+Final shader check: `820-gpu-rounding-checks.log`. Diagnostics stay untracked.
 
-Coordinator instruction (2026-11-04): while awaiting jyviko's replies on #819,
-#820 and #794, keep any further design detail and prototypes local; run any
-prototype computation only on the authorised builders under their locks.
-The public design's inaccessible local-audit reference has been replaced with
-an explicit unpublished-audit note pointing readers to the issue reproductions.
-This documentation correction is the only additional publication authorised
-for this session. Stop after pushing it; no further prototype work was started.
+Rebase hazard if #826 lands first: it uses 20-float pressure records; #832 uses
+16 with inlet residuals at 14/15. Reserve at least 22 words and move residuals
+past the pressure fields; update both shader/native stride and memory accounting.
+Rerun both boundary regressions. Do not mechanically resolve that conflict.
 
-1. Read the maintainer's reply on #785 and the three claim requests above.
-2. After claim eligibility/reply, `/claim` the agreed first issue and wait for
-   the bot's assignment. Branch its fix from latest upstream develop in its own
-   worktree, with its own target directory. Open the topic's draft PR early,
-   with `Closes #N`; do not bundle the design review into a numerical fix.
-3. #819 first: diagnose the boundary mode, preserving non-equilibrium stress
-   and channel accuracy; #820 separately. #794 is an independent protective
-   slice if approved first. The tiny uniform-state control alone does not
-   validate a replacement boundary.
-4. Focused check/tests, one simplify review, fmt and touched-crate clippy; oracle
-   regeneration for solver numerics, features regeneration for command changes.
-   Each working commit uses the specified author and ends `Part of #N.`; fold
-   fixes into their owning commits. Never run the full local gate.
-5. GPU changes require `GPU-REQUEST` and the coordinator's `GPU-READY`, then
-   hardware parity in both layouts. Keep /work below 30 GiB and release with
-   `GPU-DONE`. Any future run recomputes its work caps.
+## Slice 8 proposal (2026-11-05)
 
-No milestone has landed, so ROADMAP.md is not marked complete. No new user
-decision is needed at present; the next dependency is the maintainer's issue
-assignment and design response.
+Local worktree `/home/agent/work/fc-les2-wall`, branch
+`prototype/786-stress-wall`, commit `ae7100016f39f72514a04b27b22a5b68359546ec`,
+base upstream/develop `6b613217`. **Do not push this branch or open a wall-layer
+PR until jyviko agrees on #785.** The public proposal is appended to LES-DESIGN.
 
-Validation of this documentation step: manual simplify/review pass (no
-`/simplify` command/skill installed), `cargo fmt --all`, staged whitespace check,
-and tracked-path check for excluded directories. No production crate changed,
-so no crate clippy, feature/oracle regeneration or full gate was required. The
-two reproduction failures are expected baseline evidence, not passing tests;
-both 30,000-step controls exited successfully. All builder commands finished.
+Prototype: existing Han on-node traction with Musker sampled at an explicit
+physical height, including interpolation. No first-fluid-cell velocity overwrite
+or halfway correction. Physical gradient/viscosity coupling is still a proposal,
+not implemented. New local test `crates/lbm/tests/prototype_wall_layer.rs` compares
+existing Musker, existing Han and matched-height Musker. It checks N10/20/30,
+TRT/RR/MRT/HRR, all axes/both normals, h/delta=.20 plus .25, rest/refusals,
+and actual population momentum including populations in transit at wall nodes.
+
+Results are mechanism evidence, not the original #786 turbulent reproduction:
+periodic 8x8 transverse cells, nominal Re_tau 950, prescribed initial Musker
+profile plus perturbations, Smag C=.08, HRR sigma=.99, lattice velocity scale 200.
+- 32 short cases complete (200 steps). Across 24 matched-height cases, max
+  requested/applied gap 2.442e-15, budget residual 3.169e-14 of momentum,
+  mass drift 8.948e-14.
+- N10 HRR requested/applied: old Musker .964417/5.321940; old Han
+  .758035/.758035; prototype 1.015233/1.015233. Initialization transient,
+  not steady C_f. Original Han already has exact traction; new property is
+  preserving it with independently controlled sampling height/Musker.
+- 48 extended cases (2,000 steps, both flow signs) complete: gap <=1.998e-15,
+  independent budget <=3.706e-14 of momentum /4.227e-9 of applied impulse,
+  mass drift <=2.853e-13. Rest/invalid-height controls pass.
+- Longer TRT reaches final speed .225307 (Mach .390), outside the proposed
+  envelope. HRR N10 mean stress changes from 1.015233 over 200 steps to
+  .910227 over 2,000 steps. **Do not claim a validated wall layer or #786 fixed.**
+- Matched-height h=.25 initial request .995225 shows the interpolation error
+  relative to unit reference stress; the plane is not snapped to a cell.
+
+Checks: manual simplification review; cargo fmt; cargo check --release -p
+fieldcraft-lbm; cargo test --release -p fieldcraft-lbm (183 passed, 27 ignored);
+cargo clippy --release -p fieldcraft-lbm --all-targets -- -D warnings. All pass.
+No oracle/full gate, GPU, or complete turbulent channel acceptance was run for
+this unpublished experiment. No production solver default was changed.
+
+CPU runs used sc-builder-2 under its flock; own target
+`/work/fc-les2-wall-target`, CARGO_INCREMENTAL=0, jobs 4, threads 2. Memory about
+17–18 GB of 28 GiB; disk about 99/118 GiB. No active build/test/GPU job remains.
+Permanent local logs: `/home/agent/work/fc-les2-wall-results/`, also under
+`/tmp/fc-les2-review/`. Names: wall-prototype-{first,long,reversed,crate-tests,
+clippy,check}.log. Initial harness corrections (before final runs): wall_cells
+method name, timestep .1 dx/20 to obey tau>=.5001, report legacy Musker's mass
+and budget violations instead of applying the new on-node invariant to it.
+
+Reproduce on builder, always under its lock:
+
+```sh
+flock /home/agent/work/.sc-builder-2.lock env SC_POD=sc-builder-2 \
+  SC_WORKTREE=/home/agent/work/fc-les2-wall \
+  /home/agent/work/bin/sc-remote run bash -c '
+    export CARGO_TARGET_DIR=/work/fc-les2-wall-target CARGO_INCREMENTAL=0
+    export CARGO_BUILD_JOBS=4 FIELDCRAFT_THREADS=2
+    cargo test --release -p fieldcraft-lbm --test prototype_wall_layer -- --include-ignored --nocapture'
+```
+
+For extended controls add WALL_ONLY=matched-musker WALL_STEPS=2000; add
+WALL_SIGN=-1 for reversed flow. The short matrix uses the defaults (200 steps).
+Proposal posted: https://github.com/tangency-labs/fieldcraft/issues/785#issuecomment-6651971536
+Design pushed on public `les-design`. Await jyviko's direction before any
+wall-layer PR; no reply has arrived at this checkpoint. Full acceptance remains Re_tau 950 then 1000/2000,
+requested/applied <=1%, carried C_f within 5% selected DNS, profile/total-stress
+checks, fixed physical h under refinement, fixed C_s/sigma, both GPU layouts.
+#826/#827/#832 rechecked open, ready, green, with no new human review requests;
+#832's narrower-scope confirmation remains pending. No GPU requested/used.
