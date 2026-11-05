@@ -622,10 +622,11 @@ by snapping h to a lattice row.
 speed reaches 0.225307 (Mach 0.390), outside the proposed .2 envelope. HRR's N=10
 mean requested/applied stress over 2,000 steps is 0.910227, versus 1.015233 over
 200 steps. Exact transfer therefore does not establish stationarity, an accurate
-mean profile, or acceptable C_f. The prototype has not supplied the missing
+mean profile, or acceptable C_f. At this initial-proposal checkpoint, the prototype had not supplied the missing
 wall-gradient/viscosity layer, passed the full turbulent reproduction, tested
-restart/thread determinism for its new option, or run on a GPU. These remain
-work and acceptance gates, not inferred successes.
+restart/thread determinism for its new option, or run on a GPU. These were work
+and acceptance gates, not inferred successes; the local follow-up below records
+subsequent measurements.
 
 ### Validation and release gates
 
@@ -695,3 +696,66 @@ height**, followed by measured wall-gradient/viscosity coupling, as slice 8's
 first implementation scope. Keep halfway treatment, curved walls, heat and
 refinement outside this PR. The channel and GPU gates above remain mandatory.
 Await the maintainer's response on #785 before opening any wall-layer PR.
+
+## Local follow-up — TRT control and channel study (2026-11-05, not published)
+
+The equal-physical-time TRT controls use the same N=20 geometry, molecular
+viscosity, C_s=.08, matching height and physical perturbation. At t=.4,
+lattice-speed settings .1/.08/.04 give physical peak velocities
+44.758/44.705/44.559. The growing disturbance therefore persists as the timestep
+and lattice Mach decrease. Bulk flow changes little; uniform acceleration does
+not explain the peak. At t=1 the unseeded TRT control stays smooth, and the HRR
+control has much smaller fluctuations. Both the original Han boundary and the
+held-bulk TRT control also amplify the seed. These observations do not isolate a
+bulk eigenmode or establish that the resolved fluctuations are physically accurate.
+
+At setting .04 (tau=.5001263), the N=20 TRT case completes t=1, 10,000 steps,
+with every-step maximum lattice speed .102440525, Mach **.177432194**. This remedies
+the bounded control's Mach envelope; it is not a production collision fix or a
+validation of its spatial fluctuations. The original .1 setting placed the
+initial maximum near Mach .19 and left too little room for subsequent peaks.
+
+The full nominal Re_tau 950 channel has now completed on CPU: 63x21x63 nodes,
+physical wall separation 2, periodic lengths 6.3x6.3, N=10, MRT, C_s=.08,
+h=.20 and the original Dean interior-cell-bulk feedback law. Speed setting .065
+(tau=.5001053) completes 209,965 steps, through physical t=70.0035: a 20.0010-unit
+burn-in and **25 complete blocks covering 50.0025 units**. No gradient or physical
+wall-viscosity coupling was added. Requested stress, actual wall-population
+impulse and independent body-minus-population-momentum carry are measured separately.
+
+| Final quantity | Result |
+|---|---:|
+| Requested / applied / carried mean stress | 1.09760621 / 1.09760621 / 1.09760621 |
+| Interior-cell bulk velocity | 19.48778985 |
+| Carried C_f / Dean | .005780313 / .005262521 |
+| Error against Dean | **+9.83925% — fails the 5% target** |
+| Achieved Re_tau from carried stress | 995.2837 |
+| Nominal force 2SE / split-half drift | .2671% / .0422% |
+| Lag-one correlation / largest absolute lag through 8 | .1139 / .3843 |
+| Doubled-block SE change, same first 24 blocks | −9.04% |
+| Maximum independent budget residual / wall impulse | 1.323e-12 |
+| Maximum requested/applied relative gap | 1.221e-15 |
+| Maximum Mach, whole run / averaging window | .214822 / .213109 |
+| Maximum density departure from reference | .007163 |
+
+The force sampling checks support this measured mean; they do not establish
+spatial/model accuracy. Both whole-run and averaging-window Mach exceed .2.
+An approximate mean-wall-law integration across the unresolved wall intervals
+gives bulk velocity 19.11352695 and C_f=.006008899 versus Dean=.005288095
+(**+13.63069%**). This is a quadrature sensitivity, not a separately validated
+bulk definition. Neither convention meets the requested drag target.
+
+The predeclared h=.25 sensitivity pilot, with grid/timestep/collision/C_s fixed,
+completed t=10; its last block gives C_f=.005652059 versus Dean=.005262427
+(+7.40403%), maximum Mach .216166. It is startup-only and was not extended or
+claimed as a pass. The .1-speed/h=.20 pilot also ends at t=10 (+5.3568% in its
+last block, maximum Mach .287418); these short pilots do not establish a
+converged timestep comparison.
+
+Accurate stress transfer alone is insufficient in this measured prototype. The
+proposal already requires the wall-gradient/viscosity study, fixed-height grid
+checks and acceptance gates, so its direction is unchanged. No #785 update,
+wall-layer PR or prototype push was made. Local source is `f96b5fbd`; 184 normal
+LBM tests, clippy, controlled-drive restart and ordered parallel-sampling checks
+pass. Logs, checkpoint snapshots and full-precision block statistics are saved
+locally in `fc-les2-wall-results/2026-11-05-channel/` beside this worktree.
