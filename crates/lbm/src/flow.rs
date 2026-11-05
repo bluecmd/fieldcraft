@@ -138,6 +138,10 @@ use crate::voxel::{Grid, TriangleTree, voxelise};
 use crate::wall::Walls;
 use crate::{Error, Result};
 
+#[cfg(test)]
+#[path = "interpolated_prototype.rs"]
+mod interpolated_prototype;
+
 /// Where a population of a cell next to a wall or box face comes from (every other population
 /// streams from the neighbour at `−c_q`). Public so a device backend can apply the same rules.
 #[derive(Debug, Clone, Copy, PartialEq)]

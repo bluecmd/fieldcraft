@@ -60,6 +60,9 @@
 // Population arrays are indexed by cell and direction counts fixed when they are allocated.
 #![allow(clippy::needless_range_loop)]
 
+#[cfg(test)]
+extern crate self as fieldcraft_lbm;
+
 pub mod backend;
 pub mod bounce;
 pub mod checkpoint;
