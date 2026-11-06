@@ -1,0 +1,5 @@
+{
+  "status": "blocked",
+  "manifest": "manifests/diagnostics/solver-errors-654/cb89c56114b26c8ab1f6eaaccb5d1e46dba86ffd/rtx4090-vulkan-diagnostics-qa.json.json",
+  "error": "gh: HTTP 502\n"
+}
