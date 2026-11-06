@@ -1,5 +1,104 @@
 [
   {
+    "number": 842,
+    "title": "One-click symmetry plane for flow and heat",
+    "body": "## Current behaviour\n\nHalving a symmetric model is possible today: a slip wall for the flow plus an adiabatic face for heat on the fluid\ndomain, and a matching cut for the solids. But it takes several separate settings, and the solid side needs its own\ntreatment.\n\n## What to build\n\nA single **symmetry plane** condition for a fluid domain face that applies, together:\n- zero normal velocity and zero shear (slip) for the flow;\n- zero normal heat flux for the fluid and for any conducting solid cut by the plane;\n- a check that the geometry and inputs are actually symmetric about the plane, with a warning if not.\n\nResults can be mirrored for display, and derived totals (heat rate, flow) can optionally be doubled, clearly labelled.\n\n## Verification\n\n- A symmetric heated channel solved whole and as a half with the symmetry plane: fields and doubled totals agree\n  within a stated tolerance.\n- An asymmetric input triggers the warning.\n\nPart of #697.\n",
+    "state": "open",
+    "updated_at": "2026-11-06T22:51:04Z",
+    "labels": [
+      "enhancement",
+      "area:cfd",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/842"
+  },
+  {
+    "number": 841,
+    "title": "Parameter studies over model inputs with tabulated derived results",
+    "body": "## Current behaviour\n\nComparing designs (fin spacing, inlet velocity, fan choice, heat load) means editing the model and re-solving by hand\nfor each value, then collecting the numbers manually.\n\n## What to build\n\nA **parameter study**:\n- Choose one or more model parameters: a dimension from the geometry or an input such as inlet velocity, power or a\n  material choice.\n- Give a list or range of values. Each point solves in turn, or in parallel where resources allow, with the usual solve\n  caps.\n- Each point records the derived results from #837 (heat rate, pressure drop, outlet temperatures, maximum solid temperature)\n  and the validity and acceptance report.\n- Output is a table and CSV, plus an XY plot of any result against the parameter.\n- A failed or invalid point is shown as such and doesn't stop the study.\n\n## Verification\n\n- A study over the inlet velocity of a heated channel: the recorded heat rate and pressure drop match individual\n  solves.\n- A forced failure at one point is reported and the rest complete.\n\nPart of #697; the fin-spacing comparison in #701 relies on it.\n",
+    "state": "open",
+    "updated_at": "2026-11-06T22:51:03Z",
+    "labels": [
+      "enhancement",
+      "area:solver",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/841"
+  },
+  {
+    "number": 840,
+    "title": "Guided setup for conjugate heat-transfer models",
+    "body": "## Current behaviour\n\nA heat-transfer model with flow and solids is built from several separate commands:\n- fluid domain;\n- fluid material;\n- obstacle bodies and their solid materials;\n- inlets, outlets and walls;\n- heat sources and thermal faces;\n- a fluid step and its settings.\n\nIt's easy to miss a piece, and new users don't know the order.\n\n## What to build\n\nA guided setup that walks through those steps in order, with sensible defaults and a check at the end:\n1. Pick the bodies that are fluid regions and the bodies that are solids.\n2. Assign materials, from the library (#838) or custom.\n3. Mark inlets (velocity or flow rate, temperature), outlets and walls.\n4. Add heat sources (power per body) and thermal faces.\n5. Choose the resolution, with a cell-count and run-time estimate before solving.\n6. Run the model check, then offer to solve.\n\nEvery step is an ordinary command, so a script can do the same thing. The guided setup only sequences them and never\ndoes anything a command can't. It can also start from a saved example, such as the electronics or exchanger samples.\n\n## Verification\n\n- A scripted run of the setup produces the same model as the equivalent command sequence.\n- The final check catches each missing piece: no inlet, no material, unpowered solids, and an over-cap cell count.\n\nPart of #697; supports the tutorials in #701.\n",
+    "state": "open",
+    "updated_at": "2026-11-06T22:51:01Z",
+    "labels": [
+      "enhancement",
+      "area:ui",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/840"
+  },
+  {
+    "number": 839,
+    "title": "Radiation to ambient from solid surfaces",
+    "body": "## Current behaviour\n\nSolid surfaces lose heat only by conduction into the fluid, or through held-temperature and heat-flux faces. In still\nor slow air, radiation from a heat sink or enclosure is often comparable to convection. Leaving it out over-predicts\ntemperatures.\n\n## What to build\n\nA **radiation to ambient** condition on solid surfaces:\n- Inputs: a surface emissivity (0–1) and an ambient radiation temperature.\n- Net flux: q = ε σ (T⁴ − T_amb⁴), applied on exposed solid faces of conducting bodies.\n- The temperature dependence is handled stably (linearised per step or treated implicitly) and works in steady and\n  transient runs.\n- Results report radiated power per face set, and include it in the energy balance (#837).\n- Surface-to-surface view factors are out of scope for this issue and are refused or documented as not modelled.\n\n## Verification\n\n- A lumped body cooling by radiation alone: temperature history against the analytic solution.\n- A plate with combined convection and radiation: steady temperature against a hand calculation.\n- The energy balance includes the radiated power.\n\nPart of #697.\n",
+    "state": "open",
+    "updated_at": "2026-11-06T22:50:59Z",
+    "labels": [
+      "enhancement",
+      "area:solver",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/839"
+  },
+  {
+    "number": 838,
+    "title": "Thermal and fluid material library with temperature-dependent properties",
+    "body": "## Current behaviour\n\nThe material library (#99) covers structural metals. Thermal material properties are listed as coming soon. Heat\ntransfer between flow and solids needs, for every model:\n- the fluid's density, viscosity, conductivity and specific heat;\n- the solid's conductivity, specific heat and density.\n\nUsers currently type these in by hand.\n\n## What to build\n\nLibrary entries with cited sources (handbook or standard reference data, with the citation in the entry and a row in\nthe attribution list where required):\n- **Fluids:** water, air, and a common water/glycol coolant mix. Properties are temperature-dependent over a stated\n  range, as a table or fit, with the valid range enforced or warned about.\n- **Solids:** aluminium alloys (e.g. 6061, 6063), copper, carbon and stainless steel, brass, FR-4 (orthotropic\n  conductivity), borosilicate and silica glass, and a typical thermal interface material.\n\nEntries can be picked with one click in the material dialog and by name in commands. A model saves the values it used,\nso results don't change if the library is updated.\n\n## Verification\n\n- Each entry's values match its cited source at tabulated points.\n- Interpolation inside the range and the warning outside it are tested.\n- A natural-convection oracle case gives the same answer with library air as with hand-entered values.\n\nPart of #697.\n",
+    "state": "open",
+    "updated_at": "2026-11-06T22:50:49Z",
+    "labels": [
+      "enhancement",
+      "area:solver",
+      "area:cfd",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/838"
+  },
+  {
+    "number": 837,
+    "title": "Derived heat-exchanger results: heat rate, face averages, pressure drop, duty and energy balance",
+    "body": "## Current behaviour\n\nFluid results can be shown as slices, streamlines and signed wall heat per area, but there are no commands for the\nnumbers a heat-exchanger study reports. The exchanger tutorials in #701 assume them.\n\n## What to build\n\nRead-only results commands, available from the GUI, CLI, scripts and the control channel:\n- **Heat rate** through a named face set or surface (W), split into conduction and advection where meaningful.\n- **Face averages** at a named face: area-averaged and mass-flow-weighted temperature, and area-averaged pressure and\n  velocity.\n- **Mass and volume flow** through a face.\n- **Pressure drop** between two named faces.\n- **Exchanger summary:** for a hot and a cold stream, the heat duty, both inlet and outlet temperatures, effectiveness\n  and log-mean temperature difference.\n- **Energy balance:** heat in through inlets, faces and sources against heat out, plus storage, with the residual as a\n  fraction. This shows whether a result is converged and closed.\n\nResults come as a table and CSV, with units, and say which time window they average over for unsteady runs. They are\nreported as measurements, not validation.\n\n## Verification\n\n- A heated channel with analytic heat input: the energy balance closes to the stated tolerance, and outlet mean\n  temperature matches the energy balance.\n- Poiseuille flow: the pressure drop matches the analytic value.\n- Synthetic fields with known integrals.\n\nPart of #697; used by #701.\n",
+    "state": "open",
+    "updated_at": "2026-11-06T22:50:47Z",
+    "labels": [
+      "enhancement",
+      "area:cfd",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/837"
+  },
+  {
+    "number": 836,
+    "title": "Thin conducting walls and internal baffles between fluid regions",
+    "body": "## Current behaviour\n\nA conducting wall between two fluid regions has to be a voxelised solid, so its thickness has to be resolved by\nlattice cells. Real heat-exchanger walls (tube walls, plate fins, separator sheets) are 0.1–1 mm thick, while the\npassages either side are millimetres to centimetres wide. Resolving the wall sets the cell size for the whole domain.\nFor the coupled air/coolant exchanger in #700, that makes the run far more expensive than the flow needs.\n\n## What to build\n\nA **thin wall** (baffle): a zero-thickness sheet defined on a face set or surface, placed inside a fluid domain.\n- **Flow:** it acts as a no-slip (or slip) wall on both sides, separating the passages either side. Fluid can't cross\n  it.\n- **Heat:** it conducts through its thickness with a user-given thickness and conductivity (or a conductance per area,\n  W/m²K), plus optional in-plane conduction along the sheet.\n- **Results:** temperature and heat flux are reported separately on each side, so the side-to-side difference is\n  visible.\n- **Coupling:** it works with the existing conducting solids, component power and thermal contact resistance (#677),\n  and on both the CPU and GPU paths, or refuses clearly where unsupported.\n\n## Verification\n\n- A plane wall between two counter-flowing channels: overall heat-transfer coefficient and outlet temperatures against\n  the analytic two-stream solution.\n- The same wall resolved as a voxelised solid at high resolution, matched within a stated tolerance.\n- Zero conductance must give zero heat crossing the wall to round-off.\n\nPart of the heat-exchanger workflow in #697; needed for #700.\n",
+    "state": "open",
+    "updated_at": "2026-11-06T22:50:46Z",
+    "labels": [
+      "enhancement",
+      "area:cfd",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/836"
+  },
+  {
     "number": 835,
     "title": "[Feature Request] Modern, workflow-first UI/UX inspired by SimScale",
     "body": "### Current behaviour\n\nFieldCraft is an incredibly promising project, and I genuinely appreciate the ambition to create a fully open-source, local-first engineering simulation platform.\n\nHowever, in my opinion, its current interface still follows many of the traditional design conventions found throughout engineering simulation software.\n\nThis isn't exclusively an open-source problem. Even expensive, industry-standard CAE applications often rely on dated interface conventions, dense toolbars, deeply nested menus, and workflows that feel unnecessarily complicated by modern software design standards.\n\nI recognize that FieldCraft has already received substantial UI/UX improvements, including those introduced in v0.6. My suggestion concerns the broader visual design philosophy and overall user experience, rather than any single missing feature or usability bug.\n\nOne example of a different approach is SimScale, which demonstrates how sophisticated engineering software can be presented through a cleaner, more modern, and visually coherent interface.\n\n### What you need and why\n\nI'd love to see FieldCraft explore a more ambitious, workflow-oriented UI/UX direction, taking inspiration from modern simulation platforms such as [[SimScale](https://www.simscale.com/)](https://www.simscale.com/).\n\nAs an aerospace engineering student, I believe that an intuitive, visually polished simulation environment can significantly improve both accessibility and productivity.\n\nWhat makes SimScale particularly appealing to me isn't simply its appearance. It's the way the interface organizes complex engineering tasks into understandable workflows, maintains a clear visual hierarchy, and makes advanced functionality approachable without sacrificing technical depth.\n\nI believe FieldCraft has an opportunity to go beyond matching the capabilities or interfaces of existing commercial software. It could help establish a new standard for how engineering simulation applications should look, feel, and function.\n\nA genuinely modern multiphysics application could appeal not only to students and hobbyists but also to professional engineers who are accustomed to powerful software with outdated user experiences.\n\nSince FieldCraft is still relatively early in its development, I think this could be an excellent opportunity to explore a more distinctive design direction.\n\nI completely understand that the maintainers may have different priorities or a different vision for the project. I'm proposing this as a long-term design discussion, not an expectation or demand for an immediate redesign.\n\n### Expected behaviour\n\nRather than simply refreshing icons or changing colors, I'd love to see FieldCraft explore a more comprehensive, workflow-first user interface.\n\nSome ideas worth considering:\n\n**1. Modern visual design**\n- A clean, cohesive design language with consistent typography, spacing, and visual hierarchy.\n- Carefully designed light and dark themes.\n- Less visual clutter, with greater emphasis on simulation geometry and results.\n- Contextual controls that appear when relevant rather than displaying every available operation simultaneously.\n- Modern, responsive panels and dialogs.\n\n**2. Guided simulation workflows**\n- An intuitive process for creating a simulation, selecting physics, assigning materials, generating meshes, configuring boundary conditions, solving, and reviewing results.\n- Clear visual indicators showing which setup stages are complete, incomplete, or contain errors.\n- Progressive disclosure of advanced settings so beginners aren't immediately overwhelmed.\n- Sensible defaults, while preserving access to advanced controls.\n\n**3. More interactive 3D visualization**\n- A large, central viewport that remains the focus of the application.\n- Direct interaction with geometry, faces, boundaries, materials, and loads.\n- Context-sensitive property panels linked to selections in the viewport.\n- Smooth transitions between geometry, mesh, and simulation results.\n- Clear, polished visualization of stress, deformation, pressure, temperature, and other physical quantities.\n\n**4. Unified simulation management**\n- A visually organized project dashboard.\n- Easy comparison between different simulations and configurations.\n- Clear simulation progress, convergence monitoring, and solver diagnostics.\n- Convenient access to previous results without navigating through numerous technical menus.\n\n**Closing thoughts**\n\nI'm not suggesting that FieldCraft should copy SimScale's proprietary interface. Rather, I think SimScale provides an excellent example of the level of visual polish, accessibility, and workflow clarity that modern engineering applications can achieve.\n\nIt would be great to see FieldCraft explore its own distinctive interpretation of these principles.\n\nEven a design exploration, community discussion, or a few alternative UI mockups could be valuable.\n\n**Would the maintainers be open to considering a more substantial UI/UX redesign inspired by modern simulation platforms as a longer-term goal?**\n\nThank you for your work on FieldCraft and for making such an ambitious project open source!\n\n### Pictures\n\n_No response_\n\n### References\n\n[FieldCraft's existing roadmap](https://github.com/tangency-labs/fieldcraft/blob/develop/ROADMAP.md?utm_source=chatgpt.com) — acknowledgement of current UI/UX development.",
