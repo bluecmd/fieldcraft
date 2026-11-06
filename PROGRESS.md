@@ -1,4 +1,4 @@
-# LES progress — 2026-11-05
+# LES progress — 2026-11-06
 
 Verdict: retain the LBM core; repair boundaries and validity, then selected
 architecture changes. The public les-design branch has the slice 8 proposal and
@@ -7,15 +7,31 @@ Never merge these PRs ourselves. No wall-layer PR/push until jyviko agrees on #7
 
 ## Existing PRs
 
-All open, ready, green; no new inline reviews at 09:13 UTC; unchanged PR heads and no wall-proposal
-reply at the subsequent 09:24 recheck.
+#826 received CHANGES_REQUESTED at 21:15Z; the sole citation move is now pushed
+at `f9f37d006959dd3c318f241a8a0ab95628adcd11`, awaiting renewed review and CI.
+#827 is APPROVED at its unchanged head. **Do not push to #827 before merge.**
+#832 remains open/ready; its existing scope question is still recorded below.
 
-- **#826 / #819**, head `3c268c4c`: original failure at step 1480 now survives
+- **#826 / #819**, head `f9f37d00`: original failure at step 1480 now survives
   30,000 steps at roundoff. CPU 192-case max departure 2.45e-14; GB10 both
-  layouts, 64 cases at 30k, max 2.98e-7. Controls/oracle pass. Reviews resolved.
+  layouts, 64 cases at 30k, max 2.98e-7. Controls/oracle pass at the prior reviewed head. Citation moved from meshing
+  literature to solver literature Part C, C3.3a beside Zou–He. Folded into the
+  original commit and rebased onto current upstream/develop `6b613217`; solver
+  and test sources are identical to prior head `3c268c4c`. `cargo fmt --all
+  --check` passed on sc-builder-2 under its flock; diff checks passed. No solver
+  reruns for this documentation-only review correction. New CI is running.
+  Reply: https://github.com/tangency-labs/fieldcraft/pull/826#issuecomment-6696013537
+  Release-note acknowledgement: all existing uniform-pressure-outlet models
+  change numerically; TRT outlet-adjacent error .047% → .057%, RR 3.2% → .23%;
+  oracle unchanged.
 - **#827 / #794**, head `78c79791`: rejects unstable halfway wall before backend
   allocation/callbacks. Historical sweep: 40 on-node cases decay, 40 halfway
-  cases grow. Focused tests, oracle and final GB10 controls pass.
+  cases grow. Focused tests, oracle and final GB10 controls pass. Approved by jyviko;
+  no push or branch change made in this review turn.
+  Reply: https://github.com/tangency-labs/fieldcraft/pull/827#issuecomment-6695993104
+  **After merge, separate follow-up PR:** describe current behaviour in the
+  user-facing error/manual without history or issue numbers, and remove the
+  `FIELDCRAFT_HAN_WALL=halfway` option instead of documenting it.
 - **#832 / #820**, head `45d3ac6994529e56c114e3f12e791e1dc35660f1`, worktree
   fc-les2-820 / branch fix/820-inlet-slip. TRT inlet stress-trace extrapolation
   and fourth-order filtering of density residual. Original guard at 2838 now
@@ -100,7 +116,8 @@ Builder checkpoints remain in `/work/fc-les2-wall-channel-mrt065` and its `-h25`
 variant. Own target `/work/fc-les2-wall-target`. Reproduce/resume under the flock
 using the exact settings and checkpoint signature documented in RESULTS.md.
 
-Await jyviko's wall direction and #832 scope reply; keep all three PRs responsive.
+Await #826 re-review/CI, #827 merge before its separate follow-up, jyviko's wall
+direction and #832 scope reply; keep all three PRs responsive.
 The local evidence leaves the proposal unchanged, so no #785 comment was posted.
 Next wall work remains gradient/viscosity coupling and fixed-height refinement,
 with full drag/profile/Mach and eventual real-GPU acceptance still required.
