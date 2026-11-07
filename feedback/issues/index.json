@@ -1,5 +1,18 @@
 [
   {
+    "number": 848,
+    "title": "ARM Version",
+    "body": "### Current behaviour\n\nIn the release section, there is no ARM version available to download.\n\n### What you need and why\n\nI would like to request an ARM version for Linux if possible. If possible a Flatpak version as well will be great.\nThank you in advance.\n\n### Expected behaviour\n\n_No response_\n\n### Pictures\n\n_No response_\n\n### References\n\n_No response_",
+    "state": "open",
+    "updated_at": "2026-11-07T12:41:58Z",
+    "labels": [
+      "enhancement",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/848"
+  },
+  {
     "number": 842,
     "title": "One-click symmetry plane for flow and heat",
     "body": "## Current behaviour\n\nHalving a symmetric model is possible today: a slip wall for the flow plus an adiabatic face for heat on the fluid\ndomain, and a matching cut for the solids. But it takes several separate settings, and the solid side needs its own\ntreatment.\n\n## What to build\n\nA single **symmetry plane** condition for a fluid domain face that applies, together:\n- zero normal velocity and zero shear (slip) for the flow;\n- zero normal heat flux for the fluid and for any conducting solid cut by the plane;\n- a check that the geometry and inputs are actually symmetric about the plane, with a warning if not.\n\nResults can be mirrored for display, and derived totals (heat rate, flow) can optionally be doubled, clearly labelled.\n\n## Verification\n\n- A symmetric heated channel solved whole and as a half with the symmetry plane: fields and doubled totals agree\n  within a stated tolerance.\n- An asymmetric input triggers the warning.\n\nPart of #697.\n",
