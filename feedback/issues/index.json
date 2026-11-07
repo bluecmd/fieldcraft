@@ -860,7 +860,7 @@
     "title": "Node relax amplifies a 1-ulp input change into node moves of up to 2 mm",
     "body": "### Observed failure\nNode relaxation turns a 1-ulp change in its input mesh into node movements of up to about 2 mm. Its output is not a continuous function of its input.\n\n### Reproduction (on develop 93eff2ef)\n1. Open the drop-test sample and generate its mesh.\n2. Perturb every node coordinate by 1 ulp (for example, mm → m → mm, which is inexact for 6–18 % of mesher-computed coordinates).\n3. Run the same guarded `mesh.node.relax` on both meshes and compare.\n\n1644 nodes differ by up to 0.735 mm. On the other samples, guarded relax moves 90–99 % of nodes by 0.18–1.87 mm (crank 1.87, ibeam 1.26, heated-bracket 0.8, rubber-seal 0.26), and strong relax moves them by up to 1.09 mm (crank). Each run is deterministic; only the 1-ulp input changes.\n\n### Expected behaviour\nA relaxation whose result is stable under round-off: a 1-ulp input change moves nodes by round-off, not by tenths of a millimetre. The likely causes are discrete decisions taken on near-ties (guards, accept/reject tests, ordering by quality) or an iteration that stops on a threshold. Both turn round-off into a different path.\n\n### Why it matters\nWith SI storage (#603), every mesher sees the mm image of stored metres. Relaxing a model again, or replaying a 0.7 journal that relaxes, can therefore give a mesh up to about 2 mm away from 0.7's. Stored models are unaffected. The same sensitivity also means a relaxed mesh depends on details as small as the order of operations.\n\nFound while reviewing #603.\n",
     "state": "open",
-    "updated_at": "2026-10-25T17:26:35Z",
+    "updated_at": "2026-11-07T19:42:23Z",
     "labels": [
       "bug",
       "area:mesh",
