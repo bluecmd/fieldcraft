@@ -4,6 +4,7 @@
   "agent": "windows-dxc-agent",
   "branch": "docs/modelling-skill-481",
   "issue": 481,
-  "status": "granted",
-  "updated_at": "2026-10-24T01:30:25.192Z"
+  "status": "suspended",
+  "updated_at": "2026-11-07T12:00:32.180Z",
+  "error": "GitHub assignment changed. Stop and coordinate; explicitly update the claim request only after reconciliation."
 }
