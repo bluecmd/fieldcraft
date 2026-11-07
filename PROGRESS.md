@@ -1,4 +1,4 @@
-# LES progress — 2026-11-06
+# LES progress — 2026-11-07
 
 Verdict: retain the LBM core; repair boundaries and validity, then selected
 architecture changes. The public les-design branch has the slice 8 proposal and
@@ -9,7 +9,7 @@ Never merge these PRs ourselves. No wall-layer PR/push until jyviko agrees on #7
 
 #826 received CHANGES_REQUESTED at 21:15Z; the sole citation move is now pushed
 at `f9f37d006959dd3c318f241a8a0ab95628adcd11`, awaiting renewed review and CI.
-#827 is APPROVED at its unchanged head. **Do not push to #827 before merge.**
+#827 merged as `e97089d0`; #794 is closed. Its separate follow-up is open and ready as #843.
 #832 remains open/ready; its existing scope question is still recorded below.
 
 - **#826 / #819**, head `f9f37d00`: original failure at step 1480 now survives
@@ -26,12 +26,11 @@ at `f9f37d006959dd3c318f241a8a0ab95628adcd11`, awaiting renewed review and CI.
   oracle unchanged.
 - **#827 / #794**, head `78c79791`: rejects unstable halfway wall before backend
   allocation/callbacks. Historical sweep: 40 on-node cases decay, 40 halfway
-  cases grow. Focused tests, oracle and final GB10 controls pass. Approved by jyviko;
-  no push or branch change made in this review turn.
+  cases grow. Focused tests, oracle and final GB10 controls pass. Approved by jyviko and
+  merged into develop as `e97089d0`; #794 closed.
   Reply: https://github.com/tangency-labs/fieldcraft/pull/827#issuecomment-6695993104
-  **After merge, separate follow-up PR:** describe current behaviour in the
-  user-facing error/manual without history or issue numbers, and remove the
-  `FIELDCRAFT_HAN_WALL=halfway` option instead of documenting it.
+  Follow-up **#843** is open and ready: current-behaviour error/manual text and
+  removal of the `FIELDCRAFT_HAN_WALL=halfway` selector. See details below.
 - **#832 / #820**, head `45d3ac6994529e56c114e3f12e791e1dc35660f1`, worktree
   fc-les2-820 / branch fix/820-inlet-slip. TRT inlet stress-trace extrapolation
   and fourth-order filtering of density residual. Original guard at 2838 now
@@ -116,8 +115,40 @@ Builder checkpoints remain in `/work/fc-les2-wall-channel-mrt065` and its `-h25`
 variant. Own target `/work/fc-les2-wall-target`. Reproduce/resume under the flock
 using the exact settings and checkpoint signature documented in RESULTS.md.
 
-Await #826 re-review/CI, #827 merge before its separate follow-up, jyviko's wall
-direction and #832 scope reply; keep all three PRs responsive.
+Await #826 re-review, #843 CI/review, jyviko's wall direction and #832 scope reply;
+keep these PRs responsive.
 The local evidence leaves the proposal unchanged, so no #785 comment was posted.
 Next wall work remains gradient/viscosity coupling and fixed-height refinement,
 with full drag/profile/Mach and eventual real-GPU acceptance still required.
+
+## #827 follow-up: PR #843 ready (2026-11-07)
+
+https://github.com/tangency-labs/fieldcraft/pull/843
+One commit `b4a3624ac2765fc1658fbbb2e4cc49d160d5482f`, four files, based on
+latest upstream/develop `e97089d0` (verified before publishing).
+Worktree `/home/agent/work/fc-les2-794-followup`, branch `fix/794-wall-followup`.
+The PR references #794 and jyviko's exact approval review on #827.
+
+Error/manual wording describes current refusal without #794 or change history.
+The Han study environment selector is removed; WFB geometry, model choice and
+result metadata always use on-node. Serialized halfway models remain readable
+and refused; separate diagnostic cases remain intact. No numerical boundary or
+GPU-kernel changes. No GPU requested or run.
+
+All checks passed on sc-builder-2 under its flock, separate lock per check:
+- Formatting and all-target compilation for lbm and lbm-gpu.
+- Normal LBM tests: 183 passed, 26 heavy ignored, including the setup/backend/
+  checkpoint refusal test.
+- Two selected CPU-only Han analysis tests passed; the matching heavy GPU test
+  remained ignored. The GPU verification executable compiled successfully.
+- All-target clippy for both touched crates with -D warnings.
+- Manual simplification review, diff checks, and source searches confirming the
+  selector is gone and the affected user-facing text has no issue/change history.
+
+PR opened directly ready (`draft=false`), jyviko requested by repository policy.
+CI started: run `42325044162`; plan/dependency checks pending at publication,
+bot tests passed. No local build or lock remains active. Own target retained:
+`/work/fc-les2-794-target`, incremental off, four build/test threads.
+Permanent logs and PR body: `/home/agent/work/fc-les2-794-followup-results/`.
+GitHub connector writes returned integration-permission403; configured gh account
+successfully created the ready PR. No merge performed.
