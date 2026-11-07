@@ -3,13 +3,10 @@
   "title": "[Feature Request] Animations should update contour colours across steps",
   "body": "### Current behaviour\n\nAs in title, the existing animation features show changes in deflection but not changes in the contours (stress, etc) across an animation.\n\n\n\n### What you need and why\n\nMy use case for animations is to see how stress \"flows\" through a mechanical part from load = 0 to load = full when the part is complex. In other words, I see how the stress contours in a part vary from the beginning to the end of an animation.\n\n\nAs it currently stands, this is impossible as the stress (or other contours) do not change through an animation.\n\n### Expected behaviour\n\nExample:\nhttps://www.youtube.com/watch?v=HVevfRa9yjQ\n\n### Pictures\n\nNote how contours do not change, implying that stress is constant throughout an animation (of course not true).\nhttps://github.com/user-attachments/assets/37171de5-f926-4380-9285-974deecba46f\n\n### References\n\nN/A",
   "state": "open",
-  "updated_at": "2026-10-23T20:15:11Z",
-  "assignees": [
-    "bluecmd"
-  ],
+  "updated_at": "2026-11-07T11:45:26Z",
+  "assignees": [],
   "labels": [
     "enhancement",
-    "claimed",
     "needs-triage"
   ],
   "url": "https://github.com/tangency-labs/fieldcraft/issues/693",
@@ -20,6 +17,13 @@
       "created_at": "2026-10-23T20:15:11Z",
       "updated_at": "2026-10-23T20:15:11Z",
       "url": "https://github.com/tangency-labs/fieldcraft/issues/693#issuecomment-6373853189"
+    },
+    {
+      "author": "github-actions[bot]",
+      "body": "No pull request showed up within 14 days, so this one is free again. Anyone can `/claim` it.",
+      "created_at": "2026-11-07T11:45:26Z",
+      "updated_at": "2026-11-07T11:45:26Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/issues/693#issuecomment-6706515700"
     }
   ]
 }
