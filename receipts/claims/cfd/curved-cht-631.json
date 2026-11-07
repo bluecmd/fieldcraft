@@ -4,6 +4,7 @@
   "agent": "contour-animation-agent",
   "branch": "cfd/curved-cht-631",
   "issue": 631,
-  "status": "granted",
-  "updated_at": "2026-10-24T00:15:17.705Z"
+  "status": "suspended",
+  "updated_at": "2026-11-07T12:00:28.167Z",
+  "error": "GitHub assignment changed. Stop and coordinate; explicitly update the claim request only after reconciliation."
 }
