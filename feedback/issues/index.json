@@ -152,20 +152,6 @@
     "url": "https://github.com/tangency-labs/fieldcraft/issues/824"
   },
   {
-    "number": 822,
-    "title": "solve.probe on a transient heat step returns the end-of-step heat_flux for every frame",
-    "body": "### Observed failure\n\n`solve.probe` (MCP `probe`) on a transient `heat_transfer` step returns the same `heat_flux` for every `frame`, while `temperature` and `time` change. The values are the end of the step's, but nothing says so, and they sit next to that frame's time.\n\nFrom the steps below, node 160:\n\n| frame | time (s) | temperature (°C) | heat_flux x (mW/mm²) |\n|---|---|---|---|\n| 1 | 1.0 | 0.000417 | -11.616691837556216 |\n| 5 | 5.0 | 0.118718 | -11.616691837556216 |\n| 10 | 10.0 | 1.371334 | -11.616691837556216 |\n\nAt frame 1 the node is still at about 0 °C and the flux reported is the one it reaches 9 s later. `reaction` comes from the same end-of-step data, so it should have the same problem, though it reads 0 at this free node.\n\n### Reproduction\n\nOn a headless session (`fieldcraft-cli mcp`), `execute` these in order:\n\n```\nfile.sample {\"name\": \"cantilever\"}\nmodel.material.edit {\"name\": \"Steel\", \"elastic\": {\"type\": \"isotropic\", \"young\": 210000, \"poisson\": 0.3}, \"density\": 7.85e-9, \"thermal\": {\"conductivity\": 50, \"specific_heat\": 5e8, \"expansion\": 1e-5}}\nmodel.boundary_condition.create {\"name\": \"cold\", \"type\": \"temperature\", \"target\": {\"set\": \"root\"}, \"value\": 0}\nmodel.boundary_condition.create {\"name\": \"hot\", \"type\": \"temperature\", \"target\": {\"set\": \"tip\"}, \"value\": 100}\nmodel.step.create {\"name\": \"Warm\", \"procedure\": {\"type\": \"heat_transfer\", \"transient\": {\"end_time\": 10, \"increment\": 1, \"initial_temperature\": 0}}, \"boundary_conditions\": [\"cold\", \"hot\"]}\nsolve.heat {\"step\": \"Warm\"}\nsolve.probe {\"step\": \"Warm\", \"nodes\": [160], \"frame\": 1}\nsolve.probe {\"step\": \"Warm\", \"nodes\": [160], \"frame\": 5}\nsolve.probe {\"step\": \"Warm\", \"nodes\": [160], \"frame\": 10}\n```\n\n### Expected behaviour\n\nA probe at frame k should only report values that belong to frame k: either that frame's flux, or no `heat_flux` and `reaction` at all for earlier frames. The VTU export already does the second: it writes `heat_flux` only on the last frame.\n\n### Investigation\n\n`HeatResult` keeps `flux`, `elements`, `reaction` and `loads` for the end of the step only, as its comments say (`crates/solver/src/heat.rs`). `probe_implicit` in `crates/engine/src/cmd/solve.rs` picks the temperature and time with `heat_frame`, then reads `r.flux.get(i)` and `r.reaction.get(i)` whichever frame was asked for. The VTU writer guards the same field with `k + 1 == h.frames.len()` (`crates/engine/src/cmd/results.rs`).\n\nThe existing test `solve_heat_and_probe_temperatures` probes a transient step at frame 1 but only checks `time`, so it doesn't catch this.\n\nA small fix would leave `heat_flux` and `reaction` out of the probe for any frame but the last, and say so in the command's parameter text, with a regression test. Storing or recomputing flux per frame is the fuller fix if you'd rather have that. I'm happy to send a PR for either once you say which.\n\nFound while comparing a separate thermal model against FieldCraft's transient heat solve; temperatures were what I compared, and they aren't affected.\n\n### Version and platform\n\nReproduced with fieldcraft-cli 0.7.0 from develop at cb976117 on Windows 11. `solve.rs` is unchanged between that commit and 18d3c21d, the current develop.\n",
-    "state": "open",
-    "updated_at": "2026-11-03T23:12:10Z",
-    "labels": [
-      "bug",
-      "area:solver",
-      "needs-triage"
-    ],
-    "assignees": [],
-    "url": "https://github.com/tangency-labs/fieldcraft/issues/822"
-  },
-  {
     "number": 821,
     "title": "Add open-source solvers",
     "body": "### Current behaviour\n\nThe gpu based fieldcraft solver is fantastic. \nAdding the ability to use open-source solvers like Elmer calculix open foam open courant etc. Would help verify that other studies are correct. \n\n### What you need and why\n\nSet up mesh constraints and loads as typical. \n\nPick solver, translate mesh into what's required for solver \n\nRun study\n\n### Expected behaviour\n\n_No response_\n\n### Pictures\n\n_No response_\n\n### References\n\n_No response_",
@@ -463,19 +449,6 @@
     ],
     "assignees": [],
     "url": "https://github.com/tangency-labs/fieldcraft/issues/777"
-  },
-  {
-    "number": 775,
-    "title": "solver: contact gap normalisation counts uncontacted secondary faces",
-    "body": "### Current behaviour\n\nImplicit mortar contact normalises each secondary node's weighted gap by its reference area A_A = ∫ Φ_A over **all** of its secondary faces (`Interface::new` in `crates/solver/src/contact.rs`, the `own` integral per face). When the secondary set also holds faces that never touch the main surface (a block's sides, as in the #203 corner case), A_A grows by those faces' share, so ĝ_A = g̃_A / A_A is smaller at the nodes on them and those nodes are penalised less than the others.\n\nSeen while reviewing #731: a hex20 cube pressed flat on a hex8 one (secondary = all six faces, uniform compression, lateral translations held) reports 9.93 at the bottom corners and 10.12 at the bottom mid-side nodes, against 9.998 everywhere when the secondary set is only the bottom face. Hex8 is uniform because its four bottom nodes all gain the same side-face share. The total force is right; the per-node closure differs within the augmentation's gap tolerance.\n\n### Expected behaviour\n\nA node's gap normalisation (and penalty) should not depend on secondary faces that carry no contact, e.g. A_A taken over the faces that pair with the main surface, or the overlaps' support. Regression: the case above with `uncontacted_corner_faces_do_not_tilt_reported_pressure` (`crates/solver/tests/contact.rs`) tightened from 3 % to round-off for hex20.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
-    "state": "open",
-    "updated_at": "2026-10-30T16:57:26Z",
-    "labels": [
-      "area:solver",
-      "needs-triage"
-    ],
-    "assignees": [],
-    "url": "https://github.com/tangency-labs/fieldcraft/issues/775"
   },
   {
     "number": 751,
