@@ -4,6 +4,7 @@
   "agent": "contour-animation-agent",
   "branch": "diagnostics/solver-errors-654",
   "issue": 654,
-  "status": "granted",
-  "updated_at": "2026-10-24T00:45:22.070Z"
+  "status": "suspended",
+  "updated_at": "2026-11-07T12:00:30.129Z",
+  "error": "GitHub assignment changed. Stop and coordinate; explicitly update the claim request only after reconciliation."
 }
