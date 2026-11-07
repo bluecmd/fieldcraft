@@ -3,13 +3,10 @@
   "title": "Agent skill: fieldcraft-modelling",
   "body": "skills/fieldcraft-modelling/SKILL.md: units, materials and sources, element family per physics, loads and supports that avoid singularities, symmetry BCs, contact choices, step types, checking results against hand calculations. Public sources only, concepts only.\n\nPart of #235.",
   "state": "open",
-  "updated_at": "2026-10-24T01:30:24Z",
-  "assignees": [
-    "bluecmd"
-  ],
+  "updated_at": "2026-11-07T11:45:35Z",
+  "assignees": [],
   "labels": [
     "enhancement",
-    "claimed",
     "area:docs"
   ],
   "url": "https://github.com/tangency-labs/fieldcraft/issues/481",
@@ -20,6 +17,13 @@
       "created_at": "2026-10-24T01:30:24Z",
       "updated_at": "2026-10-24T01:30:24Z",
       "url": "https://github.com/tangency-labs/fieldcraft/issues/481#issuecomment-6378188881"
+    },
+    {
+      "author": "github-actions[bot]",
+      "body": "No pull request showed up within 14 days, so this one is free again. Anyone can `/claim` it.",
+      "created_at": "2026-11-07T11:45:35Z",
+      "updated_at": "2026-11-07T11:45:35Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/issues/481#issuecomment-6706517483"
     }
   ]
 }
