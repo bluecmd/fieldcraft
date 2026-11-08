@@ -171,3 +171,17 @@ Linked the public design and offered the unpublished prototype branch
 `prototype/786-stress-wall` once the direction is agreed; no prototype or local
 experimental documentation was published. Verified the fork has no such remote
 prototype branch. No solver changes, builds, GPU use or PR changes this turn.
+
+## #785 SA wall-law ownership (2026-11-08)
+
+Read dudedagger42's four-term C_f breakdown and confirmed their extension branch:
+https://github.com/dudedagger42/fieldcraft/tree/hybrid/wall
+Posted one short reply:
+https://github.com/tangency-labs/fieldcraft/issues/785#issuecomment-6716668844
+
+An SA-consistent tabulated law belongs on their RANS side, selected only for SA,
+through the shared u+(y+) wall-law interface evaluated at physical matching
+height h (y+ = h u_tau / nu). Per the latest direction, slice 8 stays
+model-agnostic with Spalding as default and retains matching-height and
+first-interval flux work. Earlier Musker prototype studies remain experiments.
+No implementation, compute, PR changes or prototype publication this turn.
