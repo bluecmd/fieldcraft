@@ -152,3 +152,22 @@ bot tests passed. No local build or lock remains active. Own target retained:
 Permanent logs and PR body: `/home/agent/work/fc-les2-794-followup-results/`.
 GitHub connector writes returned integration-permission403; configured gh account
 successfully created the ready PR. No merge performed.
+
+## #785 extension coordination (2026-11-08)
+
+Read dudedagger42's RANS SA channel measurements and extension request, and
+checked the slice 8 design. Posted one reply:
+https://github.com/tangency-labs/fieldcraft/issues/785#issuecomment-6716146717
+
+Clarified slice 8's first scope: stationary planar periodic channel walls,
+on-node traction, physical matching height, then gradient/viscosity coupling
+and independent momentum/channel/GPU gates. Obstacles and wall–inlet/outlet
+junctions are outside that scope and have not been started here. Welcomed their
+separate spalding_bounce extension branch; keep core wall-layer work in slice 8
+and coordinate obstacle geometry/link ownership with #798 and junction changes
+with #819/#820. Slice 8 still awaits jyviko's direction.
+
+Linked the public design and offered the unpublished prototype branch
+`prototype/786-stress-wall` once the direction is agreed; no prototype or local
+experimental documentation was published. Verified the fork has no such remote
+prototype branch. No solver changes, builds, GPU use or PR changes this turn.
