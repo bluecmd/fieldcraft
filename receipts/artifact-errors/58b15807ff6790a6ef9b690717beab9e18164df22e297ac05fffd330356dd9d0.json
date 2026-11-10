@@ -1,0 +1,5 @@
+{
+  "status": "blocked",
+  "manifest": "manifests/gpu-fan-porous/fd7a78d3dde46e66149c61a84727f7a09ca86e55/windows-4090-fan-save-reopen-qa.json.json",
+  "error": "gh: HTTP 502\n"
+}
