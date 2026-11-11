@@ -81,20 +81,6 @@
     "url": "https://github.com/tangency-labs/fieldcraft/issues/840"
   },
   {
-    "number": 839,
-    "title": "Radiation to ambient from solid surfaces",
-    "body": "## Current behaviour\n\nSolid surfaces lose heat only by conduction into the fluid, or through held-temperature and heat-flux faces. In still\nor slow air, radiation from a heat sink or enclosure is often comparable to convection. Leaving it out over-predicts\ntemperatures.\n\n## What to build\n\nA **radiation to ambient** condition on solid surfaces:\n- Inputs: a surface emissivity (0–1) and an ambient radiation temperature.\n- Net flux: q = ε σ (T⁴ − T_amb⁴), applied on exposed solid faces of conducting bodies.\n- The temperature dependence is handled stably (linearised per step or treated implicitly) and works in steady and\n  transient runs.\n- Results report radiated power per face set, and include it in the energy balance (#837).\n- Surface-to-surface view factors are out of scope for this issue and are refused or documented as not modelled.\n\n## Verification\n\n- A lumped body cooling by radiation alone: temperature history against the analytic solution.\n- A plate with combined convection and radiation: steady temperature against a hand calculation.\n- The energy balance includes the radiated power.\n\nPart of #697.\n",
-    "state": "open",
-    "updated_at": "2026-11-06T22:50:59Z",
-    "labels": [
-      "enhancement",
-      "area:solver",
-      "needs-triage"
-    ],
-    "assignees": [],
-    "url": "https://github.com/tangency-labs/fieldcraft/issues/839"
-  },
-  {
     "number": 838,
     "title": "Thermal and fluid material library with temperature-dependent properties",
     "body": "## Current behaviour\n\nThe material library (#99) covers structural metals. Thermal material properties are listed as coming soon. Heat\ntransfer between flow and solids needs, for every model:\n- the fluid's density, viscosity, conductivity and specific heat;\n- the solid's conductivity, specific heat and density.\n\nUsers currently type these in by hand.\n\n## What to build\n\nLibrary entries with cited sources (handbook or standard reference data, with the citation in the entry and a row in\nthe attribution list where required):\n- **Fluids:** water, air, and a common water/glycol coolant mix. Properties are temperature-dependent over a stated\n  range, as a table or fit, with the valid range enforced or warned about.\n- **Solids:** aluminium alloys (e.g. 6061, 6063), copper, carbon and stainless steel, brass, FR-4 (orthotropic\n  conductivity), borosilicate and silica glass, and a typical thermal interface material.\n\nEntries can be picked with one click in the material dialog and by name in commands. A model saves the values it used,\nso results don't change if the library is updated.\n\n## Verification\n\n- Each entry's values match its cited source at tabulated points.\n- Interpolation inside the range and the warning outside it are tested.\n- A natural-convection oracle case gives the same answer with library air as with hand-entered values.\n\nPart of #697.\n",
