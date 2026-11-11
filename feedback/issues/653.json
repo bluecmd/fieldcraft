@@ -3,13 +3,10 @@
   "title": "Checkpoint and resume long solves (fluid, explicit, nonlinear, transient heat)",
   "body": "### Current behaviour\n\nA solve runs to the end or is lost. When the process stops partway (killed to free a machine, an out-of-memory kill, a lost GPU device, a reboot, a closed SSH session), nothing of the run survives: the next attempt starts again from step 0. The solve commands have no checkpoint, restart or resume option.\n\nReal case: a CPU `solve.fluid` of the `cooling-enclosure` sample took 2,124 s. A run of the larger `cooling-aio` sample was about two hours in when the machine had to be quietened, and all of it was lost. On the GPU the same samples take seconds to a minute, but long fine-grid or long-time fluid runs, explicit dynamics and long nonlinear solves are just as exposed.\n\n### What you need and why\n\nTo run long solves on a shared or remote machine without betting the whole run on the process surviving. That's the case #411 plans for: a cloud instance that's terminated by a cost cap, a spot interruption or a watchdog must be able to resume its job, not repeat it. The same holds for the desktop: an app restart shouldn't throw away an overnight run.\n\n### Expected behaviour\n\nA long solve can write its state now and then and later carry on from it, with the same result as an uninterrupted run, since FieldCraft is deterministic:\n- Steps that advance in time or increments (fluid, explicit, nonlinear static, transient heat) write a checkpoint every N steps or minutes. A checkpoint holds the populations and macroscopic fields, or the displacements, velocities and state variables, plus the step counters and the frames already written. Writing should be atomic, as model saves already are.\n- A solve started on a model whose step has a checkpoint from the same model and solver settings offers to resume, or `solve.* {\"resume\": true}` does it. A checkpoint from changed settings is refused with a message.\n- `solve.*` reports `checkpoint_every` and the last checkpoint, and keeps or deletes checkpoints when the run ends.\n- A resumed run gives bit-identical results to an uninterrupted one on the same backend and thread count, which a test can check like the existing determinism tests.\n\n### Pictures\n\nNone. This is about how a run is executed, not what it shows.\n\n### References\n\nRestart files are a standard part of long-running solvers. In lattice Boltzmann, a checkpoint is simply the population arrays (and the thermal arrays) at a step.\n",
   "state": "open",
-  "updated_at": "2026-10-24T08:00:31Z",
-  "assignees": [
-    "bluecmd"
-  ],
+  "updated_at": "2026-11-11T12:44:52Z",
+  "assignees": [],
   "labels": [
     "enhancement",
-    "claimed",
     "area:cfd",
     "needs-triage"
   ],
@@ -28,6 +25,13 @@
       "created_at": "2026-10-24T08:00:31Z",
       "updated_at": "2026-10-24T08:00:31Z",
       "url": "https://github.com/tangency-labs/fieldcraft/issues/653#issuecomment-6381737436"
+    },
+    {
+      "author": "github-actions[bot]",
+      "body": "No pull request showed up within 14 days, so this one is free again. Anyone can `/claim` it.",
+      "created_at": "2026-11-11T12:44:52Z",
+      "updated_at": "2026-11-11T12:44:52Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/issues/653#issuecomment-6796165364"
     }
   ]
 }
