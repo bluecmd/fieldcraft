@@ -5,6 +5,7 @@
   "branch": "diagnostics/solver-errors-654",
   "issue": 654,
   "status": "suspended",
-  "updated_at": "2026-11-07T12:00:30.129Z",
-  "error": "GitHub assignment changed. Stop and coordinate; explicitly update the claim request only after reconciliation."
+  "updated_at": "2026-11-11T08:16:59.263Z",
+  "error": "Get \"https://api.github.com/repos/bluecmd/fieldcraft/git/blobs/776b297ec086938ebaa5b0e6ea8f242eda38d69b\": dial tcp 4.225.11.201:443: i/o timeout\n",
+  "rejected_request_blob": "776b297ec086938ebaa5b0e6ea8f242eda38d69b"
 }
