@@ -455,15 +455,18 @@
     "title": "0.7.5: reproducible heat-exchanger tutorials and release videos",
     "body": "## Goal\nThe maintainer requests videos that help people use 0.7.5 to model flow and heat transfer in a heat exchanger. Deliver tutorials from reproducible release samples, not only a promotional animation.\n\n## Proposed series\n- [ ] **Your first heat exchanger (8–12 min):** geometry and fluid passages, materials, conducting wall, inlet/outlet and fan/pump or prescribed-flow assumptions, resolution, resource estimate, solve and save. Start from a supplied model/recipe.\n- [ ] **Where does the heat go? (3–5 min):** velocity/temperature sections and streamlines, both outlet temperatures, heat duty, pressure loss and mass/energy budgets from the same solved model.\n- [ ] **Choose a fan and compare fin spacing (5–8 min):** one controlled design change, fan/system operating point, cooling benefit versus pressure drop, and comparable convergence/resolution.\n- [ ] **Can you trust this result? (about 5 min):** validation reference, refinement, convergence of running means for LES, uncertainty and model limits.\n\n## Definition of done\n- Inputs/recipes, exact version/commit, solve settings, hardware/runtime and saved outputs accompany each video; a viewer can reproduce the result.\n- Captions and legends show physical units and distinguish measured numerical results from assumptions.\n- Air-side-only examples are labelled as such. A full exchanger tutorial requires demonstrated coupled coolant/air support.\n- A physical transient is labelled with physical time; accelerated steady-state heat-capacity runs and iteration playback are never presented as physical warm-up.\n- No use of commercial CAE assets or models; original SolidCraft geometry and the repository's capture workflow.\n- Publish gallery links, a thumbnail/hero still and a short release clip only once the final results and commands match the release build.\n\nRelated tooling: `tools/cooling`, `tools/flow-clip`, and `docs/examples.md`. The existing `cooling-aio` airflow clip is a starting point, but its held-temperature/air-side assumptions must remain visible.\n",
     "state": "open",
-    "updated_at": "2026-10-23T19:16:59Z",
+    "updated_at": "2026-11-11T08:45:50Z",
     "labels": [
       "enhancement",
+      "claimed",
       "area:cfd",
       "area:infra",
       "area:docs",
       "needs-triage"
     ],
-    "assignees": [],
+    "assignees": [
+      "bluecmd"
+    ],
     "url": "https://github.com/tangency-labs/fieldcraft/issues/701"
   },
   {
@@ -471,13 +474,16 @@
     "title": "0.7.5: specify and verify coupled air/coolant heat-exchanger domains",
     "body": "## Goal for 0.7.5\nModel flow and heat transfer in a heat exchanger with distinct hot/cold fluid passages and a conducting separator. The existing AIO sample solves only the air side with an assumed coolant temperature; neither a drawn tube nor two independent solves represents a coupled liquid-to-air exchanger.\n\n## Source audit (develop 7d9c027d71)\n- `FluidDomain` has one fluid `material` (`crates/model/src/fluids.rs`). Multiple domain definitions are allowed.\n- `Setup::new` selects a single fluid step/domain; `solve_fluid_on` builds one `Flow` and runs its backend (`crates/lbm/src/setup.rs`, `solve.rs`).\n- Conducting obstacles exchange heat with that domain's fluid. I found no orchestration that exchanges the wall state/flux between different fluid solves.\n- CPU/GPU CHT (#609/#651) and thermal contact resistance (#677) therefore provide necessary pieces, but do not establish two-fluid coupling.\n\n## Specify before implementation\n- [ ] Choose the minimal supported exchanger: separate air/coolant circuits, fluid properties, geometry/wall thickness and prescribed flows or fan/pump conditions. Record whether the first accepted case is laminar or turbulent and why.\n- [ ] Document domain ownership/occupancy, shared wall identity, conservative interface transfer, units, coupling iterations, under-relaxation, time stepping and stopping criteria. A shared wall's heat capacity/source must not be counted twice.\n- [ ] Define support for steady vs transient runs and CPU/GPU combinations. Accelerated solid heat capacity may be used only with explicit steady-state semantics.\n- [ ] Specify result/probe/export and save/reopen semantics for both circuits and the shared wall; reject unsupported combinations explicitly.\n\n## Acceptance evidence\n- [ ] A simple two-stream exchanger matches a cited analytical energy-balance/effectiveness reference at stated tolerances, with independently computed hot/cold heat duties and mass-flow-weighted outlet temperatures.\n- [ ] Energy and mass budgets expose imbalance and external losses/sources, rather than hiding disagreement in a single reported duty.\n- [ ] Spatial and coupling-tolerance refinement, pressure-drop checks, a closed/insulated energy test where applicable, and an existing single-domain regression suite.\n- [ ] One reproducible cooling/exchanger model runs through the normal commands and UI and saves/reopens both sides' results. No hidden manual flux handoff.\n\nThe first deliverable is the coupling specification and a minimal reference case; implementation should be split into reviewable changes from that evidence. This is a single-phase two-fluid/domain workflow, not a request for multiphase/free-surface physics.\n",
     "state": "open",
-    "updated_at": "2026-10-24T08:52:48Z",
+    "updated_at": "2026-11-11T08:45:41Z",
     "labels": [
       "enhancement",
+      "claimed",
       "area:cfd",
       "priority: high"
     ],
-    "assignees": [],
+    "assignees": [
+      "bluecmd"
+    ],
     "url": "https://github.com/tangency-labs/fieldcraft/issues/700"
   },
   {
