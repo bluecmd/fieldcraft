@@ -1,10 +1,10 @@
 [
   {
     "number": 896,
-    "title": "testkit: tet_metric_547 fails on develop since the solidcore kernel (min dihedral 20.4° < 30°)",
+    "title": "tests red on develop since the solidcore kernel (d0242f6d): tet_metric_547, a fillet's nodes on its torus",
     "body": "### Observed failure\n\n`cargo test -p fieldcraft-testkit --test tet_metric_547` fails on `develop` (d4b72bd5) on Linux x86_64. It fails in every run, and it fails in `cargo xtask ci` as well:\n\n```text\nthread 'sphere_on_plate_report_and_quality_agree' panicked at crates/testkit/tests/tet_metric_547.rs:35:9:\nlinear: {\"inadmissible\":0,\"max_dihedral\":139.8290063444604,\"mean_radius_ratio\":0.7730190733195966,\"mean_scaled_jacobian\":0.5890156256281958,\"min_dihedral\":20.432448481025915,\"min_radius_ratio\":0.24163612289191766,\"min_scaled_jacobian\":0.2207697433733627,\"slivers\":0,\"tets\":19630}\n```\n\n### Reproduction\n\n```sh\ngit switch --detach d0242f6d   # or develop\ncargo test --profile ci --locked -p fieldcraft-testkit --test tet_metric_547\n```\n\n### Evidence\n\nBisected: it passes at 0474c3c9 and fails at d0242f6d (\"geometry: SolidCraft at 5e33828 (solidcore kernel), adopting its face names\").\n\n### Expected behaviour\n\n`cargo xtask ci` is green on `develop`.\n\n### Investigation\n\nd0242f6d accepts the drop on purpose. Its message says sphere-on-plate's \"tet min dihedral 35.2° to 18.0°, its octree stops at its limit: the needle facets SolidCraft's tessellation leaves on the trimmed sphere, tangency-labs/solidcraft#14915\", and it re-blesses `tests/corpus/sphere-on-plate/fixture.json` to match. `crates/testkit/tests/tet_metric_547.rs` still asserts `min_dihedral > 30.0` and `min_scaled_jacobian >= 0.3` for the same part at size 4, and it was not updated. So either the test's bounds follow the new fixture until solidcraft#14915 is fixed, or the test is ignored until then. That is your call. The test's other checks (the report and `mesh.quality` agree) still hold.\n\n### Version and platform\n\n`develop` d4b72bd5 (Rust 1.98.0), Fedora 44 x86_64 VM, 16 vCPU. The test runs on the CPU, so the GPU does not matter.\n",
     "state": "open",
-    "updated_at": "2026-11-11T22:08:24Z",
+    "updated_at": "2026-11-11T23:05:29Z",
     "labels": [
       "bug",
       "needs-triage"
