@@ -3,10 +3,13 @@
   "title": "0.7.5: reproducible heat-exchanger tutorials and release videos",
   "body": "## Goal\nThe maintainer requests videos that help people use 0.7.5 to model flow and heat transfer in a heat exchanger. Deliver tutorials from reproducible release samples, not only a promotional animation.\n\n## Proposed series\n- [ ] **Your first heat exchanger (8–12 min):** geometry and fluid passages, materials, conducting wall, inlet/outlet and fan/pump or prescribed-flow assumptions, resolution, resource estimate, solve and save. Start from a supplied model/recipe.\n- [ ] **Where does the heat go? (3–5 min):** velocity/temperature sections and streamlines, both outlet temperatures, heat duty, pressure loss and mass/energy budgets from the same solved model.\n- [ ] **Choose a fan and compare fin spacing (5–8 min):** one controlled design change, fan/system operating point, cooling benefit versus pressure drop, and comparable convergence/resolution.\n- [ ] **Can you trust this result? (about 5 min):** validation reference, refinement, convergence of running means for LES, uncertainty and model limits.\n\n## Definition of done\n- Inputs/recipes, exact version/commit, solve settings, hardware/runtime and saved outputs accompany each video; a viewer can reproduce the result.\n- Captions and legends show physical units and distinguish measured numerical results from assumptions.\n- Air-side-only examples are labelled as such. A full exchanger tutorial requires demonstrated coupled coolant/air support.\n- A physical transient is labelled with physical time; accelerated steady-state heat-capacity runs and iteration playback are never presented as physical warm-up.\n- No use of commercial CAE assets or models; original SolidCraft geometry and the repository's capture workflow.\n- Publish gallery links, a thumbnail/hero still and a short release clip only once the final results and commands match the release build.\n\nRelated tooling: `tools/cooling`, `tools/flow-clip`, and `docs/examples.md`. The existing `cooling-aio` airflow clip is a starting point, but its held-temperature/air-side assumptions must remain visible.\n",
   "state": "open",
-  "updated_at": "2026-10-23T19:16:59Z",
-  "assignees": [],
+  "updated_at": "2026-11-11T08:45:50Z",
+  "assignees": [
+    "bluecmd"
+  ],
   "labels": [
     "enhancement",
+    "claimed",
     "area:cfd",
     "area:infra",
     "area:docs",
@@ -27,6 +30,13 @@
       "created_at": "2026-10-23T19:16:59Z",
       "updated_at": "2026-10-23T19:16:59Z",
       "url": "https://github.com/tangency-labs/fieldcraft/issues/701#issuecomment-6372828193"
+    },
+    {
+      "author": "bluecmd",
+      "body": "<!-- fieldcraft-pr-queue:claim:claim-701-contour-animation-agent-20261024-docs -->\nClaimed for agent `contour-animation-agent` on `bluecmd/fieldcraft:docs/cooling-prerequisites-701` through the [PR queue](https://github.com/bluecmd/fieldcraft/tree/pr-queue). GitHub assignee: @bluecmd. The agent may start once its queue receipt says `granted`. This is a reservation, not a claim of completion.",
+      "created_at": "2026-11-11T08:45:50Z",
+      "updated_at": "2026-11-11T08:45:50Z",
+      "url": "https://github.com/tangency-labs/fieldcraft/issues/701#issuecomment-6791351562"
     }
   ]
 }
