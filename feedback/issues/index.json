@@ -1,5 +1,19 @@
 [
   {
+    "number": 906,
+    "title": "Two Smagorinsky Couette GPU verification tests miss the 1e-6 density bound on an RTX 4090 (1.43e-6)",
+    "body": "## What fails\n\nTwo `fieldcraft-lbm-gpu` verification tests fail on an NVIDIA RTX 4090 on develop `b1190f1e`, unpatched. Each fails on the density bound only:\n\n| Test | Assertion | Velocity difference (bound 1e-4) | Density difference (bound 1e-6) |\n|---|---|---|---|\n| `couette_flow_with_smagorinsky_matches_the_cpu` (`verification.rs:853`) | `du < 1e-4 && drho < 1e-6` | 1.18e-5 | **1.43e-6** |\n| `heated_couette_flow_with_smagorinsky_matches_the_cpu` (`verification.rs:907`) | `du < 1e-4 && drho < 1e-6` | 1.18e-5 | **1.43e-6** |\n\nThe exact messages are `0.000011822930719697812 0.0000014305192035379832` and `0.000011822932085711754 0.0000014305206068598864`.\n\n## Setup\n\n- NVIDIA GeForce RTX 4090, driver 621.01, Windows 11, rustc 1.99.1, `x86_64-pc-windows-msvc`.\n- The tests report the adapter as `NVIDIA GeForce RTX 4090 (InPlace)`.\n- Command: `cargo test --release -j 2 -p fieldcraft-lbm-gpu`, default tests only.\n- Result: lib 6 passed; verification 61 passed, 2 failed, 8 ignored. Doc-tests didn't run, because cargo stops after the failing target.\n- The same two tests fail in the same way on develop `11ca41a6`.\n- On a software adapter (llvmpipe) both tests pass.\n\n## Context\n\nThe comment above the test says the 1e-6 density bound \"held on that card only\". It also says #776 fixed an f32 mass drain on Apple Metal by closing the equilibria's sum with the rest population. On this card, a density difference of 1.43e-6 remains with the Smagorinsky model on, while the velocity is well within its bound. The cause hasn't been looked for: it could be a remaining f32 mass drift on this hardware, or the bound may be too tight for it.\n",
+    "state": "open",
+    "updated_at": "2026-11-12T10:55:08Z",
+    "labels": [
+      "bug",
+      "area:cfd",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/906"
+  },
+  {
     "number": 904,
     "title": "The uniform pressure outlet reflects outgoing acoustic waves almost entirely (|R| 0.996 at ω 0.01)",
     "body": "## Problem\n\nThe uniform pressure outlet (`outflow: uniform`) holds the reference density at the boundary, so an outgoing acoustic wave is reflected almost entirely. After an impulsive start, the box's acoustic mode rings between the inlet and the outlet until viscosity removes it, and only the convective outlet avoids that today.\n\n## How to reproduce\n\n- **The duct.** A 2048 × 1 × 1 duct at rest, with a zero-velocity inlet at x_min, the uniform pressure outlet at x_max, periodic sides and TRT τ 0.51.\n- **The pulse.** A right-going Gaussian pulse, ρ′ = 1e-4 exp(−(x − 1000)² / (2 · 40²)) with u′ = c_s ρ′ / ρ₀, travels to the outlet.\n- **The probe.** A probe at cell 1300 records the incident and the reflected pulse over 3665 steps.\n- **The measure.** |R|(ω) is the ratio of their discrete Fourier amplitudes, with ω in radians per step.\n\n| ω (rad/step) | wavelength (cells) | |R|, uniform outlet |\n|---|---|---|\n| 0.01 | 363 | 0.996 |\n| 0.02 | 181 | 0.986 |\n| 0.04 | 91 | 0.947 |\n\nThe reflected pulse's peak is 99.3% of the incident one.\n\nA small box shows the same thing:\n- **Setup:** 64 × 4 × 4 cells, a uniform inlet at lattice speed 0.05, periodic sides, TRT τ 0.55, and a density perturbation of 1e-3 cos(π x / L).\n- **Result:** the density RMS about the reference is still 4.20e-4 after 2000 steps.\n\nMeasured on develop `b1190f1e`, CPU.\n\n## Expected\n\nAn opt-in pressure outlet that lets outgoing acoustic waves leave, and holds only the mean pressure, without changing any existing outlet's results when it isn't selected.\n\nA partially non-reflecting outlet based on the linearised characteristic (LODI) balance of Poinsot & Lele (J. Comput. Phys. 101:104–129, 1992) follows in a PR.\n",
