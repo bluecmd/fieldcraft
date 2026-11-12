@@ -26,19 +26,6 @@
     "url": "https://github.com/tangency-labs/fieldcraft/issues/896"
   },
   {
-    "number": 895,
-    "title": "hex: revolve refuses a straight tube (\"the projected outline encloses no region\")",
-    "body": "`mesh.hex.generate` with `method: \"revolve\"` refuses a straight tube (a cylinder with a coaxial bore, revolved about its own axis): \"the projected outline encloses no region\" (`crates/mesh/src/hex/layered.rs`, `occupancy`). Sweep and extrude mesh the same body.\n\nFound in #870 while testing the curvature floor (`a_whole_circle_gets_sixteen_divisions_at_a_coarse_size`); the floor does not cause it, and the test's revolve case was dropped there. Since SolidCraft 5e33828 a cylinder comes back as one whole face with one seam instead of patches, which is the likely change: the revolve path's projection of the seamed faces onto the meridian plane leaves the arrangement without a closed region.\n\n**Expected:** revolve meshes the tube (a rectangle in the meridian plane, swept a full turn), or refuses it with the actual reason. Restore the revolve case of `a_whole_circle_gets_sixteen_divisions_at_a_coarse_size` with the fix.\n",
-    "state": "open",
-    "updated_at": "2026-11-11T22:00:54Z",
-    "labels": [
-      "area:mesh",
-      "needs-triage"
-    ],
-    "assignees": [],
-    "url": "https://github.com/tangency-labs/fieldcraft/issues/895"
-  },
-  {
     "number": 892,
     "title": "Beam sections from section properties (area, I_y, I_z, J, shear areas)",
     "body": "### Current behaviour\n\nA beam section's profile can only be a shape: `rectangle`, `circle`, `pipe`, `i` or `box`, with the properties computed from it. Section properties cannot be given directly. This rules out:\n- rolled sections from tables, for example I/H sections with root radii (EN 10365), channels and angles;\n- a frame model brought over from another program, which carries only A, I and J.\n\n### What you need and why\n\nSteel frames are designed with the table values of rolled sections. Comparing a frame analysis with another frame program needs exactly that program's section values. A shape that only approximates them (an `i` without root radii) gives a different I_t and different shear areas.\n\n### Expected behaviour\n\nA `general` beam profile that takes the properties directly: area, I_y, I_z, torsion constant J and shear areas along y and z, each validated as positive and finite. Inside FieldCraft it would behave like the other profiles, with the same `BeamProperties` and the same element, and the deck writers would map it to their general beam section.\n\nWe have this as a small patch in our copy of `fieldcraft-model`: the `BeamProfile::General` variant, with `name`, `validate`, `area`, `properties` and the unit conversion in `convert.rs`, about 40 lines. We use it to cross-check frames against another program (PyNite): reactions are equal and moments agree within 0.4 %. Our copy does not include the `io`/`decks` crates, so the deck writers would still be open. I can turn it into a pull request against `develop` if you want this.\n\n### Pictures\n\n_No response_\n\n### References\n\nEN 10365 (dimensions and section properties of hot-rolled I and H sections). The beam element itself is unchanged.\n",
