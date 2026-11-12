@@ -1,5 +1,19 @@
 [
   {
+    "number": 903,
+    "title": "Automatic volume meshing with a hex preference and quality requirements",
+    "body": "### Current behaviour\n\nFieldCraft exposes structured hex, octree and tetrahedral meshing as separate commands. An agent that needs an all-Hex8 mesh with stated quality limits has to choose routes, check each candidate and handle mesh replacement itself.\n\n### What you need and why\n\nProvide one volume-meshing command that prefers hexahedra and reports the method used, achieved quality and actionable retry parameters. For example, on the SolidCraft sensor lid, an exploratory run rejected the standard extrusion partition (minimum scaled Jacobian 0.164, maximum edge ratio 85,310) and accepted an alternate partition at the same thresholds (0.342 and 4.84). An MCP client applied the returned partition change.\n\n### Expected behaviour\n\n- Expose `mesh.volume.auto` through the shared command layer and MCP. Prefer existing structured and octree routes. A restricted six-Tet4 fan recombination fallback may produce mixed cells.\n- Report Hex8 fractions by count and volume, the selected method and candidate rejections. Let callers require all Hex8 or request a minimum hex fraction by volume.\n- Apply explicit quality requirements to every requested body before replacing the current mesh. Return an unmet result and retry parameters where available.\n- Verify the routing and retry contract with original SolidCraft geometry and bounded cases. Report failures alongside successes. Document linear-static FEA measurements with displacement, stress, free equations and solve time.\n\nThe scope is automatic meshing and explicit acceptance. General parameterization-based hex generation remains open in #875, and the octree fillet-stress investigation remains open in #876.\n\nI have exploratory code and original before/after renders. Could a maintainer confirm whether this scope is welcome and open the issue for assignment before I submit the PR?\n\n### References\n\n- [Pellerin et al., tet-to-hex candidate identification and compatibility](https://doi.org/10.1016/j.cad.2018.05.004). The proposed matcher uses a restricted six-tet fan search.\n- [Ray et al., parameterization-based hex-dominant meshing](https://doi.org/10.1016/j.cad.2018.04.012). Background for #875.\r\n",
+    "state": "open",
+    "updated_at": "2026-11-12T07:11:33Z",
+    "labels": [
+      "enhancement",
+      "area:mesh",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/903"
+  },
+  {
     "number": 901,
     "title": "tet: a fine exact seed on a short edge loses a node (8 on a 10 mm edge gives 7)",
     "body": "On develop b1190f1e, the sample plate gives 7 mesh edges for an exact edge seed of 8 on the 10 mm thickness edge `F2:side:l2|F2:side:l3` (the x = 40 end), with no other seeds and `mesh.tet.generate` at size 5. The mesh has no node at 2.5 mm. A seed of 20 on the same edge loses the node at 9.0 mm.\n\n**Culprit:** d0242f6d (SolidCraft at 5e33828, the solidcore kernel). Its tessellation leaves the edge as one segment. At c039e0bc the count held (positions were not exact). From d0242f6d on, before #897, it was already 7. #897 then locked the seed's edges, so refinement no longer refills the gap by chance.\n\n**Cause:** the seed node's Delaunay insertion is refused. `plan_cavity` keeps every cavity face that sees the point with positive orientation. `TetComplex::replace` also demands that each new tetrahedron be admissible (`ADMISSIBLE_MARGIN`). One kept face, beside a short curve edge in line with the edge being split, makes an almost flat tetrahedron, so `replace` refuses the whole insertion. `seed_curves` then went on without the node and said nothing.\n",
