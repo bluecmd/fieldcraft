@@ -1,5 +1,18 @@
 [
   {
+    "number": 899,
+    "title": "hex: the round-disk O-grid's quality depends on its rim count (best at 16; 20 gives 0.776)",
+    "body": "The round-disk O-grid's quality depends strongly on the rim node count, and 16 is its best count. Measured on its own (smallest hex8 scaled Jacobian vs rim nodes): 12 → 0.805, 16 → 0.831, 20 → 0.776, 24 → 0.781, 28 → 0.812, 32 → 0.785.\n\nWith the chordal curvature floor (#898) the rim counts follow the geometry instead of a fixed 16 per circle, so this shows up in the corpus: analytic-torus (r = 8 section, 20 rim divisions at δ = 0.109) drops from 0.829 to 0.773, and pinhole-block's hex20 from 0.424 to 0.377 (hex8 improves 0.381 → 0.463).\n\n**Expected:** the O-grid's quality is roughly independent of the rim count (a monotone or flat curve), so the floor's counts need no rounding toward 16. Likely places to look: the square core's size and placement relative to the rim count (core side vs rim spacing, the ¼/½ offsets tried), the core's node count per side when the rim count is not a multiple of 4·k, and the radial spacing between core and rim.\n\nRestore analytic-torus to ≥ 0.829 and pinhole-block hex20 to ≥ 0.424 with the fix, and add a unit test sweeping the rim count 12..=32 with a floor on the worst quality.\n",
+    "state": "open",
+    "updated_at": "2026-11-12T00:19:55Z",
+    "labels": [
+      "area:mesh",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/899"
+  },
+  {
     "number": 896,
     "title": "tests red on develop since the solidcore kernel (d0242f6d): tet_metric_547, a fillet's nodes on its torus",
     "body": "### Observed failure\n\n`cargo test -p fieldcraft-testkit --test tet_metric_547` fails on `develop` (d4b72bd5) on Linux x86_64. It fails in every run, and it fails in `cargo xtask ci` as well:\n\n```text\nthread 'sphere_on_plate_report_and_quality_agree' panicked at crates/testkit/tests/tet_metric_547.rs:35:9:\nlinear: {\"inadmissible\":0,\"max_dihedral\":139.8290063444604,\"mean_radius_ratio\":0.7730190733195966,\"mean_scaled_jacobian\":0.5890156256281958,\"min_dihedral\":20.432448481025915,\"min_radius_ratio\":0.24163612289191766,\"min_scaled_jacobian\":0.2207697433733627,\"slivers\":0,\"tets\":19630}\n```\n\n### Reproduction\n\n```sh\ngit switch --detach d0242f6d   # or develop\ncargo test --profile ci --locked -p fieldcraft-testkit --test tet_metric_547\n```\n\n### Evidence\n\nBisected: it passes at 0474c3c9 and fails at d0242f6d (\"geometry: SolidCraft at 5e33828 (solidcore kernel), adopting its face names\").\n\n### Expected behaviour\n\n`cargo xtask ci` is green on `develop`.\n\n### Investigation\n\nd0242f6d accepts the drop on purpose. Its message says sphere-on-plate's \"tet min dihedral 35.2° to 18.0°, its octree stops at its limit: the needle facets SolidCraft's tessellation leaves on the trimmed sphere, tangency-labs/solidcraft#14915\", and it re-blesses `tests/corpus/sphere-on-plate/fixture.json` to match. `crates/testkit/tests/tet_metric_547.rs` still asserts `min_dihedral > 30.0` and `min_scaled_jacobian >= 0.3` for the same part at size 4, and it was not updated. So either the test's bounds follow the new fixture until solidcraft#14915 is fixed, or the test is ignored until then. That is your call. The test's other checks (the report and `mesh.quality` agree) still hold.\n\n### Version and platform\n\n`develop` d4b72bd5 (Rust 1.98.0), Fedora 44 x86_64 VM, 16 vCPU. The test runs on the CPU, so the GPU does not matter.\n",
