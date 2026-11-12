@@ -1,5 +1,18 @@
 [
   {
+    "number": 901,
+    "title": "tet: a fine exact seed on a short edge loses a node (8 on a 10 mm edge gives 7)",
+    "body": "On develop b1190f1e, the sample plate gives 7 mesh edges for an exact edge seed of 8 on the 10 mm thickness edge `F2:side:l2|F2:side:l3` (the x = 40 end), with no other seeds and `mesh.tet.generate` at size 5. The mesh has no node at 2.5 mm. A seed of 20 on the same edge loses the node at 9.0 mm.\n\n**Culprit:** d0242f6d (SolidCraft at 5e33828, the solidcore kernel). Its tessellation leaves the edge as one segment. At c039e0bc the count held (positions were not exact). From d0242f6d on, before #897, it was already 7. #897 then locked the seed's edges, so refinement no longer refills the gap by chance.\n\n**Cause:** the seed node's Delaunay insertion is refused. `plan_cavity` keeps every cavity face that sees the point with positive orientation. `TetComplex::replace` also demands that each new tetrahedron be admissible (`ADMISSIBLE_MARGIN`). One kept face, beside a short curve edge in line with the edge being split, makes an almost flat tetrahedron, so `replace` refuses the whole insertion. `seed_curves` then went on without the node and said nothing.\n",
+    "state": "open",
+    "updated_at": "2026-11-12T05:46:26Z",
+    "labels": [
+      "area:mesh",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/901"
+  },
+  {
     "number": 899,
     "title": "hex: the round-disk O-grid's quality depends on its rim count (best at 16; 20 gives 0.776)",
     "body": "The round-disk O-grid's quality depends strongly on the rim node count, and 16 is its best count. Measured on its own (smallest hex8 scaled Jacobian vs rim nodes): 12 → 0.805, 16 → 0.831, 20 → 0.776, 24 → 0.781, 28 → 0.812, 32 → 0.785.\n\nWith the chordal curvature floor (#898) the rim counts follow the geometry instead of a fixed 16 per circle, so this shows up in the corpus: analytic-torus (r = 8 section, 20 rim divisions at δ = 0.109) drops from 0.829 to 0.773, and pinhole-block's hex20 from 0.424 to 0.377 (hex8 improves 0.381 → 0.463).\n\n**Expected:** the O-grid's quality is roughly independent of the rim count (a monotone or flat curve), so the floor's counts need no rounding toward 16. Likely places to look: the square core's size and placement relative to the rim count (core side vs rim spacing, the ¼/½ offsets tried), the core's node count per side when the rim count is not a multiple of 4·k, and the radial spacing between core and rim.\n\nRestore analytic-torus to ≥ 0.829 and pinhole-block hex20 to ≥ 0.424 with the fix, and add a unit test sweeping the rim count 12..=32 with a floor on the worst quality.\n",
