@@ -1,5 +1,19 @@
 [
   {
+    "number": 941,
+    "title": "Help wanted: run-to-run and cross-machine reproducibility of a channel case (same input, same commit)",
+    "body": "We need to know how much Fieldcraft channel results change when nothing in the input changes. Then code changes can be judged against the real scatter rather than against noise.\n\nPlease run the P1 input from #937 with `\"collision\": \"mrt\"`; that case completes 4,000 steps. Use unpatched `11ca41a6b3a43d18e61d1b906c77f547ea5f7e4d`, and also current develop.\n\n## Matrix (change one factor at a time)\n\n1. Same binary, same machine, run twice: are the outputs bitwise identical?\n2. Same binary with `threads` = 1, 2, 4 and 8.\n3. A rebuilt binary on a different machine, OS or CPU (and compiler version), at the same commit.\n4. The GPU backend against the CPU, if you have one.\n\n## Please report for each run\n\n- The commit, `rustc --version`, the build command and the binary's SHA256.\n- The OS and CPU (or the GPU and driver) and the thread count.\n- The exit code and the SHA256 of each output frame.\n- The final maximum Mach, the final mean streamwise velocity, and the relative change in mass.\n\nIf outputs differ, the first step or frame where they diverge is the most useful detail.\n\nFor statistics over a longer window, the wall-modelled channel inputs from #938 can be used with the same matrix. For those, please report the mean friction (u_τ) and the averaging window for each run, and post every run, including failed ones.\n\nRelated: #937, #938.\n",
+    "state": "open",
+    "updated_at": "2026-11-14T10:33:19Z",
+    "labels": [
+      "help wanted",
+      "area:cfd",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/941"
+  },
+  {
     "number": 940,
     "title": "Help wanted: refinement order of curved-wall drag for a periodic sphere array in Stokes flow (analytic reference)",
     "body": "This is a cheap study that runs on a laptop. Take a simple cubic periodic array of spheres in creeping flow (Re ≪ 1), driven by a pressure gradient or a body force. The dimensionless drag K is known analytically (Hasimoto 1959; Sangani & Acrivos 1982; Zick & Homsy 1982).\n\nKeep the solid fraction fixed and run radii R = 3, 6, 9 and 12 lattice units (15 if affordable), with a box side of about 5.33 R. Report K, the relative error, and the observed order between successive pairs.\n\n## Why it matters\n\nThe error falls with refinement, but the observed order appears to drop toward first order on finer grids. That's below the ≥ 1.5 expected of a second-order scheme. Three grids can't establish the asymptotic order; more resolutions, on independent machines, can.\n\n## Please also report\n\n- the boundary scheme;\n- how the sphere sits relative to the lattice: node- or cell-centred (the scatter over random offsets is very useful);\n- the Mach and Reynolds numbers;\n- the mass drift;\n- the force method (momentum exchange vs pressure gradient).\n\nRelated: #785, #798.\n",
