@@ -1,5 +1,60 @@
 [
   {
+    "number": 940,
+    "title": "Help wanted: refinement order of curved-wall drag for a periodic sphere array in Stokes flow (analytic reference)",
+    "body": "This is a cheap study that runs on a laptop. Take a simple cubic periodic array of spheres in creeping flow (Re ≪ 1), driven by a pressure gradient or a body force. The dimensionless drag K is known analytically (Hasimoto 1959; Sangani & Acrivos 1982; Zick & Homsy 1982).\n\nKeep the solid fraction fixed and run radii R = 3, 6, 9 and 12 lattice units (15 if affordable), with a box side of about 5.33 R. Report K, the relative error, and the observed order between successive pairs.\n\n## Why it matters\n\nThe error falls with refinement, but the observed order appears to drop toward first order on finer grids. That's below the ≥ 1.5 expected of a second-order scheme. Three grids can't establish the asymptotic order; more resolutions, on independent machines, can.\n\n## Please also report\n\n- the boundary scheme;\n- how the sphere sits relative to the lattice: node- or cell-centred (the scatter over random offsets is very useful);\n- the Mach and Reynolds numbers;\n- the mass drift;\n- the force method (momentum exchange vs pressure gradient).\n\nRelated: #785, #798.\n",
+    "state": "open",
+    "updated_at": "2026-11-14T10:28:47Z",
+    "labels": [
+      "help wanted",
+      "area:cfd",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/940"
+  },
+  {
+    "number": 939,
+    "title": "Help wanted: external-flow drag benchmarks (sphere Re 100, Schäfer–Turek cylinder 2D-2, cylinder Re 3900)",
+    "body": "Please contribute independent refinement studies of three cases:\n\n1. **Steady sphere at Re = 100.** Compare Cd with Johnson & Patel (1999), Cd ≈ 1.09. We see Cd about 3% high.\n2. **Schäfer & Turek (1996) 2D-2.** The maximum Cd must lie in [3.22, 3.24] and St in [0.295, 0.305]; please also report the maximum Cl. We're slightly above the Cd band.\n3. **Cylinder at Re = 3900 (LES).** Compare the mean Cd, the recirculation length and St with Parnaudeau et al. (2008), Kravchenko & Moin (2000) and Lourenço & Shih. Our coarse refinement is not monotone.\n\nFor each case, please report:\n- 3 or more resolutions (cells per diameter);\n- the domain size and blockage;\n- the inlet and outlet types;\n- the Mach number;\n- the force method;\n- the averaging window;\n- the commit and inputs.\n\nOne-factor sweeps (blockage, Mach, outlet type, wall placement) are the most valuable, because they separate geometric, compressibility, boundary-condition and averaging causes.\n\nRelated: #785, #787, #792, #798.\n",
+    "state": "open",
+    "updated_at": "2026-11-14T10:28:46Z",
+    "labels": [
+      "help wanted",
+      "area:cfd",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/939"
+  },
+  {
+    "number": 938,
+    "title": "Help wanted: wall-modelled channel LES vs Lee & Moser DNS at Re_tau ≈ 950 and 2000",
+    "body": "Please run the periodic channel with Smagorinsky plus the `musker` wall model at Re_τ = 950 and 2000. Compare u_τ, C_f and the mean profile U⁺(y⁺) with the public Lee & Moser (2015) DNS data (turbulence.oden.utexas.edu).\n\nSome configurations show friction errors above 5% and a local Mach number above 0.2. We can't yet separate the effects of:\n- the wall-sampling height;\n- grid resolution;\n- forcing and flow-rate control;\n- compressibility.\n\n## Most useful\n\n- A matrix of 2–3 grid spacings × 2 wall-model sampling heights (the first cell vs the 2nd–3rd cell) × 2 Mach levels (e.g. bulk Mach 0.05 and 0.1). For each run, give its averaging window and evidence of statistical convergence (e.g. batch means).\n- For each run, report:\n  - the commit and inputs;\n  - u_τ and C_f;\n  - the largest local Mach;\n  - U⁺ at y⁺ = 30 / 100 / 300;\n  - the averaging length.\n- A wall-resolved Re_τ = 180 baseline.\n- Independent open-source LES (e.g. OpenFOAM) on the same grids.\n\nPlease declare the matrix before running, and post every run, including failed or unconverged ones.\n\nRelated: #785, #786.\n",
+    "state": "open",
+    "updated_at": "2026-11-14T10:28:44Z",
+    "labels": [
+      "help wanted",
+      "area:cfd",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/938"
+  },
+  {
+    "number": 937,
+    "title": "Help wanted: TRT with `musker` and a porous trip fails at step 2,887 in a periodic channel; MRT completes 4,000 (reproducer included)",
+    "body": "On unpatched commit `11ca41a6b3a43d18e61d1b906c77f547ea5f7e4d`, the command script below fails with TRT at step 2,887, reporting a lattice speed of 0.501 against the solver's 0.5 limit. Changing only `collision` to `mrt` completes all 4,000 steps.\n\nP2 raises the initial x velocity to 22.420131035185296 and shows the same contrast: TRT fails at step 2,629 (lattice speed 0.502), and MRT completes.\n\nEach case was reproduced through both `fieldcraft-cli run` and an MCP `batch`. The MCP process exits 0 even when the solve fails; its tool result has `isError: true` and names the same step.\n\n## Reproduce\n\nBuild with `cargo build --release -p fieldcraft-cli -j 2 --locked` (Rust 1.99.1, Linux x86_64; binary SHA256 `177cf3df189b594a5b8a6e8c6584a094955a9c7a4d4e037a10e2848e8211ad8d`). Save the script as `p1-trt.json` and run `fieldcraft-cli run p1-trt.json`:\n\n```json\n[\n {\"command\": \"model.units\", \"params\": {\"system\": \"m-kg-s-N-Pa\"}},\n {\"command\": \"model.material.create\", \"params\": {\"name\": \"Fluid\", \"density\": 1.0, \"fluid\": {\"type\": \"newtonian\", \"viscosity\": 0.0010526315789473684}}},\n {\"command\": \"model.fluid_domain.create\", \"params\": {\"name\": \"Channel\", \"material\": \"Fluid\", \"min\": [0, 0, 0], \"max\": [6.3, 2, 6.3], \"spacing\": 0.1, \"faces\": {\"x_min\": {\"type\": \"periodic\"}, \"x_max\": {\"type\": \"periodic\"}, \"z_min\": {\"type\": \"periodic\"}, \"z_max\": {\"type\": \"periodic\"}}, \"initial_velocity\": [19.49576611755243, 0, 0], \"acceleration\": [1, 0, 0], \"porous\": [{\"name\": \"Trip\", \"min\": [2.6, 0.3, 2.6], \"max\": [3.6, 1.1, 3.6], \"axis\": \"x\", \"resistance\": {\"type\": \"loss_coefficient\", \"coefficient\": 0.2}}]}},\n {\"command\": \"model.step.create\", \"params\": {\"name\": \"Run\", \"procedure\": {\"type\": \"fluid\", \"domain\": \"Channel\", \"steps\": 4000, \"time_step\": 0.0005129318817072185, \"frames\": 8, \"collision\": \"trt\", \"turbulence\": {\"type\": \"smagorinsky\", \"constant\": 0.08, \"wall_model\": \"musker\"}}}},\n {\"command\": \"solve.fluid\", \"params\": {\"step\": \"Run\", \"backend\": \"cpu\", \"threads\": 2}}\n]\n```\n\n## Setup\n\n- 63 × 20 × 63 cells; τ = 0.5001619784889602; TRT magic parameter 0.1875 (the default).\n- Viscosity and forcing come from a nominal Re_τ = 950.\n- The untripped control, started from a uniform flow, completes 4,000 steps with both TRT and MRT.\n- MRT completing is not a validated turbulence result: its largest saved-frame Mach number is 0.288 (P1) and 0.317 (P2).\n\nFresh shorter runs (only `steps` changed) give the final maximum Mach for P1 / P2:\n\n| steps | P1 | P2 |\n|---|---|---|\n| 500 | 0.1828 | 0.2108 |\n| 1000 | 0.1872 | 0.2189 |\n| 1500 | 0.1970 | 0.2234 |\n| 2000 | 0.2109 | 0.2394 |\n| 2500 | 0.3280 | 0.4341 |\n| 2600 | — | 0.5097 |\n| 2800 | 0.4407 | — |\n\nThe existing warning already flags τ close to ½ and recommends `regularized`, so no new warning is proposed.\n\n## How you can help\n\nEach run takes about 2 minutes on 2 threads. Please post the commit, OS/CPU, the CLI exit code, and either the failing step or \"completes 4000\", for any of:\n\n1. P1/P2 on your machine, and on current develop.\n2. One-factor ablations of P1, changing exactly one thing:\n   - remove the porous block;\n   - turn the wall model off;\n   - set the collision to `regularized`;\n   - set the TRT magic parameter to 1/4 or 1/12;\n   - move τ further from ½ (smaller `time_step`, same physical viscosity).\n3. The GPU backend, if you have one.\n\nThese would show which of the porous forcing, the wall model, the low τ or the TRT collision drives the growth.\n\nRelated: #785, #790.\n",
+    "state": "open",
+    "updated_at": "2026-11-14T10:28:29Z",
+    "labels": [
+      "help wanted",
+      "area:cfd"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/937"
+  },
+  {
     "number": 935,
     "title": "screenshot: an option for the contour legend and for drawing without mesh lines",
     "body": "### Current behaviour\n\nThe MCP `screenshot` tool (headless) always draws the model shaded with its element edges, and has no colour legend.\n\n1. **No colour key.** A von Mises or displacement picture has no legend, so the reader can't tell what blue and red mean. `results.render.save` already draws a legend bar (`legend: true`), but `screenshot` can't.\n2. **Mesh lines always drawn.** On a fine tet mesh the element edges darken the whole part and hide the contour (picture below: an isogrid plate, ~150k tet10, from the MCP screenshot).\n\n### What you need and why\n\nI drive FieldCraft headless over MCP to make result pictures (stress, displacement, flow) for reports and slides. Each picture needs a colour key, and on fine meshes the contour has to be readable without the element edges on top.\n\n### Expected behaviour\n\nTwo optional `screenshot` arguments, headless only:\n- `style`: `shaded_edges` (default, as today), `shaded` (no element edges), `wireframe`, the three styles `view::Style` already has.\n- `legend: true`: the same legend bar `results.render.save` draws, under the picture.\n\nWithout them nothing changes. I have a working change with a test, and can open a PR if this is wanted.\n\n*Written with Claude Code (Claude Opus 5.5); I reviewed it.*\n\n### Pictures\n\nBefore (left): today's screenshot, mesh lines and no key. After (right): `style: \"shaded\"`, `legend: true`.\n\n<img width=\"2580\" height=\"916\" alt=\"before_after_pub\" src=\"https://github.com/user-attachments/assets/79e177a6-e918-47bc-b6cc-41e649d95091\" />\n\n\n### References\n\n_No response_",
