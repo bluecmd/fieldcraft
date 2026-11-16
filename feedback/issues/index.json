@@ -1,5 +1,18 @@
 [
   {
+    "number": 958,
+    "title": "lbm: the TRT bulk collision grows below τ⁺ ≈ 0.5025 at Ma 0.087 with Λ = 3/16",
+    "body": "The D3Q19 TRT bulk collision is linearly unstable just above τ⁺ = 1/2 at moderate Mach number, with the default magic parameter Λ = 3/16.\n\n**Evidence** (#832, heavy test `crates/lbm/tests/trt_stability.rs`): a von Neumann linearisation about ρ = 1, u = (0.05, 0, 0) (Ma 0.087), following Sterling & Chen 1996 (Eq. 31–33) and Wissocq, Sagaut & Boussuge 2019 (App. B.2). It takes the largest growth over all modes of a 16³ periodic box, with no boundaries.\n\n| τ⁺ | Λ | U | largest growth per step |\n|---|---|---|---|\n| 0.5005 | 3/16 | 0.05 | 1.96e-3 (grows) |\n| 0.501 | 3/16 | 0.05 | 8.9e-4 |\n| 0.502 | 3/16 | 0.05 | 7.5e-6 |\n| ≥ 0.5025 | 3/16 | 0.05 | neutral |\n| 0.5005 | 3/16 | 0.01 | neutral |\n| 0.5005 | ≤ 3e-5 | 0.05 | neutral (16³, 32³ and 64³) |\n\nThe nonlinear periodic box confirms each row. The growing modes are oblique.\n\n**Scope:** #832's velocity inlet is accepted with τ⁺ ≥ 0.505 as its criterion, and setup warns below 0.505. Running below that (high Reynolds number on coarse grids) needs the bulk collision itself to be stable there.\n\n**Ask:** from the literature, find how to make the bulk stable for 0.5 < τ⁺ < 0.505 at Mach ≲ 0.1. Possible routes include a different Λ, or regularised or recursive-regularised collision (RR/HRR are already in the solver). Measure each route against the linear analysis above and against published benchmarks. Constants come from theory or a cited source (AGENTS.md), never from tuning.\n",
+    "state": "open",
+    "updated_at": "2026-11-16T21:44:56Z",
+    "labels": [
+      "area:cfd",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/958"
+  },
+  {
     "number": 954,
     "title": "ui: one preference the app can't read resets all preferences",
     "body": "`Prefs::load` (`crates/ui-egui/src/files.rs`) reads the whole prefs file with `serde_json::from_slice(..).ok()` and falls back to `Prefs::default()` on any error. `#[serde(default)]` on the struct covers a missing key, but not a key that is present with a value this version can't read.\n\n**Scenario:** a newer FieldCraft saves a unit preset or unit this build doesn't know. The older build then resets every preference: units, usage sharing, install id, recent files and the rest.\n\nFields exposed:\n- **`units` (`DisplaySystem`):** `preset` is the enum `units::Preset`, and the overrides hold `Quantity`/`Unit` enums. Any preset or unit added later triggers the reset.\n- **Any field whose type changes between versions:** for example, a bool that becomes an enum.\n\n**Fix:** PR #953 adds a field-level `#[serde(deserialize_with = \"known_or_default\")]` for `history_dock`. Apply it to every such field, so an unreadable value falls back to that field's own default and the other preferences are kept. For `units`, decide whether an unknown preset reads as the default system or keeps the overrides this build knows.\n\n**Test:** a prefs file holding a future value in each such field keeps all the other preferences.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)",
