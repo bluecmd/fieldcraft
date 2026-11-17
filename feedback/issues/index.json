@@ -1,5 +1,18 @@
 [
   {
+    "number": 962,
+    "title": "Any plan to support Arm64 in the near future?",
+    "body": "### Current behaviour\n\nThis is a wonderful app for finite element analysis.\n\nIs there any plan to support Arm64 in the near future like solidcraft?\n\n### What you need and why\n\nArm64 version for Linux and windows\n\n### Expected behaviour\n\n_No response_\n\n### Pictures\n\n_No response_\n\n### References\n\n_No response_",
+    "state": "open",
+    "updated_at": "2026-11-17T09:27:52Z",
+    "labels": [
+      "enhancement",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/962"
+  },
+  {
     "number": 958,
     "title": "lbm: the TRT bulk collision grows below τ⁺ ≈ 0.5025 at Ma 0.087 with Λ = 3/16",
     "body": "The D3Q19 TRT bulk collision is linearly unstable just above τ⁺ = 1/2 at moderate Mach number, with the default magic parameter Λ = 3/16.\n\n**Evidence** (#832, heavy test `crates/lbm/tests/trt_stability.rs`): a von Neumann linearisation about ρ = 1, u = (0.05, 0, 0) (Ma 0.087), following Sterling & Chen 1996 (Eq. 31–33) and Wissocq, Sagaut & Boussuge 2019 (App. B.2). It takes the largest growth over all modes of a 16³ periodic box, with no boundaries.\n\n| τ⁺ | Λ | U | largest growth per step |\n|---|---|---|---|\n| 0.5005 | 3/16 | 0.05 | 1.96e-3 (grows) |\n| 0.501 | 3/16 | 0.05 | 8.9e-4 |\n| 0.502 | 3/16 | 0.05 | 7.5e-6 |\n| ≥ 0.5025 | 3/16 | 0.05 | neutral |\n| 0.5005 | 3/16 | 0.01 | neutral |\n| 0.5005 | ≤ 3e-5 | 0.05 | neutral (16³, 32³ and 64³) |\n\nThe nonlinear periodic box confirms each row. The growing modes are oblique.\n\n**Scope:** #832's velocity inlet is accepted with τ⁺ ≥ 0.505 as its criterion, and setup warns below 0.505. Running below that (high Reynolds number on coarse grids) needs the bulk collision itself to be stable there.\n\n**Ask:** from the literature, find how to make the bulk stable for 0.5 < τ⁺ < 0.505 at Mach ≲ 0.1. Possible routes include a different Λ, or regularised or recursive-regularised collision (RR/HRR are already in the solver). Measure each route against the linear analysis above and against published benchmarks. Constants come from theory or a cited source (AGENTS.md), never from tuning.\n",
