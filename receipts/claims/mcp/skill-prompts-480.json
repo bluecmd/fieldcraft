@@ -5,6 +5,7 @@
   "branch": "mcp/skill-prompts-480",
   "issue": 480,
   "status": "suspended",
-  "updated_at": "2026-11-07T12:00:36.752Z",
-  "error": "GitHub assignment changed. Stop and coordinate; explicitly update the claim request only after reconciliation."
+  "updated_at": "2026-11-18T22:17:08.567Z",
+  "error": "Get \"https://api.github.com/repos/bluecmd/fieldcraft/git/blobs/7c22089a2efc743bda51edf6aead9bfac91f2116\": net/http: TLS handshake timeout\n",
+  "rejected_request_blob": "7c22089a2efc743bda51edf6aead9bfac91f2116"
 }
