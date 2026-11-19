@@ -5,6 +5,7 @@
   "branch": "results/buckling-type-174",
   "issue": 174,
   "status": "suspended",
-  "updated_at": "2026-11-07T12:00:38.751Z",
-  "error": "GitHub assignment changed. Stop and coordinate; explicitly update the claim request only after reconciliation."
+  "updated_at": "2026-11-19T12:00:55.361Z",
+  "error": "gh: Server Error (HTTP 502)\n",
+  "rejected_request_blob": "4e19a4999612211acd4b670b4843bf78721d5697"
 }
