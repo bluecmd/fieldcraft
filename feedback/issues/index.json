@@ -1,5 +1,90 @@
 [
   {
+    "number": 984,
+    "title": "Design iteration: study.update and study.sweep on SolidCraft parameters, the first slice of M22",
+    "body": "A user asked for a way to iterate designs. Today `geometry.open` with `model: \"keep\"` reopens an edited design and keeps the mesh settings and every definition (sets follow persistent face names), so a manual loop works: edit in SolidCraft, reopen, mesh, solve. Nothing automates it.\n\n### Proposal: the first slice of M22\n- `study.parameter.list`: the design's SolidCraft parameters.\n- `study.update {parameters: {name: value}}`: set them, rebuild the design, reopen with `keep`, remesh with the saved settings, solve every step; one undo step; refuses with the stale references `geometry.open` reports.\n- `study.sweep {parameter, values, outputs}`: run `study.update` per value and tabulate chosen outputs (max von Mises in a set, a probe, a reaction, a frequency, mass), CSV export and an XY plot.\n- Deterministic and bounded (a cap on the number of runs), each run a job with progress and cancel.\n\nVerified on a case with a closed form across the sweep (a cantilever's tip deflection against its length cubed).\n\nRoadmap: M22.\n",
+    "state": "open",
+    "updated_at": "2026-11-19T20:03:32Z",
+    "labels": [
+      "enhancement",
+      "area:solver",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/984"
+  },
+  {
+    "number": 983,
+    "title": "Material library: more cited entries, polymers and cast irons, and a library-first material dialog (M17)",
+    "body": "A user asked for a material library. One exists (`model.material.library.list`/`.add`, nine cited structural metals: S235, S355, 304, 316, 6061-T6, 6082-T6, 7075-T6, 2024-T3, Ti-6Al-4V), but it is small and hard to find.\n\n### Proposal\n- More cited entries, each with its standard, edition and table: more structural and engineering steels (EN 10083 quenched and tempered, EN 10025 S275/S460), grey and ductile cast iron (EN 1561, EN 1563), copper alloys, more aluminium (5083, 6063), common engineering polymers (PA6, PA66-GF30, POM, PC, ABS; with the test standard and conditioning).\n- Temperature-dependent values where the source gives them.\n- The material dialog opens on the library browser (search, family filter), with \"custom\" one click away.\n\nRoadmap: M17 (material library).\n",
+    "state": "open",
+    "updated_at": "2026-11-19T20:03:30Z",
+    "labels": [
+      "enhancement",
+      "area:solver",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/983"
+  },
+  {
+    "number": 982,
+    "title": "Contact in a linear study: the refusal and the UI offer the nonlinear step in one click (M7)",
+    "body": "A user asked for contact in linear static analysis of assemblies. Today ties (bonded) work in linear steps, and frictional contact runs in nonlinear static and explicit steps; a linear step refuses contact by name.\n\n### Proposal\n- The refusal says what to do: \"contact needs a nonlinear static step: change step X's procedure (one increment is enough for small sliding)\".\n- In the UI, the contact dialog and `model.check` offer that change in one click (`model.step.edit` to `nonlinear_static`, small sliding, one increment), so a linear assembly study with contact is one decision away.\n- The manual's contact page gets a short \"contact in a linear study\" section.\n\nNo change to the solvers. Roadmap: M7.\n",
+    "state": "open",
+    "updated_at": "2026-11-19T20:03:32Z",
+    "labels": [
+      "enhancement",
+      "area:solver",
+      "area:ui",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/982"
+  },
+  {
+    "number": 981,
+    "title": "Loads: bearing, hydrostatic, remote force and spatially varying pressure (M7)",
+    "body": "A user doing linear static work asked for more load types. Today: force and moment (on a set or reference point), traction, pressure, gravity, body force, centrifugal, temperature (thermal strain), and mapped initial temperature or residual stress.\n\n### Missing\n- **Bearing load** on a cylindrical face: a total force distributed over the loaded half with a cosine (or parabolic) pressure, normal to the face.\n- **Hydrostatic pressure**: p = ρ g (h − z) on wetted faces from a free-surface height, zero above it.\n- **Remote force and moment**: a reference point at a picked location plus a distributing coupling to the faces, made in one step.\n- **Pressure varying in space**: a linear or tabulated field over the faces.\n\nEach written to all three decks, verified against a closed form (the resultant and its line of action; a hydrostatically loaded wall against beam theory).\n\nBolt pretension stays in M7 (`interaction.bolt`). Roadmap: M7.\n",
+    "state": "open",
+    "updated_at": "2026-11-19T20:03:30Z",
+    "labels": [
+      "enhancement",
+      "area:solver",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/981"
+  },
+  {
+    "number": 980,
+    "title": "Supports for linear static: frictionless, cylindrical, local-frame and remote displacement (M7)",
+    "body": "A user doing linear static work asked for more boundary condition types. Today: fixed, displacement (global axes), symmetry (a plane, inclined allowed), springs to ground, and a reference point with kinematic or distributing coupling.\n\n### Missing, as one command each over what exists\n- **Frictionless support** on any face, curved included: zero displacement along the face normal at each node (constraint rows `n·u = 0`, the normal averaged per node from the face's geometry).\n- **Cylindrical support** on a cylindrical face: radial, axial and tangential each fixed or free, in the cylinder's own frame (from the face's axis).\n- **Displacement in a local frame**: `values` in a rectangular or cylindrical coordinate system, which the two above build on.\n- **Remote displacement**: a reference point plus a coupling to the picked faces, made in one step.\n\nEach is written to all three decks as the constraints it is made of, verified against a closed form (a pressurised thick cylinder held by a cylindrical support against Lamé, a block on a frictionless curved seat against the patch-test state).\n\nRoadmap: M7 (supports and loads for assembly investigations).\n",
+    "state": "open",
+    "updated_at": "2026-11-19T20:03:31Z",
+    "labels": [
+      "enhancement",
+      "area:solver",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/980"
+  },
+  {
+    "number": 979,
+    "title": "Open STEP and IGES files directly with geometry.open (M1)",
+    "body": "A user asked for STEP import. Today a STEP, IGES, .FCStd or .3dm file reaches FieldCraft only through SolidCraft: `file.insert_step` there, save, then `geometry.open` here. That works, but nothing in FieldCraft says so.\n\n### Proposal\n`geometry.open` accepts `.step`/`.stp`/`.iges`/`.igs` directly: `fieldcraft-geometry` builds an in-memory SolidCraft design with the import as its base feature (the same reader SolidCraft uses, behind `solidcraft_kernel::guard`) and adopts its bodies and face names. `model: \"keep\"` works as for designs, so opening a revised STEP picks up the change.\n\n- The File menu's Open dialog lists the STEP and IGES filters.\n- Assemblies: each STEP product becomes a body, placed (as SolidCraft occurrences are today).\n- Refusals name the file and the reader's error; no panic on a hostile file (a hostile-input test).\n\nRelated: #606 (more file types). Roadmap: M1.\n",
+    "state": "open",
+    "updated_at": "2026-11-19T20:03:29Z",
+    "labels": [
+      "enhancement",
+      "area:io",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/979"
+  },
+  {
     "number": 969,
     "title": "geometry.bodies refuses a body with keys 1 µm above a chamfer: \"tessellation: face 0 (cone): edge 1: more than 20000 nodes\"",
     "body": "### Observed failure\n\n`geometry.bodies` (and with it `inspect_model`) fails on a design whose only oddity is a 1 µm step beside a cone face:\n\n```\nthe geometry operation failed: the operation failed: mesh: face 0: the operation failed: not supported yet: tessellation: face 0 (cone): tessellation: edge 1: more than 20000 nodes\n```\n\n`geometry.open` on the same file succeeds, so the design looks loaded until something asks for its faces. I met it on a wheel hub of mine (a revolved body with a chamfer and twelve dovetail keys); the reduced case below is made from primitives.\n\nThe cost climbs steeply before it fails. The same body with the step changed:\n\n| Gap between the keys and the chamfer | `geometry.bodies` |\n|---|---|\n| 0 (flush) | 0.2 s |\n| 0.01 mm | 6.4 s |\n| 0.001 mm | refused after 19 s |\n\n### Reproduction\n\nA chamfered disc (a cone from r 52 to r 50 over 2 mm, then a cylinder r 50), and twelve trapezoid keys joined onto it that start 0.001 mm above the chamfer's top edge. As a SolidCraft command script (`solidcraft-cli run hub_keys.json --save hub_keys.solidcraft`, SolidCraft 0.30.1):\n\n```json\n{\"commands\": [\n {\"command\": \"solid.cone\", \"params\": {\"radius\": 52, \"top_radius\": 50, \"height\": 2, \"name\": \"Chamfer\"}},\n {\"command\": \"solid.cylinder\", \"params\": {\"radius\": 50, \"height\": 20, \"base\": [0, 0, 2], \"operation\": \"join\", \"name\": \"Hub\"}},\n {\"command\": \"timeline.add\", \"params\": {\"feature\": {\"type\": \"sketch\", \"id\": 50, \"name\": \"Key sketch\", \"suppressed\": false,\n   \"plane\": {\"base\": {\"name\": \"XY\", \"type\": \"origin\"}, \"distance\": \"2.001\", \"type\": \"offset\"},\n   \"sketch\": {\"constraints\": [], \"counters\": {\"k\": 0, \"l\": 4},\n    \"curves\": [{\"a\": 1, \"b\": 2, \"construction\": false, \"id\": \"l1\", \"type\": \"line\"}, {\"a\": 2, \"b\": 3, \"construction\": false, \"id\": \"l2\", \"type\": \"line\"},\n               {\"a\": 3, \"b\": 4, \"construction\": false, \"id\": \"l3\", \"type\": \"line\"}, {\"a\": 4, \"b\": 1, \"construction\": false, \"id\": \"l4\", \"type\": \"line\"}],\n    \"points\": [{\"fixed\": true, \"id\": \"origin\", \"pos\": [0.0, 0.0]}, {\"fixed\": false, \"id\": \"l1.start\", \"pos\": [-2.0, 49.5]}, {\"fixed\": false, \"id\": \"l1.end\", \"pos\": [2.0, 48.0]},\n               {\"fixed\": false, \"id\": \"l2.end\", \"pos\": [3.5, 53.0]}, {\"fixed\": false, \"id\": \"l3.end\", \"pos\": [-3.5, 53.0]}]}}}},\n {\"command\": \"timeline.add\", \"params\": {\"feature\": {\"type\": \"extrude\", \"id\": 51, \"name\": \"Key\", \"suppressed\": false, \"sketch\": 50, \"operation\": \"join\",\n   \"profiles\": {\"type\": \"all\"}, \"extent\": {\"convention\": \"total_distance\", \"direction\": \"positive\", \"distance\": \"15\"}}}},\n {\"command\": \"solid.pattern.circular\", \"params\": {\"features\": [\"Key\"], \"axis\": \"Z\", \"count\": 12, \"angle\": 360}}\n]}\n```\n\nThen, through `fieldcraft-cli mcp`: `execute geometry.open {\"path\": \".../hub_keys.solidcraft\"}` (succeeds), `execute geometry.bodies {}` (the error above). With `\"distance\": \"2.01\"` in the sketch's plane it answers in 6.4 s, and with `\"2\"` in 0.2 s.\n\n### Evidence\n\n- The body is sound: one closed body of 64 faces in SolidCraft.\n- SolidCraft 0.44.1 meshes all three variants at its finest export quality (`run --in hub_keys.solidcraft --out hub.stl --quality finest`), so a later SolidCraft than the pin, or its settings, copes with the step.\n- On a similar disc (r 67 to r 65), a box-shaped key with the same 0.001 mm gap doesn't reach the refusal but shows the same growth: one key 4.4 s, twelve keys 41 s, against 0.1 s flush.\n\n### Expected behaviour\n\nThe faces are listed. A 1 µm step is poor modelling, but the body is valid, and a sliver that small shouldn't refine an edge of the neighbouring cone past 20,000 nodes. If it can't be meshed, the error could name the body and say what is small, so the modelling mistake can be found: in a 52-body design it took a bisection to find which body \"face 0\" belonged to.\n\n### Investigation\n\nNone in the code. From the outside: the failing face is the chamfer's cone, which the keys don't touch; they only leave a 1 µm strip of the cylinder between themselves and the cone's top edge.\n\n### Version and platform\n\nFieldCraft develop build of 2026-11-16 (v0.8.0), `fieldcraft-cli mcp`, Windows 11 x86_64. The design was saved by SolidCraft 0.30.1 (format 48).\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
