@@ -1,19 +1,5 @@
 [
   {
-    "number": 986,
-    "title": "Support links open the Ko-fi membership tiers",
-    "body": "The README's Support links and the app's Donate pill open https://ko-fi.com/jyviko, which lands on the one-time tip. Point them at https://ko-fi.com/jyviko/tiers so supporters see the membership tiers first (the one-time tip stays one click away on that page).",
-    "state": "open",
-    "updated_at": "2026-11-19T20:57:15Z",
-    "labels": [
-      "enhancement",
-      "area:ui",
-      "needs-triage"
-    ],
-    "assignees": [],
-    "url": "https://github.com/tangency-labs/fieldcraft/issues/986"
-  },
-  {
     "number": 984,
     "title": "Design iteration: study.update and study.sweep on SolidCraft parameters, the first slice of M22",
     "body": "A user asked for a way to iterate designs. Today `geometry.open` with `model: \"keep\"` reopens an edited design and keeps the mesh settings and every definition (sets follow persistent face names), so a manual loop works: edit in SolidCraft, reopen, mesh, solve. Nothing automates it.\n\n### Proposal: the first slice of M22\n- `study.parameter.list`: the design's SolidCraft parameters.\n- `study.update {parameters: {name: value}}`: set them, rebuild the design, reopen with `keep`, remesh with the saved settings, solve every step; one undo step; refuses with the stale references `geometry.open` reports.\n- `study.sweep {parameter, values, outputs}`: run `study.update` per value and tabulate chosen outputs (max von Mises in a set, a probe, a reaction, a frequency, mass), CSV export and an XY plot.\n- Deterministic and bounded (a cap on the number of runs), each run a job with progress and cancel.\n\nVerified on a case with a closed form across the sweep (a cantilever's tip deflection against its length cubed).\n\nRoadmap: M22.\n",
