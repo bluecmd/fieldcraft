@@ -223,13 +223,16 @@
     "title": "Help wanted: refinement order of curved-wall drag for a periodic sphere array in Stokes flow (analytic reference)",
     "body": "This is a cheap study that runs on a laptop. Take a simple cubic periodic array of spheres in creeping flow (Re ≪ 1), driven by a pressure gradient or a body force. The dimensionless drag K is known analytically (Hasimoto 1959; Sangani & Acrivos 1982; Zick & Homsy 1982).\n\nKeep the solid fraction fixed and run radii R = 3, 6, 9 and 12 lattice units (15 if affordable), with a box side of about 5.33 R. Report K, the relative error, and the observed order between successive pairs.\n\n## Why it matters\n\nThe error falls with refinement, but the observed order appears to drop toward first order on finer grids. That's below the ≥ 1.5 expected of a second-order scheme. Three grids can't establish the asymptotic order; more resolutions, on independent machines, can.\n\n## Please also report\n\n- the boundary scheme;\n- how the sphere sits relative to the lattice: node- or cell-centred (the scatter over random offsets is very useful);\n- the Mach and Reynolds numbers;\n- the mass drift;\n- the force method (momentum exchange vs pressure gradient).\n\nRelated: #785, #798.\n",
     "state": "open",
-    "updated_at": "2026-11-14T10:28:47Z",
+    "updated_at": "2026-11-20T08:16:58Z",
     "labels": [
       "help wanted",
+      "claimed",
       "area:cfd",
       "needs-triage"
     ],
-    "assignees": [],
+    "assignees": [
+      "Arefhm94"
+    ],
     "url": "https://github.com/tangency-labs/fieldcraft/issues/940"
   },
   {
