@@ -1,5 +1,18 @@
 [
   {
+    "number": 1014,
+    "title": "lbm-gpu: regularized and hybrid collisions drift from the CPU in mean momentum",
+    "body": "The regularized and hybrid collisions rebuild every population from (δρ, j, P); on the GPU the rebuild keeps mass and momentum only to f32 rounding, which beside walls in a nearly steady flow has one sign every step. On a forced 16-cell plane channel (10 000 steps) the GPU's velocity differs from the CPU's by 2.1e-5 to 8.9e-5 of the largest speed.\n\nProposal: project the rebuilt populations onto the exact mass and momentum budget (about 25 lines of WGSL), with a CPU/GPU parity test on that channel.\n",
+    "state": "open",
+    "updated_at": "2026-11-21T08:44:59Z",
+    "labels": [
+      "area:cfd",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1014"
+  },
+  {
     "number": 1008,
     "title": "lbm: wall function for the Spalart–Allmaras model, and Han's on-node wall at obstacles, edges and inlets",
     "body": "With a wall model, the SA model (#1007, issue #1006) has no wall treatment of its own at the first fluid node.\n\nProposal, in five stacked pull requests: (a) the Nichols & Nelson wall function: ν̃ at each first fluid node from the eddy viscosity of the law the wall applies; (b) Han, Ooka & Kikumoto's on-node wall (eq. 14) on obstacle walls, by link pairs; (c) where it meets an inlet, outlet or slip face; (d) the SA wall distance reading the halfway links beside the nodes; (e) an inlet cell touching two walls becomes a wall cell.\n\nAll opt-in with `spalding_bounce`/`musker`; CPU first, the GPU refuses what it does not run.\n\nOverlaps #927 and #938 (wall models); we would like to know what should wait for them.\n",
