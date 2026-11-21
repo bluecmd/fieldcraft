@@ -1,5 +1,18 @@
 [
   {
+    "number": 1008,
+    "title": "lbm: wall function for the Spalart–Allmaras model, and Han's on-node wall at obstacles, edges and inlets",
+    "body": "With a wall model, the SA model (#1007, issue #1006) has no wall treatment of its own at the first fluid node.\n\nProposal, in five stacked pull requests: (a) the Nichols & Nelson wall function: ν̃ at each first fluid node from the eddy viscosity of the law the wall applies; (b) Han, Ooka & Kikumoto's on-node wall (eq. 14) on obstacle walls, by link pairs; (c) where it meets an inlet, outlet or slip face; (d) the SA wall distance reading the halfway links beside the nodes; (e) an inlet cell touching two walls becomes a wall cell.\n\nAll opt-in with `spalding_bounce`/`musker`; CPU first, the GPU refuses what it does not run.\n\nOverlaps #927 and #938 (wall models); we would like to know what should wait for them.\n",
+    "state": "open",
+    "updated_at": "2026-11-21T07:50:42Z",
+    "labels": [
+      "area:cfd",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1008"
+  },
+  {
     "number": 1006,
     "title": "lbm: a Reynolds-averaged eddy-viscosity model (Spalart–Allmaras) beside the LES closures",
     "body": "The fluid solver has Smagorinsky and Vreman, which need walls resolved at LES resolution. Proposal: the Spalart–Allmaras one-equation model (1994, with f_t2, the limited S̃ and the negative form), ν̃ transported on the lattice cells (bounded, conservative), the exact wall distance of every fluid cell, coupled on the CPU and the GPU, opt-in as a `turbulence` variant, with a manufactured-solution order test and a laminar check. It adds no wall law; walls keep their current treatment, and on the GPU it is refused with a wall model. A wall law for it would be a separate issue. Related: #785 (LES accuracy) and #927 (wall models on interpolated walls), which this does not touch.\n",
