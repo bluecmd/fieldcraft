@@ -1,5 +1,79 @@
 [
   {
+    "number": 1004,
+    "title": "A velocity inlet under MRT goes unstable at low viscosity (CPU)",
+    "body": "With `collision: mrt`, a velocity inlet (`Velocity`, uniform or parabolic) makes the CPU flow unstable at low viscosity within a few hundred steps; the first instability sits in the first one or two columns behind the inlet. The regularised and HRR collisions on the same set-up are stable.\n\nReproduction on develop (CPU f64, no wall model, lattice units): a 40 x 12 x 4 box, periodic in z, no-slip walls on y, `Velocity { velocity: [0.05, 0.02, 0.0], Uniform }` at `x_min`, `Pressure { 0, Uniform }` at `x_max`, initial velocity [0.05, 0, 0], tau - 1/2 = 1e-2 (nu = 1/300), MRT: \"the flow went unstable at time step 855: the lattice speed reached 0.503\".\n\nCause (our reading of the code): `zou_he` closes the inlet cell's unknown populations by bounce-back of the non-equilibrium part with Hecht and Harting's correction, which leaves the non-hydrodynamic moments unconstrained. The regularised collisions project them away each step; MRT relaxes the raw non-equilibrium, so they grow.\n\nFix we have: after `zou_he` on a velocity-inlet cell, under MRT only, set the cell to the equilibrium plus the second-order regularised non-equilibrium (Latt et al., Phys. Rev. E 77, 056703, 2008), about 40 lines.\n\nGaps: the GPU inlet has the same weakness (not ported); TRT at tau - 1/2 = 2.4e-3 is also unstable, consistent with #958.\n\nQuestions: should the projection cover every collision that relaxes the raw non-equilibrium (TRT too), and should the GPU port be in the same PR?\n",
+    "state": "open",
+    "updated_at": "2026-11-21T05:28:38Z",
+    "labels": [
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1004"
+  },
+  {
+    "number": 1002,
+    "title": "Interpolated walls make or lose mass: the mean density drifts on walls that cut the grid",
+    "body": "On a wall that does not lie half way along its links, the interpolated rule returns another amount than left along the link. A turned 8-cell laminar channel (periodic, body force, no model) drifts in mean density by up to 2.7e-2 per 10,000 steps with the linear rule and 2e-2 with the quadratic one (24 cases in the turned-channel test).\n\nProposal: store what each wall node's links create at a step and take it back from the node and its fluid neighbours one step later, weights renormalised over the fluid targets, no momentum added; off by default, CPU and GPU, open boundaries untouched.\n\nQuestion: should it be a `solve.fluid` option, and under what name?\n",
+    "state": "open",
+    "updated_at": "2026-11-21T05:28:36Z",
+    "labels": [
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1002"
+  },
+  {
+    "number": 1000,
+    "title": "Interpolated walls: a three-node (quadratic) form for walls turned against the grid",
+    "body": "The linear Bouzidi rule (#732) leaves a turned laminar channel's flow rate up to 1.6 % off at 8 cells across (45 deg) and up to 0.9 % at 26.57 deg; 16 cells brings it under 1 %. Reading the same characteristic from three nodes in line brings the 8-cell errors under 0.55 %.\n\nProposal: an opt-in `walls: \"interpolated_quadratic\"`, linear on every link that lacks the second fluid node behind it, CPU and GPU, with the turned-channel tests (see the laminar-exact tests) as the gate. `\"interpolated\"` is unchanged.\n",
+    "state": "open",
+    "updated_at": "2026-11-21T05:28:27Z",
+    "labels": [
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1000"
+  },
+  {
+    "number": 998,
+    "title": "Interpolated walls: links whose solid cell lies across a periodic face never find their crossing and fall back to half-way",
+    "body": "With `walls: interpolated` (#732), a wall link whose solid neighbour is reached across a periodic face is counted in `no_crossing` and treated as half-way. The crossing search in `Flow::new` builds the segment's end point unwrapped, so it lies outside the box where the surface is not.\n\nReproduction: a laminar channel turned 26.57 degrees against the grid, 8 cells across, periodic along the flow and z, two obstacle walls, no turbulence model, `walls: interpolated`: 1456 wall links, 1340 interpolated, 116 no crossing. Flow-rate error against the exact solution at wall offsets 0 / 0.33 / 0.67: -0.68 / -1.07 / -1.31 % (-0.54 / -0.76 / -0.93 % with the fix).\n\nProposed fix: shift the segment by one box length across a periodic face before the search; a few lines in `flow.rs`, and a regression test asserting `no_crossing == 0`.\n",
+    "state": "open",
+    "updated_at": "2026-11-21T05:28:23Z",
+    "labels": [
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/998"
+  },
+  {
+    "number": 996,
+    "title": "lbm tests: exact laminar references for interpolated walls that cut the grid",
+    "body": "#732's rule is checked against a sphere's drag and a shifted channel. There is no gate against a closed-form answer on walls that do not lie on cell faces (turned channels, a square duct, the width sweep, the open channel).\n\nProposal: a test file that measures flow rate, mean-density drift, flux ratio and pressure gradient against Poiseuille/Boussinesq references, with the rule's current misses recorded as expected values marked known, so changes to the rule move them visibly. Tests only.\n",
+    "state": "open",
+    "updated_at": "2026-11-21T05:28:18Z",
+    "labels": [
+      "area:cfd",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/996"
+  },
+  {
+    "number": 994,
+    "title": "solve.fluid: report the true largest Mach number and warn above 0.1",
+    "body": "The reply's `mach` is the setup's estimate from the characteristic velocity. A throat, a jet or a start-up transient can reach several times that without any sign; one of our runs estimated 0.087 and reached 0.687. The solver already samples the extrema for `validity`.\n\nProposal: return the largest local Mach number over the fluid cells it samples as `max_mach` (plus `max_lattice_speed`) and warn above 0.1.\n\nRelated to #914 (pre-run estimate), which this does not replace.\n",
+    "state": "open",
+    "updated_at": "2026-11-21T05:28:05Z",
+    "labels": [
+      "area:cfd",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/994"
+  },
+  {
     "number": 993,
     "title": "Linux/GNOME Wayland: window closes while orbiting a heavy fluid result (`Connection reset by peer`, `WinitEventLoop(ExitFailure(1))`); fine under XWayland",
     "body": "### Observed failure\n\nOrbiting the viewport with the mouse over a large fluid result closes the FieldCraft window. No crash report is written (`fieldcraft-cli crashes list` shows nothing new), and the log ends with:\n\n```\nIo error: Connection reset by peer (os error 104)\nIo error: Connection reset by peer (os error 104)\nError: WinitEventLoop(ExitFailure(1))\n```\n\nThe same model under XWayland (`env -u WAYLAND_DISPLAY WINIT_UNIX_BACKEND=x11 fieldcraft`) can be orbited without problems.\n\n### Reproduction\n\n1. Start `fieldcraft` natively on a GNOME Wayland session.\n2. Import a large closed surface as an obstacle (`geometry.import.mesh`, ~2.2 M triangles, untagged 3MF).\n3. Create an air fluid domain around it with ~14 M cells (spacing 10 mm in a 3.74 × 2.3 × 1.65 m box), a velocity inlet, a convective pressure outlet and slip side walls; fluid step 7500 steps, 6 frames, `regularized` + Smagorinsky; `solve.fluid` with `backend: \"gpu\"`.\n4. Show the velocity on the default slice with streamlines (64 seeds, 60 traced).\n5. Orbit the view with the mouse for a few seconds → the window disappears.\n\nThe model is a 2.4 GB `.fieldcraft` of a private design, so I can't attach it. I haven't reduced it to a bundled sample or tested smaller scenes.\n\n### Evidence\n\n- App log (`/tmp/fieldcraft-automation/logs/fieldcraft.log`): the session ends with `fieldcraft: FieldCraft closed` and no warning; stderr has the three lines above.\n- No crash report is created for these exits.\n- Seen on native Wayland while orbiting. Under XWayland the same model and interaction work.\n\n### Expected behaviour\n\nOrbiting should stay responsive or at least degrade (dropped frames) without the compositor disconnecting the client.\n\n### Investigation\n\nNot looked at the code. My guess: frames get slow with this scene (2.2 M-triangle obstacle + 14 M-cell slice + streamlines) while pointer motion events keep arriving, and GNOME Mutter disconnects a Wayland client whose connection backs up. X11 tolerates that. Coalescing pointer motion to one update per frame, or a lighter render path while the camera moves, might avoid it. Possibly related in spirit to #683 (UI thread blocking on Wayland), but that one was file dialogs.\n\n### Version and platform\n\nFieldCraft 0.8.1 (c1bec5b74f), Linux tar.gz build, Ubuntu 24.04, GNOME on Wayland (Mutter), kernel 7.0.0-43, AMD Radeon RX 6650 XT, Mesa 25.2.8 RADV (Vulkan), MSAA 4x.\n",
@@ -59,7 +133,7 @@
     "title": "Material library: more cited entries, polymers and cast irons, and a library-first material dialog (M17)",
     "body": "A user asked for a material library. One exists (`model.material.library.list`/`.add`, nine cited structural metals: S235, S355, 304, 316, 6061-T6, 6082-T6, 7075-T6, 2024-T3, Ti-6Al-4V), but it is small and hard to find.\n\n### Proposal\n- More cited entries, each with its standard, edition and table: more structural and engineering steels (EN 10083 quenched and tempered, EN 10025 S275/S460), grey and ductile cast iron (EN 1561, EN 1563), copper alloys, more aluminium (5083, 6063), common engineering polymers (PA6, PA66-GF30, POM, PC, ABS; with the test standard and conditioning).\n- Temperature-dependent values where the source gives them.\n- The material dialog opens on the library browser (search, family filter), with \"custom\" one click away.\n\nRoadmap: M17 (material library).\n",
     "state": "open",
-    "updated_at": "2026-11-19T20:03:30Z",
+    "updated_at": "2026-11-21T05:24:17Z",
     "labels": [
       "enhancement",
       "area:solver",
