@@ -1076,16 +1076,13 @@
     "title": "lbm-gpu: the throughput benchmarks fail in parallel on NVIDIA with \"the readback did not complete\"",
     "body": "### Observed failure\n\nThe `lbm-gpu` throughput benchmarks (`crates/lbm-gpu/tests/throughput.rs`, all `#[ignore]`d, so part of `cargo xtask test --heavy`) fail now and then on a real NVIDIA card when they run in parallel, the default for `cargo test`:\n\n```\nthread 'smagorinsky_cost' panicked at crates/lbm-gpu/tests/throughput.rs:312:40:\ncalled `Result::unwrap()` on an `Err` value: Backend(\"GPU: the readback did not complete\")\nthread 'cell_updates_per_second' panicked at crates/lbm-gpu/tests/throughput.rs:121:28:\ncalled `Result::unwrap()` on an `Err` value: Backend(\"GPU: the readback did not complete\")\n```\n\n`zone_throughput_and_diagnostic_cost` failed once as well (at `throughput.rs:54`, `device.advance(32).unwrap()`).\n\n### Reproduction\n\n```\nFIELDCRAFT_GPU=hardware FIELDCRAFT_REQUIRE_GPU=1 \\\n  cargo test --profile ci -p fieldcraft-lbm-gpu --test throughput -- --include-ignored\n```\n\nRepeated on the same machine, `develop` at cb97611:\n\n| | runs | failed with \"the readback did not complete\" |\n|---|---|---|\n| default test threads | 12 | 4 (1–2 tests each); one more run ended without any test result, its output was not kept |\n| `--test-threads=1` | 1 | 0 |\n| `smagorinsky_cost` alone | 2 | 0 |\n\n### Evidence\n\nNo Xid in the guest's kernel log, no PCIe/AER messages on the host, the card idle at 41 °C afterwards. `verification.rs` and the other tests of the crate pass in the same runs.\n\n### Expected behaviour\n\nThe benchmarks pass, as they do one at a time. CI runs them on lavapipe only, so it does not see this.\n\n### Investigation\n\n`verification.rs` takes a shared turn (`static TURN: Mutex<()>`, #616) since the parallel hang in #614 (NVIDIA, concurrent devices); `throughput.rs` does not, so its six benchmarks share the card. The error comes from `read` in `crates/lbm-gpu/src/native.rs`: `device.poll(PollType::Wait { .. })` returns `Ok`, but the `map_async` callback has not run yet, so `rx.try_recv()` is empty. The runs end in about 60 s, well inside `DEVICE_TIMEOUT` (120 s). I have not looked further into why the poll returns before the callback. Taking the same turn in `throughput.rs` would also keep the measured rates clean (in parallel they read 837 M cell updates/s against 1115–1686 M/s alone).\n\n### Version and platform\n\n`develop` at cb97611 (0.7.0). NVIDIA GeForce RTX 3060 Ti, NVIDIA open kernel module 615.78.08, Vulkan, power-limited to 186 W, passed through to a Fedora 44 x86_64 KVM guest (kernel 7.2.14).\n",
     "state": "open",
-    "updated_at": "2026-11-04T01:30:12Z",
+    "updated_at": "2026-11-23T16:01:37Z",
     "labels": [
       "bug",
       "help wanted",
-      "claimed",
       "area:cfd"
     ],
-    "assignees": [
-      "semmelrinde"
-    ],
+    "assignees": [],
     "url": "https://github.com/tangency-labs/fieldcraft/issues/800"
   },
   {
