@@ -242,7 +242,7 @@
     "title": "Interpolated walls: a three-node (quadratic) form for walls turned against the grid",
     "body": "The linear Bouzidi rule (#732) leaves a turned laminar channel's flow rate up to 1.6 % off at 8 cells across (45 deg) and up to 0.9 % at 26.57 deg; 16 cells brings it under 1 %. Reading the same characteristic from three nodes in line brings the 8-cell errors under 0.55 %.\n\nProposal: an opt-in `walls: \"interpolated_quadratic\"`, linear on every link that lacks the second fluid node behind it, CPU and GPU, with the turned-channel tests (see the laminar-exact tests) as the gate. `\"interpolated\"` is unchanged.\n",
     "state": "open",
-    "updated_at": "2026-11-23T22:52:30Z",
+    "updated_at": "2026-11-23T23:30:53Z",
     "labels": [
       "needs-triage"
     ],
@@ -254,7 +254,7 @@
     "title": "Interpolated walls: links whose solid cell lies across a periodic face never find their crossing and fall back to half-way",
     "body": "With `walls: interpolated` (#732), a wall link whose solid neighbour is reached across a periodic face is counted in `no_crossing` and treated as half-way. The crossing search in `Flow::new` builds the segment's end point unwrapped, so it lies outside the box where the surface is not.\n\nReproduction: a laminar channel turned 26.57 degrees against the grid, 8 cells across, periodic along the flow and z, two obstacle walls, no turbulence model, `walls: interpolated`: 1456 wall links, 1340 interpolated, 116 no crossing. Flow-rate error against the exact solution at wall offsets 0 / 0.33 / 0.67: -0.68 / -1.07 / -1.31 % (-0.54 / -0.76 / -0.93 % with the fix).\n\nProposed fix: shift the segment by one box length across a periodic face before the search; a few lines in `flow.rs`, and a regression test asserting `no_crossing == 0`.\n",
     "state": "open",
-    "updated_at": "2026-11-23T22:52:27Z",
+    "updated_at": "2026-11-23T23:30:48Z",
     "labels": [
       "needs-triage"
     ],
@@ -266,7 +266,7 @@
     "title": "lbm tests: exact laminar references for interpolated walls that cut the grid",
     "body": "#732's rule is checked against a sphere's drag and a shifted channel. There is no gate against a closed-form answer on walls that do not lie on cell faces (turned channels, a square duct, the width sweep, the open channel).\n\nProposal: a test file that measures flow rate, mean-density drift, flux ratio and pressure gradient against Poiseuille/Boussinesq references, with the rule's current misses recorded as expected values marked known, so changes to the rule move them visibly. Tests only.\n",
     "state": "open",
-    "updated_at": "2026-11-23T22:52:25Z",
+    "updated_at": "2026-11-23T23:30:13Z",
     "labels": [
       "area:cfd",
       "needs-triage"
