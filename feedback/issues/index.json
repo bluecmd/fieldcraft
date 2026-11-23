@@ -935,20 +935,6 @@
     "url": "https://github.com/tangency-labs/fieldcraft/issues/848"
   },
   {
-    "number": 842,
-    "title": "One-click symmetry plane for flow and heat",
-    "body": "## Current behaviour\n\nHalving a symmetric model is possible today: a slip wall for the flow plus an adiabatic face for heat on the fluid\ndomain, and a matching cut for the solids. But it takes several separate settings, and the solid side needs its own\ntreatment.\n\n## What to build\n\nA single **symmetry plane** condition for a fluid domain face that applies, together:\n- zero normal velocity and zero shear (slip) for the flow;\n- zero normal heat flux for the fluid and for any conducting solid cut by the plane;\n- a check that the geometry and inputs are actually symmetric about the plane, with a warning if not.\n\nResults can be mirrored for display, and derived totals (heat rate, flow) can optionally be doubled, clearly labelled.\n\n## Verification\n\n- A symmetric heated channel solved whole and as a half with the symmetry plane: fields and doubled totals agree\n  within a stated tolerance.\n- An asymmetric input triggers the warning.\n\nPart of #697.\n",
-    "state": "open",
-    "updated_at": "2026-11-06T22:51:04Z",
-    "labels": [
-      "enhancement",
-      "area:cfd",
-      "needs-triage"
-    ],
-    "assignees": [],
-    "url": "https://github.com/tangency-labs/fieldcraft/issues/842"
-  },
-  {
     "number": 841,
     "title": "Parameter studies over model inputs with tabulated derived results",
     "body": "## Current behaviour\n\nComparing designs (fin spacing, inlet velocity, fan choice, heat load) means editing the model and re-solving by hand\nfor each value, then collecting the numbers manually.\n\n## What to build\n\nA **parameter study**:\n- Choose one or more model parameters: a dimension from the geometry or an input such as inlet velocity, power or a\n  material choice.\n- Give a list or range of values. Each point solves in turn, or in parallel where resources allow, with the usual solve\n  caps.\n- Each point records the derived results from #837 (heat rate, pressure drop, outlet temperatures, maximum solid temperature)\n  and the validity and acceptance report.\n- Output is a table and CSV, plus an XY plot of any result against the parameter.\n- A failed or invalid point is shown as such and doesn't stop the study.\n\n## Verification\n\n- A study over the inlet velocity of a heated channel: the recorded heat rate and pressure drop match individual\n  solves.\n- A forced failure at one point is reported and the rest complete.\n\nPart of #697; the fin-spacing comparison in #701 relies on it.\n",
