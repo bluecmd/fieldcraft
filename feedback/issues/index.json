@@ -1,24 +1,10 @@
 [
   {
-    "number": 1051,
-    "title": "ci: ui-egui every_kit_message_id_has_english needs packages the build never downloads (ct-codecs), red on PRs",
-    "body": "### Current behaviour\n\n`ui-egui`'s `theme::tests::every_kit_message_id_has_english` (`crates/ui-egui/src/theme.rs:620-636`) shells out to `cargo metadata --offline --filter-platform <target>` to find the SolidCraft kit's sources. On CI it now fails deterministically:\n\n```\ncargo metadata: error: failed to download `ct-codecs v1.1.8`\n```\n\nThree runs of #999 and #1001 each failed on it, the second time after a re-run. None of those PRs touches ui-egui, Cargo.toml or Cargo.lock. `ct-codecs` comes in through `minisign`, which is a dependency that no crate built in the `cargo xtask ci` job downloads. An offline resolve still needs it, so the test passes only when the runner's cargo cache happens to hold it. #995, and develop at 75bb63aa, passed with a warm cache.\n\n### Expected behaviour\n\nA unit test needs no network and does not depend on what the cache holds. Find the kit's message catalogue without running `cargo metadata`: for example, a build-script `DEP_*`/`cargo:` variable from the kit crates, a path the kit crate exports, or a list the kit exposes at runtime. Whatever the route, the test must still fail when a kit message id has no English text.\n",
-    "state": "open",
-    "updated_at": "2026-11-23T21:45:02Z",
-    "labels": [
-      "bug",
-      "area:infra",
-      "needs-triage"
-    ],
-    "assignees": [],
-    "url": "https://github.com/tangency-labs/fieldcraft/issues/1051"
-  },
-  {
     "number": 1049,
     "title": "Import: open what SolidCraft reads; volume meshing only from a B-rep; triangle files as obstacles",
     "body": "### Current behaviour\n\n- **Two lists of what opens.** FieldCraft keeps its own extension list (`OpenFileKind::of`, `crates/engine/src/cmd/file.rs`) rather than SolidCraft's format table (`solidcraft_io::formats`). The pinned SolidCraft also reads FreeCAD `.fcstd` and Rhino `.3dm` as B-rep (native builds), and the legacy `.solvecraft` design. FieldCraft opens none of them.\n- **Triangles get volume-meshed.** `geometry.import.mesh` reads any 3MF; one without face tags becomes a single-face surface. `mesh.tet.generate`, `mesh.hex.generate` and `mesh.hex.octree` accept `{\"surface\": N}` and mesh it, keeping every triangle of the file as a mesh face. The mesh is then as fine as the file's tessellation, and curved faces stay faceted. #1044's tray gives ~156k quadratic tets whatever size is asked for.\n- **No STL, OBJ or PLY import at all.** Only `mesh.export.stl` exists.\n\n### Expected behaviour\n\n1. **What opens, and how, comes from SolidCraft's format table** (through `fieldcraft-geometry`, the only crate that may use `solidcraft-*`). B-rep formats and designs open with `geometry.open`: `.sc`, `.solidcraft`, `.solvecraft`, STEP/STP, IGES/IGS, and `.fcstd`/`.3dm` in native builds. The browser build lists only what it can read. Pickers, drop, MCP `open` and `OpenFileKind` all follow the table.\n2. **Volume meshing needs a B-rep.** Every mesh command refuses an imported triangle surface, tagged 3MF included. The message names the file and the way out: \"`part.stl` is triangles without a B-rep: open the CAD file (STEP, IGES, .sc) to mesh it; as triangles it can be a fluid obstacle.\"\n3. **Triangle files (STL, OBJ, PLY, 3MF tagged or not) import as surfaces**, through SolidCraft's mesh readers, for:\n   - LBM obstacles;\n   - the grid static solve (#1044) when it lands;\n   - display and reference.\n\n   Face tags, when present, keep naming faces (wall forces, heat).\n4. **`geometry.stitch` stays**, re-scoped to making a triangle surface watertight for obstacles and the grid solve.\n5. **Tests, samples and docs** that mesh imported surfaces move to the CAD source. `docs/features.md`, `docs/formats/tagged-mesh.md` and the manual follow.\n\nHostile input: every new reader path keeps the caps and goes through `guard`. A regression test feeds truncated and garbage STL, OBJ and PLY through the import command.\n",
     "state": "open",
-    "updated_at": "2026-11-23T21:38:49Z",
+    "updated_at": "2026-11-23T22:52:35Z",
     "labels": [
       "enhancement",
       "area:mesh",
@@ -205,7 +191,7 @@
     "title": "lbm: a Reynolds-averaged eddy-viscosity model (Spalart–Allmaras) beside the LES closures",
     "body": "The fluid solver has Smagorinsky and Vreman, which need walls resolved at LES resolution. Proposal: the Spalart–Allmaras one-equation model (1994, with f_t2, the limited S̃ and the negative form), ν̃ transported on the lattice cells (bounded, conservative), the exact wall distance of every fluid cell, coupled on the CPU and the GPU, opt-in as a `turbulence` variant, with a manufactured-solution order test and a laminar check. It adds no wall law; walls keep their current treatment, and on the GPU it is refused with a wall model. A wall law for it would be a separate issue. Related: #785 (LES accuracy) and #927 (wall models on interpolated walls), which this does not touch.\n",
     "state": "open",
-    "updated_at": "2026-11-23T21:29:07Z",
+    "updated_at": "2026-11-23T22:52:32Z",
     "labels": [
       "area:cfd",
       "needs-triage"
@@ -242,7 +228,7 @@
     "title": "Interpolated walls: a three-node (quadratic) form for walls turned against the grid",
     "body": "The linear Bouzidi rule (#732) leaves a turned laminar channel's flow rate up to 1.6 % off at 8 cells across (45 deg) and up to 0.9 % at 26.57 deg; 16 cells brings it under 1 %. Reading the same characteristic from three nodes in line brings the 8-cell errors under 0.55 %.\n\nProposal: an opt-in `walls: \"interpolated_quadratic\"`, linear on every link that lacks the second fluid node behind it, CPU and GPU, with the turned-channel tests (see the laminar-exact tests) as the gate. `\"interpolated\"` is unchanged.\n",
     "state": "open",
-    "updated_at": "2026-11-23T20:39:02Z",
+    "updated_at": "2026-11-23T22:52:30Z",
     "labels": [
       "needs-triage"
     ],
@@ -254,7 +240,7 @@
     "title": "Interpolated walls: links whose solid cell lies across a periodic face never find their crossing and fall back to half-way",
     "body": "With `walls: interpolated` (#732), a wall link whose solid neighbour is reached across a periodic face is counted in `no_crossing` and treated as half-way. The crossing search in `Flow::new` builds the segment's end point unwrapped, so it lies outside the box where the surface is not.\n\nReproduction: a laminar channel turned 26.57 degrees against the grid, 8 cells across, periodic along the flow and z, two obstacle walls, no turbulence model, `walls: interpolated`: 1456 wall links, 1340 interpolated, 116 no crossing. Flow-rate error against the exact solution at wall offsets 0 / 0.33 / 0.67: -0.68 / -1.07 / -1.31 % (-0.54 / -0.76 / -0.93 % with the fix).\n\nProposed fix: shift the segment by one box length across a periodic face before the search; a few lines in `flow.rs`, and a regression test asserting `no_crossing == 0`.\n",
     "state": "open",
-    "updated_at": "2026-11-23T20:39:01Z",
+    "updated_at": "2026-11-23T22:52:27Z",
     "labels": [
       "needs-triage"
     ],
@@ -266,7 +252,7 @@
     "title": "lbm tests: exact laminar references for interpolated walls that cut the grid",
     "body": "#732's rule is checked against a sphere's drag and a shifted channel. There is no gate against a closed-form answer on walls that do not lie on cell faces (turned channels, a square duct, the width sweep, the open channel).\n\nProposal: a test file that measures flow rate, mean-density drift, flux ratio and pressure gradient against Poiseuille/Boussinesq references, with the rule's current misses recorded as expected values marked known, so changes to the rule move them visibly. Tests only.\n",
     "state": "open",
-    "updated_at": "2026-11-23T20:38:59Z",
+    "updated_at": "2026-11-23T22:52:25Z",
     "labels": [
       "area:cfd",
       "needs-triage"
