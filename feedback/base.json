@@ -1,5 +1,5 @@
 {
   "upstream": "tangency-labs/fieldcraft:develop",
   "mirror": "bluecmd/fieldcraft:upstream-develop",
-  "sha": "9359830acbf5643ec26e8849f3ff7ed02fd05256"
+  "sha": "ae29134ea66961dad57c8a10006d4c8df18e6705"
 }
