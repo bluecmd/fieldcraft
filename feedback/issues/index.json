@@ -250,7 +250,7 @@
     "title": "solve.fluid: report the true largest Mach number and warn above 0.1",
     "body": "The reply's `mach` is the setup's estimate from the characteristic velocity. A throat, a jet or a start-up transient can reach several times that without any sign; one of our runs estimated 0.087 and reached 0.687. The solver already samples the extrema for `validity`.\n\nProposal: return the largest local Mach number over the fluid cells it samples as `max_mach` (plus `max_lattice_speed`) and warn above 0.1.\n\nRelated to #914 (pre-run estimate), which this does not replace.\n",
     "state": "open",
-    "updated_at": "2026-11-21T05:28:05Z",
+    "updated_at": "2026-11-23T19:44:14Z",
     "labels": [
       "area:cfd",
       "needs-triage"
