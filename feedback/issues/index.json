@@ -189,7 +189,7 @@
     "title": "A velocity inlet under MRT goes unstable at low viscosity (CPU)",
     "body": "With `collision: mrt`, a velocity inlet (`Velocity`, uniform or parabolic) makes the CPU flow unstable at low viscosity within a few hundred steps; the first instability sits in the first one or two columns behind the inlet. The regularised and HRR collisions on the same set-up are stable.\n\nReproduction on develop (CPU f64, no wall model, lattice units): a 40 x 12 x 4 box, periodic in z, no-slip walls on y, `Velocity { velocity: [0.05, 0.02, 0.0], Uniform }` at `x_min`, `Pressure { 0, Uniform }` at `x_max`, initial velocity [0.05, 0, 0], tau - 1/2 = 1e-2 (nu = 1/300), MRT: \"the flow went unstable at time step 855: the lattice speed reached 0.503\".\n\nCause (our reading of the code): `zou_he` closes the inlet cell's unknown populations by bounce-back of the non-equilibrium part with Hecht and Harting's correction, which leaves the non-hydrodynamic moments unconstrained. The regularised collisions project them away each step; MRT relaxes the raw non-equilibrium, so they grow.\n\nFix we have: after `zou_he` on a velocity-inlet cell, under MRT only, set the cell to the equilibrium plus the second-order regularised non-equilibrium (Latt et al., Phys. Rev. E 77, 056703, 2008), about 40 lines.\n\nGaps: the GPU inlet has the same weakness (not ported); TRT at tau - 1/2 = 2.4e-3 is also unstable, consistent with #958.\n\nQuestions: should the projection cover every collision that relaxes the raw non-equilibrium (TRT too), and should the GPU port be in the same PR?\n",
     "state": "open",
-    "updated_at": "2026-11-21T05:28:38Z",
+    "updated_at": "2026-11-23T19:48:23Z",
     "labels": [
       "needs-triage"
     ],
