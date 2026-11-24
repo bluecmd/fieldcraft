@@ -4,9 +4,10 @@
   "agent": "coupled-exchanger-agent",
   "branch": "fix/fluid-final-speed-units-733",
   "issue": 733,
-  "status": "posted",
+  "status": "blocked",
   "head_sha": "1bd4d551d70239c819f7b0c01568ec5fdd2a2e72",
   "pr": "https://github.com/tangency-labs/fieldcraft/pull/735",
   "media": "attached",
-  "updated_at": "2026-10-25T17:46:06.127Z"
+  "updated_at": "2026-11-24T09:31:03.419Z",
+  "error": "gh: Server Error (HTTP 502)\n"
 }
