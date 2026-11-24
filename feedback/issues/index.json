@@ -1,5 +1,19 @@
 [
   {
+    "number": 1087,
+    "title": "Import follow-ups from #1052's review: v3 fixtures in the real-file tests, hostile-test causes, glTF warning match",
+    "body": "Follow-ups from the independent review of #1052 (import, B-rep-only meshing). None blocks the merge.\n\n1. **The v3 fixtures skip two required file tests.** They aren't in the real-file tests docs/formats/fieldcraft.md requires: the step-only check and the bit-identical save and reopen. `crates/io/tests/formats.rs:431-520` still loops over `fixtures(1)` only. Extend it to `fixtures(3)`.\n2. **The OBJ and PLY hostile tests check failure, not its cause.** `cut_obj` and `bad_ply_face` only assert that the import fails (`crates/geometry/src/triangles.rs:333-334, 368-371`), not that it fails because the reader left geometry out. Assert the message.\n3. **`NOTHING_LEFT_OUT` matches SolidCraft's message wording** (`triangles.rs:52`). That fails safe, but a reworded SolidCraft message would start refusing good glTF files, and no textured-glTF test would catch it. Add a textured glTF that must import, or ask SolidCraft for a structured \"left out\" count on the import feature instead of message text.\n4. **No test opens an FCStd or 3dm file:** the pinned SolidCraft can't write either format. Add one once it can, or once a small public-domain sample is available.\n",
+    "state": "open",
+    "updated_at": "2026-11-24T06:44:57Z",
+    "labels": [
+      "enhancement",
+      "area:io",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1087"
+  },
+  {
     "number": 1083,
     "title": "docs: parity.md's M4 rows for the solver and results are out of date",
     "body": "docs/parity.md row 65 (Solve: own linear static and modal solver) says `started` and lists only part of what landed: the 1D elements, the shells and beams are missing. Row 68 (Results) says \"display planned\", although results display is done (`results.*` commands, deformed shape, contours, mode shapes with animation, node probing, reaction sums, stale marking; ROADMAP M4 row). Bring both rows in line with ROADMAP.md.",
