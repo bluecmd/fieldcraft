@@ -269,8 +269,8 @@
     "number": 998,
     "title": "Interpolated walls: links whose solid cell lies across a periodic face never find their crossing and fall back to half-way",
     "body": "With `walls: interpolated` (#732), a wall link whose solid neighbour is reached across a periodic face is counted in `no_crossing` and treated as half-way. The crossing search in `Flow::new` builds the segment's end point unwrapped, so it lies outside the box where the surface is not.\n\nReproduction: a laminar channel turned 26.57 degrees against the grid, 8 cells across, periodic along the flow and z, two obstacle walls, no turbulence model, `walls: interpolated`: 1456 wall links, 1340 interpolated, 116 no crossing. Flow-rate error against the exact solution at wall offsets 0 / 0.33 / 0.67: -0.68 / -1.07 / -1.31 % (-0.54 / -0.76 / -0.93 % with the fix).\n\nProposed fix: shift the segment by one box length across a periodic face before the search; a few lines in `flow.rs`, and a regression test asserting `no_crossing == 0`.\n",
-    "state": "open",
-    "updated_at": "2026-11-23T23:30:48Z",
+    "state": "closed",
+    "updated_at": "2026-11-24T01:45:51Z",
     "labels": [
       "needs-triage"
     ],
@@ -1050,18 +1050,6 @@
     ],
     "assignees": [],
     "url": "https://github.com/tangency-labs/fieldcraft/issues/821"
-  },
-  {
-    "number": 802,
-    "title": "FDM parts: take the layer direction from SolidCraft's print face, and report the stress across the layers",
-    "body": "### What are you trying to do\n\nI check 3D-printed (FDM) parts. Their weak direction is across the layers: the tensile strength between layers is often a third to a half of the in-plane value. So the first question for a printed part is how much tension crosses the layers, and whether printing it on another face would help.\n\nSolidCraft stores the face a body prints on (Print face, since 0.28.0: `print_faces` in the design, by body name). The build direction is therefore already in the design FieldCraft opens, but FieldCraft doesn't read it. Today I note which way each part prints and work out the stress along that direction by hand, which is only easy when the build direction is a global axis (`stress_zz`).\n\n### How I imagine it working\n\nIn three steps, each useful without the next:\n\n1. **Read the print face.** When a body of the opened design has a print face, `inspect_model` lists that body's **build direction**: the normal of the print face, the direction the layers stack in. A `build_direction` vector can also be given by hand. Without either, nothing changes.\n2. **A result field and a check.** `results.contour {\"field\": \"stress_across_layers\"}` is the normal stress along the build direction (n · σ · n) of a static step, with its largest tensile value in the reply. A check, \"across-layer tension ≤ allowable\", gives pass or fail and the margin. This needs no new material model: with an isotropic material it's already the usual first check.\n3. **Material orientation from it, once orientations exist.** Orthotropic elastic materials exist (`engineering_constants`), but their axes are the global ones until material orientations land (Sections › Orientation is \"coming soon (M8)\" in `docs/features.md`). When they do, \"from the print face\" would be one more way to set one, with the material's third axis along the build direction. A few named starting points for common filaments (PLA, PETG, ASA, PET-CF at 100 % infill) could come with it, marked as rough values to replace with coupon data.\n\n### Why\n\nIt turns the most common printed-part failure check into one step, and it uses data SolidCraft already saves. It also catches the classic mistake of printing a part on the wrong face: change the print face and solve again.\n\n### Notes\n\nEdited 2026-11-18 after checking against develop: the first version said I set up an orthotropic material along the build direction today, which isn't possible yet without material orientations, so the request is now split so that steps 1 and 2 don't wait for them. No command or result on develop mentions a print face or a build direction. Step 1 reads one more section of the design; step 2 is post-processing of the stress FieldCraft already stores.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
-    "state": "open",
-    "updated_at": "2026-11-18T14:58:27Z",
-    "labels": [
-      "needs-triage"
-    ],
-    "assignees": [],
-    "url": "https://github.com/tangency-labs/fieldcraft/issues/802"
   },
   {
     "number": 801,
