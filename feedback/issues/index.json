@@ -4,7 +4,7 @@
     "title": "Fluid results: default slice on a symmetry plane",
     "body": "Part of #1094 (OpenFOAM import/export, from #950 item 5).\n\nThe default fluid slice should sit on a symmetry plane when the step's fluid domain has symmetry faces, instead of the middle of the box.\n\nRuling (owner's overnight mandate, 2026-11-24): resolve the symmetry faces from the step's fluid domain in the model wherever a view is made or a slice is placed (`FlowView::for_result`, `flow::slice_position`, `results.slice`). No change to the results file format: adding the faces to the stored result would make every existing saved result need a re-solve. If the step or domain no longer exists, fall back to the middle slice. The manual states that the automatic slice follows the edited model.\n",
     "state": "open",
-    "updated_at": "2026-11-24T16:00:38Z",
+    "updated_at": "2026-11-24T16:42:20Z",
     "labels": [
       "area:cfd",
       "needs-triage"
