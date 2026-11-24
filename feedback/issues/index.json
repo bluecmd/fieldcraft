@@ -1,5 +1,19 @@
 [
   {
+    "number": 1101,
+    "title": "lbm: on-node wall boundary nodes take no body force, so each wall carries a(δ−Δx/2) in a force-driven channel",
+    "body": "### Current behaviour\n\nFound while finishing the SA wall law (#1017; notes on the swarm board, `lbm-dd/sa-wall/`). On develop's on-node wall (`spalding_bounce` on plane box faces), the boundary nodes take no body force. In a force-driven channel each wall therefore carries a·(δ − Δx/2) instead of a·δ, so the wall stress is off by a first-order amount that grows with Δx/δ. A 1-D model of the lattice scheme puts the wall law's C_f error at 2–3.5× what the law alone would give: at Re_τ 1000, +3.9 % rather than +1.2 % at y⁺ 62, and +7.4 % rather than +2.2 % at y⁺ 100.\n\n### Expected behaviour\n\n- **Body force:** the on-node boundary nodes take their share of the body force (Guo forcing applied at the node, or the half-cell volume the node represents, whichever the scheme's derivation gives), so the momentum balance closes exactly: wall stress = a·δ.\n- **Test:** a regression test on a force-driven channel asserts that balance to round-off.\n- **Re-recording:** develop's `spalding_bounce` results move, so re-record them, each justified against the momentum balance.\n",
+    "state": "open",
+    "updated_at": "2026-11-24T13:26:21Z",
+    "labels": [
+      "bug",
+      "area:cfd",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1101"
+  },
+  {
     "number": 1099,
     "title": "decks: do the three targets accept negative distributing-coupling weights? (licensed-user cross-check)",
     "body": "#1024 writes a distributing coupling on element faces with one weight per node, w = ∫ N dA over the faces: the consistent loads of a unit traction. On quadratic faces (quad8 faces of hex20, tri6 faces of tet10) the corner weights are negative (−A/12 per corner of a quad8 face). The weights go on Abaqus's node-based `*SURFACE` lines under `*DISTRIBUTING`, Nastran's `RBE3` weight groups, and LS-DYNA's `*CONSTRAINED_INTERPOLATION` independent node cards. None of the three public reference manuals says whether a negative weight is accepted. We never run those products. A contributor with a licence for any of them could tell us, as a cross-check, whether such a deck runs and how the coupled point moves. A hex20 bar in tension through a coupling on its end face is the simplest case, `tests/oracle/tension-coupling`. If a target refuses or clamps negative weights, the fix is to write the constraint as equations for that format.",
@@ -590,7 +604,7 @@
     "title": "Material library: more cited entries, polymers and cast irons, and a library-first material dialog (M17)",
     "body": "A user asked for a material library. One exists (`model.material.library.list`/`.add`, nine cited structural metals: S235, S355, 304, 316, 6061-T6, 6082-T6, 7075-T6, 2024-T3, Ti-6Al-4V), but it is small and hard to find.\n\n### Proposal\n- More cited entries, each with its standard, edition and table: more structural and engineering steels (EN 10083 quenched and tempered, EN 10025 S275/S460), grey and ductile cast iron (EN 1561, EN 1563), copper alloys, more aluminium (5083, 6063), common engineering polymers (PA6, PA66-GF30, POM, PC, ABS; with the test standard and conditioning).\n- Temperature-dependent values where the source gives them.\n- The material dialog opens on the library browser (search, family filter), with \"custom\" one click away.\n\nRoadmap: M17 (material library).\n",
     "state": "open",
-    "updated_at": "2026-11-21T05:24:17Z",
+    "updated_at": "2026-11-24T13:19:37Z",
     "labels": [
       "enhancement",
       "area:solver",
