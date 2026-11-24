@@ -1,5 +1,19 @@
 [
   {
+    "number": 1077,
+    "title": "shells: MITC4 is 74 % too stiff on the MacNeal–Harder twisted beam (warped elements, 12 × 2)",
+    "body": "### Observed failure\n\nThe MacNeal–Harder twisted beam (L = 12, width 1.1, thickness 0.32, 90° pretwist, E = 29 × 10⁶, ν = 0.22, clamped root, unit tip force spread as consistent nodal loads over the tip edge) built with quad4 (MITC4) shells, mesh written node by node (#1066), is far too stiff on the prescribed 12 × 2 mesh and converges slowly:\n\n| mesh | in-plane u_z (ref 0.005424) | out-of-plane u_y (ref 0.001754) |\n|---|---|---|\n| 12 × 2 | 0.0013905 (−74.4 %) | 7.3719 × 10⁻⁴ (−58.0 %) |\n| 24 × 4 | 0.0029356 (−45.9 %) | 0.0010950 (−37.6 %) |\n| 48 × 8 | 0.0045010 (−17.0 %) | 0.0015057 (−14.2 %) |\n| 96 × 16 | 0.0052691 (−2.85 %) | 0.0017104 (−2.49 %) |\n\nThe references check against beam theory with the section's principal compliance turning along the span: δ = (P/E) ∫ (L − x)² [cos²θ/I_t + sin²θ/I_w] dx = 5.426 × 10⁻³ (in-plane) and 1.745 × 10⁻³ (out-of-plane), so the model and the loads are right. MacNeal and Harder report that quadrilateral shells pass this test within a few per cent on 12 × 2. Errors of this size that shrink by a factor of 2 to 6 per refinement are locking, not the mesh error of a shell element.\n\n### Expected behaviour\n\nWithin 2 % of the reference on 12 × 2 (MacNeal–Harder grade A), or a documented, cited limitation of flat-facet elements on warped geometry.\n\n### Suspected cause (to confirm)\n\nEach element is projected onto its mean plane (elements.md, Shells: \"the facet approach\"). The 12 × 2 elements are warped (7.5° twist per element), and the projection without a warping correction (rigid links from the nodes to the flat facet) leaves the warped element's nodes off its plane.\n\n### References\n\n- R. H. MacNeal, R. L. Harder, FEAD 1 (1985) 3–20, Fig. 6, Table 3.\n- R. L. Taylor, *Finite element analysis of linear shell problems*, in The Mathematics of Finite Elements and Applications VI, 1987 (warping correction of flat elements).\n- E. N. Dvorkin, K.-J. Bathe, Engineering Computations 1 (1984) 77–88 (MITC4 on warped geometry).\n",
+    "state": "open",
+    "updated_at": "2026-11-24T04:44:35Z",
+    "labels": [
+      "bug",
+      "area:solver",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1077"
+  },
+  {
     "number": 1074,
     "title": "loads: a temperature load that varies in space (activates NAFEMS LE11)",
     "body": "### Current behaviour\n\nThe oracle case `nafems-le11` is pending: it needs the temperature field T = (x² + y²)^½ + z (°C) on the nodes of a static step. A static step's `temperature` load sets one value on a target (docs/manual/structural/linear-static.md, Loads), so a field that varies over the part can only come from a coupled step's conduction solution or an initial field mapped from another model; T = r + z is not a conduction solution (∇²T = 1/r).\n\n### What you need and why\n\nNAFEMS LE11 is the standard linear thermal-stress benchmark (target σ_zz = −105 MPa at A); the thermal strain of solids is already implemented, only the field input is missing.\n\n### Expected behaviour\n\n- A temperature load whose value varies in space. Maintainer's choice: an expression of x, y, z (the form other loads would share, cf. #981 spatially varying pressure) or a per-node table.\n- nafems-le11 activated with its tolerance and refinement, docs/oracle.md regenerated.\n\n### References\n\n- NAFEMS, *The Standard NAFEMS Benchmarks*, TNSB Rev. 3, 1990, test LE11.\n",
@@ -144,7 +158,7 @@
     "title": "lbm: TRT grows about a uniform stream at the laminar floor (τ⁺ 0.505, oblique, U 0.05)",
     "body": "### Current behaviour\n\nFound while bounding the MRT collision for #1057 (notes: swarm board `lbm-dd/notes/expert-mrt-bound.md`). A von Neumann analysis of the TRT collision, about a uniform stream at lattice velocity 0.05 in an oblique direction, finds a growing wave at τ⁺ = 0.505, the laminar floor: growth of about 6e-3 per step. TRT is the collision #1057's refusal of sub-bound MRT points users away from, along with regularized and HRR.\n\n### Expected behaviour\n\n- **Bound:** establish TRT's linear stability bound about a uniform stream, as a function of τ⁺, the magic parameter Λ and lattice Mach, against the published TRT stability analyses (e.g. Kuzmin, Ginzburg & Mohamad 2011).\n- **Floor:** state whether `MIN_TAU` 0.505 is inside it.\n- **If it isn't:** refuse or warn on TRT where it is unstable, as #1057 does for MRT, and record it in the collision docs.\n",
     "state": "open",
-    "updated_at": "2026-11-24T02:31:13Z",
+    "updated_at": "2026-11-24T04:40:23Z",
     "labels": [
       "bug",
       "area:solver",
