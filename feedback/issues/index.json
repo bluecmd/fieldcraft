@@ -248,7 +248,7 @@
     "title": "Panels: pop out panels to native desktop windows and drag out of the app (SolidCraft parity)",
     "body": "### Current behaviour\n\nAll desktop panels (Browser, Context / Command forms, History, Results / Path panels) are rendered inside the single main window over the viewport via `crates/ui-egui/src/shell.rs`. There is no way to pop a panel out into its own native OS window or drag it onto a second monitor.\n\n### What you need and why\n\nDuring post-processing and complex model inspection (e.g. viewing results plots, path plots, fracture/XY charts, or inspecting model definitions alongside a 3D mesh), engineers often want the 3D viewport unobstructed on one monitor while keeping charts, tables, or inspector panels open on a second monitor.\n\nNow that `crates/ui-egui` uses `solidcraft-ui-kit` and mirrors SolidCraft's `shell.rs` card layout, bringing SolidCraft's shared panel-host / pop-out / drag-out workflow to FieldCraft would also keep the two Craft-family desktop apps consistent.\n\n### Expected behaviour\n\nOn desktop, supported panels (e.g. Browser, History, Results / Path panels, and future analysis panels) can be:\n1. Popped out into their own native OS window via **Pop out to window** (closing the window docks the panel back where it was, keeping drafts, selection, and open state intact).\n2. Dragged by their title bar outside the main app window onto another screen, opening directly as that same native window (matching `tangency-labs/solidcraft#16216`).\n3. Kept inside the main window on `wasm32` / headless `ui.capture` / `--control` runs, or when the platform does not report window position.\n\n**Questions before I start a PR series:**\n1. Is this a direction you want in `tangency-labs/fieldcraft`?\n2. Should the shared `panel_runtime` / pop-out host be **lifted into `solidcraft-ui-kit`** (or another shared crate) so SolidCraft and FieldCraft share one implementation, or **adapted into `crates/ui-egui`** (credited in `ATTRIBUTION.md`)?\n3. Would you prefer this split as a small sequential PR series (e.g., PR 1: panel host + docking over `shell.rs`; PR 2: native **Pop out to window** + `wasm32`/headless fallback; PR 3: drag-out outside the app window)?\n\n### Pictures\n\nSee the before/after captures in `tangency-labs/solidcraft#16216` showing Browser and History dragged out of the main window into native OS windows.\n\n### References\n\n- `tangency-labs/solidcraft#16216` — *Panels: drag any panel out of the app into its own window*\n- Prerequisite SolidCraft PRs referenced there: `#11218` (shared panel host), `#11308`, `#15210`, `#20479` (pop-out windows)",
     "state": "open",
-    "updated_at": "2026-11-24T14:12:59Z",
+    "updated_at": "2026-11-24T17:29:35Z",
     "labels": [
       "enhancement",
       "needs-triage"
@@ -289,13 +289,15 @@
     "title": "RFC 0001: edges and faces in the DofLayout, Nédélec elements and the cavity step (phases 1 and 2)",
     "body": "### Current behaviour\n\nSince #1037 the solver factors complex-symmetric matrices, but FieldCraft has no element for the electric field and the degree-of-freedom layout numbers nodes only (docs/rfc/0001-electromagnetics.md §2, §3.1).\n\n### What you need and why\n\nThe rest of phase 1 (the entity-keyed `DofLayout`, which jyviko handed over on Discord) and phase 2 of RFC 0001 (#971): Nédélec elements, perfect conductors and the cavity eigen step, checked against the cases of RFC §4.\n\n### Expected behaviour\n\nThree pull requests, each on the one before:\n\n1. **`fem`: the layout numbers mesh edges and faces.** A slot is an `Entity` (node, edge, face, point); edges and faces come after the nodes, by their sorted labels, each entity's unknowns contiguous, so `NodeGraph`, `add_block` and the ordering work on them unchanged. Two unknown kinds, `E1` and `E2`. A layout without edges and faces is the one it was.\n2. **`fem`: Nédélec tetrahedra of orders 1 and 2** (Whitney; Webb's hierarchical basis), built on corners sorted by label (RFC §8.1), declaring their edges and faces to the layout, with the discrete gradient G (RFC §8.2). A rectangular cavity assembled through the layout as a solver test.\n3. **The cavity step end to end**: εᵣ and μᵣ on materials, a `perfect_conductor` boundary condition on faces, a `cavity` step, `solve.cavity` with the null space projected out (RFC §8.4) and the LDLᵀ inertia as a check for missed modes, the electric field in the results.\n\n### Pictures\n\n_No response_\n\n### References\n\n- J.-C. Nédélec, Numer. Math. 35:315–341, 1980; J. P. Webb, IEEE Trans. Antennas Propag. 47(8):1244–1253, 1999.\n- P. Arbenz, R. Geus, Appl. Numer. Math. 54(2):107–121, 2005 (the null-space projection).\n- D. M. Pozar, *Microwave Engineering*, 4th ed., 2012, §6.4; R. F. Harrington, *Time-Harmonic Electromagnetic Fields*, 1961, ch. 4; D. Boffi, Acta Numer. 19:1–120, 2010.\n",
     "state": "open",
-    "updated_at": "2026-11-24T05:28:23Z",
+    "updated_at": "2026-11-24T17:30:24Z",
     "labels": [
       "enhancement",
       "area:io",
       "needs-triage"
     ],
-    "assignees": [],
+    "assignees": [
+      "jijinbei"
+    ],
     "url": "https://github.com/tangency-labs/fieldcraft/issues/1078"
   },
   {
