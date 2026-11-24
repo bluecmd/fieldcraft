@@ -112,7 +112,7 @@
     "title": "LES: record the void and changed results, and warn when LES runs with staircase walls on curved bodies (#785 steps 2 and 4)",
     "body": "Part of #785, steps 2 and 4 of the LES diagnosis plan (owner-approved 2026-11-24):\n- **Step 2:** `docs/manual/fluid/les.md` and `docs/verification.md` record what the diagnosis made void or changed. That covers les.md's Musker \"Reproduced\" row and its −14 to −17 % figures, and the numbers in #787, #788 and #789. Add the diagnosis's section-1 table. #1075 already marks the MRT channel records void, so don't repeat them.\n- **Step 4:** a setup warning when a turbulence model runs with staircase (half-way) obstacle walls. On the cylinder, interpolated walls take C_d from 1.26 to 1.11, as measured. No default changes; failing test first.\nBrief: swarm board `lbm-dd/pieces/les-docs-and-warning.md`.",
     "state": "open",
-    "updated_at": "2026-11-24T13:53:21Z",
+    "updated_at": "2026-11-24T14:56:22Z",
     "labels": [
       "area:cfd",
       "needs-triage"
@@ -332,7 +332,7 @@
     "title": "elements: axisymmetric elements with twist",
     "body": "### Current behaviour\n\nAxisymmetric elements carry u_r and u_z only. elements.md lists axisymmetric elements with twist as not implemented.\n\n### What you need and why\n\nM4's element library (2D, #30 plan): revolved parts under torsion (shafts, couplings) analysed on their meridian section.\n\n### Expected behaviour\n\n- Axisymmetric elements with twist: a third unknown u_θ per node with the shear strains γ_rθ = ∂u_θ/∂r − u_θ/r and γ_zθ = ∂u_θ/∂z, tri3/tri6/quad4/quad8, torque loads; static and frequency.\n- Verified by a solid and a hollow shaft in torsion (Saint-Venant: exact rotation and τ = T r / J) and a stepped shaft against its closed form.\n\n### References\n\n- O. C. Zienkiewicz, R. L. Taylor, J. Z. Zhu, 2013, ch. 9 (axisymmetric problems).\n- S. P. Timoshenko, J. N. Goodier, *Theory of Elasticity*, 1970, ch. 10 (torsion of shafts of variable diameter).\n",
     "state": "open",
-    "updated_at": "2026-11-24T06:29:12Z",
+    "updated_at": "2026-11-24T14:48:00Z",
     "labels": [
       "enhancement",
       "area:solver",
