@@ -1,5 +1,18 @@
 [
   {
+    "number": 1124,
+    "title": "Fluid results: default slice on a symmetry plane",
+    "body": "Part of #1094 (OpenFOAM import/export, from #950 item 5).\n\nThe default fluid slice should sit on a symmetry plane when the step's fluid domain has symmetry faces, instead of the middle of the box.\n\nRuling (owner's overnight mandate, 2026-11-24): resolve the symmetry faces from the step's fluid domain in the model wherever a view is made or a slice is placed (`FlowView::for_result`, `flow::slice_position`, `results.slice`). No change to the results file format: adding the faces to the stored result would make every existing saved result need a re-solve. If the step or domain no longer exists, fall back to the middle slice. The manual states that the automatic slice follows the edited model.\n",
+    "state": "open",
+    "updated_at": "2026-11-24T16:00:38Z",
+    "labels": [
+      "area:cfd",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1124"
+  },
+  {
     "number": 1113,
     "title": "Add a Homebrew cask for FieldCraft on macOS",
     "body": "### Current behaviour\n\nSolidCraft is available via `brew install --cask solidcraft`. FieldCraft’s stable macOS release is available as a DMG for Apple silicon on GitHub Releases.\n\n### What you need and why\n\nI’d like to install and upgrade FieldCraft through Homebrew alongside SolidCraft. That would let me include both apps in the same Mac setup script and manage updates through the same tool.\n\n### Expected behaviour\n\nCould you add a `fieldcraft` cask to Homebrew using the existing signed and notarized Apple silicon DMG? The cask would track stable releases and let users install FieldCraft with `brew install --cask fieldcraft` and update it with `brew upgrade --cask fieldcraft`.\n\n### References\n\n- [SolidCraft’s Homebrew cask](https://formulae.brew.sh/cask/solidcraft)\n- [FieldCraft’s latest stable release](https://github.com/tangency-labs/fieldcraft/releases/latest)",
