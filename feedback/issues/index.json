@@ -1,5 +1,20 @@
 [
   {
+    "number": 1057,
+    "title": "lbm: Han's wall-function bounce does not reproduce its own A20 channel (C_f +53 % MRT, −52 % HRR)",
+    "body": "### Current behaviour\n\nHan, Ooka & Kikumoto's on-node wall-function bounce (Fluid Dyn. Res. 53:045506, 2021, eq. 14), `spalding_bounce` on plane walls, is on develop. Its own reproduction case fails (docs/verification.md, \"Wall-modelled LES: Han, Ooka & Kikumoto not reproduced at A20\"). The A20 channel (Re_τ 640) was run with a gate fixed beforehand: ε_u⁺ and the log-law intercept b within 15 % of the paper's Tables 2 and 3.\n\n| Collision, SGS | U_b⁺ | C_f vs Dean | ε (paper 0.057) | b (paper 6.4) |\n|---|---|---|---|---|\n| MRT, Smagorinsky C_s 0.1, Van Driest (the paper's) | 14.44 | +53 % | 0.248 | 1.92 |\n| HRR σ 0.99, Vreman C_s 0.18 | 28.77 | −54 % | 0.535 | 15.23 |\n| HRR σ 0.99, Smagorinsky C_s 0.1, Van Driest | 27.94 | −52 % | 0.491 | 14.30 |\n| HRR, dynamic σ, Vreman C_s 0.18 | 28.94 | −55 % | 0.607 | 9.04 |\n\nThe recorded explanation is energy pile-up for MRT (the documented under-resolved MRT failure, Nathen et al. 2018) and about half the right drag for HRR. Neither has been traced to a cause. The Han extension to obstacles (#1046–#1048) is on hold until this plane-wall case reproduces, since it builds on this wall.\n\n### Expected behaviour\n\nThe A20 channel reproduces the paper within the pre-set 15 % gate on the paper's own collision and SGS settings. Failing that, a root cause is found and stated: our implementation of eq. 14 (or its forcing, sampling height, or wall-distance convention), the collision, the SGS model, or a set-up difference from the paper.\n\n### Notes\n\n- Recorded on an NVIDIA GB10 GPU in f32, before the libm (#1043) and #1015 changes. Re-measure on current develop first.\n- Paper: arXiv 2009.04352 (read).\n",
+    "state": "open",
+    "updated_at": "2026-11-24T00:01:38Z",
+    "labels": [
+      "bug",
+      "area:solver",
+      "area:cfd",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1057"
+  },
+  {
     "number": 1055,
     "title": "lbm-gpu: one-signed f32 momentum drift in TRT, and check_les's underived 1e-4 bar",
     "body": "### Current behaviour\n\nFound while diagnosing #1007's `sa::the_sa_channel_follows_the_cpu` (expert notes: swarm board `lbm-dd/expert-1007.md`), measured on an Apple M4 Max (Metal):\n\n- **Regularized and HRR collisions on the GPU.** Their velocity drifted from the CPU by a one-signed f32 rounding of momentum: linear at about 0.88·2⁻²⁴ of the peak per step, 1.05e-4 after 2000 steps. #1015 (af8214f1) fixes it; on develop the same case is at 8.8e-7.\n- **TRT on the GPU** has the same one-signed drift at about a fifth of the rate: 2.07e-5 after 2000 steps and 7.48e-5 after 8000, without SA. #1015's projection doesn't cover TRT.\n- **`check_les`'s 1e-4 velocity bar** (lbm-gpu verification) is not derived. The tightest worst-case bound, N·u with u = 2⁻²⁴, is 1.19e-4 at N = 2000, so the bar sits just below the round-off it's meant to allow.\n\n### Expected behaviour\n\n- **TRT:** decide whether TRT gets the same mass and momentum projection as #1015 (checked against Guo forcing).\n- **Bar:** derive `check_les`'s bar from f32 round-off, the case's step count and the collision. If a derived bar would also pass an unprojected drift, test the projection directly instead, as #1015's single-step test does.\n",
