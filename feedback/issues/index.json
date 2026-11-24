@@ -1,5 +1,126 @@
 [
   {
+    "number": 1111,
+    "title": "lbm: an interpolated-wall 2-D run printed a fluid cell with density 0 (lead, unreproduced)",
+    "body": "Seen once by the LES expert during #785 probes: one interpolated-wall 2-D run printed a fluid cell with density 0. Not followed up or reproduced. Find the case in the expert's logs (`worktrees/wt-785-les/.logs` while it exists; the swarm board notes), reproduce it, and fix the cause if it's real. Density 0 should be refused, never written.",
+    "state": "open",
+    "updated_at": "2026-11-24T13:57:36Z",
+    "labels": [
+      "area:cfd",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1111"
+  },
+  {
+    "number": 1110,
+    "title": "LES: separate the regularised instability's share of the ρ ±7–17 % noise from under-resolution",
+    "body": "The LES expert's stability analysis (`lbm-dd/notes/expert-regularized-bound.md`) finds regularized and HRR growth of 3e-5 to 2e-4 per step where the LES cases run. Measured density noise on the bluff bodies is ±7–17 %. Run one case at two resolutions and two τ⁺ values, to separate the linear instability's share from under-resolution. That decides whether #785 step 6 needs more than its warning.",
+    "state": "open",
+    "updated_at": "2026-11-24T13:57:35Z",
+    "labels": [
+      "area:cfd",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1110"
+  },
+  {
+    "number": 1109,
+    "title": "LES: rerun #791 (TRT negative drag) and #788's Musker and dynamic-σ rows after the two-step force (#1093)",
+    "body": "The two-step force (#1093) changes every recorded LBM force near τ⁺ ½. Once it merges:\n- rerun #791, the quasi-2D TRT cylinder whose mean C_d was negative, keeping TRT inside its stream limit (#1063, 5.6·(τ⁺ − ½));\n- rerun #788's Musker and dynamic-σ rows.\n\nThen update or close both issues with the new numbers.",
+    "state": "open",
+    "updated_at": "2026-11-24T13:57:33Z",
+    "labels": [
+      "area:cfd",
+      "area:io",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1109"
+  },
+  {
+    "number": 1108,
+    "title": "lbm-gpu: GPU kernels for spalding_bounce_matched, then the Re_τ 2000 and 5200 acceptance (#1105 follow-up)",
+    "body": "#1105 adds the matched wall model (Spalding's law sampled at 3Δx plus a mixing-length layer) on the CPU only; the GPU refuses it. Port it to the device, with a parity bar derived from f32 round-off, and run on the NVIDIA GB10. Then run the acceptance at Re_τ 2000 and 5200 against Lee & Moser 2015, within 5 % as fixed in #1105. The brief's last section outlines the GPU piece (swarm board `lbm-dd/pieces/les-wall-matching-height.md`).",
+    "state": "open",
+    "updated_at": "2026-11-24T13:57:30Z",
+    "labels": [
+      "area:cfd",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1108"
+  },
+  {
+    "number": 1107,
+    "title": "lbm: local grid refinement to reach published LES resolution (~80 cells per diameter), and absorbing layers at open faces (#785 step 8)",
+    "body": "Part of #785, step 8. Every published LBM-LES success at cylinder Re 3900 that the expert read uses D/Δx ≈ 80 at the wall through nested levels (e.g. Spinelli et al. 2023). FieldCraft's uniform grids at 16–24 cells per diameter measure +12 % (16) and +8 % (24) on the cylinder, and −14 to −18 % on the square at 16 cells.\nImplement:\n- grid refinement (the expert's literature item C4);\n- absorbing layers at open faces, which inlet.rs:26 already cites, for the ρ noise.\n\nUntil then, the manual states the measured error at 16 and 24 cells (#1104).",
+    "state": "open",
+    "updated_at": "2026-11-24T13:57:29Z",
+    "labels": [
+      "area:cfd",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1107"
+  },
+  {
+    "number": 1106,
+    "title": "LES: rerun cylinder Re 3900 and square Re 22 000 with HRR + Vreman and dynamic σ (#785 step 7)",
+    "body": "Part of #785, step 7 of the LES diagnosis (expert notes: swarm board `lbm-dd/notes/expert-les.md`).\nAfter the two-step force (#1093), the inlet ramp (#1103) and the staircase warning (#1104) land, rerun:\n- the cylinder at Re 3900, against Kravchenko & Moin 2000 (C_d 0.99, St 0.215);\n- the square cylinder at Re 22 000, against Lyn et al. 1995 (C_d about 2.1, St 0.132).\n\nRun each with HRR plus the Vreman model and with dynamic σ, on interpolated walls. This is measurement only, on the GPU, about 10–35 min per case on the GB10. It's expected to shorten the recirculation bubbles. Record the results in docs/verification.md.",
+    "state": "open",
+    "updated_at": "2026-11-24T13:57:27Z",
+    "labels": [
+      "area:cfd",
+      "area:io",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1106"
+  },
+  {
+    "number": 1105,
+    "title": "lbm: a matched wall model, Han's law sampled at 3Δx with a mixing-length layer below (#785 step 5)",
+    "body": "Part of #785, step 5 of the LES diagnosis plan (owner-approved 2026-11-24).\n- **The problem:** Han's on-node wall law sampled at the first node gives C_f −43 to −49 % at Re_τ 1000.\n- **The fix:** a new wall model, `spalding_bounce_matched`, samples Spalding's law at h = 3Δx (Kawai & Larsson 2012), with a mixing-length ν_t below h (Malaspinas & Sagaut eq. 57, using Spalding's law for ∂u/∂y).\n- **Unchanged:** `spalding_bounce` stays bit for bit.\n- **Scope:** CPU first; the GPU refuses it until a follow-up.\n- **Acceptance, fixed beforehand:** Re_τ 1000 at 16, 24 and 32 cells per δ, full protocol (20 + 50 δ/u_τ), C_f and U⁺ above h within 5 % of Lee & Moser; then Re_τ 2000 and 5200.\n- **Probe so far:** 16 cells per δ, U_b⁺ 20.33 (C_f about −3.5 %).\nBrief: swarm board `lbm-dd/pieces/les-wall-matching-height.md`.",
+    "state": "open",
+    "updated_at": "2026-11-24T13:54:45Z",
+    "labels": [
+      "enhancement",
+      "area:cfd",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1105"
+  },
+  {
+    "number": 1104,
+    "title": "LES: record the void and changed results, and warn when LES runs with staircase walls on curved bodies (#785 steps 2 and 4)",
+    "body": "Part of #785, steps 2 and 4 of the LES diagnosis plan (owner-approved 2026-11-24):\n- **Step 2:** `docs/manual/fluid/les.md` and `docs/verification.md` record what the diagnosis made void or changed. That covers les.md's Musker \"Reproduced\" row and its −14 to −17 % figures, and the numbers in #787, #788 and #789. Add the diagnosis's section-1 table. #1075 already marks the MRT channel records void, so don't repeat them.\n- **Step 4:** a setup warning when a turbulence model runs with staircase (half-way) obstacle walls. On the cylinder, interpolated walls take C_d from 1.26 to 1.11, as measured. No default changes; failing test first.\nBrief: swarm board `lbm-dd/pieces/les-docs-and-warning.md`.",
+    "state": "open",
+    "updated_at": "2026-11-24T13:53:21Z",
+    "labels": [
+      "area:cfd",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1104"
+  },
+  {
+    "number": 1103,
+    "title": "lbm: ramp a velocity inlet from the initial field over a stated time, so bluff-body starts leave no acoustic transient (#785 step 3)",
+    "body": "Part of #785, step 3 of the LES diagnosis plan (owner-approved 2026-11-24). A uniform `initial_velocity` through a body leaves an acoustic transient: cylinder drag +4 % and force noise ×9, and the square cylinder went unstable at 161 D/U.\nAdd a face option that ramps the inlet velocity from the initial field over a stated time, with the ramp's form cited or derived.\nCheck: the cylinder's force rms and far-field C_p rms, and the square cylinder surviving 400 D/U.\nBrief: swarm board `lbm-dd/pieces/les-inlet-ramp.md`.",
+    "state": "open",
+    "updated_at": "2026-11-24T13:53:10Z",
+    "labels": [
+      "enhancement",
+      "area:cfd",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1103"
+  },
+  {
     "number": 1101,
     "title": "lbm: on-node wall boundary nodes take no body force, so each wall carries a(δ−Δx/2) in a force-driven channel",
     "body": "### Current behaviour\n\nFound while finishing the SA wall law (#1017; notes on the swarm board, `lbm-dd/sa-wall/`). On develop's on-node wall (`spalding_bounce` on plane box faces), the boundary nodes take no body force. In a force-driven channel each wall therefore carries a·(δ − Δx/2) instead of a·δ, so the wall stress is off by a first-order amount that grows with Δx/δ. A 1-D model of the lattice scheme puts the wall law's C_f error at 2–3.5× what the law alone would give: at Re_τ 1000, +3.9 % rather than +1.2 % at y⁺ 62, and +7.4 % rather than +2.2 % at y⁺ 100.\n\n### Expected behaviour\n\n- **Body force:** the on-node boundary nodes take their share of the body force (Guo forcing applied at the node, or the half-cell volume the node represents, whichever the scheme's derivation gives), so the momentum balance closes exactly: wall stress = a·δ.\n- **Test:** a regression test on a force-driven channel asserts that balance to round-off.\n- **Re-recording:** develop's `spalding_bounce` results move, so re-record them, each justified against the momentum balance.\n",
