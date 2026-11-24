@@ -216,19 +216,6 @@
     "url": "https://github.com/tangency-labs/fieldcraft/issues/1008"
   },
   {
-    "number": 1006,
-    "title": "lbm: a Reynolds-averaged eddy-viscosity model (Spalart–Allmaras) beside the LES closures",
-    "body": "The fluid solver has Smagorinsky and Vreman, which need walls resolved at LES resolution. Proposal: the Spalart–Allmaras one-equation model (1994, with f_t2, the limited S̃ and the negative form), ν̃ transported on the lattice cells (bounded, conservative), the exact wall distance of every fluid cell, coupled on the CPU and the GPU, opt-in as a `turbulence` variant, with a manufactured-solution order test and a laminar check. It adds no wall law; walls keep their current treatment, and on the GPU it is refused with a wall model. A wall law for it would be a separate issue. Related: #785 (LES accuracy) and #927 (wall models on interpolated walls), which this does not touch.\n",
-    "state": "open",
-    "updated_at": "2026-11-23T23:30:58Z",
-    "labels": [
-      "area:cfd",
-      "needs-triage"
-    ],
-    "assignees": [],
-    "url": "https://github.com/tangency-labs/fieldcraft/issues/1006"
-  },
-  {
     "number": 1004,
     "title": "A velocity inlet under MRT goes unstable at low viscosity (CPU)",
     "body": "With `collision: mrt`, a velocity inlet (`Velocity`, uniform or parabolic) makes the CPU flow unstable at low viscosity within a few hundred steps; the first instability sits in the first one or two columns behind the inlet. The regularised and HRR collisions on the same set-up are stable.\n\nReproduction on develop (CPU f64, no wall model, lattice units): a 40 x 12 x 4 box, periodic in z, no-slip walls on y, `Velocity { velocity: [0.05, 0.02, 0.0], Uniform }` at `x_min`, `Pressure { 0, Uniform }` at `x_max`, initial velocity [0.05, 0, 0], tau - 1/2 = 1e-2 (nu = 1/300), MRT: \"the flow went unstable at time step 855: the lattice speed reached 0.503\".\n\nCause (our reading of the code): `zou_he` closes the inlet cell's unknown populations by bounce-back of the non-equilibrium part with Hecht and Harting's correction, which leaves the non-hydrodynamic moments unconstrained. The regularised collisions project them away each step; MRT relaxes the raw non-equilibrium, so they grow.\n\nFix we have: after `zou_he` on a velocity-inlet cell, under MRT only, set the cell to the equilibrium plus the second-order regularised non-equilibrium (Latt et al., Phys. Rev. E 77, 056703, 2008), about 40 lines.\n\nGaps: the GPU inlet has the same weakness (not ported); TRT at tau - 1/2 = 2.4e-3 is also unstable, consistent with #958.\n\nQuestions: should the projection cover every collision that relaxes the raw non-equilibrium (TRT too), and should the GPU port be in the same PR?\n",
@@ -275,19 +262,6 @@
     ],
     "assignees": [],
     "url": "https://github.com/tangency-labs/fieldcraft/issues/998"
-  },
-  {
-    "number": 996,
-    "title": "lbm tests: exact laminar references for interpolated walls that cut the grid",
-    "body": "#732's rule is checked against a sphere's drag and a shifted channel. There is no gate against a closed-form answer on walls that do not lie on cell faces (turned channels, a square duct, the width sweep, the open channel).\n\nProposal: a test file that measures flow rate, mean-density drift, flux ratio and pressure gradient against Poiseuille/Boussinesq references, with the rule's current misses recorded as expected values marked known, so changes to the rule move them visibly. Tests only.\n",
-    "state": "open",
-    "updated_at": "2026-11-23T23:30:13Z",
-    "labels": [
-      "area:cfd",
-      "needs-triage"
-    ],
-    "assignees": [],
-    "url": "https://github.com/tangency-labs/fieldcraft/issues/996"
   },
   {
     "number": 993,
