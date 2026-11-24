@@ -139,7 +139,7 @@
     "title": "lbm: on-node wall boundary nodes take no body force, so each wall carries a(δ−Δx/2) in a force-driven channel",
     "body": "### Current behaviour\n\nFound while finishing the SA wall law (#1017; notes on the swarm board, `lbm-dd/sa-wall/`). On develop's on-node wall (`spalding_bounce` on plane box faces), the boundary nodes take no body force. In a force-driven channel each wall therefore carries a·(δ − Δx/2) instead of a·δ, so the wall stress is off by a first-order amount that grows with Δx/δ. A 1-D model of the lattice scheme puts the wall law's C_f error at 2–3.5× what the law alone would give: at Re_τ 1000, +3.9 % rather than +1.2 % at y⁺ 62, and +7.4 % rather than +2.2 % at y⁺ 100.\n\n### Expected behaviour\n\n- **Body force:** the on-node boundary nodes take their share of the body force (Guo forcing applied at the node, or the half-cell volume the node represents, whichever the scheme's derivation gives), so the momentum balance closes exactly: wall stress = a·δ.\n- **Test:** a regression test on a force-driven channel asserts that balance to round-off.\n- **Re-recording:** develop's `spalding_bounce` results move, so re-record them, each justified against the momentum balance.\n",
     "state": "open",
-    "updated_at": "2026-11-24T13:26:21Z",
+    "updated_at": "2026-11-24T15:12:13Z",
     "labels": [
       "bug",
       "area:cfd",
