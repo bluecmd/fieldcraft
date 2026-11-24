@@ -267,7 +267,7 @@
     "title": "elements: Euler–Bernoulli (cubic) two-node beam",
     "body": "### Current behaviour\n\nThe only beam is the two-node Timoshenko beam (`crates/fem/src/beam.rs`, interdependent interpolation with Φ = 12 EI/(G A_s L²)). docs/manual/structural/elements.md (Limitations) lists the Euler–Bernoulli (cubic) beam as not implemented.\n\n### What you need and why\n\nM4's element library (ROADMAP: \"Element library per elements.md, 1D and 2D first\"; the family plan of #30, \"1D elements II\"). Slender frames are analysed with shear-rigid beams, and the deck writers need the shear-rigid element to map to each solver's cubic beam.\n\n### Expected behaviour\n\n- A beam section without transverse shear flexibility: the Hermite cubic element, the Φ → 0 limit of the existing kernel (Przemieniecki 1968, §5.6), in static, frequency and the decks (Abaqus cubic beam, Nastran beam without shear flexibility, LS-DYNA counterpart or a refusal by name).\n- Verified by exact end-load deflections, a portal frame (slope-deflection without shear) and the Euler–Bernoulli frequencies of a cantilever.\n\n### References\n\n- J. S. Przemieniecki, *Theory of Matrix Structural Analysis*, McGraw-Hill, 1968, §5.6.\n- R. D. Cook et al., *Concepts and Applications of Finite Element Analysis*, 4th ed., 2002, ch. 2.\n",
     "state": "open",
-    "updated_at": "2026-11-24T04:03:04Z",
+    "updated_at": "2026-11-24T13:32:39Z",
     "labels": [
       "enhancement",
       "area:solver",
@@ -303,35 +303,6 @@
     ],
     "assignees": [],
     "url": "https://github.com/tangency-labs/fieldcraft/issues/1065"
-  },
-  {
-    "number": 1063,
-    "title": "lbm: TRT grows about a uniform stream at the laminar floor (τ⁺ 0.505, oblique, U 0.05)",
-    "body": "### Current behaviour\n\nFound while bounding the MRT collision for #1057 (notes: swarm board `lbm-dd/notes/expert-mrt-bound.md`). A von Neumann analysis of the TRT collision, about a uniform stream at lattice velocity 0.05 in an oblique direction, finds a growing wave at τ⁺ = 0.505, the laminar floor: growth of about 6e-3 per step. TRT is the collision #1057's refusal of sub-bound MRT points users away from, along with regularized and HRR.\n\n### Expected behaviour\n\n- **Bound:** establish TRT's linear stability bound about a uniform stream, as a function of τ⁺, the magic parameter Λ and lattice Mach, against the published TRT stability analyses (e.g. Kuzmin, Ginzburg & Mohamad 2011).\n- **Floor:** state whether `MIN_TAU` 0.505 is inside it.\n- **If it isn't:** refuse or warn on TRT where it is unstable, as #1057 does for MRT, and record it in the collision docs.\n",
-    "state": "open",
-    "updated_at": "2026-11-24T04:40:23Z",
-    "labels": [
-      "bug",
-      "area:solver",
-      "area:cfd",
-      "needs-triage"
-    ],
-    "assignees": [],
-    "url": "https://github.com/tangency-labs/fieldcraft/issues/1063"
-  },
-  {
-    "number": 1059,
-    "title": "lbm: MIN_LINK_FRACTION 0.01 clamps q near 0 and costs interpolated walls an order (1.72 vs 2.00)",
-    "body": "### Current behaviour\n\n`MIN_LINK_FRACTION = 0.01` (`crates/lbm/src/voxel.rs:315, 338`) clamps an interpolated wall link's fraction q from below. A link whose true crossing is at or near its fluid node (q ≈ 0) is treated as q = 0.01. For walls passing through, or very near, cell centres, that adds an error that falls only as 1/N, a first-order term in a second-order method.\n\nMeasured while finishing #1001 (expert notes: swarm board `lbm-dd/expert-1001.md`). Rotated Poiseuille channel at 45°, whole-row widths, quadratic interpolated walls (Bouzidi, Firdaouss & Lallemand 2001); observed L2 order with the wall at offset ±1e-6 cells:\n\n| | with the floor | without |\n|---|---|---|\n| quadratic | 1.72 | 2.00 |\n\nThe floor held 308, 644 and 1256 links on the 8-, 16- and 24-cell grids. The 2:1-slope case at offset 0.67 (order 1.78) probably has the same cause, with q ≈ 0.001. The linear rule on develop shares the floor.\n\n### Expected behaviour\n\n- Remove the floor, or derive it: Bouzidi's linear and quadratic rules are defined at q = 0, where the wall is on the fluid node.\n- Show that q → 0 is safe: no division by q in either rule, and the q < ½ branch coefficients bounded.\n- Re-record what moves in the interpolated-wall tests and the oracle, each change justified against the exact solution.\n- The order study checks second order with the wall exactly at a node offset (±1e-6) on all grids.\n",
-    "state": "open",
-    "updated_at": "2026-11-24T06:18:04Z",
-    "labels": [
-      "area:solver",
-      "area:cfd",
-      "needs-triage"
-    ],
-    "assignees": [],
-    "url": "https://github.com/tangency-labs/fieldcraft/issues/1059"
   },
   {
     "number": 1057,
