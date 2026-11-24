@@ -1,5 +1,19 @@
 [
   {
+    "number": 1061,
+    "title": "Roadmap: M24 polymer melt and creeping flows (steady thermal solver, viscoelastic fluids)",
+    "body": "### Current behaviour\n\nFieldCraft cannot simulate the molten filament in a 3D-printer nozzle, or other polymer-processing flows.\n\nWhat already exists:\n- shear-thinning viscosity (Carreau–Yasuda, Cross, power law);\n- heat, with conducting solids;\n- temperature-dependent viscosity tables;\n- latent heat.\n\nThree things block it:\n1. **The time scale.** A melt is about 10⁶ times more viscous than water. At 20 µm cells the explicit lattice step falls near 1e-9 s, and heat takes about 0.4 s of physical time to soak across the bore, so roughly 5e8 steps. An isothermal pressure-against-flow-rate run is feasible; the thermal problem isn't.\n2. **The free surface** (`free_surface`) is isothermal, Newtonian and CPU-only, with no surface tension, so the strand leaving the nozzle can't be modelled.\n3. **No viscoelastic model**, so no die swell.\n\n### Expected behaviour\n\nA roadmap milestone, M24 \"Polymer melt and creeping flows\":\n- **A steady implicit solver** for incompressible generalised-Newtonian flow with heat:\n  - Taylor–Hood elements;\n  - Picard, then Newton, on the viscosity;\n  - WLF and Arrhenius temperature shifts;\n  - SUPG for convected heat;\n  - viscous heating, conducting solids and latent heat.\n- **Viscoelastic fluids:** Oldroyd-B, Giesekus and PTT, in log-conformation form.\n- **Free surfaces** for the strand and die swell, then solidification. The reference-map Eulerian solid of #594 is a candidate for the solidified part.\n- **Verification:**\n  - Carreau–Yasuda Poiseuille (closed form);\n  - Graetz–Nusselt;\n  - Oldroyd-B past a confined cylinder;\n  - the 4:1 contraction;\n  - Tanner's Newtonian die swell.\n\nThis issue records the milestone; the PR adds the ROADMAP row.\n",
+    "state": "open",
+    "updated_at": "2026-11-24T01:56:38Z",
+    "labels": [
+      "enhancement",
+      "area:solver",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1061"
+  },
+  {
     "number": 1059,
     "title": "lbm: MIN_LINK_FRACTION 0.01 clamps q near 0 and costs interpolated walls an order (1.72 vs 2.00)",
     "body": "### Current behaviour\n\n`MIN_LINK_FRACTION = 0.01` (`crates/lbm/src/voxel.rs:315, 338`) clamps an interpolated wall link's fraction q from below. A link whose true crossing is at or near its fluid node (q ≈ 0) is treated as q = 0.01. For walls passing through, or very near, cell centres, that adds an error that falls only as 1/N, a first-order term in a second-order method.\n\nMeasured while finishing #1001 (expert notes: swarm board `lbm-dd/expert-1001.md`). Rotated Poiseuille channel at 45°, whole-row widths, quadratic interpolated walls (Bouzidi, Firdaouss & Lallemand 2001); observed L2 order with the wall at offset ±1e-6 cells:\n\n| | with the floor | without |\n|---|---|---|\n| quadratic | 1.72 | 2.00 |\n\nThe floor held 308, 644 and 1256 links on the 8-, 16- and 24-cell grids. The 2:1-slope case at offset 0.67 (order 1.78) probably has the same cause, with q ≈ 0.001. The linear rule on develop shares the floor.\n\n### Expected behaviour\n\n- Remove the floor, or derive it: Bouzidi's linear and quadratic rules are defined at q = 0, where the wall is on the fluid node.\n- Show that q → 0 is safe: no division by q in either rule, and the q < ½ branch coefficients bounded.\n- Re-record what moves in the interpolated-wall tests and the oracle, each change justified against the exact solution.\n- The order study checks second order with the wall exactly at a node offset (±1e-6) on all grids.\n",
@@ -230,18 +244,6 @@
     "url": "https://github.com/tangency-labs/fieldcraft/issues/1008"
   },
   {
-    "number": 1004,
-    "title": "A velocity inlet under MRT goes unstable at low viscosity (CPU)",
-    "body": "With `collision: mrt`, a velocity inlet (`Velocity`, uniform or parabolic) makes the CPU flow unstable at low viscosity within a few hundred steps; the first instability sits in the first one or two columns behind the inlet. The regularised and HRR collisions on the same set-up are stable.\n\nReproduction on develop (CPU f64, no wall model, lattice units): a 40 x 12 x 4 box, periodic in z, no-slip walls on y, `Velocity { velocity: [0.05, 0.02, 0.0], Uniform }` at `x_min`, `Pressure { 0, Uniform }` at `x_max`, initial velocity [0.05, 0, 0], tau - 1/2 = 1e-2 (nu = 1/300), MRT: \"the flow went unstable at time step 855: the lattice speed reached 0.503\".\n\nCause (our reading of the code): `zou_he` closes the inlet cell's unknown populations by bounce-back of the non-equilibrium part with Hecht and Harting's correction, which leaves the non-hydrodynamic moments unconstrained. The regularised collisions project them away each step; MRT relaxes the raw non-equilibrium, so they grow.\n\nFix we have: after `zou_he` on a velocity-inlet cell, under MRT only, set the cell to the equilibrium plus the second-order regularised non-equilibrium (Latt et al., Phys. Rev. E 77, 056703, 2008), about 40 lines.\n\nGaps: the GPU inlet has the same weakness (not ported); TRT at tau - 1/2 = 2.4e-3 is also unstable, consistent with #958.\n\nQuestions: should the projection cover every collision that relaxes the raw non-equilibrium (TRT too), and should the GPU port be in the same PR?\n",
-    "state": "open",
-    "updated_at": "2026-11-23T19:48:23Z",
-    "labels": [
-      "needs-triage"
-    ],
-    "assignees": [],
-    "url": "https://github.com/tangency-labs/fieldcraft/issues/1004"
-  },
-  {
     "number": 1002,
     "title": "Interpolated walls make or lose mass: the mean density drifts on walls that cut the grid",
     "body": "On a wall that does not lie half way along its links, the interpolated rule returns another amount than left along the link. A turned 8-cell laminar channel (periodic, body force, no model) drifts in mean density by up to 2.7e-2 per 10,000 steps with the linear rule and 2e-2 with the quadratic one (24 cases in the turned-channel test).\n\nProposal: store what each wall node's links create at a step and take it back from the node and its fluid neighbours one step later, weights renormalised over the fluid targets, no momentum added; off by default, CPU and GPU, open boundaries untouched.\n\nQuestion: should it be a `solve.fluid` option, and under what name?\n",
@@ -264,18 +266,6 @@
     ],
     "assignees": [],
     "url": "https://github.com/tangency-labs/fieldcraft/issues/1000"
-  },
-  {
-    "number": 998,
-    "title": "Interpolated walls: links whose solid cell lies across a periodic face never find their crossing and fall back to half-way",
-    "body": "With `walls: interpolated` (#732), a wall link whose solid neighbour is reached across a periodic face is counted in `no_crossing` and treated as half-way. The crossing search in `Flow::new` builds the segment's end point unwrapped, so it lies outside the box where the surface is not.\n\nReproduction: a laminar channel turned 26.57 degrees against the grid, 8 cells across, periodic along the flow and z, two obstacle walls, no turbulence model, `walls: interpolated`: 1456 wall links, 1340 interpolated, 116 no crossing. Flow-rate error against the exact solution at wall offsets 0 / 0.33 / 0.67: -0.68 / -1.07 / -1.31 % (-0.54 / -0.76 / -0.93 % with the fix).\n\nProposed fix: shift the segment by one box length across a periodic face before the search; a few lines in `flow.rs`, and a regression test asserting `no_crossing == 0`.\n",
-    "state": "closed",
-    "updated_at": "2026-11-24T01:45:51Z",
-    "labels": [
-      "needs-triage"
-    ],
-    "assignees": [],
-    "url": "https://github.com/tangency-labs/fieldcraft/issues/998"
   },
   {
     "number": 993,
@@ -1050,6 +1040,18 @@
     ],
     "assignees": [],
     "url": "https://github.com/tangency-labs/fieldcraft/issues/821"
+  },
+  {
+    "number": 802,
+    "title": "FDM parts: take the layer direction from SolidCraft's print face, and report the stress across the layers",
+    "body": "### What are you trying to do\n\nI check 3D-printed (FDM) parts. Their weak direction is across the layers: the tensile strength between layers is often a third to a half of the in-plane value. So the first question for a printed part is how much tension crosses the layers, and whether printing it on another face would help.\n\nSolidCraft stores the face a body prints on (Print face, since 0.28.0: `print_faces` in the design, by body name). The build direction is therefore already in the design FieldCraft opens, but FieldCraft doesn't read it. Today I note which way each part prints and work out the stress along that direction by hand, which is only easy when the build direction is a global axis (`stress_zz`).\n\n### How I imagine it working\n\nIn three steps, each useful without the next:\n\n1. **Read the print face.** When a body of the opened design has a print face, `inspect_model` lists that body's **build direction**: the normal of the print face, the direction the layers stack in. A `build_direction` vector can also be given by hand. Without either, nothing changes.\n2. **A result field and a check.** `results.contour {\"field\": \"stress_across_layers\"}` is the normal stress along the build direction (n · σ · n) of a static step, with its largest tensile value in the reply. A check, \"across-layer tension ≤ allowable\", gives pass or fail and the margin. This needs no new material model: with an isotropic material it's already the usual first check.\n3. **Material orientation from it, once orientations exist.** Orthotropic elastic materials exist (`engineering_constants`), but their axes are the global ones until material orientations land (Sections › Orientation is \"coming soon (M8)\" in `docs/features.md`). When they do, \"from the print face\" would be one more way to set one, with the material's third axis along the build direction. A few named starting points for common filaments (PLA, PETG, ASA, PET-CF at 100 % infill) could come with it, marked as rough values to replace with coupon data.\n\n### Why\n\nIt turns the most common printed-part failure check into one step, and it uses data SolidCraft already saves. It also catches the classic mistake of printing a part on the wrong face: change the print face and solve again.\n\n### Notes\n\nEdited 2026-11-18 after checking against develop: the first version said I set up an orthotropic material along the build direction today, which isn't possible yet without material orientations, so the request is now split so that steps 1 and 2 don't wait for them. No command or result on develop mentions a print face or a build direction. Step 1 reads one more section of the design; step 2 is post-processing of the stress FieldCraft already stores.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "state": "open",
+    "updated_at": "2026-11-18T14:58:27Z",
+    "labels": [
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/802"
   },
   {
     "number": 801,
