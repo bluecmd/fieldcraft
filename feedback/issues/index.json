@@ -1,5 +1,19 @@
 [
   {
+    "number": 1097,
+    "title": "ui-egui: settings test cancel_restores_the_snapshot… is flaky (global usage state raced by another test)",
+    "body": "`ui-egui`'s `settings::tests::cancel_restores_the_snapshot_down_to_an_unanswered_question` failed on CI for #1076 (run 45393993276, merge of fd53f29c into a50ebfa7), at `crates/ui-egui/src/settings_tests.rs:185`, `assert!(usage::enabled())`. #1076 changes only `crates/lbm` and docs, and develop's CI at a50ebfa7 is green, so this is an intermittent failure.\n\n**Likely cause:** `usage` is process-global state. This test holds `TEST_LOCK` while it disables usage sharing, clicks \"Share anonymous usage\" and asserts it's enabled. Any other test in the crate that toggles `usage` without taking the same lock can race it under parallel test threads.\n\n**Fix:**\n- Every test that reads or writes `usage` takes `TEST_LOCK`, or the usage state becomes injectable per app instance instead of global.\n- Add a regression check: run the crate's tests with many threads in a loop, and confirm this test can't fail.\n",
+    "state": "open",
+    "updated_at": "2026-11-24T12:52:13Z",
+    "labels": [
+      "bug",
+      "area:ui",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1097"
+  },
+  {
     "number": 1095,
     "title": "Material library: support JIS material designations (e.g. SS400, A5052, S45C, SUS304)",
     "body": "### Context\n\nFollowing #1056 and #1089 (part of #983), the bundled material library now has 20 cited entries covering EN (EN 10025, EN 10083, EN 10088, EN 1561, EN 1563, EN 1652), AA/EN AW, and ASTM designations.\n\nIn Japan (and East Asian supply chains), drawings, suppliers, and workshops specify materials by **JIS designations** rather than EN or ASTM. Common examples include:\n- **Structural / engineering steels**: `JIS G 3101 SS400` (general structural rolled steel, e.g. 6 mm plate; minimum yield >= 245 MPa and tensile 400-510 MPa at t <= 16 mm, which sits between EN 10025-2 S235 and S275 rather than matching either), `JIS G 4051 S45C`, `JIS G 4053 SCM440`\n- **Aluminium alloys**: `JIS H 4000 A5052` (e.g. A5052-H34 / A5052-O, very common for sheet and machined plates and not yet covered in the catalogue), `JIS H 4040 A2017` / `A5056`\n- **Stainless / copper alloys**: `JIS G 4304 SUS304` / `SUS316`, `JIS H 3100 C1100` / `C2801`, `JIS H 3250 C3604`\n\n### Proposal / Question\n\nWould you welcome adding **JIS material standards** as standalone cited entries in `crates/model/data/materials.json`?\n\nBecause even closely corresponding JIS and EN/ASTM grades (such as `SUS304` vs `1.4301`, or `S45C` vs `C45`) are not strictly equivalent in composition or specified minimum strengths, they should be separate entries with their own JIS citations rather than aliases onto EN entries.\n\nBefore preparing a PR, it would help to confirm:\n\n1. **Inclusion of JIS grades**: Are regional standards such as JIS welcome in `materials.json`, following the same citation rules as #1056 / #1089 (JIS standard/edition + public mill/manufacturer datasheets such as Nippon Steel / JFE / UACJ, SI values, per-property basis)?\n2. **Naming and scope**: What ID convention do you prefer for JIS entries (e.g. `JIS-G3101-SS400`, `JIS-H4000-A5052-H34`), and is a small initial slice (for example `SS400` and `A5052-H34`) a good starting point?\n\nI am happy to research the public primary datasheets and submit a small first PR once the preferred direction is agreed.\n",
