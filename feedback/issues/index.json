@@ -98,7 +98,7 @@
     "title": "lbm: a matched wall model, Han's law sampled at 3Δx with a mixing-length layer below (#785 step 5)",
     "body": "Part of #785, step 5 of the LES diagnosis plan (owner-approved 2026-11-24).\n- **The problem:** Han's on-node wall law sampled at the first node gives C_f −43 to −49 % at Re_τ 1000.\n- **The fix:** a new wall model, `spalding_bounce_matched`, samples Spalding's law at h = 3Δx (Kawai & Larsson 2012), with a mixing-length ν_t below h (Malaspinas & Sagaut eq. 57, using Spalding's law for ∂u/∂y).\n- **Unchanged:** `spalding_bounce` stays bit for bit.\n- **Scope:** CPU first; the GPU refuses it until a follow-up.\n- **Acceptance, fixed beforehand:** Re_τ 1000 at 16, 24 and 32 cells per δ, full protocol (20 + 50 δ/u_τ), C_f and U⁺ above h within 5 % of Lee & Moser; then Re_τ 2000 and 5200.\n- **Probe so far:** 16 cells per δ, U_b⁺ 20.33 (C_f about −3.5 %).\nBrief: swarm board `lbm-dd/pieces/les-wall-matching-height.md`.",
     "state": "open",
-    "updated_at": "2026-11-24T13:54:45Z",
+    "updated_at": "2026-11-24T15:33:46Z",
     "labels": [
       "enhancement",
       "area:cfd",
