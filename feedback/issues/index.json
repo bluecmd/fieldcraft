@@ -374,7 +374,7 @@
     "title": "elements: planar beams in 2D models (u_x, u_y, θ_z)",
     "body": "### Current behaviour\n\nA 2D model (plane stress, plane strain) takes trusses but no beams (elements.md: \"A 2D model takes no couplings, no shells or beams\").\n\n### What you need and why\n\nM4's element library (\"Beam, 2D (planar frames)\" in the #30 plan): in-plane frames and stiffeners in 2D models, three unknowns per node (u_x, u_y, θ_z).\n\n### Expected behaviour\n\n- The existing Timoshenko beam restricted to the XY plane (axial, one bending plane), its nodes carrying Ux, Uy, Rz, sharing nodes with 2D continua and trusses; static and frequency; Abaqus planar beam, Nastran and LS-DYNA by their 3D elements held in the plane or refused by name.\n- Verified by a planar portal frame (slope-deflection), a cantilever tip load (exact) and a plane frame's first frequency.\n\n### References\n\n- J. S. Przemieniecki, *Theory of Matrix Structural Analysis*, 1968, ch. 5.\n- Z. Friedman, J. B. Kosmatka, *An improved two-node Timoshenko beam finite element*, Computers & Structures 47 (1993) 473–481.\n",
     "state": "open",
-    "updated_at": "2026-11-24T04:03:07Z",
+    "updated_at": "2026-11-24T14:34:20Z",
     "labels": [
       "enhancement",
       "area:solver",
