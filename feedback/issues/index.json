@@ -1,5 +1,19 @@
 [
   {
+    "number": 1113,
+    "title": "Add a Homebrew cask for FieldCraft on macOS",
+    "body": "### Current behaviour\n\nSolidCraft is available via `brew install --cask solidcraft`. FieldCraft’s stable macOS release is available as a DMG for Apple silicon on GitHub Releases.\n\n### What you need and why\n\nI’d like to install and upgrade FieldCraft through Homebrew alongside SolidCraft. That would let me include both apps in the same Mac setup script and manage updates through the same tool.\n\n### Expected behaviour\n\nCould you add a `fieldcraft` cask to Homebrew using the existing signed and notarized Apple silicon DMG? The cask would track stable releases and let users install FieldCraft with `brew install --cask fieldcraft` and update it with `brew upgrade --cask fieldcraft`.\n\n### References\n\n- [SolidCraft’s Homebrew cask](https://formulae.brew.sh/cask/solidcraft)\n- [FieldCraft’s latest stable release](https://github.com/tangency-labs/fieldcraft/releases/latest)",
+    "state": "open",
+    "updated_at": "2026-11-24T14:23:56Z",
+    "labels": [
+      "enhancement",
+      "area:infra",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1113"
+  },
+  {
     "number": 1111,
     "title": "lbm: an interpolated-wall 2-D run printed a fluid cell with density 0 (lead, unreproduced)",
     "body": "Seen once by the LES expert during #785 probes: one interpolated-wall 2-D run printed a fluid cell with density 0. Not followed up or reproduced. Find the case in the expert's logs (`worktrees/wt-785-les/.logs` while it exists; the swarm board notes), reproduce it, and fix the cause if it's real. Density 0 should be refused, never written.",
@@ -346,7 +360,7 @@
     "title": "elements: pipe elements with internal pressure (elbows later)",
     "body": "### Current behaviour\n\nA pipe is a beam with a `pipe` profile: no internal pressure, no hoop stress, no elbows. elements.md lists pipe and elbow elements as not implemented.\n\n### What you need and why\n\nM4's element library (\"Pipe / elbow\" in the #30 plan): piping systems under internal pressure.\n\n### Expected behaviour\n\n- A pipe element: the beam with a pipe profile plus internal (and external) pressure, giving the end-cap axial force, hoop and radial stresses through the wall (Lamé) and the Bourdon effect of curved pipes left to the elbow.\n- Elbow ovalisation (von Kármán flexibility factors) as a second step, on its own issue.\n- Verified by a closed pipe under pressure (Lamé thick-wall and thin-wall hoop stress) and a pressurised pipe loop's deflection.\n\n### References\n\n- S. P. Timoshenko, J. N. Goodier, *Theory of Elasticity*, 3rd ed., 1970 (Lamé).\n- T. von Kármán, *Über die Formänderung dünnwandiger Rohre*, VDI 55 (1911) 1889–1895 (elbow flexibility).\n",
     "state": "open",
-    "updated_at": "2026-11-24T04:03:10Z",
+    "updated_at": "2026-11-24T14:20:34Z",
     "labels": [
       "enhancement",
       "area:solver",
