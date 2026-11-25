@@ -120,20 +120,6 @@
     "url": "https://github.com/tangency-labs/fieldcraft/issues/1105"
   },
   {
-    "number": 1101,
-    "title": "lbm: on-node wall boundary nodes take no body force, so each wall carries a(δ−Δx/2) in a force-driven channel",
-    "body": "### Current behaviour\n\nFound while finishing the SA wall law (#1017; notes on the swarm board, `lbm-dd/sa-wall/`). On develop's on-node wall (`spalding_bounce` on plane box faces), the boundary nodes take no body force. In a force-driven channel each wall therefore carries a·(δ − Δx/2) instead of a·δ, so the wall stress is off by a first-order amount that grows with Δx/δ. A 1-D model of the lattice scheme puts the wall law's C_f error at 2–3.5× what the law alone would give: at Re_τ 1000, +3.9 % rather than +1.2 % at y⁺ 62, and +7.4 % rather than +2.2 % at y⁺ 100.\n\n### Expected behaviour\n\n- **Body force:** the on-node boundary nodes take their share of the body force (Guo forcing applied at the node, or the half-cell volume the node represents, whichever the scheme's derivation gives), so the momentum balance closes exactly: wall stress = a·δ.\n- **Test:** a regression test on a force-driven channel asserts that balance to round-off.\n- **Re-recording:** develop's `spalding_bounce` results move, so re-record them, each justified against the momentum balance.\n",
-    "state": "open",
-    "updated_at": "2026-11-24T15:12:13Z",
-    "labels": [
-      "bug",
-      "area:cfd",
-      "needs-triage"
-    ],
-    "assignees": [],
-    "url": "https://github.com/tangency-labs/fieldcraft/issues/1101"
-  },
-  {
     "number": 1099,
     "title": "decks: do the three targets accept negative distributing-coupling weights? (licensed-user cross-check)",
     "body": "#1024 writes a distributing coupling on element faces with one weight per node, w = ∫ N dA over the faces: the consistent loads of a unit traction. On quadratic faces (quad8 faces of hex20, tri6 faces of tet10) the corner weights are negative (−A/12 per corner of a quad8 face). The weights go on Abaqus's node-based `*SURFACE` lines under `*DISTRIBUTING`, Nastran's `RBE3` weight groups, and LS-DYNA's `*CONSTRAINED_INTERPOLATION` independent node cards. None of the three public reference manuals says whether a negative weight is accepted. We never run those products. A contributor with a licence for any of them could tell us, as a cross-check, whether such a deck runs and how the coupled point moves. A hex20 bar in tension through a coupling on its end face is the simplest case, `tests/oracle/tension-coupling`. If a target refuses or clamps negative weights, the fix is to write the constraint as equations for that format.",
@@ -327,20 +313,6 @@
     ],
     "assignees": [],
     "url": "https://github.com/tangency-labs/fieldcraft/issues/1071"
-  },
-  {
-    "number": 1069,
-    "title": "elements: planar beams in 2D models (u_x, u_y, θ_z)",
-    "body": "### Current behaviour\n\nA 2D model (plane stress, plane strain) takes trusses but no beams (elements.md: \"A 2D model takes no couplings, no shells or beams\").\n\n### What you need and why\n\nM4's element library (\"Beam, 2D (planar frames)\" in the #30 plan): in-plane frames and stiffeners in 2D models, three unknowns per node (u_x, u_y, θ_z).\n\n### Expected behaviour\n\n- The existing Timoshenko beam restricted to the XY plane (axial, one bending plane), its nodes carrying Ux, Uy, Rz, sharing nodes with 2D continua and trusses; static and frequency; Abaqus planar beam, Nastran and LS-DYNA by their 3D elements held in the plane or refused by name.\n- Verified by a planar portal frame (slope-deflection), a cantilever tip load (exact) and a plane frame's first frequency.\n\n### References\n\n- J. S. Przemieniecki, *Theory of Matrix Structural Analysis*, 1968, ch. 5.\n- Z. Friedman, J. B. Kosmatka, *An improved two-node Timoshenko beam finite element*, Computers & Structures 47 (1993) 473–481.\n",
-    "state": "open",
-    "updated_at": "2026-11-24T14:34:20Z",
-    "labels": [
-      "enhancement",
-      "area:solver",
-      "needs-triage"
-    ],
-    "assignees": [],
-    "url": "https://github.com/tangency-labs/fieldcraft/issues/1069"
   },
   {
     "number": 1068,
