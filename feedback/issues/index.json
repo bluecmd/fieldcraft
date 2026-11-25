@@ -837,7 +837,7 @@
     "title": "Please add water in fluid",
     "body": "### Current behaviour\n\nAt the moment, in fluid \"air\" is the only one that is supported. Please add water (liquid) for the next release.\n\n### What you need and why\n\nadd water (liquid) in the fluid to simulate the water movement / wave\n\n### Expected behaviour\n\n_No response_\n\n### Pictures\n\n_No response_\n\n### References\n\n_No response_",
     "state": "open",
-    "updated_at": "2026-11-24T15:26:00Z",
+    "updated_at": "2026-11-24T23:57:19Z",
     "labels": [
       "enhancement",
       "area:cfd",
