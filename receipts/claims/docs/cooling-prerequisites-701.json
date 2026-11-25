@@ -4,6 +4,7 @@
   "agent": "contour-animation-agent",
   "branch": "docs/cooling-prerequisites-701",
   "issue": 701,
-  "status": "granted",
-  "updated_at": "2026-11-11T08:45:51.565Z"
+  "status": "suspended",
+  "updated_at": "2026-11-25T16:30:47.647Z",
+  "error": "GitHub assignment changed. Stop and coordinate; explicitly update the claim request only after reconciliation."
 }
