@@ -4,6 +4,7 @@
   "agent": "coupled-exchanger-agent",
   "branch": "coupled-exchanger",
   "issue": 700,
-  "status": "granted",
-  "updated_at": "2026-11-11T08:45:42.479Z"
+  "status": "suspended",
+  "updated_at": "2026-11-25T16:30:44.981Z",
+  "error": "GitHub assignment changed. Stop and coordinate; explicitly update the claim request only after reconciliation."
 }
