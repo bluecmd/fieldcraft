@@ -287,20 +287,6 @@
     "url": "https://github.com/tangency-labs/fieldcraft/issues/1073"
   },
   {
-    "number": 1072,
-    "title": "elements: axisymmetric elements with twist",
-    "body": "### Current behaviour\n\nAxisymmetric elements carry u_r and u_z only. elements.md lists axisymmetric elements with twist as not implemented.\n\n### What you need and why\n\nM4's element library (2D, #30 plan): revolved parts under torsion (shafts, couplings) analysed on their meridian section.\n\n### Expected behaviour\n\n- Axisymmetric elements with twist: a third unknown u_θ per node with the shear strains γ_rθ = ∂u_θ/∂r − u_θ/r and γ_zθ = ∂u_θ/∂z, tri3/tri6/quad4/quad8, torque loads; static and frequency.\n- Verified by a solid and a hollow shaft in torsion (Saint-Venant: exact rotation and τ = T r / J) and a stepped shaft against its closed form.\n\n### References\n\n- O. C. Zienkiewicz, R. L. Taylor, J. Z. Zhu, 2013, ch. 9 (axisymmetric problems).\n- S. P. Timoshenko, J. N. Goodier, *Theory of Elasticity*, 1970, ch. 10 (torsion of shafts of variable diameter).\n",
-    "state": "open",
-    "updated_at": "2026-11-24T14:48:00Z",
-    "labels": [
-      "enhancement",
-      "area:solver",
-      "needs-triage"
-    ],
-    "assignees": [],
-    "url": "https://github.com/tangency-labs/fieldcraft/issues/1072"
-  },
-  {
     "number": 1071,
     "title": "elements: generalized plane strain",
     "body": "### Current behaviour\n\n2D continua are plane stress, plane strain (ε_zz = 0) or axisymmetric. elements.md lists generalized plane strain as not implemented.\n\n### What you need and why\n\nM4's element library (2D, #30 plan): long prismatic parts whose ends are free to extend (thermal or axial loads), where plane strain over-constrains ε_zz.\n\n### Expected behaviour\n\n- Generalized plane strain: the out-of-plane strain is a global unknown, ε_zz = ε₀ (+ κ_x y − κ_y x if the bending curvatures are included), held by a reference point that also takes the axial force (and moments).\n- Maintainer's choice: ε₀ only, or ε₀ and the two curvatures.\n- Verified by a free long cylinder heated uniformly or under axial force (exact uniaxial ε_zz), and the thick cylinder with closed ends (Lamé with the end-cap force).\n\n### References\n\n- O. C. Zienkiewicz, R. L. Taylor, J. Z. Zhu, *The Finite Element Method: Its Basis and Fundamentals*, 7th ed., 2013.\n- S. P. Timoshenko, J. N. Goodier, *Theory of Elasticity*, 3rd ed., 1970 (closed-end thick cylinder).\n",
