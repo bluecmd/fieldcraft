@@ -4,7 +4,7 @@
     "title": "develop red: Procedure::Fluid initializers in flow.rs tests miss inlet_ramp (#1135 after #1118)",
     "body": "develop 43b5c120 fails to compile its lbm tests: crates/lbm/src/flow.rs:4104 and :4197 build `Procedure::Fluid` without `inlet_ramp`. #1135's new tests were written before #1118 added the field; the two merged without a conflict and #1135's CI ran on the earlier develop. CI run 45547475309. Fix: add `inlet_ramp: None`.",
     "state": "open",
-    "updated_at": "2026-11-25T04:40:23Z",
+    "updated_at": "2026-11-25T04:52:48Z",
     "labels": [
       "area:cfd",
       "needs-triage"
@@ -342,20 +342,6 @@
     "url": "https://github.com/tangency-labs/fieldcraft/issues/1071"
   },
   {
-    "number": 1070,
-    "title": "elements: pipe elements with internal pressure (elbows later)",
-    "body": "### Current behaviour\n\nA pipe is a beam with a `pipe` profile: no internal pressure, no hoop stress, no elbows. elements.md lists pipe and elbow elements as not implemented.\n\n### What you need and why\n\nM4's element library (\"Pipe / elbow\" in the #30 plan): piping systems under internal pressure.\n\n### Expected behaviour\n\n- A pipe element: the beam with a pipe profile plus internal (and external) pressure, giving the end-cap axial force, hoop and radial stresses through the wall (Lamé) and the Bourdon effect of curved pipes left to the elbow.\n- Elbow ovalisation (von Kármán flexibility factors) as a second step, on its own issue.\n- Verified by a closed pipe under pressure (Lamé thick-wall and thin-wall hoop stress) and a pressurised pipe loop's deflection.\n\n### References\n\n- S. P. Timoshenko, J. N. Goodier, *Theory of Elasticity*, 3rd ed., 1970 (Lamé).\n- T. von Kármán, *Über die Formänderung dünnwandiger Rohre*, VDI 55 (1911) 1889–1895 (elbow flexibility).\n",
-    "state": "open",
-    "updated_at": "2026-11-24T14:20:34Z",
-    "labels": [
-      "enhancement",
-      "area:solver",
-      "needs-triage"
-    ],
-    "assignees": [],
-    "url": "https://github.com/tangency-labs/fieldcraft/issues/1070"
-  },
-  {
     "number": 1069,
     "title": "elements: planar beams in 2D models (u_x, u_y, θ_z)",
     "body": "### Current behaviour\n\nA 2D model (plane stress, plane strain) takes trusses but no beams (elements.md: \"A 2D model takes no couplings, no shells or beams\").\n\n### What you need and why\n\nM4's element library (\"Beam, 2D (planar frames)\" in the #30 plan): in-plane frames and stiffeners in 2D models, three unknowns per node (u_x, u_y, θ_z).\n\n### Expected behaviour\n\n- The existing Timoshenko beam restricted to the XY plane (axial, one bending plane), its nodes carrying Ux, Uy, Rz, sharing nodes with 2D continua and trusses; static and frequency; Abaqus planar beam, Nastran and LS-DYNA by their 3D elements held in the plane or refused by name.\n- Verified by a planar portal frame (slope-deflection), a cantilever tip load (exact) and a plane frame's first frequency.\n\n### References\n\n- J. S. Przemieniecki, *Theory of Matrix Structural Analysis*, 1968, ch. 5.\n- Z. Friedman, J. B. Kosmatka, *An improved two-node Timoshenko beam finite element*, Computers & Structures 47 (1993) 473–481.\n",
@@ -628,7 +614,7 @@
     "title": "ui: Japanese text is drawn as empty boxes (file names, the browser's root, messages)",
     "body": "### Observed failure\n\nJapanese characters are drawn as empty boxes everywhere in the window. A model saved as `片持ち梁の解析.fieldcraft` shows boxes in its tab, at the root of the browser and in the \"Saved ….fieldcraft\" message.\n\nThe same must happen to a design or a folder with a Japanese name, and to the bodies of a design made in SolidCraft's Japanese interface. I have checked only the file name.\n\n### Reproduction\n\n1. `fieldcraft --sample cantilever`\n2. File > Save As, name `片持ち梁の解析.fieldcraft`.\n3. Look at the tab, the browser's root and the message at the bottom right.\n\nOr through MCP: `save {\"path\": \".../片持ち梁の解析.fieldcraft\"}`, then `screenshot {\"source\": \"window\"}`.\n\n<img width=\"1280\" height=\"720\" alt=\"japanese-tofu-0 8 1\" src=\"https://github.com/user-attachments/assets/bb98d62c-4576-46f6-b997-079994a59e33\" />\n\n### Evidence\n\nThe machine has Japanese fonts installed (`fc-match sans:lang=ja` gives Noto Sans CJK JP), so this is not a missing system font.\n\n### Expected behaviour\n\nJapanese text is readable wherever a name or a path is shown, as it is in SolidCraft. SolidCraft's `docs/localization.md` describes how it does this, and FieldCraft could follow it:\n\n- **Desktop:** no font is shipped. The operating system's fonts are searched (Meiryo, Yu Gothic and BIZ UDGothic on Windows, Hiragino on macOS, Noto Sans CJK on Linux) and added as fallbacks behind the interface faces.\n- **Web:** BIZ UDPGothic (SIL OFL 1.1, 4.7 MB) is served with the app and fetched the first time Japanese text is drawn, so a session that shows none downloads nothing.\n\nThe same route serves Korean and Chinese (SolidCraft has subset faces for them), and it is what a Japanese or Korean catalogue under #801 needs first.\n\n### Investigation\n\n- `crates/ui-egui/src/theme.rs` installs the fonts with `solidcraft_look::fonts::install`: IBM Plex Sans, IBM Plex Mono and egui's own fallback faces. None has Japanese glyphs.\n- Nothing in `crates/ui-egui` or the apps reads a system font.\n- SolidCraft's search for system fonts is in its `crates/ui-egui/src/fonts.rs`, a crate FieldCraft may not depend on. `solidcraft_look::fonts` leaves the way open: its docs say a host that adds faces of its own builds on `definitions` and installs the result with `apply`. So the search would be FieldCraft's own code in `crates/ui-egui`, or adapted from SolidCraft's (MIT OR Apache-2.0, a row in ATTRIBUTION.md).\n- #988 adds a Hebrew fallback in `theme.rs` (system candidates, and a face embedded at build time from `CRAFT_FONTS_DIR`). A Japanese face is too large to embed in the wasm build that way, hence the fetch on demand above.\n- Not a cause: definition names (materials, sets, steps) are ASCII by rule (`crates/model/src/lib.rs`), so they never hold Japanese. That rule is not what this issue is about.\n\nI will open a pull request for the desktop part, following SolidCraft's way. It touches the same lines of `theme.rs` as #988, so tell me if you would rather it wait for that one.\n\n### Version and platform\n\nFieldCraft 0.8.1 (`c1bec5b7`), desktop, Ubuntu 26.04, x86-64. Window captured offscreen through MCP `screenshot`.\n\n",
     "state": "open",
-    "updated_at": "2026-11-20T14:37:12Z",
+    "updated_at": "2026-11-25T04:54:23Z",
     "labels": [
       "bug",
       "needs-triage"
