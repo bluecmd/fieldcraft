@@ -385,20 +385,6 @@
     "url": "https://github.com/tangency-labs/fieldcraft/issues/1068"
   },
   {
-    "number": 1067,
-    "title": "elements: Euler–Bernoulli (cubic) two-node beam",
-    "body": "### Current behaviour\n\nThe only beam is the two-node Timoshenko beam (`crates/fem/src/beam.rs`, interdependent interpolation with Φ = 12 EI/(G A_s L²)). docs/manual/structural/elements.md (Limitations) lists the Euler–Bernoulli (cubic) beam as not implemented.\n\n### What you need and why\n\nM4's element library (ROADMAP: \"Element library per elements.md, 1D and 2D first\"; the family plan of #30, \"1D elements II\"). Slender frames are analysed with shear-rigid beams, and the deck writers need the shear-rigid element to map to each solver's cubic beam.\n\n### Expected behaviour\n\n- A beam section without transverse shear flexibility: the Hermite cubic element, the Φ → 0 limit of the existing kernel (Przemieniecki 1968, §5.6), in static, frequency and the decks (Abaqus cubic beam, Nastran beam without shear flexibility, LS-DYNA counterpart or a refusal by name).\n- Verified by exact end-load deflections, a portal frame (slope-deflection without shear) and the Euler–Bernoulli frequencies of a cantilever.\n\n### References\n\n- J. S. Przemieniecki, *Theory of Matrix Structural Analysis*, McGraw-Hill, 1968, §5.6.\n- R. D. Cook et al., *Concepts and Applications of Finite Element Analysis*, 4th ed., 2002, ch. 2.\n",
-    "state": "open",
-    "updated_at": "2026-11-24T13:32:39Z",
-    "labels": [
-      "enhancement",
-      "area:solver",
-      "needs-triage"
-    ],
-    "assignees": [],
-    "url": "https://github.com/tangency-labs/fieldcraft/issues/1067"
-  },
-  {
     "number": 1066,
     "title": "oracle: MacNeal–Harder twisted beam and pinched hemisphere shell benchmarks (pending cases)",
     "body": "### Current behaviour\n\nTwo shell benchmarks of MacNeal and Harder (1985) wait in `tests/oracle/` as pending cases: `mh-twisted-beam` and `pinched-hemisphere`. Their `expected.json` already cites the reference values (0.005424 and 0.001754 for the twisted beam, 0.0940 for the hemisphere); they say they need a doubly curved or helical shell mesh. `scordelis-lo-roof-shell` and `pinched-cylinder` show that such a mesh can be written node by node with `mesh.node.add` and `mesh.element.add`, the route docs/verification.md allows.\n\n### What you need and why\n\nM4 lists the MITC4/MITC3 shells as done, verified by Scordelis–Lo and the pinched cylinder. The twisted beam (warped elements) and the pinched hemisphere (doubly curved, inextensional bending) are the two remaining standard shell tests of the same source; they are the cases a flat-facet MITC4 is most likely to miss.\n\n### Expected behaviour\n\n- Both cases get a recipe (nodes and quad4 elements written one by one, generator script in the README), a measure, a tolerance with its reason, and a refinement table.\n- A result inside the tolerance is blessed; a result outside it is recorded as a known failure with its cause, never by widening the tolerance.\n- docs/oracle.md regenerated in the commit that activates each case.\n\n### References\n\n- R. H. MacNeal, R. L. Harder, *A proposed standard set of problems to test finite element accuracy*, FEAD 1 (1985) 3–20, Fig. 6 / Table 3 (twisted beam), Fig. 9 / Table 5(b) (hemisphere).\n- T. Belytschko et al., *Stress projection for membrane and shear locking in shell finite elements*, CMAME 51 (1985) 221–258.\n",
