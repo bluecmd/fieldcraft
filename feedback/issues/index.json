@@ -97,7 +97,7 @@
     "title": "lbm-gpu: GPU kernels for spalding_bounce_matched, then the Re_τ 2000 and 5200 acceptance (#1105 follow-up)",
     "body": "#1105 adds the matched wall model (Spalding's law sampled at 3Δx plus a mixing-length layer) on the CPU only; the GPU refuses it. Port it to the device, with a parity bar derived from f32 round-off, and run on the NVIDIA GB10. Then run the acceptance at Re_τ 2000 and 5200 against Lee & Moser 2015, within 5 % as fixed in #1105. The brief's last section outlines the GPU piece (swarm board `lbm-dd/pieces/les-wall-matching-height.md`).",
     "state": "open",
-    "updated_at": "2026-11-24T13:57:30Z",
+    "updated_at": "2026-11-26T08:28:56Z",
     "labels": [
       "area:cfd",
       "needs-triage"
