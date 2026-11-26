@@ -51,7 +51,7 @@
     "title": "lbm-gpu: one definition for the constants native.rs and lbm.wgsl both write (WG, KIND_*, FACE_*, OUTLET)",
     "body": "Hand-off from the parked LBM work (2026-11-26). Left as a follow-up by the Spalart–Allmaras GPU port (#1125), which already moved its own constants to WGSL overrides.\n\n## Goal\nEach constant the device kernels and the Rust host share has one definition, so the two can never disagree.\n\n## Current state\nThese are written twice, once in `crates/lbm-gpu/src/native.rs` and once in `crates/lbm-gpu/src/lbm.wgsl` (develop dfb2b76c):\n\n| constant | native.rs | lbm.wgsl |\n|---|---|---|\n| `WG` (workgroup size, 256) | :17 | :165 |\n| `KIND_PULL`, `KIND_BOUNCE`, `KIND_REFLECT`, `KIND_OPEN` (0–3) | :21–24 | :166–169 |\n| `OUTLET` (words per outlet record) | :33, from `fieldcraft_lbm::memory::DEVICE_OUTLET_WORDS` | :2193, a literal 20 |\n| `FACE_NONE`, `FACE_SOLID`, `FACE_HELD`, `FACE_FLUX` (0–3) | :513–516 | :3039–3042 |\n\n`OUTLET` is the risky one: the host derives it from the CPU crate, the shader hard-codes 20. #1125 shows the pattern to follow: pipeline-overridable constants (`override` in WGSL, set from Rust when the pipeline is built; `lbm.wgsl:97–112` already has several).\n\n## Verified\nNothing; there is no test that the two copies agree.\n\n## Next step\n1. A failing test first: build the pipeline and read back a value that depends on `OUTLET` (or assert at pipeline creation that the shader's constants match the host's).\n2. Make the shader's copies `override` constants (WGSL allows an override expression in `@workgroup_size`) and pass them from `native.rs`.\n3. Run `cargo test -p fieldcraft-lbm-gpu --test wgsl_validate` and the verification suite on a real GPU, and name it in the PR.\n\n## Effort\nS: 2–4 agent-hours; lavapipe in CI covers correctness, one real-GPU run for the PR.\n\n## Blockers\nNone. A contributor with any Vulkan or Metal GPU can take it.\n\n## Papers\nNone; WGSL spec, §\"Pipeline-overridable constants\".\n",
     "state": "open",
-    "updated_at": "2026-11-26T12:45:48Z",
+    "updated_at": "2026-11-26T12:59:44Z",
     "labels": [
       "help wanted",
       "size: S",
@@ -163,8 +163,10 @@
     "title": "LES: separate the regularised instability's share of the ρ ±7–17 % noise from under-resolution",
     "body": "The LES expert's stability analysis (`lbm-dd/notes/expert-regularized-bound.md`) finds regularized and HRR growth of 3e-5 to 2e-4 per step where the LES cases run. Measured density noise on the bluff bodies is ±7–17 %. Run one case at two resolutions and two τ⁺ values, to separate the linear instability's share from under-resolution. That decides whether #785 step 6 needs more than its warning.",
     "state": "open",
-    "updated_at": "2026-11-24T13:57:35Z",
+    "updated_at": "2026-11-26T12:47:42Z",
     "labels": [
+      "paused",
+      "size: S",
       "area:cfd",
       "needs-triage"
     ],
@@ -176,8 +178,10 @@
     "title": "LES: rerun #791 (TRT negative drag) and #788's Musker and dynamic-σ rows after the two-step force (#1093)",
     "body": "The two-step force (#1093) changes every recorded LBM force near τ⁺ ½. Once it merges:\n- rerun #791, the quasi-2D TRT cylinder whose mean C_d was negative, keeping TRT inside its stream limit (#1063, 5.6·(τ⁺ − ½));\n- rerun #788's Musker and dynamic-σ rows.\n\nThen update or close both issues with the new numbers.",
     "state": "open",
-    "updated_at": "2026-11-24T13:57:33Z",
+    "updated_at": "2026-11-26T12:47:41Z",
     "labels": [
+      "paused",
+      "size: S",
       "area:cfd",
       "area:io",
       "needs-triage"
@@ -190,8 +194,10 @@
     "title": "lbm-gpu: GPU kernels for spalding_bounce_matched, then the Re_τ 2000 and 5200 acceptance (#1105 follow-up)",
     "body": "#1105 adds the matched wall model (Spalding's law sampled at 3Δx plus a mixing-length layer) on the CPU only; the GPU refuses it. Port it to the device, with a parity bar derived from f32 round-off, and run on the NVIDIA GB10. Then run the acceptance at Re_τ 2000 and 5200 against Lee & Moser 2015, within 5 % as fixed in #1105. The brief's last section outlines the GPU piece (swarm board `lbm-dd/pieces/les-wall-matching-height.md`).",
     "state": "open",
-    "updated_at": "2026-11-26T08:28:56Z",
+    "updated_at": "2026-11-26T13:00:14Z",
     "labels": [
+      "paused",
+      "size: M",
       "area:cfd",
       "needs-triage"
     ],
@@ -203,8 +209,10 @@
     "title": "lbm: local grid refinement to reach published LES resolution (~80 cells per diameter), and absorbing layers at open faces (#785 step 8)",
     "body": "Part of #785, step 8. Every published LBM-LES success at cylinder Re 3900 that the expert read uses D/Δx ≈ 80 at the wall through nested levels (e.g. Spinelli et al. 2023). FieldCraft's uniform grids at 16–24 cells per diameter measure +12 % (16) and +8 % (24) on the cylinder, and −14 to −18 % on the square at 16 cells.\nImplement:\n- grid refinement (the expert's literature item C4);\n- absorbing layers at open faces, which inlet.rs:26 already cites, for the ρ noise.\n\nUntil then, the manual states the measured error at 16 and 24 cells (#1104).",
     "state": "open",
-    "updated_at": "2026-11-24T13:57:29Z",
+    "updated_at": "2026-11-26T12:47:35Z",
     "labels": [
+      "paused",
+      "size: L",
       "area:cfd",
       "needs-triage"
     ],
@@ -216,8 +224,10 @@
     "title": "LES: rerun cylinder Re 3900 and square Re 22 000 with HRR + Vreman and dynamic σ (#785 step 7)",
     "body": "Part of #785, step 7 of the LES diagnosis (expert notes: swarm board `lbm-dd/notes/expert-les.md`).\nAfter the two-step force (#1093), the inlet ramp (#1103) and the staircase warning (#1104) land, rerun:\n- the cylinder at Re 3900, against Kravchenko & Moin 2000 (C_d 0.99, St 0.215);\n- the square cylinder at Re 22 000, against Lyn et al. 1995 (C_d about 2.1, St 0.132).\n\nRun each with HRR plus the Vreman model and with dynamic σ, on interpolated walls. This is measurement only, on the GPU, about 10–35 min per case on the GB10. It's expected to shorten the recirculation bubbles. Record the results in docs/verification.md.",
     "state": "open",
-    "updated_at": "2026-11-26T12:36:29Z",
+    "updated_at": "2026-11-26T12:47:39Z",
     "labels": [
+      "paused",
+      "size: S",
       "area:cfd",
       "area:io",
       "needs-triage"
@@ -270,9 +280,11 @@
     "title": "OpenFOAM: fluid steps as OpenFOAM cases, and results read back (finishing #950)",
     "body": "### Current behaviour\n\nFieldCraft writes structural decks (Abaqus, Nastran, LS-DYNA) but has no way to write a fluid step as an OpenFOAM case or read OpenFOAM results back. ppenguin's proof of concept #950 (closed, stale since 2026-11-16) implemented both, and its commits remain in `refs/pull/950/head`.\n\n### Expected behaviour\n\nCore finishes #950, split as the 2026-11-16 review asked, with ppenguin's authorship kept on the commits reused:\n\n1. **`deck.openfoam`, the case export** (decks L1, command in engine):\n   - the mesh (snappyHexMesh dictionaries from the face-tagged surface), boundary conditions, material and fluid properties, and the solver and scheme dictionaries;\n   - every setting written into the case, no `#includeEtc`, so a case is reproducible;\n   - every fixed block cited to the OpenFOAM user guide section it follows, or derived. A constant justified as \"OpenFOAM's usual\" is refused: cite Yoshizawa for Ce, and state Cdelta's source;\n   - no silent defaults: a missing material property is an error, not air's value;\n   - the manual describes it as an export for running the case in OpenFOAM, not a check of FieldCraft's answer.\n2. **`results.openfoam`, reading results back:**\n   - hostile-input safe: caps on every count read from a file, no reservation sized from file contents, a bounded nearest-cell search;\n   - a cell with no match is an error, never written as zero velocity or pressure;\n   - the `location` point found by an exact or adaptive inside test, with no unnamed constants or bare float parity.\n3. **Separate PRs for the unrelated changes #950 carried:** the `MCRSLT06` results encoding, the default slice on symmetry planes, and port mass-flow weighting. Each lands only with its own reason and tests.\n\n**Clean-room:** the format comes from OpenFOAM's public documentation only. Never read OpenFOAM's source, and copy no tutorial case files.\n\n**Tests:** check the written case against the documented grammar with our own reader, round-trip what we write, and read results from files we construct in the documented format. Loading the case in OpenFOAM is an interoperability check, never a verification of FieldCraft's results.\n",
     "state": "open",
-    "updated_at": "2026-11-24T11:00:01Z",
+    "updated_at": "2026-11-26T12:47:33Z",
     "labels": [
       "enhancement",
+      "help wanted",
+      "size: S",
       "area:cfd",
       "needs-triage"
     ],
@@ -355,7 +367,7 @@
     "title": "shells: MITC4 is 74 % too stiff on the MacNeal–Harder twisted beam (warped elements, 12 × 2)",
     "body": "### Observed failure\n\nThe MacNeal–Harder twisted beam (L = 12, width 1.1, thickness 0.32, 90° pretwist, E = 29 × 10⁶, ν = 0.22, clamped root, unit tip force spread as consistent nodal loads over the tip edge) built with quad4 (MITC4) shells, mesh written node by node (#1066), is far too stiff on the prescribed 12 × 2 mesh and converges slowly:\n\n| mesh | in-plane u_z (ref 0.005424) | out-of-plane u_y (ref 0.001754) |\n|---|---|---|\n| 12 × 2 | 0.0013905 (−74.4 %) | 7.3719 × 10⁻⁴ (−58.0 %) |\n| 24 × 4 | 0.0029356 (−45.9 %) | 0.0010950 (−37.6 %) |\n| 48 × 8 | 0.0045010 (−17.0 %) | 0.0015057 (−14.2 %) |\n| 96 × 16 | 0.0052691 (−2.85 %) | 0.0017104 (−2.49 %) |\n\nThe references check against beam theory with the section's principal compliance turning along the span: δ = (P/E) ∫ (L − x)² [cos²θ/I_t + sin²θ/I_w] dx = 5.426 × 10⁻³ (in-plane) and 1.745 × 10⁻³ (out-of-plane), so the model and the loads are right. MacNeal and Harder report that quadrilateral shells pass this test within a few per cent on 12 × 2. Errors of this size that shrink by a factor of 2 to 6 per refinement are locking, not the mesh error of a shell element.\n\n### Expected behaviour\n\nWithin 2 % of the reference on 12 × 2 (MacNeal–Harder grade A), or a documented, cited limitation of flat-facet elements on warped geometry.\n\n### Suspected cause (to confirm)\n\nEach element is projected onto its mean plane (elements.md, Shells: \"the facet approach\"). The 12 × 2 elements are warped (7.5° twist per element), and the projection without a warping correction (rigid links from the nodes to the flat facet) leaves the warped element's nodes off its plane.\n\n### References\n\n- R. H. MacNeal, R. L. Harder, FEAD 1 (1985) 3–20, Fig. 6, Table 3.\n- R. L. Taylor, *Finite element analysis of linear shell problems*, in The Mathematics of Finite Elements and Applications VI, 1987 (warping correction of flat elements).\n- E. N. Dvorkin, K.-J. Bathe, Engineering Computations 1 (1984) 77–88 (MITC4 on warped geometry).\n",
     "state": "open",
-    "updated_at": "2026-11-24T04:44:35Z",
+    "updated_at": "2026-11-26T12:48:22Z",
     "labels": [
       "bug",
       "area:solver",
@@ -369,7 +381,7 @@
     "title": "loads: a temperature load that varies in space (activates NAFEMS LE11)",
     "body": "### Current behaviour\n\nThe oracle case `nafems-le11` is pending: it needs the temperature field T = (x² + y²)^½ + z (°C) on the nodes of a static step. A static step's `temperature` load sets one value on a target (docs/manual/structural/linear-static.md, Loads), so a field that varies over the part can only come from a coupled step's conduction solution or an initial field mapped from another model; T = r + z is not a conduction solution (∇²T = 1/r).\n\n### What you need and why\n\nNAFEMS LE11 is the standard linear thermal-stress benchmark (target σ_zz = −105 MPa at A); the thermal strain of solids is already implemented, only the field input is missing.\n\n### Expected behaviour\n\n- A temperature load whose value varies in space. Maintainer's choice: an expression of x, y, z (the form other loads would share, cf. #981 spatially varying pressure) or a per-node table.\n- nafems-le11 activated with its tolerance and refinement, docs/oracle.md regenerated.\n\n### References\n\n- NAFEMS, *The Standard NAFEMS Benchmarks*, TNSB Rev. 3, 1990, test LE11.\n",
     "state": "open",
-    "updated_at": "2026-11-24T04:03:19Z",
+    "updated_at": "2026-11-26T12:48:21Z",
     "labels": [
       "enhancement",
       "area:solver",
@@ -383,7 +395,7 @@
     "title": "elements: axisymmetric shells (two-node conical frustum); fixes the nafems-le7 known failure",
     "body": "### Current behaviour\n\nThere is no axisymmetric shell. The oracle case `nafems-le7` is a known failure for that reason: its target is the axisymmetric thin-shell solution and our axisymmetric solid model converges to 25.27 (−2.2 %).\n\n### What you need and why\n\nM4's element library (2D, #30 plan: \"Axisymmetric shells (2-node, 3-node)\"): tanks, domes and pressure vessels in 2D axisymmetric models.\n\n### Expected behaviour\n\n- A two-node conical-frustum shell in the axisymmetric half plane (u_r, u_z, θ) beside axisymmetric continua. Maintainer's choice of formulation: the Kirchhoff frustum (Grafton & Strome 1963) or a shear-deformable frustum with one-point shear integration (Zienkiewicz, Taylor & Fox 2014, ch. on axisymmetric shells).\n- Verified by a closed thin cylinder and a sphere under pressure (membrane closed forms), a cylinder edge bending (Timoshenko & Woinowsky-Krieger, the decay length), and nafems-le7.\n\n### References\n\n- P. E. Grafton, D. R. Strome, *Analysis of axisymmetrical shells by the direct stiffness method*, AIAA J. 1 (1963) 2342–2347.\n- O. C. Zienkiewicz, R. L. Taylor, D. Fox, *The Finite Element Method for Solid and Structural Mechanics*, 7th ed., 2014.\n- S. Timoshenko, S. Woinowsky-Krieger, *Theory of Plates and Shells*, 2nd ed., 1959.\n",
     "state": "open",
-    "updated_at": "2026-11-24T04:03:15Z",
+    "updated_at": "2026-11-26T12:48:20Z",
     "labels": [
       "enhancement",
       "area:solver",
@@ -397,7 +409,7 @@
     "title": "elements: generalized plane strain",
     "body": "### Current behaviour\n\n2D continua are plane stress, plane strain (ε_zz = 0) or axisymmetric. elements.md lists generalized plane strain as not implemented.\n\n### What you need and why\n\nM4's element library (2D, #30 plan): long prismatic parts whose ends are free to extend (thermal or axial loads), where plane strain over-constrains ε_zz.\n\n### Expected behaviour\n\n- Generalized plane strain: the out-of-plane strain is a global unknown, ε_zz = ε₀ (+ κ_x y − κ_y x if the bending curvatures are included), held by a reference point that also takes the axial force (and moments).\n- Maintainer's choice: ε₀ only, or ε₀ and the two curvatures.\n- Verified by a free long cylinder heated uniformly or under axial force (exact uniaxial ε_zz), and the thick cylinder with closed ends (Lamé with the end-cap force).\n\n### References\n\n- O. C. Zienkiewicz, R. L. Taylor, J. Z. Zhu, *The Finite Element Method: Its Basis and Fundamentals*, 7th ed., 2013.\n- S. P. Timoshenko, J. N. Goodier, *Theory of Elasticity*, 3rd ed., 1970 (closed-end thick cylinder).\n",
     "state": "open",
-    "updated_at": "2026-11-24T04:03:11Z",
+    "updated_at": "2026-11-26T12:48:19Z",
     "labels": [
       "enhancement",
       "area:solver",
@@ -411,7 +423,7 @@
     "title": "elements: three-node (quadratic) Timoshenko beam, straight or curved",
     "body": "### Current behaviour\n\nBeams are two-node and straight. elements.md lists the three-node beam as not implemented.\n\n### What you need and why\n\nM4's element library (\"1D elements II\" in the #30 plan): curved and stocky members, and a quadratic beam to sit on the mid-side nodes of quadratic solid and shell meshes.\n\n### Expected behaviour\n\n- A three-node (quadratic) Timoshenko beam, straight or curved, with the six unknowns per node of the existing beam, in static and frequency steps and the decks.\n- The formulation is a choice for the maintainer between published ones: reduced (two-point) integration of the shear and membrane terms (Prathap & Bhashyam 1982; Stolarski & Belytschko 1982) or assumed (substitute) shear strain fields (MacNeal 1978; Bathe 2014 §5.4).\n- Verified by a curved cantilever (closed form), a quarter ring under a radial load and convergence rates.\n\n### References\n\n- G. Prathap, G. R. Bhashyam, *Reduced integration and the shear-flexible beam element*, IJNME 18 (1982) 195–210.\n- H. Stolarski, T. Belytschko, *Membrane locking and reduced integration for curved elements*, J. Appl. Mech. 49 (1982) 172–176.\n- K.-J. Bathe, *Finite Element Procedures*, 2nd ed., 2014, §5.4.\n",
     "state": "open",
-    "updated_at": "2026-11-24T04:03:06Z",
+    "updated_at": "2026-11-26T12:48:18Z",
     "labels": [
       "enhancement",
       "area:solver",
@@ -453,9 +465,11 @@
     "title": "lbm: Han's wall-function bounce does not reproduce its own A20 channel (C_f +53 % MRT, −52 % HRR)",
     "body": "### Current behaviour\n\nHan, Ooka & Kikumoto's on-node wall-function bounce (Fluid Dyn. Res. 53:045506, 2021, eq. 14), `spalding_bounce` on plane walls, is on develop. Its own reproduction case fails (docs/verification.md, \"Wall-modelled LES: Han, Ooka & Kikumoto not reproduced at A20\"). The A20 channel (Re_τ 640) was run with a gate fixed beforehand: ε_u⁺ and the log-law intercept b within 15 % of the paper's Tables 2 and 3.\n\n| Collision, SGS | U_b⁺ | C_f vs Dean | ε (paper 0.057) | b (paper 6.4) |\n|---|---|---|---|---|\n| MRT, Smagorinsky C_s 0.1, Van Driest (the paper's) | 14.44 | +53 % | 0.248 | 1.92 |\n| HRR σ 0.99, Vreman C_s 0.18 | 28.77 | −54 % | 0.535 | 15.23 |\n| HRR σ 0.99, Smagorinsky C_s 0.1, Van Driest | 27.94 | −52 % | 0.491 | 14.30 |\n| HRR, dynamic σ, Vreman C_s 0.18 | 28.94 | −55 % | 0.607 | 9.04 |\n\nThe recorded explanation is energy pile-up for MRT (the documented under-resolved MRT failure, Nathen et al. 2018) and about half the right drag for HRR. Neither has been traced to a cause. The Han extension to obstacles (#1046–#1048) is on hold until this plane-wall case reproduces, since it builds on this wall.\n\n### Expected behaviour\n\nThe A20 channel reproduces the paper within the pre-set 15 % gate on the paper's own collision and SGS settings. Failing that, a root cause is found and stated: our implementation of eq. 14 (or its forcing, sampling height, or wall-distance convention), the collision, the SGS model, or a set-up difference from the paper.\n\n### Notes\n\n- Recorded on an NVIDIA GB10 GPU in f32, before the libm (#1043) and #1015 changes. Re-measure on current develop first.\n- Paper: arXiv 2009.04352 (read).\n",
     "state": "open",
-    "updated_at": "2026-11-24T00:01:38Z",
+    "updated_at": "2026-11-26T12:47:44Z",
     "labels": [
       "bug",
+      "paused",
+      "size: S",
       "area:solver",
       "area:cfd",
       "needs-triage"
@@ -613,8 +627,9 @@
     "title": "lbm: wall laws for the Spalart–Allmaras model, and a half-way on-node wall, on the CPU and the GPU",
     "body": "Han's on-node wall takes Spalding's law, which is low in the buffer layer; with the SA model a first node at y⁺ 5 to 15 reads a channel 3 to 5 % off.\n\nProposal, in six stacked PRs: the SA model's own constant-stress law (CPU); a half-way variant of the on-node wall that keeps obstacle size and reads the law at the second open cell (CPU); the on-node wall at obstacles, edges and corners on the GPU; SA with Han's wall on the GPU; the SA law on the GPU; the half-way wall on the GPU.\n\nRelated, not touched: #927 and #938 (wall models on interpolated walls and wall-modelled LES channels).\n",
     "state": "open",
-    "updated_at": "2026-11-21T10:11:32Z",
+    "updated_at": "2026-11-26T12:47:45Z",
     "labels": [
+      "size: M",
       "area:cfd",
       "needs-triage"
     ],
@@ -1520,9 +1535,10 @@
     "title": "LES accuracy and stability: drag and wall-stress errors (tracking)",
     "body": "## Symptom\n\n@jyviko reported that large-eddy simulation in FieldCraft \"doesn't work reliably\", with drag discrepancies of 15–40 % against references, and pointed at `docs/manual/fluid/les.md`, whose own record shows no wall model passing the drag gate. This issue tracks the specific errors and gaps behind that, each as a sub-issue with a self-contained reproduction and its measured numbers. No fixes are proposed here; the sub-issues record what is wrong and how to see it.\n\n**Baseline:** develop `cb976117889edf8de5f093ba949980b0aa79c1e2`, production solver untouched. GPU runs on an NVIDIA GB10 (Vulkan, f32, in-place streaming); CPU runs in f64.\n\n**What was measured:** 62 case records (47 completed, 13 stopped as unstable, 2 refused at setup) across the Malaspinas & Sagaut channel at Re_τ 950, a laminar confined-cylinder control (Schäfer & Turek Re 100), a 3D circular cylinder at Re 3900 (three resolutions and a one-factor sweep of twenty variants), a square cylinder at Re 22 000, a sphere at Re 100, quasi-2D Re 3900 probes on both backends, the periodic Stokes sphere array, the 80-case wall-stability sweep, and force-budget checks. \"Completed\" below is an execution status, not a validation verdict.\n\n## Sub-issues\n\n| # | Error or gap | Headline |\n|---|---|---|\n| #786 | Musker wall model: carried wall stress ≠ inferred stress | channel Re_τ 950, N = 10: inferred C_f **+2.0 %**, carried C_f **−16.75 %** vs Dean; requested/carried stress 1.245 |\n| #787 | 3D cylinder at Re 3900 overpredicts drag and does not converge | C_d **1.354 ± 0.040 (+36.8 %)** vs 0.99; N = 12/16/24 give 1.354 / 1.323 / 1.338 |\n| #788 | Cylinder drag sensitivity to setup | one-cell span **+33 %**, Musker on **+80 %**, dynamic HRR σ **+22 %** (and spanwise energy ÷200); C_s, Mach, domain, outlet each within ±3 % |\n| #789 | Square cylinder at Re 22 000 | C_d **4.11 ± 0.14 vs ≈ 2.1 (+95 %)**, C_d,max 24.8, crossing St 2.1 vs 0.132 |\n| #790 | MRT fails almost at once at the LES bluff-body settings | 3D cylinder by step 120 (0.5 D/U), square by step 128, quasi-2D by step 599 (CPU) / 816 (GPU) |\n| #791 | Coarse TRT completes with negative mean drag | quasi-2D N = 8: C_d **−3.84 ± 4.53** (CPU), −2.08 ± 5.55 (GPU); guard never trips |\n| #792 | Re 100 sphere with TRT goes unstable at the inlet | GPU at 11.4 D/U, CPU at 19.7 D/U, first invalid cells at x = 0; regularized survives at C_d **+12.5 %** with spurious unsteadiness |\n| #793 | Runtime guard certifies execution, not validity | completed runs with ρ 0.72–1.37, local Ma 0.35, C_d,max 20× the mean |\n| #794 | `spalding_bounce_halfway` grows a wall-row checkerboard | +5.6e-5 to +1.3e-1 per step, every collision, every τ̄; on-node form damps it |\n| #795 | Channel study stop rule tests signed lag-1 | alternating blocks (lag-1 ≈ −0.95) pass as decorrelated; measured LES lag-1 down to −0.83 |\n| #796 | Short-window block error bars understate the error | 400–600 D/U window raises C_d **+22.6 %** while C_d,max goes 8 → 24; ±0.0003 interval on a +6.7 % bias |\n| #797 | Compressibility at the default lattice velocity 0.05 | ρ ±5 %, local Ma 0.15 at Re 3900; halving it gives ±0.4 % but C_d stays +38.6 % |\n| #798 | Staircase geometry resolution and placement | Stokes sphere **+11.7 %** at R = 3 cells (+1.7 % at 6); Schäfer–Turek C_d,max +6.7 % at D/Δx 20, −8.5 % on a half-cell shift |\n\nThe first three carry the 15–40 % class of error on their own; the rest either invalidate \"completed\" runs or hide the first three.\n\n## Checked and found consistent (no need to re-check)\n\n- **Smagorinsky term and lattice scaling.** τ_eff = (τ₀ + √(τ₀² + 18√2 C_s² ‖P‖/ρ)) / 2 with the off-diagonal entries counted twice, P including the half-force term, Δ = Δx; the simple-shear unit test gives ν₀ + C² γ. No factor-of-two error. (`crates/lbm/src/turbulence.rs`)\n- **Static-body Galilean terms.** The momentum exchange has no moving-surface relative-velocity term; for the stationary bodies here that term is identically zero, so it cannot change any drag in this audit.\n- **Force budgets close.** The Musker channel momentum budget closes per step to 2–3 × 10⁻¹⁴ of the total population momentum (TRT, RR, MRT), reconstruction impulse included. An independent population-momentum balance around a periodic cylinder agrees with the link momentum exchange to 7 × 10⁻¹² (lattice force) under HRR at τ = 0.52 and 0.5005, with the SGS model on. The Stokes sphere array's wall force equals its driving force and conserves mass to roundoff. The rapid force oscillations at high Re exist while the discrete momentum accounting is correct.\n- **CPU vs GPU.** On the laminar Schäfer–Turek control the mean C_d differs by 7 × 10⁻⁵ % and St by 4 × 10⁻⁴ %; on the regularized variant by 9 × 10⁻⁴ %. On the explicitly seeded quasi-2D Re 3900 case the two backends agree to 0.03 %. f32 is not the cause of the drag errors. (CPU and GPU do break symmetry at different times from a roundoff-only seed, and fail at different steps when a case is unstable; that is precision sensitivity of the onset, not a result difference.)\n- **Mach alone.** Halving the lattice velocity removes the density excursion and leaves the Re 3900 drag excess (#797).\n- **Force sampling cadence.** Four-times denser sampling and an odd stride give the same mean within 0.1 % and the same spectral peak.\n- **Domain and outlet.** Height 18 D, length 36 D and a uniform outlet move the Re 3900 short-window mean by at most 2.5 %.\n- **The ordinary test suites pass** on the baseline: `fieldcraft-lbm` 180 passed / 27 ignored, `fieldcraft-lbm-gpu` 62 passed / 15 ignored on the GB10, clippy clean. They establish local consistency, not turbulent drag accuracy.\n\n## Caveats\n\n- @jyviko's own failing case (geometry, Re, wall model, reference) was not available, so none of the reproduced discrepancies can be identified as that case. They are independently built cases that land in the reported 15–40 % range (and beyond it for the square).\n- Every bluff-body case here is deliberately coarse (8–24 cells per diameter), because that is what the SGS relaxation-time floor admits at these Reynolds numbers on grids that run in minutes; none is claimed converged. The channel case is the paper's own setup.\n- Statistical intervals are conditional on stationarity and decorrelated blocks and exclude grid, domain and model error; the sub-issues report lag-1 correlation and half-window drift beside them for that reason.\n- The manual's Han, Ooka & Kikumoto channel results (+53 % on MRT, −52 to −55 % on the hybrid collision at A20) and the Re_τ 1000 / 2000 Musker rows were not rerun; they are already recorded in `docs/manual/fluid/les.md`.\n\nRelated: #664 (CPU LES), #665 (GPU LES), #663, #557.\n",
     "state": "open",
-    "updated_at": "2026-11-08T03:23:12Z",
+    "updated_at": "2026-11-26T12:48:53Z",
     "labels": [
       "bug",
+      "paused",
       "area:cfd",
       "needs-triage"
     ],
