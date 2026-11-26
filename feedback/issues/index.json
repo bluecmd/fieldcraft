@@ -237,22 +237,6 @@
     "url": "https://github.com/tangency-labs/fieldcraft/issues/1107"
   },
   {
-    "number": 1106,
-    "title": "LES: rerun cylinder Re 3900 and square Re 22 000 with HRR + Vreman and dynamic σ (#785 step 7)",
-    "body": "Part of #785, step 7 of the LES diagnosis (expert notes: swarm board `lbm-dd/notes/expert-les.md`).\nAfter the two-step force (#1093), the inlet ramp (#1103) and the staircase warning (#1104) land, rerun:\n- the cylinder at Re 3900, against Kravchenko & Moin 2000 (C_d 0.99, St 0.215);\n- the square cylinder at Re 22 000, against Lyn et al. 1995 (C_d about 2.1, St 0.132).\n\nRun each with HRR plus the Vreman model and with dynamic σ, on interpolated walls. This is measurement only, on the GPU, about 10–35 min per case on the GB10. It's expected to shorten the recirculation bubbles. Record the results in docs/verification.md.",
-    "state": "open",
-    "updated_at": "2026-11-26T12:47:39Z",
-    "labels": [
-      "paused",
-      "size: S",
-      "area:cfd",
-      "area:io",
-      "needs-triage"
-    ],
-    "assignees": [],
-    "url": "https://github.com/tangency-labs/fieldcraft/issues/1106"
-  },
-  {
     "number": 1099,
     "title": "decks: do the three targets accept negative distributing-coupling weights? (licensed-user cross-check)",
     "body": "#1024 writes a distributing coupling on element faces with one weight per node, w = ∫ N dA over the faces: the consistent loads of a unit traction. On quadratic faces (quad8 faces of hex20, tri6 faces of tet10) the corner weights are negative (−A/12 per corner of a quad8 face). The weights go on Abaqus's node-based `*SURFACE` lines under `*DISTRIBUTING`, Nastran's `RBE3` weight groups, and LS-DYNA's `*CONSTRAINED_INTERPOLATION` independent node cards. None of the three public reference manuals says whether a negative weight is accepted. We never run those products. A contributor with a licence for any of them could tell us, as a cross-check, whether such a deck runs and how the coupled point moves. A hex20 bar in tension through a coupling on its end face is the simplest case, `tests/oracle/tension-coupling`. If a target refuses or clamps negative weights, the fix is to write the constraint as equations for that format.",
