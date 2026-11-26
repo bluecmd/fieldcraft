@@ -1,5 +1,98 @@
 [
   {
+    "number": 1158,
+    "title": "M4: four owner decisions (F1 scope, F4 element formulations, F5 field temperature input, F6C shell drilling)",
+    "body": "M4 (own solver and first results) is merged up to its element chain (#1082, #1084, #1086, #1092, #1100, #1102, #1112, #1114, #1115, #1139). Four owner decisions are open; each is written up on the M4 board (`~/.claude/swarm/boards/fieldcraft/m4/asks/`, audit in `m4/AUDIT.md`). This issue collects them so the milestone can be picked up cold.\n\n## F1: what \"M4 done\" covers (`asks/F1-m4-scope.md`)\n- (a) recommended: A (benchmarks, couplings, parity rows) + B1–B7 (#1067–#1073); quad8/tri6 shells (#888), membranes, surface elements, continuum shells move to M8 (\"midsurface shells\").\n- (b) A only; B moves to a new \"element library II\" milestone. Cost: M4 closes sooner, but the row's first item stays unmet.\n- (c) A + B + quad8/tri6 shells and membranes. Cost: the largest; #888 is a contributor's.\nDone so far: A, B1 (#1102), B3 (#1112), B4 (#1114), B6 (#1115). ROADMAP is not edited until the ruling.\n\n## F4: formulations for three elements (`asks/F4-element-methods.md`)\n- B2 #1068, three-node Timoshenko beam: reduced integration (Prathap & Bhashyam 1982) or assumed shear strain (MacNeal 1978; Bathe 2014 §5.4). Recommended: assumed strain.\n- B5 #1071, generalized plane strain: ε_zz only, or ε_zz plus two curvatures. Recommended: with curvatures.\n- B7 #1073, axisymmetric shell: Kirchhoff frustum (Grafton & Strome 1963) or a shear-deformable two-node frustum with one-point shear (Zienkiewicz, Taylor & Fox 2014). Recommended: shear-deformable.\n\n## F5: a temperature that varies in space (#1074, NAFEMS LE11; `asks/F5-le11-temperature.md`)\n- (a) recommended: an expression of x, y, z, the same evaluator #981's varying pressure would use; cost: a bounded parser in the model layer.\n- (b) a per-node table; cost: ties to a mesh, breaks on remeshing.\n\n## F6 option C: the twisted beam beyond the warp link (#1077; `asks/F6C-shell-drilling.md`)\nAfter the rigid link (merged, #1086) the 12 × 2 MacNeal–Harder twisted beam is +2.2 % / −4.0 % (known failure). Causes found: the drilling penalty γ = G/100 adds 3.75 % compliance on twisted surfaces; the bilinear membrane's parasitic shear −6.5 % out of plane. Recommended: a membrane with drilling rotations at γ = G (Hughes & Brezzi 1989; Ibrahimbegović, Taylor & Wilson 1990), starting with an expert measurement on the hemisphere and the twisted beam; if it locks the hemisphere, a curved degenerated MITC4 (Dvorkin & Bathe 1984). Tuning γ is refused.\n\n## Next step\nThe owner rules F1, F4, F5 and F6C (one line each here is enough). Then each element issue gets its brief.\n\n## Effort\nPer element after the ruling: B2, B5, B7 each M (8–15 agent-hours, no GPU); F5 (a) M; F6C M–L (expert measurement 4–6 h, then 15–25 h).\n\n## Blockers\nThe owner's rulings.\n",
+    "state": "open",
+    "updated_at": "2026-11-26T12:45:53Z",
+    "labels": [
+      "size: M",
+      "area:solver",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1158"
+  },
+  {
+    "number": 1157,
+    "title": "io: encode checks fluid results only; a heat or explicit result that reading refuses can be saved",
+    "body": "Hand-off from the parked fluid work (2026-11-26), found while finishing the OpenFOAM read-back (#1094, #1142).\n\n## Symptom\n`crates/io/src/results.rs:188–191` (`encode`, develop dfb2b76c): \"What reading refuses is not written: a file that would not open is never saved.\" The check runs for fluid results only:\n\n```rust\nif let SolvedRef::Fluid(f) = stored.result {\n    check_fluid(f).map_err(...)?;\n}\n```\n\nReading runs `check` (`results.rs:307`) for every kind: static, frequency, heat (temperature frame lengths, the heat flux, the reaction), explicit (every frame's arrays) and fluid. So a heat or explicit result that reading would refuse can be written, and the saved file then opens without its results.\n\n## Goal\n`encode` refuses every result that `check` would refuse on reading, for every result kind, so a file FieldCraft saves always opens with its results.\n\n## Current state\nNo branch, no PR. The fix is to call `check` on the stored result (the function reading uses) in place of `check_fluid` alone, once it accepts the borrowed `SolvedRef` form.\n\n## Next step\n1. A failing test first in `crates/io`: encode a heat result whose temperature frame is one entry short; today it encodes, and decoding refuses it. After the fix, encoding returns `Error::Invalid` naming the step.\n2. The same for an explicit result.\n3. `cargo test -p fieldcraft-io`; `cargo clippy -p fieldcraft-io --all-targets -- -D warnings`.\n\n## Effort\nS: 1–2 agent-hours, no GPU.\n\n## Blockers\nNone. A good first contribution to the io crate.\n",
+    "state": "open",
+    "updated_at": "2026-11-26T12:45:49Z",
+    "labels": [
+      "bug",
+      "help wanted",
+      "good first issue",
+      "size: S",
+      "area:cfd",
+      "area:io",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1157"
+  },
+  {
+    "number": 1156,
+    "title": "lbm-gpu: concurrent_solves_on_the_shared_device_read_back segfaulted once on the GB10 after a driver error",
+    "body": "Hand-off from the parked LBM work (2026-11-26).\n\n## Symptom\nOnce, during the #1117 GB10 runs (2026-11-25), the test process segfaulted in `concurrent_solves_on_the_shared_device_read_back` (`crates/lbm-gpu/tests/verification.rs:634`) after a driver error on the NVIDIA GB10. A rerun passed. Nothing pointed at #1117's change. The log was not kept (the GB10 copy is cleaned with `gpurun --clean` after each run).\n\n## Goal\nFind whether the segfault is in our code (a readback mapped twice, a buffer dropped while its mapping callback is pending) or in the driver, and make the test either pass every time or fail with an error, never crash the process.\n\n## Current state\n- The test is #800's regression test: concurrent solves on the process's shared device collect each other's mapping callbacks (#814 fixed \"the readback did not complete\" by polling again).\n- #800 is still open for the throughput benchmarks failing in parallel on NVIDIA.\n- No branch, no board brief.\n\n## Verified\nOne occurrence, one passing rerun. Not reproduced.\n\n## Next step\nOn the GB10, loop the test 200 times in parallel with the rest of `--test verification` (`cargo nextest run -p fieldcraft-lbm-gpu --test verification --retries 0`, repeated), with `RUST_BACKTRACE=1` and the Vulkan validation layer on, and keep the log off the box before `--clean`. If it reproduces, get a native backtrace (`gdb --batch -ex run -ex bt` on the test binary). If the crash is inside the driver after a device-lost error, the fix is ours: stop using the device once wgpu reports it lost, and return an error.\n\n## Effort\nS–M: 3–6 agent-hours, 2–3 GB10 hours.\n\n## Blockers\nGB10 access (borrowed). A contributor with another NVIDIA GPU on Linux could try to reproduce it.\n\nRelated: #800, #614, #814.\n",
+    "state": "open",
+    "updated_at": "2026-11-26T12:45:48Z",
+    "labels": [
+      "bug",
+      "size: S",
+      "area:cfd",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1156"
+  },
+  {
+    "number": 1155,
+    "title": "lbm-gpu: one definition for the constants native.rs and lbm.wgsl both write (WG, KIND_*, FACE_*, OUTLET)",
+    "body": "Hand-off from the parked LBM work (2026-11-26). Left as a follow-up by the Spalart–Allmaras GPU port (#1125), which already moved its own constants to WGSL overrides.\n\n## Goal\nEach constant the device kernels and the Rust host share has one definition, so the two can never disagree.\n\n## Current state\nThese are written twice, once in `crates/lbm-gpu/src/native.rs` and once in `crates/lbm-gpu/src/lbm.wgsl` (develop dfb2b76c):\n\n| constant | native.rs | lbm.wgsl |\n|---|---|---|\n| `WG` (workgroup size, 256) | :17 | :165 |\n| `KIND_PULL`, `KIND_BOUNCE`, `KIND_REFLECT`, `KIND_OPEN` (0–3) | :21–24 | :166–169 |\n| `OUTLET` (words per outlet record) | :33, from `fieldcraft_lbm::memory::DEVICE_OUTLET_WORDS` | :2193, a literal 20 |\n| `FACE_NONE`, `FACE_SOLID`, `FACE_HELD`, `FACE_FLUX` (0–3) | :513–516 | :3039–3042 |\n\n`OUTLET` is the risky one: the host derives it from the CPU crate, the shader hard-codes 20. #1125 shows the pattern to follow: pipeline-overridable constants (`override` in WGSL, set from Rust when the pipeline is built; `lbm.wgsl:97–112` already has several).\n\n## Verified\nNothing; there is no test that the two copies agree.\n\n## Next step\n1. A failing test first: build the pipeline and read back a value that depends on `OUTLET` (or assert at pipeline creation that the shader's constants match the host's).\n2. Make the shader's copies `override` constants (WGSL allows an override expression in `@workgroup_size`) and pass them from `native.rs`.\n3. Run `cargo test -p fieldcraft-lbm-gpu --test wgsl_validate` and the verification suite on a real GPU, and name it in the PR.\n\n## Effort\nS: 2–4 agent-hours; lavapipe in CI covers correctness, one real-GPU run for the PR.\n\n## Blockers\nNone. A contributor with any Vulkan or Metal GPU can take it.\n\n## Papers\nNone; WGSL spec, §\"Pipeline-overridable constants\".\n",
+    "state": "open",
+    "updated_at": "2026-11-26T12:45:48Z",
+    "labels": [
+      "help wanted",
+      "size: S",
+      "area:cfd",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1155"
+  },
+  {
+    "number": 1154,
+    "title": "LES: warn or refuse when the regularised or hybrid collision runs inside its stream-instability region (#785 step 6, owner decision)",
+    "body": "Part of #785 (step 6 of the LES diagnosis). **Owner decision needed**; the code is one table in `crates/lbm/src/setup.rs` and a pinning test once it is made. Hand-off for the parked LBM-LES work (2026-11-26), see `docs/rfc/0003-lbm-les-roadmap.md`.\n\n## Goal\nDecide whether a fluid step whose regularised or hybrid collision sits inside its linear stream-instability region is warned or refused, then implement that.\n\n## Current state\n- Analysis: `~/.claude/swarm/boards/fieldcraft/lbm-dd/notes/expert-regularized-bound.md` (von Neumann maps over 14 directions, k on a π/32 grid, σ 1, 0.99, 0.9; scripts and logs beside it). No branch, no PR.\n- `MIN_TAU_TURBULENT` 0.5001 admits the whole unstable region; the present warning (`REGULARIZED_TAU_LIMIT`) rests on \"went unstable on a coarse bluff-body grid\", not on the analysis.\n\n## Verified (computed)\n- Regularised (σ 1) and hybrid (σ 0.99) are stable at rest at every τ⁺, and at every accepted speed (Mach ≤ 0.3) from τ⁺ 0.52.\n- At the default lattice speed 0.05 the stable τ⁺ is 0.502 (regularised) and 0.5005 (hybrid σ 0.99).\n- Growth where the LES cases run: 3e-5 to 2e-4 per step (MRT at rest: 8e-3).\n- Checked against the crate in 32³ periodic boxes: regularised τ⁺ 0.5001, U 0.17 along (1,1,1), measured +2.9e-3 per step against the map's 3.9e-3.\n- The cylinder at Re 3900 on 16 cells per D runs at τ⁺ 0.5006; a refusal at the bound would need about 52 cells per D there.\n\n## Not verified\n- Whether the linear mode causes the ρ ±7–17 % noise of the bluff-body runs: #1110 tried to separate it and all four runs diverged from the start (PR #1148).\n- A weak mode narrower than π/32 may be missed (\"none found\", not \"stable\").\n\n## Options (expert recommends 1)\n1. Warn from the table (characteristic lattice speed against the stable speed at the smallest τ⁺). Cost if wrong: noisy runs keep completing, flagged.\n2. Refuse below the stable speed at the characteristic lattice speed. Cost if wrong: no LES below about 50 cells per D at Re 3900 until refinement (#1107) lands.\n\n## Next step\nThe owner picks 1 or 2. Then a builder: the table in `setup.rs`, a test like `crates/lbm/tests/mrt_stability.rs`, the table in `docs/manual/fluid/collision.md` \"Stability\".\n\n## Effort\nS: 2–3 agent-hours after the decision, no GPU.\n\n## Blockers\nThe owner's decision.\n\n## Papers\n- Wissocq & Sagaut, linear stability of regularised collisions (D2Q9), cited in `expert-les.md` §2.4.\n- Jacob, Malaspinas & Sagaut 2018 (states no stability range).\n",
+    "state": "open",
+    "updated_at": "2026-11-26T12:45:47Z",
+    "labels": [
+      "paused",
+      "size: S",
+      "area:cfd",
+      "area:io",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1154"
+  },
+  {
+    "number": 1153,
+    "title": "LES: the Re 3900 cylinder's C_d depends on an undocumented start seed (1.113 with it, 1.437 without), and the inlet ramp destabilises fixed σ 0.99",
+    "body": "Part of #785. Hand-off issue: the LBM-LES work is parked (2026-11-26); this is written so someone can pick it up cold. Context and the recommended order: `docs/rfc/0003-lbm-les-roadmap.md` (docs PR linked below).\n\n## Goal\nA bluff-body LES start that the product documents and that survives the inlet ramp, so the Re 3900 cylinder's C_d no longer depends on an undocumented seed. Every later bluff-body number (#1107's D/Δx 80 run, #1110's noise split) is measured on it.\n\n## Current state\n- Driver: `crates/lbm-gpu/tests/bluff_body_les.rs` (ignored, heavy), PR #1147, branch `issue-1106-les-reruns`, worktree `worktrees/wt-1106-les-reruns` (one uncommitted edit to that file at hand-off).\n- #1109's driver (uniform start, `solve.fluid` on the GPU): PR #1149, branch `issue-1109-force-reruns`.\n- Board: `~/.claude/swarm/boards/fieldcraft/lbm-dd/` (`notes/expert-les.md`, `pieces/les-inlet-ramp.md`).\n\n## Verified (NVIDIA GB10, f32; hybrid collision, interpolated walls, 16 cells per D, span 3.125 D, 100–200 D/U)\n| start | C_d ± 95 % | St | L_r/D |\n|---|---|---|---|\n| at rest on the body, no cross-flow wave, σ 0.99, Smagorinsky 0.1, no ramp | 1.437 ± 0.009 | 0.250 | 0.60 |\n| the same with the probe's 1 % cross-flow wave | 1.113 ± 0.012 (the recorded value, to the digit) | 0.220 | 2.1 |\n| dynamic σ + Vreman 0.18, ramp 2.5 T₀ | 1.827 ± 0.073 (+85 % against 0.99) | 0.057 (not a shedding frequency) | 1.35 |\n| #1109, 12 cells per D, uniform start, σ 0.99 | 1.799 ± 0.018 | — | — |\n| #1109, dynamic σ | 1.620 ± 0.043 | — | — |\n\nFixed σ 0.99 with the ramp: Vreman unstable at 3.6 D/U (lattice speed 0.547), Smagorinsky at 137 D/U (0.685), square with Vreman at 3.2 D/U. Without the ramp, Vreman σ 0.99 is stable to 240 D/U (C_d 1.422, St 0.243).\n\n## Not verified\n- Why the ramp destabilises fixed σ while the inlet is still near zero.\n- Why the dynamic-σ lift spectrum peaks at 0.057 with odd harmonics 0.171 and 0.293 and a lift range of ±5.\n- That the 1 % seed works by making the wake three-dimensional (inferred only).\n\n## Next step\nRun the 13 s reproducer on the GB10 and print the field where the lattice speed first exceeds 0.3: `FIELDCRAFT_BLUFF_CASE='r:shape=cylinder,sgs=vreman,cs=0.18,sigma=0.99,ramp=2.5,start=5,end=40' cargo test --release -p fieldcraft-lbm-gpu --test bluff_body_les -- --ignored --nocapture bluff_body_les_rerun`. Then the same case on the CPU (f64) for a few D/U, to tell f32 from the scheme. Then the owner decides the documented start (RFC 0003, §6, decision 2).\n\n## Effort\nM: 8–12 agent-hours, 3–5 GB10 hours.\n\n## Blockers\n- GB10 time (borrowed box, `gpurun`).\n- Owner decision on the start once the cause is known.\n\n## Papers\n- Jacob, Malaspinas & Sagaut 2018, J. Turbul. 19:1051 (Table 2: σ 0.99 + Vreman gives a long bubble; dynamic σ C_d 1.047). PDF: `~/Sources/papers/jacob2018.pdf`.\n- Kravchenko & Moin 2000, Phys. Fluids 12:403 (reference C_d, St).\n- Joukowsky 1900 and Whitham 1974 §6.8, as cited in `docs/manual/fluid/boundary-conditions.md` \"Raising the inlet\".\n\nRelated: #787, #788, #797, #1106, #1109, #1110.\n",
+    "state": "open",
+    "updated_at": "2026-11-26T12:45:42Z",
+    "labels": [
+      "paused",
+      "size: M",
+      "area:cfd",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1153"
+  },
+  {
     "number": 1144,
     "title": "Support implicit ties on quadratic faces (tet10/tri6, hex20/quad8)",
     "body": "### Current behaviour\n\nImplicit `interaction.tie` (and the heat-transfer tie) only accepts the linear faces of tet4, wedge6 and hex8 elements. A tie on tet10 or hex20 elements fails with `NotSupported`: \"...on the faces of tet10 elements (element N) in implicit analyses; it takes the linear faces of tet4, wedge6 and hex8 elements\".\n\nWhere the limit is (develop @ d3c3797):\n- `crates/solver/src/tie.rs:288`: tie surfaces are collected with `faces(..., false)`, i.e. `quadratic: false`.\n- `crates/solver/src/contact.rs:502-503`: `surface_face` with `Surface::Faces { quadratic: false }` accepts only 3- and 4-node faces (the `quadratic: true` branch below already accepts 6- and 8-node faces).\n- `crates/solver/src/tie.rs:97`: `dual()` returns `[[f64; 4]; 4]`, so the dual coefficients are hard-coded to faces of at most 4 nodes.\n- `crates/solver/src/heat.rs:597`: `tie_faces` for heat transfer has the same 3|4-node check.\n\n### What you need and why\n\nCalculiX/PrePoMax models meshed in C3D10 with `*TIE` between parts are common. I hit this on a real ~1.2M-node assembly (a shaft and hinge parts in tet10, tied to a hex mesh) in 0.8.1. The workaround was splitting each tet10 into 8 tet4, which runs but loses the quadratic accuracy and inflates the element count.\n\n### Expected behaviour\n\nTies (displacement and heat) accept tri6 and quad8 faces, including mixed linear/quadratic pairs (e.g. tet10 secondary on hex8 main).\n\nIt is not just a flag: standard tri6 shape functions integrate to zero at the corner nodes (quad8: to -A/12), so diagonal dual multipliers built from `D M⁻¹` break. Nonlinear mortar contact in `crates/solver/src/contact.rs` already handles tri6/quad8 with 4-facet segmentation (`facets`/`facet_points`) and a transformed basis (`alpha(count)`: 1/4 for tri6, 3/8 for quad8), checked on hex20/tet10 patch and Hertz tests. Proposed work:\n\n1. Request quadratic faces for ties (`tie.rs:288`) and heat ties (`heat.rs:597`).\n2. Generalise `dual()` to up to 8 nodes, built on the transformed basis (reuse the contact `alpha` transform).\n3. Reuse the contact facet segmentation in the tie mortar integration.\n4. Extend `tests/oracle/tie-patch` and `tests/oracle/tie-heat-series` with tet10 and hex20 variants, and extend the dual biorthogonality unit test to the new face types.\n\n### Pictures\n\n_No response_\n\n### References\n\n- M. A. Puso, T. A. Laursen, J. Solberg, A segment-to-segment mortar contact method for quadratic elements and large deformations, CMAME 197 (2008).\n- A. Popp, B. I. Wohlmuth, M. W. Gee, W. A. Wall, Dual quadratic mortar finite element methods for 3D finite deformation contact, SIAM J. Sci. Comput. 34 (2012) (already cited in `tie.rs`).",
@@ -123,7 +216,7 @@
     "title": "LES: rerun cylinder Re 3900 and square Re 22 000 with HRR + Vreman and dynamic σ (#785 step 7)",
     "body": "Part of #785, step 7 of the LES diagnosis (expert notes: swarm board `lbm-dd/notes/expert-les.md`).\nAfter the two-step force (#1093), the inlet ramp (#1103) and the staircase warning (#1104) land, rerun:\n- the cylinder at Re 3900, against Kravchenko & Moin 2000 (C_d 0.99, St 0.215);\n- the square cylinder at Re 22 000, against Lyn et al. 1995 (C_d about 2.1, St 0.132).\n\nRun each with HRR plus the Vreman model and with dynamic σ, on interpolated walls. This is measurement only, on the GPU, about 10–35 min per case on the GB10. It's expected to shorten the recirculation bubbles. Record the results in docs/verification.md.",
     "state": "open",
-    "updated_at": "2026-11-24T14:01:53Z",
+    "updated_at": "2026-11-26T12:36:29Z",
     "labels": [
       "area:cfd",
       "area:io",
