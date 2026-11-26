@@ -66,7 +66,7 @@
     "title": "LES: warn or refuse when the regularised or hybrid collision runs inside its stream-instability region (#785 step 6, owner decision)",
     "body": "Part of #785 (step 6 of the LES diagnosis). **Owner decision needed**; the code is one table in `crates/lbm/src/setup.rs` and a pinning test once it is made. Hand-off for the parked LBM-LES work (2026-11-26), see `docs/rfc/0003-lbm-les-roadmap.md`.\n\n## Goal\nDecide whether a fluid step whose regularised or hybrid collision sits inside its linear stream-instability region is warned or refused, then implement that.\n\n## Current state\n- Analysis: `~/.claude/swarm/boards/fieldcraft/lbm-dd/notes/expert-regularized-bound.md` (von Neumann maps over 14 directions, k on a π/32 grid, σ 1, 0.99, 0.9; scripts and logs beside it). No branch, no PR.\n- `MIN_TAU_TURBULENT` 0.5001 admits the whole unstable region; the present warning (`REGULARIZED_TAU_LIMIT`) rests on \"went unstable on a coarse bluff-body grid\", not on the analysis.\n\n## Verified (computed)\n- Regularised (σ 1) and hybrid (σ 0.99) are stable at rest at every τ⁺, and at every accepted speed (Mach ≤ 0.3) from τ⁺ 0.52.\n- At the default lattice speed 0.05 the stable τ⁺ is 0.502 (regularised) and 0.5005 (hybrid σ 0.99).\n- Growth where the LES cases run: 3e-5 to 2e-4 per step (MRT at rest: 8e-3).\n- Checked against the crate in 32³ periodic boxes: regularised τ⁺ 0.5001, U 0.17 along (1,1,1), measured +2.9e-3 per step against the map's 3.9e-3.\n- The cylinder at Re 3900 on 16 cells per D runs at τ⁺ 0.5006; a refusal at the bound would need about 52 cells per D there.\n\n## Not verified\n- Whether the linear mode causes the ρ ±7–17 % noise of the bluff-body runs: #1110 tried to separate it and all four runs diverged from the start (PR #1148).\n- A weak mode narrower than π/32 may be missed (\"none found\", not \"stable\").\n\n## Options (expert recommends 1)\n1. Warn from the table (characteristic lattice speed against the stable speed at the smallest τ⁺). Cost if wrong: noisy runs keep completing, flagged.\n2. Refuse below the stable speed at the characteristic lattice speed. Cost if wrong: no LES below about 50 cells per D at Re 3900 until refinement (#1107) lands.\n\n## Next step\nThe owner picks 1 or 2. Then a builder: the table in `setup.rs`, a test like `crates/lbm/tests/mrt_stability.rs`, the table in `docs/manual/fluid/collision.md` \"Stability\".\n\n## Effort\nS: 2–3 agent-hours after the decision, no GPU.\n\n## Blockers\nThe owner's decision.\n\n## Papers\n- Wissocq & Sagaut, linear stability of regularised collisions (D2Q9), cited in `expert-les.md` §2.4.\n- Jacob, Malaspinas & Sagaut 2018 (states no stability range).\n",
     "state": "open",
-    "updated_at": "2026-11-26T12:45:47Z",
+    "updated_at": "2026-11-26T13:09:37Z",
     "labels": [
       "paused",
       "size: S",
@@ -163,7 +163,7 @@
     "title": "LES: separate the regularised instability's share of the ρ ±7–17 % noise from under-resolution",
     "body": "The LES expert's stability analysis (`lbm-dd/notes/expert-regularized-bound.md`) finds regularized and HRR growth of 3e-5 to 2e-4 per step where the LES cases run. Measured density noise on the bluff bodies is ±7–17 %. Run one case at two resolutions and two τ⁺ values, to separate the linear instability's share from under-resolution. That decides whether #785 step 6 needs more than its warning.",
     "state": "open",
-    "updated_at": "2026-11-26T12:47:42Z",
+    "updated_at": "2026-11-26T13:09:38Z",
     "labels": [
       "paused",
       "size: S",
@@ -194,7 +194,7 @@
     "title": "lbm-gpu: GPU kernels for spalding_bounce_matched, then the Re_τ 2000 and 5200 acceptance (#1105 follow-up)",
     "body": "#1105 adds the matched wall model (Spalding's law sampled at 3Δx plus a mixing-length layer) on the CPU only; the GPU refuses it. Port it to the device, with a parity bar derived from f32 round-off, and run on the NVIDIA GB10. Then run the acceptance at Re_τ 2000 and 5200 against Lee & Moser 2015, within 5 % as fixed in #1105. The brief's last section outlines the GPU piece (swarm board `lbm-dd/pieces/les-wall-matching-height.md`).",
     "state": "open",
-    "updated_at": "2026-11-26T13:00:14Z",
+    "updated_at": "2026-11-26T13:09:40Z",
     "labels": [
       "paused",
       "size: M",
@@ -209,7 +209,7 @@
     "title": "lbm: local grid refinement to reach published LES resolution (~80 cells per diameter), and absorbing layers at open faces (#785 step 8)",
     "body": "Part of #785, step 8. Every published LBM-LES success at cylinder Re 3900 that the expert read uses D/Δx ≈ 80 at the wall through nested levels (e.g. Spinelli et al. 2023). FieldCraft's uniform grids at 16–24 cells per diameter measure +12 % (16) and +8 % (24) on the cylinder, and −14 to −18 % on the square at 16 cells.\nImplement:\n- grid refinement (the expert's literature item C4);\n- absorbing layers at open faces, which inlet.rs:26 already cites, for the ρ noise.\n\nUntil then, the manual states the measured error at 16 and 24 cells (#1104).",
     "state": "open",
-    "updated_at": "2026-11-26T12:47:35Z",
+    "updated_at": "2026-11-26T13:01:24Z",
     "labels": [
       "paused",
       "size: L",
