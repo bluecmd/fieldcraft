@@ -18,17 +18,20 @@
     "title": "io: encode checks fluid results only; a heat or explicit result that reading refuses can be saved",
     "body": "Hand-off from the parked fluid work (2026-11-26), found while finishing the OpenFOAM read-back (#1094, #1142).\n\n## Symptom\n`crates/io/src/results.rs:188–191` (`encode`, develop dfb2b76c): \"What reading refuses is not written: a file that would not open is never saved.\" The check runs for fluid results only:\n\n```rust\nif let SolvedRef::Fluid(f) = stored.result {\n    check_fluid(f).map_err(...)?;\n}\n```\n\nReading runs `check` (`results.rs:307`) for every kind: static, frequency, heat (temperature frame lengths, the heat flux, the reaction), explicit (every frame's arrays) and fluid. So a heat or explicit result that reading would refuse can be written, and the saved file then opens without its results.\n\n## Goal\n`encode` refuses every result that `check` would refuse on reading, for every result kind, so a file FieldCraft saves always opens with its results.\n\n## Current state\nNo branch, no PR. The fix is to call `check` on the stored result (the function reading uses) in place of `check_fluid` alone, once it accepts the borrowed `SolvedRef` form.\n\n## Next step\n1. A failing test first in `crates/io`: encode a heat result whose temperature frame is one entry short; today it encodes, and decoding refuses it. After the fix, encoding returns `Error::Invalid` naming the step.\n2. The same for an explicit result.\n3. `cargo test -p fieldcraft-io`; `cargo clippy -p fieldcraft-io --all-targets -- -D warnings`.\n\n## Effort\nS: 1–2 agent-hours, no GPU.\n\n## Blockers\nNone. A good first contribution to the io crate.\n",
     "state": "open",
-    "updated_at": "2026-11-26T12:45:49Z",
+    "updated_at": "2026-11-26T13:56:55Z",
     "labels": [
       "bug",
       "help wanted",
       "good first issue",
+      "claimed",
       "size: S",
       "area:cfd",
       "area:io",
       "needs-triage"
     ],
-    "assignees": [],
+    "assignees": [
+      "Tegrask"
+    ],
     "url": "https://github.com/tangency-labs/fieldcraft/issues/1157"
   },
   {
