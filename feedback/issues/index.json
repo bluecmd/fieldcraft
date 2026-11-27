@@ -1,5 +1,42 @@
 [
   {
+    "number": 1178,
+    "title": "Add geometry-based set creation to Prepare",
+    "body": "## Current behavior\n\nThe ribbon's **Set** command is under **Model → Properties → Sets**. The viewport also offers **Create set from selection…**.\n\n## Requested behavior\n\nMake geometry-based set creation available in **Prepare → Geometry**. I want to name regions from CAD geometry while preparing the part, before generating a mesh, so I can reuse those sets for analysis setup.\n",
+    "state": "open",
+    "updated_at": "2026-11-27T20:02:55Z",
+    "labels": [
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1178"
+  },
+  {
+    "number": 1177,
+    "title": "Allow wireframe display for individual body meshes",
+    "body": "## Current behavior\n\nThe viewport's **Visual Style → Wireframe** setting applies to the whole view.\n\n## Requested behavior\n\nLet me display an individual body mesh as a wireframe while the other bodies stay shaded. Draw only the selected mesh's element edges so I can see the features or meshes behind it.\n",
+    "state": "open",
+    "updated_at": "2026-11-27T20:03:02Z",
+    "labels": [
+      "area:mesh",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1177"
+  },
+  {
+    "number": 1176,
+    "title": "Allow Up and Down arrow key navigation in the Model Browser",
+    "body": "## Current behavior\n\nThe Model Browser on the left has no Up/Down navigation between tree rows.\n\n## Requested behavior\n\nWhen the Model Browser has focus, Up and Down should move to the previous or next visible tree row. Show which row is focused and scroll it into view as needed.\n",
+    "state": "open",
+    "updated_at": "2026-11-27T20:03:00Z",
+    "labels": [
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1176"
+  },
+  {
     "number": 1175,
     "title": "mesh: pinhole-block's octree mesh fails at SolidCraft e41debf (regression from the #1152 repin)",
     "body": "#1152 repins SolidCraft from v0.42.0 to e41debf. At the new pin, the corpus part pinhole-block's octree stage changes on macOS from ok (71,691 hexes) to \"meshing failed\", and the fixture was re-blessed with that result. Find the cause: which SolidCraft tessellation change (the uncapped boundary residuals from #18432, or the hole/`DirExpr` changes) moves the surface the octree mesher reads. Fix it forward, and restore the ok baseline. Also confirm or refute the Bracket.12 `F5:bore:side:0#1`/`#2` face-name swap noted on #1152.",
