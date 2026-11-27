@@ -1,5 +1,19 @@
 [
   {
+    "number": 1179,
+    "title": "Feature request: export CAD bodies and named face sets to STEP before meshing",
+    "body": "### What are you trying to do?\n\nOpen a SolidCraft or STEP design, name sets of CAD bodies and faces in FieldCraft before meshing, and export a STEP that Netgen can mesh with those material and boundary names. For example, six exterior faces of an air enclosure should share `outer` while its magnet and steel interfaces remain distinct.\n\n### How should it work?\n\nUse the existing geometry-bound sets and write the placed solids together as a flat STEP B-rep. Preserve the source CAD file and allow verification with `GetMaterials()` and `GetBoundaries()` in NGSolve. This complements the meshed VOL workflow in #1050. See tangency-labs/solidcraft#22246 for interoperability tests on flat and hierarchical STEP.\n",
+    "state": "open",
+    "updated_at": "2026-11-27T20:16:33Z",
+    "labels": [
+      "enhancement",
+      "area:mesh",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1179"
+  },
+  {
     "number": 1178,
     "title": "Add geometry-based set creation to Prepare",
     "body": "## Current behavior\n\nThe ribbon's **Set** command is under **Model → Properties → Sets**. The viewport also offers **Create set from selection…**.\n\n## Requested behavior\n\nMake geometry-based set creation available in **Prepare → Geometry**. I want to name regions from CAD geometry while preparing the part, before generating a mesh, so I can reuse those sets for analysis setup.\n",
