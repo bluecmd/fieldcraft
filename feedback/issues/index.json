@@ -1,5 +1,18 @@
 [
   {
+    "number": 1175,
+    "title": "mesh: pinhole-block's octree mesh fails at SolidCraft e41debf (regression from the #1152 repin)",
+    "body": "#1152 repins SolidCraft from v0.42.0 to e41debf. At the new pin, the corpus part pinhole-block's octree stage changes on macOS from ok (71,691 hexes) to \"meshing failed\", and the fixture was re-blessed with that result. Find the cause: which SolidCraft tessellation change (the uncapped boundary residuals from #18432, or the hole/`DirExpr` changes) moves the surface the octree mesher reads. Fix it forward, and restore the ok baseline. Also confirm or refute the Bracket.12 `F5:bore:side:0#1`/`#2` face-name swap noted on #1152.",
+    "state": "open",
+    "updated_at": "2026-11-27T16:41:47Z",
+    "labels": [
+      "area:mesh",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1175"
+  },
+  {
     "number": 1173,
     "title": "Allow deleting a body mesh from the Model Browser",
     "body": "## Current behavior\n\nAfter generating a body mesh, the desktop Model Browser offers a way to replace it by generating another mesh. There is no direct action on the selected body or mesh entry to remove just its generated mesh. This makes it hard to return one body to its unmeshed state while preparing a multi-body model.\n\n## Requested behavior\n\nAdd a **Delete Mesh** action to the Model Browser context menu for a meshed body or its mesh entry. Route the action through the existing `mesh.clear` command with the selected body explicitly supplied. Calling `mesh.clear` without a body list targets obsolete bodies after partition changes.\n\n## Acceptance check\n\n1. Mesh two bodies and invoke **Delete Mesh** on one of them in the Model Browser.\n2. The selected body's elements and its now-unused nodes disappear from the viewport and browser counts. Both CAD bodies, the other body's mesh, and any nodes it still uses remain available.\n3. Surface any affected label-based sets or invalidated results using the existing clear-mesh behavior. A single Undo restores the removed mesh. The body can also be meshed again directly.\n\nRelated work covers per-body mesh replacement (#267) and Model Browser context actions (#269).\n",
