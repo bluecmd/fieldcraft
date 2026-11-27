@@ -1,5 +1,31 @@
 [
   {
+    "number": 1173,
+    "title": "Allow deleting a body mesh from the Model Browser",
+    "body": "## Current behavior\n\nAfter generating a body mesh, the desktop Model Browser offers a way to replace it by generating another mesh. There is no direct action on the selected body or mesh entry to remove just its generated mesh. This makes it hard to return one body to its unmeshed state while preparing a multi-body model.\n\n## Requested behavior\n\nAdd a **Delete Mesh** action to the Model Browser context menu for a meshed body or its mesh entry. Route the action through the existing `mesh.clear` command with the selected body explicitly supplied. Calling `mesh.clear` without a body list targets obsolete bodies after partition changes.\n\n## Acceptance check\n\n1. Mesh two bodies and invoke **Delete Mesh** on one of them in the Model Browser.\n2. The selected body's elements and its now-unused nodes disappear from the viewport and browser counts. Both CAD bodies, the other body's mesh, and any nodes it still uses remain available.\n3. Surface any affected label-based sets or invalidated results using the existing clear-mesh behavior. A single Undo restores the removed mesh. The body can also be meshed again directly.\n\nRelated work covers per-body mesh replacement (#267) and Model Browser context actions (#269).\n",
+    "state": "open",
+    "updated_at": "2026-11-27T15:51:20Z",
+    "labels": [
+      "area:mesh",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1173"
+  },
+  {
+    "number": 1172,
+    "title": "Generate conforming Tet4 meshes across shared material interfaces",
+    "body": "## Current behavior\n\nWhen two CAD bodies meet at a material interface, `mesh.tet.generate` meshes each body independently. In a multi-material STEP assembly tested with the FieldCraft 0.8.1 mesher, the two sides covered the same physical area but used different triangles. A node merge joined some coincident vertices and still left one-sided interface faces. The material volumes and surface areas were correct, so those checks alone missed the disconnected domains.\n\n## Requested behavior\n\nSupport a conforming Tet4 mesh across selected material interfaces. A user should be able to mesh one body at its desired resolution, then mesh its neighbor against the existing surface triangulation. This also applies when one region surrounds several inclusions or the bodies have different target sizes. The same workflow should be available from the UI and through engine commands.\n\n## Acceptance check\n\n1. Create two touching solids with separate material regions. Mesh the first with Tet4, then mesh the second with a different target size, using their shared face as the interface.\n2. Check that each interface triangle has the same three node IDs on both sides and exactly two incident tetrahedra, one from each material. Exterior triangles have one incident tetrahedron. Preserve both material regions and the interface name.\n3. Check that the first mesh is preserved when its interface is requested as fixed. If the mesher cannot honor the interface, report the affected bodies and face before committing the new mesh.\n4. Repeat with a solid inside a surrounding region. Verify connectivity by face incidence after saving and reopening the model.\n\nRelated work on matching divisions across structured partition cuts is tracked in #288.\n",
+    "state": "open",
+    "updated_at": "2026-11-27T15:51:09Z",
+    "labels": [
+      "area:mesh",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1172"
+  },
+  {
     "number": 1171,
     "title": "decks: rod3 is written and read as T3D3 in model order; Abaqus puts the middle node second",
     "body": "### Observed\nThe model stores a rod3 as the two ends, then the middle node (`crates/model/src/mesh.rs:17`). The Abaqus writer maps it to T3D3 (`crates/decks/src/abaqus.rs:288`) and writes the nodes in model order; the reader (`crates/decks/src/abaqus/read/types.rs:70`) reads T3D3/T2D3 back in the same order. Abaqus numbers a three-node line element end, middle, end (the element's node 2 is the middle node; Abaqus Analysis User's Guide, truss and beam element node ordering), so a written rod3 has its middle node at an end: a folded element in any deck Abaqus reads, and a mirrored one on import.\n\nFound by the #1068 expert while mapping beam3 to B32, which uses the same node order.\n\n### Expected\nWriter and reader permute rod3 (and beam3, #1068) between model order and Abaqus order, with a regression test that writes a rod3, checks the connectivity line, and reads it back to the same model.\n\nThe fix lands as its own commit in the #1068 branch (piece 4 step 1).",
@@ -1178,19 +1204,6 @@
     ],
     "assignees": [],
     "url": "https://github.com/tangency-labs/fieldcraft/issues/896"
-  },
-  {
-    "number": 892,
-    "title": "Beam sections from section properties (area, I_y, I_z, J, shear areas)",
-    "body": "### Current behaviour\n\nA beam section's profile can only be a shape: `rectangle`, `circle`, `pipe`, `i` or `box`, with the properties computed from it. Section properties cannot be given directly. This rules out:\n- rolled sections from tables, for example I/H sections with root radii (EN 10365), channels and angles;\n- a frame model brought over from another program, which carries only A, I and J.\n\n### What you need and why\n\nSteel frames are designed with the table values of rolled sections. Comparing a frame analysis with another frame program needs exactly that program's section values. A shape that only approximates them (an `i` without root radii) gives a different I_t and different shear areas.\n\n### Expected behaviour\n\nA `general` beam profile that takes the properties directly: area, I_y, I_z, torsion constant J and shear areas along y and z, each validated as positive and finite. Inside FieldCraft it would behave like the other profiles, with the same `BeamProperties` and the same element, and the deck writers would map it to their general beam section.\n\nWe have this as a small patch in our copy of `fieldcraft-model`: the `BeamProfile::General` variant, with `name`, `validate`, `area`, `properties` and the unit conversion in `convert.rs`, about 40 lines. We use it to cross-check frames against another program (PyNite): reactions are equal and moments agree within 0.4 %. Our copy does not include the `io`/`decks` crates, so the deck writers would still be open. I can turn it into a pull request against `develop` if you want this.\n\n### Pictures\n\n_No response_\n\n### References\n\nEN 10365 (dimensions and section properties of hot-rolled I and H sections). The beam element itself is unchanged.\n",
-    "state": "open",
-    "updated_at": "2026-11-24T05:51:39Z",
-    "labels": [
-      "enhancement",
-      "needs-triage"
-    ],
-    "assignees": [],
-    "url": "https://github.com/tangency-labs/fieldcraft/issues/892"
   },
   {
     "number": 888,
