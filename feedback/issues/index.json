@@ -1,5 +1,19 @@
 [
   {
+    "number": 1184,
+    "title": "Bug: Generate Tet Mesh: body `tank`: invalid boundary surface: 71 defects; open edge 0–1 at (478.596, 205",
+    "body": "### Observed failure\n\nGenerate Tet Mesh: body `tank`: invalid boundary surface: 71 defects; open edge 0–1 at (478.596, 205.054, 653.217) mm (only triangle 0 uses it); open edge 0–3 at (478.39, 206.016, 657.893) mm (only triangle 1 uses it); open edge 1–6 at (480.044, 204.693, 650.449) mm (only triangle 4 uses it); …; inspect with mesh.surface.check. For a confirmed small seam, retry with weld_distance (a length) or weld (a fraction of the diagonal), smaller than features to preserve. Repair orientation or nonmanifold defects in the source surface; welding does not fix them.\n\n### Reproduction\n\nReplay the attached session (2 command(s)): `fieldcraft-cli run fieldcraft-session.json` in a folder holding `model.fieldcraft` too.\n\n### Evidence\n\n\nSession (fieldcraft-session.json):\n```json\n[\n  {\n    \"command\": \"file.open\",\n    \"params\": {\n      \"path\": \"model.fieldcraft\"\n    }\n  },\n  {\n    \"command\": \"geometry.open\",\n    \"params\": {\n      \"path\": \"~/Documents/3D/solidcraft/tank.step\"\n    }\n  }\n]\n```\n\nThe model is attached as `model.fieldcraft` (drag it in from the folder FieldCraft saved it to).\n\n\n### Expected behaviour\n\n.\n\n### Investigation\n\nThis happens after a step import from the latest solidcraft (.sc file import is too outdated).\n\n<img width=\"1293\" height=\"858\" alt=\"image\" src=\"https://github.com/user-attachments/assets/c9814e31-3379-4d9c-8e0c-696a8f6adcfe\" />\n\n### Version and platform\n\nv0.8.1-nightly.20261126.115.1 (dfb2b76cc8), linux x86_64",
+    "state": "open",
+    "updated_at": "2026-11-28T11:09:07Z",
+    "labels": [
+      "bug",
+      "area:mesh",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1184"
+  },
+  {
     "number": 1182,
     "title": "fieldcraft-cli run: print each command's reply with --results, as solidcraft-cli run does",
     "body": "### Current behaviour\n\n`fieldcraft-cli run <script.json>` runs the script and prints only the model summary (`model.info`).\n\n`Session::run_script` already returns each step's output, in order (`crates/engine/src/lib.rs`). But `session_of` in `apps/fieldcraft-cli/src/main.rs` drops that output. So a query in a script, such as `model.material.library.list`, prints nothing on the command line.\n\nToday I get the replies only through `fieldcraft-cli mcp` or the app's control channel (`engine.script`). I read this in the code on `develop`. The usage text of the 0.7.5 release says the same (\"run a script ... and print the model summary\").\n\n### What you need and why\n\nI drive FieldCraft from shell scripts and from an agent in a design-study repository. I want one command that runs a script and gives back the replies as JSON. Then a script can check them.\n\nOne example: I want to see which library materials the installed release has. `crates/model/data/materials.json` has 9 entries in v0.8.1 and 20 on `develop`. Starting an MCP server for one query is a lot of setup for a script.\n\n### Expected behaviour\n\n`fieldcraft-cli run <script.json> --results` prints a JSON array with each step's reply, in the order of the steps. Without `--results`, the output stays as it is today.\n\n`solidcraft-cli run --results` works the same way. When a step fails, `solidcraft-cli` prints the replies of the steps before it and the error (`{results, error: {step, command, error}}`). FieldCraft could do the same.\n\n### Pictures\n\n_No response_\n\n### References\n\n- `solidcraft-cli run --results` (SolidCraft 0.50.0, `solidcraft-cli --help`).\n",
