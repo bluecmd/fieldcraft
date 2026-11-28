@@ -1,5 +1,18 @@
 [
   {
+    "number": 1182,
+    "title": "fieldcraft-cli run: print each command's reply with --results, as solidcraft-cli run does",
+    "body": "### Current behaviour\n\n`fieldcraft-cli run <script.json>` runs the script and prints only the model summary (`model.info`).\n\n`Session::run_script` already returns each step's output, in order (`crates/engine/src/lib.rs`). But `session_of` in `apps/fieldcraft-cli/src/main.rs` drops that output. So a query in a script, such as `model.material.library.list`, prints nothing on the command line.\n\nToday I get the replies only through `fieldcraft-cli mcp` or the app's control channel (`engine.script`). I read this in the code on `develop`. The usage text of the 0.7.5 release says the same (\"run a script ... and print the model summary\").\n\n### What you need and why\n\nI drive FieldCraft from shell scripts and from an agent in a design-study repository. I want one command that runs a script and gives back the replies as JSON. Then a script can check them.\n\nOne example: I want to see which library materials the installed release has. `crates/model/data/materials.json` has 9 entries in v0.8.1 and 20 on `develop`. Starting an MCP server for one query is a lot of setup for a script.\n\n### Expected behaviour\n\n`fieldcraft-cli run <script.json> --results` prints a JSON array with each step's reply, in the order of the steps. Without `--results`, the output stays as it is today.\n\n`solidcraft-cli run --results` works the same way. When a step fails, `solidcraft-cli` prints the replies of the steps before it and the error (`{results, error: {step, command, error}}`). FieldCraft could do the same.\n\n### Pictures\n\n_No response_\n\n### References\n\n- `solidcraft-cli run --results` (SolidCraft 0.50.0, `solidcraft-cli --help`).\n",
+    "state": "open",
+    "updated_at": "2026-11-28T02:21:19Z",
+    "labels": [
+      "enhancement",
+      "needs-triage"
+    ],
+    "assignees": [],
+    "url": "https://github.com/tangency-labs/fieldcraft/issues/1182"
+  },
+  {
     "number": 1179,
     "title": "Feature request: export CAD bodies and named face sets to STEP before meshing",
     "body": "### What are you trying to do?\n\nOpen a SolidCraft or STEP design, name sets of CAD bodies and faces in FieldCraft before meshing, and export a STEP that Netgen can mesh with those material and boundary names. For example, six exterior faces of an air enclosure should share `outer` while its magnet and steel interfaces remain distinct.\n\n### How should it work?\n\nUse the existing geometry-bound sets and write the placed solids together as a flat STEP B-rep. Preserve the source CAD file and allow verification with `GetMaterials()` and `GetBoundaries()` in NGSolve. This complements the meshed VOL workflow in #1050. See tangency-labs/solidcraft#22246 for interoperability tests on flat and hierarchical STEP.\n",
