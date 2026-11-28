@@ -1045,7 +1045,7 @@
     "title": "Help wanted: external-flow drag benchmarks (sphere Re 100, Schäfer–Turek cylinder 2D-2, cylinder Re 3900)",
     "body": "Please contribute independent refinement studies of three cases:\n\n1. **Steady sphere at Re = 100.** Compare Cd with Johnson & Patel (1999), Cd ≈ 1.09. We see Cd about 3% high.\n2. **Schäfer & Turek (1996) 2D-2.** The maximum Cd must lie in [3.22, 3.24] and St in [0.295, 0.305]; please also report the maximum Cl. We're slightly above the Cd band.\n3. **Cylinder at Re = 3900 (LES).** Compare the mean Cd, the recirculation length and St with Parnaudeau et al. (2008), Kravchenko & Moin (2000) and Lourenço & Shih. Our coarse refinement is not monotone.\n\nFor each case, please report:\n- 3 or more resolutions (cells per diameter);\n- the domain size and blockage;\n- the inlet and outlet types;\n- the Mach number;\n- the force method;\n- the averaging window;\n- the commit and inputs.\n\nOne-factor sweeps (blockage, Mach, outlet type, wall placement) are the most valuable, because they separate geometric, compressibility, boundary-condition and averaging causes.\n\nRelated: #785, #787, #792, #798.\n",
     "state": "open",
-    "updated_at": "2026-11-28T17:38:05Z",
+    "updated_at": "2026-11-28T18:33:59Z",
     "labels": [
       "help wanted",
       "area:cfd",
